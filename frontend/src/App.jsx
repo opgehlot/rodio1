@@ -37,7 +37,7 @@ function App() {
 
       <Routes>
  
-        <Route path="/" element={<UserForm/>} />
+        <Route path="/userform" element={<UserForm/>} />
 
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

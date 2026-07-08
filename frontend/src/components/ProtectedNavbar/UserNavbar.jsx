@@ -46,7 +46,7 @@ function UserNavbar() {
             Vehicle Search
           </NavLink>
 
-          <NavLink to="/newrequest" className={navLinkClass}>
+          <NavLink to="/userform" className={navLinkClass}>
             Lead Contacts
           </NavLink>
 
@@ -113,7 +113,7 @@ function UserNavbar() {
           </NavLink>
 
           <NavLink
-            to="/newrequest"
+            to="/userform"
             onClick={() => setMenuOpen(false)}
             className={navLinkClass}
           >
