@@ -16,7 +16,8 @@ import UserDashboard from "./pages/dashboardpage/UserDashboard";
 
 import SearchBar from "./components/SearchBar";
 import Directorydata from "./pages/Directory/Directorydata";
-import NewRequest from "./pages/dashboardpage/newrequestpage/Newrequest";
+import UserForm from "./pages/newrequestpage/UserForm";
+
 
 function App() {
   return (
@@ -35,9 +36,13 @@ function App() {
       />
 
       <Routes>
+ 
+        <Route path="/" element={<UserForm/>} />
+
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/newrequest" element={<NewRequest />} />
+      
+    
       
 
         <Route path="/searchbar" element={<SearchBar />} />
