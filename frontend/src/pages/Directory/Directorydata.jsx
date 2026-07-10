@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../../api/api";
 
-import UserNavbar from "../../components/ProtectedNavbar/UserNavbar";
 
 import DirectoryFilter from "./DirectoryFilter";
 import DirectoryList from "./DirectoryList";
@@ -29,7 +28,7 @@ function DirectoryPage() {
       const res = await API.get("/business/search", {
         params: searchFilters,
       });
-
+     console.log("Response:", res.data);
       setData(res.data.data);
 
     } catch (err) {
@@ -61,8 +60,7 @@ function DirectoryPage() {
   return (
 
     <div className="min-h-screen bg-gray-100">
-
-      <UserNavbar />
+    
 
       <div className="max-w-7xl mx-auto pt-24 px-5">
 

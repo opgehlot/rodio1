@@ -5,12 +5,12 @@ import Price from "../components/Price";
 import Feedback from "../components/Feedback";
 import Features from "../components/Features";
 import AppFooter from "../components/AppFooter";
-import Navbar from "../components/Navbar";
+
 
 function Home() {
   return (
     <div>
-      <Navbar/>
+  
       <HeroCarousel/>
       <SearchBar/>
       <Price/>

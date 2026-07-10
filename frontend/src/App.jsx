@@ -7,7 +7,6 @@ import Contact from "./pages/Contact";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Register from "./components/Register";
 import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
 import BrokerDashboard from "./pages/dashboardpage/BrokerDashboard";
@@ -17,6 +16,7 @@ import UserDashboard from "./pages/dashboardpage/UserDashboard";
 import SearchBar from "./components/SearchBar";
 import Directorydata from "./pages/Directory/Directorydata";
 import UserForm from "./pages/newrequestpage/UserForm";
+import Navbar from "./components/Navbar";
 
 
 function App() {
@@ -34,6 +34,8 @@ function App() {
           },
         }}
       />
+    <Navbar/>
+    
 
       <Routes>
  

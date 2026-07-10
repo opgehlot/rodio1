@@ -26,7 +26,8 @@ export default function Login() {
 
   // Handle Login
  const handleLogin = async (e) => {
-  e.preventDefault();
+  e.preventDefault(); 
+  
 
   if (!formData.emailOrMobile.trim()) {
     toast.error("Please enter Email or Mobile");
@@ -55,6 +56,7 @@ export default function Login() {
 
     // Save User
     localStorage.setItem("user", JSON.stringify(response.data.user));
+    localStorage.setItem("role", response.data.user.role);
 
     toast.success(response.data.message);
 
