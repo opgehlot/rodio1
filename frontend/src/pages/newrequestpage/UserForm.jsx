@@ -160,7 +160,7 @@ export default function UserForm() {
                 <div>
 
                   <label className="font-semibold">
-                    Pickup Location
+                    Loding point
                   </label>
 
                   <input
@@ -232,7 +232,7 @@ export default function UserForm() {
                 <div>
 
                   <label className="font-semibold">
-                    Weight (KG)
+                    Weight in(Ton)
                   </label>
 
                   <input
@@ -344,14 +344,14 @@ export default function UserForm() {
                 </div>
 
                 <div className="flex justify-between">
-                  <span>Pickup</span>
+                  <span>Loding Point</span>
                   <span className="font-semibold">
                     {formData.pickupLocation || "-"}
                   </span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span>Destination</span>
+                  <span></span>
                   <span className="font-semibold">
                     {formData.loading_point || "-"}
                   </span>
