@@ -17,6 +17,7 @@ import SearchBar from "./components/SearchBar";
 import Directorydata from "./pages/Directory/Directorydata";
 import UserForm from "./pages/newrequestpage/UserForm";
 import Navbar from "./components/Navbar";
+import AppFooter from "./components/AppFooter";
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
         </Route>
       </Routes>
+      <AppFooter/>
     </BrowserRouter>
   );
 }

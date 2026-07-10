@@ -1,34 +1,21 @@
 const categories = [
   "Transporter",
-
   "Broker",
-
   "Fleet Owner",
-
   "Truck Owner",
-
   "Logistics Company",
-
   "Warehouse",
-
-  "Courier",
-
+"Courier",
   "Packing & Moving",
-
   "Commission Agent",
-
   "RTO Agent",
-
   "Finance Agent",
 ];
 
 function DirectoryFilter({
   filters,
-
   setFilters,
-
   stateCityData,
-
   onSearch,
 }) {
   return (

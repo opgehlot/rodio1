@@ -93,7 +93,7 @@ export const stateCityData = {
     "Kannur"
   ],
 
-  "MadhyaPradesh": [
+  "Madhya Pradesh": [
     "Bhopal",
     "Indore",
     "Jabalpur",

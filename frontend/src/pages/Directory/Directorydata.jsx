@@ -28,6 +28,7 @@ function DirectoryPage() {
       const res = await API.get("/business/search", {
         params: searchFilters,
       });
+
      console.log("Response:", res.data);
       setData(res.data.data);
 
@@ -52,6 +53,7 @@ function DirectoryPage() {
   const handleSearch = (e) => {
 
     e.preventDefault();
+    console.log("Filters:", filters);
 
     fetchDirectory(filters);
 

@@ -1,20 +1,20 @@
 import { useState } from "react";
+import API from "../../api/api";
 
 function UserForm() {
-  const [formData, setFormData] = useState({
-    service: "",
-    pickup: "",
-    destination: "",
-    pickupDate: "",
-    pickupTime: "",
-    goodsType: "",
-    weight: "",
-    vehicleType: "",
-    contactPerson: "",
-    contactNumber: "",
-    budget: "",
-    remarks: "",
-  });
+ const [formData, setFormData] = useState({
+  service: "",
+  vehicleType: "",
+  pickupLocation: "",
+  loading_point: "",
+  pickupDate: "",
+  goodsType: "",
+  weight: "",
+  contactPerson: "",
+  contactNumber: "",
+  expectedBudget: "",
+  remarks: "",
+});
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -23,10 +23,38 @@ function UserForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log(formData);
+  try {
+    const res = await API.post("booking/create", formData);
+
+    toast.success(res.data.message);
+
+    console.log(res.data);
+
+    // Reset Form
+    setFormData({
+      service: "",
+      vehicleType: "",
+      pickupLocation: "",
+      loading_point: "",
+      pickupDate: "",
+      goodsType: "",
+      weight: "",
+      contactPerson: "",
+      contactNumber: "",
+      expectedBudget: "",
+      remarks: "",
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    toast.error(
+      error.response?.data?.message || "Something went wrong"
+    );
+  }
 
     // API Call Here
     // await API.post("/request/create", formData);
@@ -45,194 +73,170 @@ function UserForm() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-8">
+      <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {/* Service */}
+  <div>
+    <label className="font-medium">Service</label>
+    <select
+      name="service"
+      value={formData.service}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+    >
+      <option value="">Select Service</option>
+      <option>Transport Service</option>
+      <option>Packers & Movers</option>
+      <option>Bike Transport</option>
+      <option>Car Transport</option>
+    </select>
+  </div>
 
-            {/* Service */}
-            <div>
-              <label className="font-medium">Service</label>
-              <select
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                className="w-full border rounded-lg mt-2 p-3"
-              >
-                <option value="">Select Service</option>
-                <option>Full Truck Load</option>
-                <option>Part Load</option>
-                <option>Packers & Movers</option>
-                <option>Bike Transport</option>
-                <option>Car Transport</option>
-              </select>
-            </div>
+  {/* Vehicle */}
+  <div>
+    <label className="font-medium">Vehicle Type</label>
+    <select
+      name="vehicleType"
+      value={formData.vehicleType}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+    >
+      <option value="">Select Vehicle</option>
+      <option>Truck</option>
+      <option>Mini Truck</option>
+      <option>Pickup</option>
+      <option>Tata Ace</option>
+      <option>Trailer</option>
+    </select>
+  </div>
 
-            {/* Vehicle */}
-            <div>
-              <label className="font-medium">Vehicle Type</label>
-              <select
-                name="vehicleType"
-                value={formData.vehicleType}
-                onChange={handleChange}
-                className="w-full border rounded-lg mt-2 p-3"
-              >
-                <option value="">Select Vehicle</option>
-                <option>Tata Ace</option>
-                <option>Pickup</option>
-                <option>Mini Truck</option>
-                <option>14 Feet Truck</option>
-                <option>20 Feet Truck</option>
-                <option>Trailer</option>
-              </select>
-            </div>
+  {/* Pickup */}
+  <div>
+    <label className="font-medium">Pickup Location</label>
+    <input
+      type="text"
+      name="pickupLocation"
+      value={formData.pickupLocation}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="Enter Pickup Location"
+    />
+  </div>
 
-            {/* Pickup */}
-            <div>
-              <label className="font-medium">Pickup Location</label>
-              <input
-                type="text"
-                name="pickup"
-                value={formData.pickup}
-                onChange={handleChange}
-                placeholder="Enter Pickup Location"
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Loading Point */}
+  <div>
+    <label className="font-medium">Loading Point</label>
+    <input
+      type="text"
+      name="loading_point"
+      value={formData.loading_point}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="Enter Loading Point"
+    />
+  </div>
 
-            {/* Destination */}
-            <div>
-              <label className="font-medium">Destination</label>
-              <input
-                type="text"
-                name="destination"
-                value={formData.destination}
-                onChange={handleChange}
-                placeholder="Enter Destination"
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Pickup Date */}
+  <div>
+    <label className="font-medium">Pickup Date</label>
+    <input
+      type="date"
+      name="pickupDate"
+      value={formData.pickupDate}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+    />
+  </div>
 
-            {/* Pickup Date */}
-            <div>
-              <label className="font-medium">Pickup Date</label>
-              <input
-                type="date"
-                name="pickupDate"
-                value={formData.pickupDate}
-                onChange={handleChange}
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Goods Type */}
+  <div>
+    <label className="font-medium">Goods Type</label>
+    <input
+      type="text"
+      name="goodsType"
+      value={formData.goodsType}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="Electronics, Furniture..."
+    />
+  </div>
 
-            {/* Pickup Time */}
-            <div>
-              <label className="font-medium">Pickup Time</label>
-              <input
-                type="time"
-                name="pickupTime"
-                value={formData.pickupTime}
-                onChange={handleChange}
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Weight */}
+  <div>
+    <label className="font-medium">Weight (KG)</label>
+    <input
+      type="number"
+      name="weight"
+      value={formData.weight}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="500"
+    />
+  </div>
 
-            {/* Goods */}
-            <div>
-              <label className="font-medium">Goods Type</label>
-              <input
-                type="text"
-                name="goodsType"
-                value={formData.goodsType}
-                onChange={handleChange}
-                placeholder="Furniture, Steel, Cement..."
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Contact Person */}
+  <div>
+    <label className="font-medium">Contact Person</label>
+    <input
+      type="text"
+      name="contactPerson"
+      value={formData.contactPerson}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="Rahul Sharma"
+    />
+  </div>
 
-            {/* Weight */}
-            <div>
-              <label className="font-medium">Weight (Kg)</label>
-              <input
-                type="number"
-                name="weight"
-                value={formData.weight}
-                onChange={handleChange}
-                placeholder="Weight"
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Contact Number */}
+  <div>
+    <label className="font-medium">Contact Number</label>
+    <input
+      type="tel"
+      name="contactNumber"
+      value={formData.contactNumber}
+      onChange={handleChange}
+      maxLength={10}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="9876543210"
+    />
+  </div>
 
-            {/* Contact */}
-            <div>
-              <label className="font-medium">Contact Person</label>
-              <input
-                type="text"
-                name="contactPerson"
-                value={formData.contactPerson}
-                onChange={handleChange}
-                placeholder="Contact Name"
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Expected Budget */}
+  <div>
+    <label className="font-medium">Expected Budget</label>
+    <input
+      type="number"
+      name="expectedBudget"
+      value={formData.expectedBudget}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="15000"
+    />
+  </div>
 
-            {/* Mobile */}
-            <div>
-              <label className="font-medium">Contact Number</label>
-              <input
-                type="tel"
-                name="contactNumber"
-                value={formData.contactNumber}
-                onChange={handleChange}
-                placeholder="9876543210"
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  {/* Remarks */}
+  <div className="md:col-span-2">
+    <label className="font-medium">Remarks</label>
+    <textarea
+      rows="5"
+      name="remarks"
+      value={formData.remarks}
+      onChange={handleChange}
+      className="w-full border rounded-lg p-3 mt-2"
+      placeholder="Handle goods carefully..."
+    />
+  </div>
 
-            {/* Budget */}
-            <div className="md:col-span-2">
-              <label className="font-medium">Expected Budget</label>
-              <input
-                type="number"
-                name="budget"
-                value={formData.budget}
-                onChange={handleChange}
-                placeholder="Enter Budget"
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
+  <div className="md:col-span-2 flex justify-end">
+   <button
+  type="submit"
+  className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-semibold transition"
+>
+  Submit Request
+</button>
+  </div>
 
-            {/* Remarks */}
-            <div className="md:col-span-2">
-              <label className="font-medium">Remarks</label>
-              <textarea
-                rows="5"
-                name="remarks"
-                value={formData.remarks}
-                onChange={handleChange}
-                placeholder="Additional instructions..."
-                className="w-full border rounded-lg mt-2 p-3"
-              />
-            </div>
-
-          </div>
-
-          <div className="mt-8 flex justify-end gap-4">
-            <button
-              type="reset"
-              className="px-6 py-3 border rounded-lg hover:bg-gray-100"
-            >
-              Reset
-            </button>
-
-            <button
-              type="submit"
-              className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold"
-            >
-              Submit Request
-            </button>
-          </div>
-
-        </form>
+</form>
       </div>
     </div>
   );
