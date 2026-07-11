@@ -45,7 +45,7 @@ function App() {
         <Route path="/searchbar" element={<SearchBar />} />
 
         <Route path="/directory" element={<Directorydata />} />
-        <Route path="/addvhicle" element={<Addvhicle />} />
+     
 
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
