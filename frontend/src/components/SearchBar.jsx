@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Select from "react-select";
 import { MapPin, Search, Truck } from "lucide-react";
-import { TransportCard } from "./TransportCard";
+import  TransportCard  from "./TransportCard";
 import transports from "../data/transports";
 import API from "../api/api";
 

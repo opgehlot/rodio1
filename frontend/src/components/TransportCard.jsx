@@ -134,3 +134,4 @@ export function TransportCard({ item }) {
     </div>
   );
 }
+export default TransportCard;
