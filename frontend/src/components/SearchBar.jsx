@@ -3,7 +3,6 @@ import Select from "react-select";
 import { MapPin, Search, Truck } from "lucide-react";
 import  TransportCard  from "./TransportCard";
 import transports from "../data/transports";
-import API from "../api/api";
 
 export default function SearchBar() {
   const [from, setFrom] = useState(null);
@@ -121,17 +120,21 @@ const handleSearch = async () => {
 
   {/* Search Results */}
   <div className="max-w-6xl mx-auto mt-10">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-      {filteredData.map((item) => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {filteredData.length > 0 ? (
+      filteredData.map((item) => (
         <TransportCard
           key={item._id || item.id}
           item={item}
         />
-      ))}
-
-    </div>
+      ))
+    ) : (
+      <p className="col-span-full text-center text-gray-500">
+        No transport found.
+      </p>
+    )}
   </div>
+</div>
     </>
   );
 }
