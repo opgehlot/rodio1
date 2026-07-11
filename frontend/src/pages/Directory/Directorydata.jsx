@@ -61,7 +61,7 @@ function DirectoryPage() {
 
   return (
 
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-#eef2ff">
     
 
       <div className="max-w-7xl mx-auto pt-24 px-5">

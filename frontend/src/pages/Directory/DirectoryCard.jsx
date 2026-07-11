@@ -1,77 +1,126 @@
 import {
-
   Phone,
-
   Mail,
-
   MapPin,
-
+  Building2,
+  User,
+  ArrowRight,
 } from "lucide-react";
 
 function DirectoryCard({ business }) {
+  return ( 
+    
+    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
-  return (
+      {/* Header */}
+      <div className="p-6 border-b">
 
-    <div className="bg-white rounded-xl shadow p-6">
+        <div className="flex items-center gap-4">
 
-      <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full">
+          <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center">
+            <Building2 className="text-gray-700" size={28} />
+          </div>
 
-        {business.category}
+          <div className="flex-1">
 
-      </span>
+            <h2 className="text-xl font-bold text-blue-600 dark:text-sky-600">
+              {business.firmName}
+            </h2>
 
-      <h2 className="text-2xl font-bold mt-4">
+            <p className=" text-blue-600 dark:text-sky-600 flex items-center gap-2 mt-1">
+              <User size={16} />
+              {business.ownerName}
+            </p>
 
-        {business.firmName}
+          </div>
 
-      </h2>
+          <span className="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 text-blue-600 dark:text-sky-600">
+            {business.category}
+          </span>
 
-      <p className="text-gray-500">
+        </div>
 
-        {business.ownerName}
+      </div>
 
-      </p>
+      {/* Body */}
 
-      <div className="mt-5 space-y-3">
+      <div className="p-6 space-y-5">
 
-        <p className="flex gap-2">
+        <div className="flex gap-3">
 
-          <MapPin size={18} />
+          <MapPin className="  text-blue-600 dark:text-sky-600 text-gray-500 mt-1" size={18} />
 
-          {business.address}
+          <div>
+            <p className="text-sm font-semibold text-gray-700">
+              Address
+            </p>
+            <p className="text-gray-500 text-sm">
+              {business.address}
+            </p>
+          </div>
 
-        </p>
+        </div>
 
-        <p className="flex gap-2">
+        <div className="flex gap-3">
 
-          <MapPin size={18} />
+          <MapPin className="  text-blue-600 dark:text-sky-600 text-gray-500 mt-1" size={18} />
 
-          {business.currentCity}, {business.currentState}
+          <div>
+            <p className="text-sm font-semibold text-gray-700">
+              Location
+            </p>
+            <p className="text-gray-500 text-sm">
+              {business.currentCity}, {business.currentState}
+            </p>
+          </div>
 
-        </p>
+        </div>
 
-        <p className="flex gap-2">
+        <div className="flex gap-3">
 
-          <Phone size={18} />
+          <Phone className=" text-blue-600 dark:text-sky-600 text-gray-500 mt-1" size={18} />
 
-          {business.phoneNumber}
+          <div>
+            <p className="  text-blue-600 text-sm font-semibold text-gray-700">
+              Phone
+            </p>
+            <p className="text-gray-500 text-sm">
+              {business.phoneNumber}
+            </p>
+          </div>
 
-        </p>
+        </div>
 
-        <p className="flex gap-2">
+        <div className="flex gap-3">
 
-          <Mail size={18} />
+          <Mail className="text-gray-500 mt-1  text-blue-600 dark:text-sky-600" size={18} />
 
-          {business.email}
+          <div>
+            <p className=" text-sm font-semibold text-gray-700">
+              Email
+            </p>
+            <p className="text-gray-500 text-sm break-all">
+              {business.email}
+            </p>
+          </div>
 
-        </p>
+        </div>
+
+      </div>
+
+      {/* Footer */}
+
+      <div className=" border-t p-5">
+
+        <button className="w-full border border-gray-300 rounded-xl py-3 font-medium text-gray-700 hover: text-blue-600 dark:text-sky-600 flex items-center justify-center gap-2 transition">
+          View Details
+          <ArrowRight size={18} />
+        </button>
 
       </div>
 
     </div>
-
   );
-
 }
 
 export default DirectoryCard;

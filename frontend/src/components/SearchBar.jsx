@@ -1,121 +1,137 @@
 import { useState } from "react";
-import transports from "../data/transports";
-import { TransportCard } from "./TransportCard";
-import { MapPin, Search } from "lucide-react";
 import Select from "react-select";
+import { MapPin, Search, Truck } from "lucide-react";
+import { TransportCard } from "./TransportCard";
+import transports from "../data/transports";
+import API from "../api/api";
 
-export function SearchBar() {
-const [from, setFrom] = useState(null);
-const [to, setTo] = useState(null);
-const [filteredData, setFilteredData] = useState([]);
-
+export default function SearchBar() {
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
+  const [vehicleTypes, setVehicleTypes] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const cityOptions = [
-  ...new Set(transports.flatMap((item) => [item.from, item.to])),
-].map((city) => ({
-  value: city,
-  label: city,
-}));
+    ...new Set(transports.flatMap((item) => [item.from, item.to])),
+  ].map((city) => ({
+    value: city,
+    label: city,
+  }));
 
-const handleSearch = () => {
+  const vehicleOptions = [
+    "Mini Truck",
+    "Pickup",
+    "Tata Ace",
+    "Bolero Pickup",
+    "Eicher",
+    "Truck",
+    "Container",
+    "Trailer",
+    "LCV",
+    "HCV",
+    "Tempo",
+  ].map((item) => ({
+    value: item,
+    label: item,
+  }));
+const handleSearch = async () => {
   if (!from || !to) {
-    alert("Please select both cities.");
+    alert("Please select From and To city");
     return;
   }
 
-  const result = transports.filter(
-    (item) =>
-      item.from === from.value &&
-      item.to === to.value
-  );
+  try {
+    setLoading(true);
 
+    const vehicles = vehicleTypes.map((v) => v.value).join(",");
 
-  if (result.length === 0) {
-    alert("No transport found!");
-    setFilteredData([]);
-    return;
+    const response = await fetch(
+      `https://rodio-tradelink.onrender.com/api/business/vsearch?from=${encodeURIComponent(
+        from.value
+      )}&to=${encodeURIComponent(
+        to.value
+      )}&vehicleType=${encodeURIComponent(vehicles)}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    console.log(result);
+
+    // API returns:
+    // { success: true, total: 1, data: [...] }
+
+    setFilteredData(result.data);
+  } catch (err) {
+    console.error(err);
+    alert("Unable to fetch data");
+  } finally {
+    setLoading(false);
   }
-
-  setFilteredData(result);
 };
+
   return (
     <>
- <div className="max-w-5xl mx-auto mt-10 bg-white rounded-2xl shadow-2xl p-6">
-  <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
-    Find Your Transport
-  </h2>
+      <div className="max-w-6xl mx-auto mt-16 bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Find Your Transport
+        </h2>
 
-  <p className="text-center text-gray-500 mb-8">
-    Search trucks and transport services across India
-  </p>
+        <div className="grid md:grid-cols-4 gap-4">
+          <Select
+            options={cityOptions}
+            value={from}
+            onChange={setFrom}
+            placeholder="📍 From City"
+          />
 
-  <div className="grid md:grid-cols-3 gap-5">
+          <Select
+            options={cityOptions}
+            value={to}
+            onChange={setTo}
+            placeholder="📍 To City"
+          />
 
-    {/* From */}
-    <div className="flex items-center border rounded-xl px-3 py-2">
-      <MapPin className="text-blue-600 mr-2" size={22} />
+          <Select
+            isMulti
+            options={vehicleOptions}
+            value={vehicleTypes}
+            onChange={setVehicleTypes}
+            placeholder="🚚 Vehicle Type"
+            closeMenuOnSelect={false}
+          />
 
-      <Select
-        options={cityOptions}
-        value={from}
-        onChange={setFrom}
-        placeholder="Select From City"
-        isSearchable
-        className="w-full"
-        styles={{
-          control: (base) => ({
-            ...base,
-            border: "none",
-            boxShadow: "none",
-            minHeight: "40px",
-          }),
-        }}
-      />
-    </div>
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2"
+          >
+            <Search size={18} />
+            {loading ? "Searching..." : "Search"}
+          </button>
+        </div>
+      </div>
 
-    {/* To */}
-    <div className="flex items-center border rounded-xl px-3 py-2">
-      <MapPin className="text-red-500 mr-2" size={22} />
-
-      <Select
-        options={cityOptions}
-        value={to}
-        onChange={setTo}
-        placeholder="Select To City"
-        isSearchable
-        className="w-full"
-        
-        styles={{
-          control: (base) => ({
-            ...base,
-            border: "none",
-            boxShadow: "none",
-            minHeight: "40px",
-            
-          }),
-        }}
-      />
-    </div>
-
-    {/* Search Button */}
-    <button
-      onClick={handleSearch}
-      className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition"
-    >
-      <Search size={20} />
-      Search
-    </button>
-
+       <div className="max-w-6xl mx-auto mt-16 bg-white rounded-2xl shadow-lg p-6">
+    ...
   </div>
-</div>
 
-{/* Cards */}
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
- {filteredData.map((item) => (
-  <TransportCard key={item.id} item={item} />
-))}
-</div>
+  {/* Search Results */}
+  <div className="max-w-6xl mx-auto mt-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      {filteredData.map((item) => (
+        <TransportCard
+          key={item._id || item.id}
+          item={item}
+        />
+      ))}
+
+    </div>
+  </div>
     </>
   );
 }
-export default SearchBar;

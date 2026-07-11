@@ -31,8 +31,8 @@ console.log("Role:", role);
   ];
 
   const transporterLinks = [
-    { name: "Dashboard", path: "/transporter/dashboard" },
-    { name: "My Vehicles", path: "/transporter/vehicles" },
+    { name: "Dashboard", path: "/transporter-dashboard" },
+    { name: "My Vehicles", path: "/addvhicle" },
     { name: "Bookings", path: "/transporter/bookings" },
   ];
 
@@ -63,8 +63,8 @@ console.log("Role:", role);
   const links = getLinks();
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-slate-900 text-white shadow-lg z-50">
-      <div className="max-w-7xl mx-auto h-16 px-5 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 w-full bg-amber-50 text-black shadow-lg z-30">
+      <div className="max-w-7xl mx-auto h-20 px-5 flex items-center justify-between">
 
         {/* Logo */}
         <NavLink

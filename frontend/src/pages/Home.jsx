@@ -4,7 +4,6 @@ import HeroCarousel from "../components/HeroCarousel";
 import Price from "../components/Price";
 import Feedback from "../components/Feedback";
 import Features from "../components/Features";
-import AppFooter from "../components/AppFooter";
 
 
 function Home() {
@@ -16,7 +15,6 @@ function Home() {
       <Price/>
       <Feedback/>
      <Features/>
-     <AppFooter/>
 
 
 

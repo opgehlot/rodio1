@@ -81,7 +81,7 @@ export default function UserForm() {
 
       <div className="max-w-7xl mx-auto px-4">
 
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 text-white shadow-xl">
+        <div className="bg-blue-600 rounded-2xl p-8 text-white shadow-xl">
 
           <h1 className="text-4xl font-bold">
             🚚 Create Transport Request

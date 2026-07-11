@@ -12,13 +12,12 @@ import Login from "./pages/Login";
 import BrokerDashboard from "./pages/dashboardpage/BrokerDashboard";
 import TransporterDashboard from "./pages/dashboardpage/TransporterDashboard";
 import UserDashboard from "./pages/dashboardpage/UserDashboard";
-
 import SearchBar from "./components/SearchBar";
 import Directorydata from "./pages/Directory/Directorydata";
 import UserForm from "./pages/newrequestpage/UserForm";
 import Navbar from "./components/Navbar";
 import AppFooter from "./components/AppFooter";
-
+import Addvhicle from "./pages/transportpage/addvhicle";
 
 function App() {
   return (
@@ -35,22 +34,18 @@ function App() {
           },
         }}
       />
-    <Navbar/>
-    
+      <Navbar />
 
       <Routes>
- 
-        <Route path="/userform" element={<UserForm/>} />
+        <Route path="/userform" element={<UserForm />} />
 
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-      
-    
-      
 
         <Route path="/searchbar" element={<SearchBar />} />
 
         <Route path="/directory" element={<Directorydata />} />
+        <Route path="/addvhicle" element={<Addvhicle />} />
 
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
@@ -66,7 +61,7 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
         </Route>
       </Routes>
-      <AppFooter/>
+      <AppFooter />
     </BrowserRouter>
   );
 }
