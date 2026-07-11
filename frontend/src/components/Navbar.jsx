@@ -131,7 +131,7 @@ console.log("Role:", role);
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-slate-800 border-t border-slate-700">
+        <div className="md:hidden bg-white border-t border-slate-700">
 
           {links.map((link) => (
             <NavLink

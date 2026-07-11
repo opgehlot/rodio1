@@ -1,110 +1,111 @@
-import  truck from "../assets/oppp.jpg"; 
-import { motion } from "framer-motion";// Replace with your own image
+import { motion } from "framer-motion";
+import truck from "../assets/oppp.jpg";
 
-export  function About() {
+export default function About() {
   return (
-    <section className=" rounded-4xl mt-10 relative w-full h-200 overflow-hidden">
+    <>
+      {/* About Section */}
+      <section className="relative overflow-hidden bg-white rounded-3xl mt-10">
 
-  {/* Background Image */}
-<motion.img
-  src={truck}
-  alt="Truck"
- className="absolute bottom-0 right-0 w-[100%] h-auto object-contain"
-  initial={{
-    x: 500,   // Screen ke right bahar
-    y: 300,   // Neeche
-    opacity: 0,
-  }}
-  whileInView={{
-    x: 0,
-    y: 0,
-    opacity: 1,
-  }}
-  transition={{
-    duration: 1.5,
-    ease: "easeOut",
-  }}
-  viewport={{ once: true }}
-/>
-  {/* Dark Overlay */}
-  <div className="absolute inset-0 bg-transparent"></div>
+        {/* Truck Image */}
+        <motion.img
+          src={truck}
+          alt="Truck"
+          className="absolute bottom-0 left-0 w-full lg:w-1/2 object-contain z-0"
+          initial={{
+            x: 400,
+            y: 200,
+            opacity: 0,
+          }}
+          whileInView={{
+            x: 0,
+            y: 0,
+            opacity: 1,
+          }}
+          transition={{
+            duration: 1.3,
+            ease: "easeOut",
+          }}
+          viewport={{ once: true }}
+        />
 
-  {/* Blue Curved Overlay */}
-  <div className="absolute right-0 top-0 h-full w-full lg:w-[48%] bg-blue-900/85 rounded-l-[300px] flex items-center">
+        {/* Blue Side */}
+        <div className="relative z-10 ml-auto w-full lg:w-1/2 bg-blue-900/90 rounded-none lg:rounded-l-[250px]">
 
-    <div className="px-10 lg:px-20 text-white">
+          <div className="px-6 sm:px-10 lg:px-16 py-16 lg:py-24">
 
-      <p className="font-bold uppercase tracking-[5px] text-amber-300 mb-3">
-        About Rodio
-      </p>
+            <p className="uppercase tracking-[4px] text-amber-300 font-semibold mb-4">
+              About Rodio
+            </p>
 
-      <h1 className="text-6xl font-bold leading-tight">
-        India's Smart <br />
-        Transport Platform
-      </h1>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              India's Smart
+              <br />
+              Transport Platform
+            </h2>
 
-      <p className="mt-8 text-lg leading-9 text-blue-100">
-        Rodio is India's digital transport platform connecting
-        customers with verified transporters, truck owners,
-        fleet owners and logistics companies.
+            <p className="mt-8 text-blue-100 leading-8 text-base lg:text-lg">
+              Rodio is India's digital transport platform connecting
+              customers with verified transporters, truck owners,
+              fleet owners and logistics companies.
 
-        <br /><br />
+              <br />
+              <br />
 
-        Our mission is to make transportation easy,
-        transparent and affordable while helping transport
-        businesses grow across India.
-      </p>
+              Our mission is to make transportation simple,
+              transparent and affordable while helping transport
+              businesses grow across India.
+            </p>
 
-    </div>
+          </div>
 
-  </div>
+        </div>
+      </section>
 
-  {/* Bottom Statistics */}
-  <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[90%]">
+      {/* Statistics */}
+      <section className="max-w-7xl mx-auto px-5 -mt-10 lg:-mt-14 relative z-20">
 
-    <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-      <div className="bg-white rounded-full shadow-2xl px-8 py-6 flex items-center justify-center gap-5">
+          <div className="bg-white rounded-2xl lg:rounded-full shadow-xl p-6 flex items-center justify-center gap-4">
 
-        <h2 className="text-4xl font-bold text-blue-700">
-          500+
-        </h2>
+            <h3 className="text-3xl lg:text-4xl font-bold text-blue-700">
+              500+
+            </h3>
 
-        <p className="text-gray-600 text-lg">
-          Verified Transporters
-        </p>
+            <p className="text-gray-700 text-base lg:text-lg">
+              Verified Transporters
+            </p>
 
-      </div>
+          </div>
 
-      <div className="bg-white rounded-full shadow-2xl px-8 py-6 flex items-center justify-center gap-5">
+          <div className="bg-white rounded-2xl lg:rounded-full shadow-xl p-6 flex items-center justify-center gap-4">
 
-        <h2 className="text-4xl font-bold text-blue-700">
-          10K+
-        </h2>
+            <h3 className="text-3xl lg:text-4xl font-bold text-blue-700">
+              10K+
+            </h3>
 
-        <p className="text-gray-600 text-lg">
-          Happy Customers
-        </p>
+            <p className="text-gray-700 text-base lg:text-lg">
+              Happy Customers
+            </p>
 
-      </div>
+          </div>
 
-      <div className="bg-white rounded-full shadow-2xl px-8 py-6 flex items-center justify-center gap-5">
+          <div className="bg-white rounded-2xl lg:rounded-full shadow-xl p-6 flex items-center justify-center gap-4">
 
-        <h2 className="text-4xl font-bold text-blue-700">
-          100%
-        </h2>
+            <h3 className="text-3xl lg:text-4xl font-bold text-blue-700">
+              100%
+            </h3>
 
-        <p className="text-gray-600 text-lg">
-          Trusted Platform
-        </p>
+            <p className="text-gray-700 text-base lg:text-lg">
+              Trusted Platform
+            </p>
 
-      </div>
+          </div>
 
-    </div>
+        </div>
 
-  </div>
-
-</section>
+      </section>
+    </>
   );
 }
-export default About;

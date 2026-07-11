@@ -18,6 +18,8 @@ import UserForm from "./pages/newrequestpage/UserForm";
 import Navbar from "./components/Navbar";
 import AppFooter from "./components/AppFooter";
 import QueryForm from "./components/QueryForm";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 
 function App() {
@@ -49,6 +51,8 @@ function App() {
         <Route path="/directory" element={<Directorydata />} />
      
   <Route path="/about" element={<About />} />
+  <Route path="/forgotpassword" element={<ForgotPassword />} />
+  <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
         <Route element={<ProtectedRoute />}>

@@ -60,90 +60,58 @@ export default function AppFooter() {
 
           {/* Right */}
 
-          <div className="grid grid-cols-2 gap-8">
 
-            {/* Column 1 */}
+  <div>
+    <h3 className="font-semibold text-lg mb-4 text-white">
+      Quick Links
+    </h3>
 
-            <div className="space-y-3">
+    <ul className="space-y-3 text-gray-300">
+      <li>Home</li>
+      <li>About</li>
+      <li>Services</li>
+      <li>Search Transport</li>
+      <li>Contact</li>
+    </ul>
+  </div>
 
-              <Link
-                to="/"
-                className="flex items-center gap-2 hover:text-yellow-400 transition"
-              >
-                <ArrowRight size={16} />
-                Home
-              </Link>
+  <div>
+    <h3 className="font-semibold text-lg mb-4 text-white">
+      Company
+    </h3>
 
-              <Link
-                to="/about"
-                className="ml-6 hover:text-yellow-400 transition"
-              >
-                About
-              </Link>
-
-              <Link
-                to="/services"
-                className="hover:text-yellow-400 transition"
-              >
-                Services
-              </Link>
-
-              <Link
-                to="/search"
-                className="ml-6 hover:text-yellow-400 transition"
-              >
-                Search Transport
-              </Link>
-
-              <Link
-                to="/contact"
-                className="hover:text-yellow-400 transition"
-              >
-                Contact
-              </Link>
-
-            </div>
+    <ul className="space-y-3 text-gray-300">
+      <li>Become Transporter</li>
+      <li>Become Broker</li>
+      <li>Ship with Rodio</li>
+      <li>Privacy Policy</li>
+      <li>Terms & Conditions</li>
+    </ul>
+  </div>
+<div>
 
             {/* Column 2 */}
 
-            <div className="space-y-3">
+           <div className="border-t border-gray-700 mt-10 pt-8">
+  <div className="grid md:grid-cols-3 gap-6 text-gray-300">
 
-              <Link
-                to="/register"
-                className="ml-6 hover:text-yellow-400 transition"
-              >
-                Become Transporter
-              </Link>
+    <div className="flex items-center gap-3">
+      <Mail size={18}/>
+      <span>rodiotransport@gmail.com</span>
+    </div>
 
-              <Link
-                to="/broker"
-                className="hover:text-yellow-400 transition"
-              >
-                Become Broker
-              </Link>
+    <div className="flex items-center gap-3">
+      <Phone size={18}/>
+      <span>+91 8319501708</span>
+    </div>
 
-              <Link
-                to="/customer"
-                className="ml-6 hover:text-yellow-400 transition"
-              >
-                Ship with Rodio
-              </Link>
+    <div className="flex items-center gap-3">
+      <MapPin size={18}/>
+      <span>Indore, Madhya Pradesh</span>
+    </div>
 
-              <Link
-                to="/privacy"
-                className="hover:text-yellow-400 transition"
-              >
-                Privacy Policy
-              </Link>
-
-              <Link
-                to="/terms"
-                className="ml-6 hover:text-yellow-400 transition"
-              >
-                Terms & Conditions
-              </Link>
-
-            </div>
+  </div>
+</div>
 
           </div>
 
