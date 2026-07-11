@@ -21,25 +21,28 @@ console.log("Role:", role);
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact", path: "/queryform" },
   ];
 
   const userLinks = [
     { name: "Directory", path: "/directory" },
     { name: "Vehicle Search", path: "/searchbar" },
     { name: "Lead Contacts", path: "/userform" },
+      { name: "Contact", path: "/queryform" },
   ];
 
   const transporterLinks = [
     { name: "Dashboard", path: "/transporter-dashboard" },
     { name: "My Vehicles", path: "/addvhicle" },
     { name: "Bookings", path: "/transporter/bookings" },
+      { name: "Contact", path: "/queryform" },
   ];
 
   const brokerLinks = [
     { name: "Dashboard", path: "/broker/dashboard" },
     { name: "Available Loads", path: "/broker/loads" },
     { name: "Clients", path: "/broker/clients" },
+      { name: "Contact", path: "/queryform" },
   ];
 
   const getLinks = () => {
@@ -63,7 +66,7 @@ console.log("Role:", role);
   const links = getLinks();
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-amber-50 text-black shadow-lg z-30">
+    <nav className="fixed top-0 left-0 w-full bg-white text-black shadow-lg z-30">
       <div className="max-w-7xl mx-auto h-20 px-5 flex items-center justify-between">
 
         {/* Logo */}

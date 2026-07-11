@@ -1,15 +1,13 @@
 import React from 'react'
-import SearchBar from '../../components/SearchBar'
-import HeroCarousel from '../../components/HeroCarousel'
-import Navbar from '../../components/Navbar'
+
+import DirectoryPage from '../Directory/Directorydata'
 
 
 function UserDashboard() {
   return (
     <div>
-   
-         <Navbar/>
-      
+     
+      <DirectoryPage/>
         
         
       

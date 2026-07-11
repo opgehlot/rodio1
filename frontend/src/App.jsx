@@ -17,6 +17,7 @@ import Directorydata from "./pages/Directory/Directorydata";
 import UserForm from "./pages/newrequestpage/UserForm";
 import Navbar from "./components/Navbar";
 import AppFooter from "./components/AppFooter";
+import QueryForm from "./components/QueryForm";
 
 
 function App() {
@@ -40,18 +41,19 @@ function App() {
         <Route path="/userform" element={<UserForm />} />
 
         <Route path="/" element={<Home />} />
+          <Route path="/queryform" element={<QueryForm/>} />
         <Route path="/login" element={<Login />} />
 
         <Route path="/searchbar" element={<SearchBar />} />
 
         <Route path="/directory" element={<Directorydata />} />
      
-
+  <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/services" element={<Services />} />
-          <Route path="/about" element={<About />} />
+        
           <Route path="/directory" element={<Directory />} />
           <Route path="/broker-dashboard" element={<BrokerDashboard />} />
           <Route

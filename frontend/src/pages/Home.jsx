@@ -1,9 +1,11 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
 import HeroCarousel from "../components/HeroCarousel";
-import Price from "../components/Price";
 import Feedback from "../components/Feedback";
 import Features from "../components/Features";
+import QueryForm from "../components/QueryForm";
+import Overvision from "../components/Overvision";
+import About from "./About";
 
 
 function Home() {
@@ -11,10 +13,13 @@ function Home() {
     <div>
   
       <HeroCarousel/>
-      <SearchBar/>
-      <Price/>
+    
+      <Overvision/>
+        <About/>
       <Feedback/>
-     <Features/>
+    
+     <QueryForm/>
+     
 
 
 

@@ -24,7 +24,7 @@ export function Feedback() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-orange-50 to-white">
+    <section className="py-24 bg-white" >
       <div className="max-w-7xl mx-auto px-6">
 
         <div className="text-center mb-16">
