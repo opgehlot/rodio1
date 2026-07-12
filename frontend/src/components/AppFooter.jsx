@@ -92,22 +92,46 @@ export default function AppFooter() {
 
             {/* Column 2 */}
 
-           <div className="border-t border-gray-700 mt-10 pt-8">
-  <div className="grid md:grid-cols-3 gap-6 text-gray-300">
+ <div className="border-t border-gray-700 mt-10 pt-8">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
     <div className="flex items-center gap-3">
-      <Mail size={18}/>
-      <span>rodiotransport@gmail.com</span>
+      <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+        <Mail size={18} className="text-white" />
+      </div>
+
+      <div>
+        <p className="text-sm text-gray-400">Email</p>
+        <p className="text-white break-all">
+          rodiotransport@gmail.com
+        </p>
+      </div>
     </div>
 
     <div className="flex items-center gap-3">
-      <Phone size={18}/>
-      <span>+91 8319501708</span>
+      <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+        <Phone size={18} className="text-white" />
+      </div>
+
+      <div>
+        <p className="text-sm text-gray-400">Phone</p>
+        <p className="text-white">
+          +91 8319501708
+        </p>
+      </div>
     </div>
 
     <div className="flex items-center gap-3">
-      <MapPin size={18}/>
-      <span>Indore, Madhya Pradesh</span>
+      <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+        <MapPin size={18} className="text-white" />
+      </div>
+
+      <div>
+        <p className="text-sm text-gray-400">Address</p>
+        <p className="text-white">
+          Indore, Madhya Pradesh
+        </p>
+      </div>
     </div>
 
   </div>
@@ -118,38 +142,6 @@ export default function AppFooter() {
         </div>
 
         {/* Contact */}
-
-        <div className="border-t border-gray-700 mt-8 pt-6">
-
-          <div className="flex flex-col md:flex-row justify-between gap-5 text-sm">
-
-            <Link
-              to="/contact"
-              className="flex items-center gap-2 hover:text-yellow-400"
-            >
-              <Mail size={16} />
-              rodiotransport@gmail.com
-            </Link>
-
-            <Link
-              to="/contact"
-              className="flex items-center gap-2 hover:text-yellow-400"
-            >
-              <Phone size={16} />
-              +91 8319501708
-            </Link>
-
-            <Link
-              to="/contact"
-              className="flex items-center gap-2 hover:text-yellow-400"
-            >
-              <MapPin size={16} />
-              Indore, Madhya Pradesh
-            </Link>
-
-          </div>
-
-        </div>
 
         {/* Bottom */}
 

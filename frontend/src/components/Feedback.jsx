@@ -48,10 +48,10 @@ export function Feedback() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
               whileHover={{ y: -10 }}
-              className="bg-white rounded-3xl shadow-lg border border-orange-100 p-8 hover:shadow-2xl transition-all duration-300"
+              className="bg-blue-900/90 rounded-3xl shadow-lg border border-orange-100 p-8 hover:shadow-2xl transition-all duration-300"
             >
 
-              <Quote className="text-orange-500 w-10 h-10 mb-5" />
+              <Quote className="text-white w-10 h-10 mb-5" />
 
               <div className="flex mb-5">
 
@@ -66,7 +66,7 @@ export function Feedback() {
 
               </div>
 
-              <p className="text-gray-600 italic leading-7">
+              <p className="text-white italic leading-7">
                 "{item.text}"
               </p>
 
@@ -84,7 +84,7 @@ export function Feedback() {
                     {item.name}
                   </h3>
 
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-white text-sm">
                     {item.role}
                   </p>
 

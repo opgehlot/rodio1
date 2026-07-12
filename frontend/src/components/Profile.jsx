@@ -1,156 +1,133 @@
-import React from 'react'
+import { User, Mail, Phone, ShieldCheck } from "lucide-react";
 
-function Profile() {
+export  function Profile() {
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+
   return (
-    <div>
-        
-        <div className=" pt-20 md:flex">
-  <ul className=" flex-column space-y space-y-4 text-sm font-medium text-body md:me-4 mb-4 md:mb-0">
-    <li>
-      <a
-        href="#"
-        className="inline-flex items-center px-4 py-2.5 text-white bg-brand rounded-base active w-full"
-        aria-current="page"
-      >
-        <svg
-          className="w-4 h-4 me-2"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-          />
-        </svg>
-        Profile
-      </a>
-    </li>
-    <li>
-      <a
-        href="#"
-        className="inline-flex items-center px-4 py-3 rounded-base hover:text-heading hover:bg-neutral-secondary-soft w-full"
-      >
-        <svg
-          className="w-4 h-4 me-2"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 3v4a1 1 0 0 1-1 1H5m4 10v-2m3 2v-6m3 6v-3m4-11v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
-          />
-        </svg>
-        Dashboard
-      </a>
-    </li>
-    <li>
-      <a
-        href="#"
-        className="inline-flex items-center px-4 py-3 rounded-base hover:text-heading hover:bg-neutral-secondary-soft w-full"
-      >
-        <svg
-          className="w-4 h-4 me-2"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"
-          />
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-          />
-        </svg>
-        Settings
-      </a>
-    </li>
-    <li>
-      <a
-        href="#"
-        className="inline-flex items-center px-4 py-3 rounded-base hover:text-heading hover:bg-neutral-secondary-soft w-full"
-      >
-        <svg
-          className="w-4 h-4 me-2"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M14.079 6.839a3 3 0 0 0-4.255.1M13 20h1.083A3.916 3.916 0 0 0 18 16.083V9A6 6 0 1 0 6 9v7m7 4v-1a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1Zm-7-4v-6H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1Zm12-6h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1v-6Z"
-          />
-        </svg>
-        Contact
-      </a>
-    </li>
-    <li>
-      <a className="inline-flex items-center px-4 py-3 text-fg-disabled rounded-base cursor-not-allowed w-full">
-        <svg
-          className="w-4 h-4 me-2"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-        Disabled
-      </a>
-    </li>
-  </ul>
-  <div className="p-6 bg-neutral-secondary text-medium text-body rounded-base w-full">
-    <h3 className="text-lg font-semibold text-heading mb-4">Profile Tab</h3>
-    <p className="mb-2">
-      This is some placeholder content the Profile tab's associated content,
-      clicking another tab will toggle the visibility of this one for the next.
-    </p>
-    <p>
-      The tab JavaScript swaps classes to control the content visibility and
-      styling.
-    </p>
-  </div>
-</div>
-</div>
-  )
-}
+    <div className=" mt-20 min-h-screen bg-gray-100 p-6">
 
+      <div className="max-w-5xl mx-auto">
+
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          My Profile
+        </h1>
+
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-700 to-indigo-700 h-40 relative">
+
+            <div className="absolute left-8 -bottom-14">
+
+              <div className="w-28 h-28 rounded-full bg-white flex items-center justify-center shadow-lg border-4 border-white">
+
+                <User size={60} className="text-blue-700" />
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Body */}
+          <div className="pt-20 pb-8 px-8">
+
+            <h2 className="text-2xl font-bold text-gray-800">
+              {user.name || "No Name"}
+            </h2>
+
+            <p className="text-gray-500 capitalize">
+              {user.role || "User"}
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mt-10">
+
+              {/* Email */}
+              <div className="border rounded-xl p-5 flex items-center gap-4">
+
+                <div className="bg-blue-100 p-3 rounded-full">
+                  <Mail className="text-blue-700" />
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">Email</p>
+                  <p className="font-semibold">
+                    {user.email || "Not Available"}
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Mobile */}
+              <div className="border rounded-xl p-5 flex items-center gap-4">
+
+                <div className="bg-green-100 p-3 rounded-full">
+                  <Phone className="text-green-700" />
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">Mobile</p>
+                  <p className="font-semibold">
+                    {user.mobile || "Not Available"}
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Role */}
+              <div className="border rounded-xl p-5 flex items-center gap-4">
+
+                <div className="bg-purple-100 p-3 rounded-full">
+                  <ShieldCheck className="text-purple-700" />
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">Role</p>
+                  <p className="font-semibold capitalize">
+                    {user.role || "User"}
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Status */}
+              <div className="border rounded-xl p-5 flex items-center gap-4">
+
+                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+
+                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">Account Status</p>
+                  <p className="font-semibold text-green-600">
+                    Active
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Button */}
+            <div className="mt-10">
+
+              <button
+                className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-xl transition"
+              >
+                Edit Profile
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
 export default Profile

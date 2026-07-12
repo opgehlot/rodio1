@@ -188,7 +188,7 @@ export default function Login() {
                 type="submit"
                 disabled={loading}
                 className={`w-full py-3 rounded-lg font-semibold text-white transition ${
-                  loading ? "bg-gray-400" : "bg-gray-900 hover:bg-black"
+                  loading ? "bg-gray-400" : "bg-gray-90 bg-blue-900/90"
                 }`}
               >
                 {loading ? (

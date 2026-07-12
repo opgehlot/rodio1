@@ -20,7 +20,9 @@ import AppFooter from "./components/AppFooter";
 import QueryForm from "./components/QueryForm";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-
+import DashboardLayout from "./sidebarLayouts/DashboardLayout";
+import Profile from "./components/Profile";
+import Dashbord from "./sidebarpages/Dashbord";
 
 function App() {
   return (
@@ -40,24 +42,29 @@ function App() {
       <Navbar />
 
       <Routes>
+        
         <Route path="/userform" element={<UserForm />} />
+      
 
+        <Route path="/dashborardlayout" element={<DashboardLayout/>} >
+
+      <Route index element={<Dashbord/>} />
+        <Route path="profile" element={<Profile />} />
+
+        </Route>
         <Route path="/" element={<Home />} />
-          <Route path="/queryform" element={<QueryForm/>} />
+        <Route path="/queryform" element={<QueryForm />} />
         <Route path="/login" element={<Login />} />
-
         <Route path="/searchbar" element={<SearchBar />} />
-
         <Route path="/directory" element={<Directorydata />} />
-     
-  <Route path="/about" element={<About />} />
-  <Route path="/forgotpassword" element={<ForgotPassword />} />
-  <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
+         
         <Route element={<ProtectedRoute />}>
           <Route path="/services" element={<Services />} />
-        
           <Route path="/directory" element={<Directory />} />
           <Route path="/broker-dashboard" element={<BrokerDashboard />} />
           <Route
@@ -67,7 +74,8 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
         </Route>
       </Routes>
-      <AppFooter />
+       <AppFooter />             
+     
     </BrowserRouter>
   );
 }
