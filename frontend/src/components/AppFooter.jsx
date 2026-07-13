@@ -61,6 +61,8 @@ export default function AppFooter() {
           {/* Right */}
 
 
+ <div className="flex gap-60">
+  {/* First Column */}
   <div>
     <h3 className="font-semibold text-lg mb-4 text-white">
       Quick Links
@@ -74,6 +76,32 @@ export default function AppFooter() {
       <li>Contact</li>
     </ul>
   </div>
+
+  {/* Second Column */}
+  <div>
+    <h3 className="text-white text-xl font-semibold mb-4">
+      Policies
+    </h3>
+
+    <div className="flex flex-col gap-3">
+      <Link to="/termscondition" className="text-gray-300 hover:text-blue-400">
+        Terms & Conditions
+      </Link>
+
+      <Link to="/refundpolicy" className="text-gray-300 hover:text-blue-400">
+        Refund Policy
+      </Link>
+
+      <Link to="/contectus" className="text-gray-300 hover:text-blue-400">
+        Contact Us
+      </Link>
+
+      <Link to="/privaceypolicy" className="text-gray-300 hover:text-blue-400">
+        Privacy Policy
+      </Link>
+    </div>
+  </div>
+</div>
 
   <div>
     <h3 className="font-semibold text-lg mb-4 text-white">
@@ -136,6 +164,7 @@ export default function AppFooter() {
 
   </div>
 </div>
+
 
           </div>
 

@@ -22,6 +22,8 @@ export default function SearchBar() {
   const [vehicleTypes, setVehicleTypes] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
+const [vehicleMenuOpen, setVehicleMenuOpen] = useState(false);
+  
 
   const cityOptions = [
     ...new Set(transports.flatMap((item) => [item.from, item.to])),
@@ -86,6 +88,7 @@ const handleSearch = async () => {
     // { success: true, total: 1, data: [...] }
 
     setFilteredData(result.data);
+   setVehicleMenuOpen(false);
   } catch (err) {
     console.error(err);
     alert("Unable to fetch data");
@@ -116,7 +119,7 @@ const handleSearch = async () => {
             placeholder="📍 To City"
           />
 
-        <Select
+       <Select
   isMulti
   options={vehicleOptions}
   value={vehicleTypes}
@@ -124,10 +127,14 @@ const handleSearch = async () => {
   placeholder="🚚 Vehicle Type"
   closeMenuOnSelect={false}
   hideSelectedOptions={false}
+  menuIsOpen={vehicleMenuOpen}
+  onMenuOpen={() => setVehicleMenuOpen(true)}
+  onMenuClose={() => setVehicleMenuOpen(false)}
   components={{
     ValueContainer: MultiValueContainer,
-    MultiValue: () => null, // Hide selected tags
+    MultiValue: () => null,
   }}
+
 />
 
           <button

@@ -18,13 +18,16 @@ console.log("Role:", role);
   };
 
   const guestLinks = [
+   
     { name: "Home", path: "/" },
+     { name: "Dashboard", path: "/dashboard" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "Contact", path: "/queryform" },
   ];
 
   const userLinks = [
+     { name: "Dashboard", path: "/dashboard" },
     { name: "Directory", path: "/directory" },
     { name: "Vehicle Search", path: "/searchbar" },
     { name: "Lead Contacts", path: "/userform" },
@@ -32,6 +35,7 @@ console.log("Role:", role);
   ];
 
   const transporterLinks = [
+    { name: "Dashboard", path: "/dashboard" },
     { name: "Dashboard", path: "/transporter-dashboard" },
     { name: "My Vehicles", path: "/addvhicle" },
     { name: "Bookings", path: "/transporter/bookings" },

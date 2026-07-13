@@ -70,7 +70,7 @@ export default function About() {
           <div className="bg-white rounded-2xl lg:rounded-full shadow-xl p-6 flex items-center justify-center gap-4">
 
             <h3 className="text-3xl lg:text-4xl font-bold text-blue-700">
-              500+
+              5000+
             </h3>
 
             <p className="text-gray-700 text-base lg:text-lg">
