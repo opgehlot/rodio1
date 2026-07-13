@@ -1,8 +1,20 @@
 import { useState } from "react";
-import Select from "react-select";
+
 import { MapPin, Search, Truck } from "lucide-react";
 import  TransportCard  from "./TransportCard";
 import transports from "../data/transports";
+import Select, { components } from "react-select";
+const MultiValueContainer = (props) => {
+  const count = props.getValue().length;
+
+  return (
+    <components.ValueContainer {...props}>
+      {count === 0
+        ? props.children
+        : `${count} Vehicle${count > 1 ? "s" : ""} Selected`}
+    </components.ValueContainer>
+  );
+};
 
 export default function SearchBar() {
   const [from, setFrom] = useState(null);
@@ -95,14 +107,19 @@ const handleSearch = async () => {
             placeholder="📍 To City"
           />
 
-          <Select
-            isMulti
-            options={vehicleOptions}
-            value={vehicleTypes}
-            onChange={setVehicleTypes}
-            placeholder="🚚 Vehicle Type"
-            closeMenuOnSelect={false}
-          />
+        <Select
+  isMulti
+  options={vehicleOptions}
+  value={vehicleTypes}
+  onChange={setVehicleTypes}
+  placeholder="🚚 Vehicle Type"
+  closeMenuOnSelect={false}
+  hideSelectedOptions={false}
+  components={{
+    ValueContainer: MultiValueContainer,
+    MultiValue: () => null, // Hide selected tags
+  }}
+/>
 
           <button
             onClick={handleSearch}
