@@ -20,6 +20,7 @@ import AppFooter from "./components/AppFooter";
 import QueryForm from "./components/QueryForm";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 
@@ -39,6 +40,7 @@ function App() {
         }}
       />
       <Navbar />
+      <ScrollToTop/>
 
       <Routes>
         
