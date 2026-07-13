@@ -1,8 +1,9 @@
 import React from 'react'
+import Addvhicle from '../transportpage/Addvhicle'
 
 function TransporterDashboard() {
   return (
-    <div>TransporterDashboard</div>
+   <Addvhicle/>
   )
 }
 

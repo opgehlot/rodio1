@@ -9,14 +9,16 @@ import {
   Globe,
   Upload,
 } from "lucide-react";
+import API from "../../api/api";
+
 
 export  function Addvhicle() {
   const [formData, setFormData] = useState({
     category: "",
     firmName: "",
     ownerName: "",
-    linefrom: "",
-    lineto: "",
+    from: "",
+    to: "",
     vehicleTypes: [],
     address: "",
     currentState: "",
@@ -25,8 +27,8 @@ export  function Addvhicle() {
     phoneNumber: "",
     alternatePhone: "",
     businessId: "",
-    referralCode: "",
-    referredBy: "",
+    // referralCode: "",
+    // referredBy: "",
     email: "",
     website: "",
     socialMedia: "",
@@ -134,18 +136,17 @@ export  function Addvhicle() {
       }
     });
 
-    const res = await API.post("/booking/create", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+   const res = await API.post("/business/registerbusiness", data);
 
     alert(res.data.message);
 
   } catch (err) {
-    console.log(err);
-    alert(err.response?.data?.message || "Something went wrong");
-  }
+  console.log("Error:", err);
+  console.log("Response:", err.response);
+  console.log("Data:", err.response?.data);
+
+  alert(err.response?.data?.message || "Something went wrong");
+}
 
 };
   return (
@@ -265,7 +266,7 @@ export  function Addvhicle() {
 
               </div>
 
-              <div>
+              {/* <div>
 
                 <label className="font-medium">
                   Referral Code
@@ -279,9 +280,9 @@ export  function Addvhicle() {
                   className="w-full h-12 border rounded-xl px-4 mt-2"
                 />
 
-              </div>
+              </div> */}
 
-              <div>
+              {/* <div>
 
                 <label className="font-medium">
                   Referred By
@@ -295,7 +296,7 @@ export  function Addvhicle() {
                   className="w-full h-12 border rounded-xl px-4 mt-2"
                 />
 
-              </div>
+              </div> */}
 
             </div>
 
@@ -409,7 +410,7 @@ export  function Addvhicle() {
 
                 <input
                   type="text"
-                  name="linefrom"
+                  name="from"
                   value={formData.linefrom}
                   onChange={handleChange}
                   className="w-full h-12 border rounded-xl px-4 mt-2"
@@ -426,7 +427,7 @@ export  function Addvhicle() {
 
                 <input
                   type="text"
-                  name="lineto"
+                  name="to"
                   value={formData.lineto}
                   onChange={handleChange}
                   className="w-full h-12 border rounded-xl px-4 mt-2"
