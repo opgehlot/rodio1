@@ -13,6 +13,7 @@ import API from "../../api/api";
 
 
 export  function Addvhicle() {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     category: "",
     firmName: "",
@@ -81,6 +82,7 @@ export  function Addvhicle() {
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
+    
 
     if (type === "checkbox") {
       if (name === "acceptedTerms") {
@@ -114,14 +116,17 @@ export  function Addvhicle() {
       [name]: value,
     });
   };
-
+const token = localStorage.getItem("token");
+console.log("Token:", token);
  const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (!formData.acceptedTerms) {
     alert("Please accept Terms & Conditions");
     return;
+
   }
+    setLoading(true);
 
   try {
     const data = new FormData();
@@ -135,7 +140,8 @@ export  function Addvhicle() {
         data.append(key, formData[key]);
       }
     });
-await API.post("/business/registerbusiness", data, {
+    console.log("Token:", token);
+      const res= await API.post("/business/registerbusiness", data, {
   headers: {
     Authorization: `Bearer ${token}`,
   },
@@ -144,13 +150,11 @@ await API.post("/business/registerbusiness", data, {
     alert(res.data.message);
 
   } catch (err) {
-  console.log("Error:", err);
-  console.log("Response:", err.response);
-  console.log("Data:", err.response?.data);git 
-
-  alert(err.response?.data?.message || "Something went wrong");
-}
-
+    console.log(err);
+    alert(err.response?.data?.message || "Something went wrong");
+  } finally {
+    setLoading(false); // Stops loading whether success or error
+  }
 };
   return (
     <div className="min-h-screen bg-slate-100 py-10">
@@ -414,7 +418,7 @@ await API.post("/business/registerbusiness", data, {
                 <input
                   type="text"
                   name="from"
-                  value={formData.linefrom}
+                  value={formData.from}
                   onChange={handleChange}
                   className="w-full h-12 border rounded-xl px-4 mt-2"
                   placeholder="Ex. Indore"
@@ -431,7 +435,7 @@ await API.post("/business/registerbusiness", data, {
                 <input
                   type="text"
                   name="to"
-                  value={formData.lineto}
+                  value={formData.to}
                   onChange={handleChange}
                   className="w-full h-12 border rounded-xl px-4 mt-2"
                   placeholder="Ex. Mumbai"
@@ -731,11 +735,42 @@ await API.post("/business/registerbusiness", data, {
               </button>
 
               <button
-                type="submit"
-                className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-md transition"
-              >
-                Register Business
-              </button>
+  type="submit"
+  disabled={loading}
+  className={`px-8 py-3 rounded-xl font-semibold shadow-md transition ${
+    loading
+      ? "bg-orange-300 cursor-not-allowed"
+      : "bg-orange-500 hover:bg-orange-600"
+  } text-white`}
+>
+  {loading ? (
+    <div className="flex items-center gap-2">
+      <svg
+        className="animate-spin h-5 w-5"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        />
+      </svg>
+      Registering...
+    </div>
+  ) : (
+    "Register Business"
+  )}
+</button>
 
             </div>
 
