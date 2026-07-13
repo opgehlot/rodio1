@@ -135,15 +135,18 @@ export  function Addvhicle() {
         data.append(key, formData[key]);
       }
     });
-
-   const res = await API.post("/business/registerbusiness", data);
+await API.post("/business/registerbusiness", data, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
 
     alert(res.data.message);
 
   } catch (err) {
   console.log("Error:", err);
   console.log("Response:", err.response);
-  console.log("Data:", err.response?.data);
+  console.log("Data:", err.response?.data);git 
 
   alert(err.response?.data?.message || "Something went wrong");
 }
