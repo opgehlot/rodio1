@@ -12,6 +12,9 @@ import {
   Users,
   X,
 } from "lucide-react";
+import LogoutButton from "../utils/LogoutButton";
+
+
 
 export default function Sidebar({ open, setOpen }) {
   const role = localStorage.getItem("role");
@@ -96,9 +99,17 @@ export default function Sidebar({ open, setOpen }) {
                 <Search size={20} />
                 Search Transport
               </NavLink>
+              <NavLink
+                to="/dashboard/showenquiery"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Search size={20} />
+                Show Enquiery
+              </NavLink>
 
               <NavLink
-                to="/dashboard/bookings"
+                to="/dashboard/enquiery"
                 className={linkClass}
                 onClick={() => setOpen(false)}
               >
@@ -190,6 +201,9 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
             </>
           )}
+          <div className="mt-74 p-4 border-t border-slate-700">
+  <LogoutButton/>
+</div>
         </nav>
       </aside>
     </>

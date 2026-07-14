@@ -14,7 +14,7 @@ import TransporterDashboard from "./pages/dashboardpage/TransporterDashboard";
 import UserDashboard from "./pages/dashboardpage/UserDashboard";
 import SearchBar from "./Dashboard/user/SearchBar";
 import Directorydata from "./Dashboard/user/Directory/Directorydata";
-import Navbar from "./components/Navbar";
+
 import AppFooter from "./components/AppFooter";
 import QueryForm from "./components/QueryForm";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -36,6 +36,9 @@ import SearchTransport from "./Dashboard/user/SearchTransport";
 import Bookings from "./Dashboard/user/Bookings";
 import Clients from "./Dashboard/broker/Clients";
 import UserForm from "./Dashboard/user/UserForm";
+import MainLayout from "./layout/MainLayout";
+import Enquiery from "./Dashboard/user/myrequest/Enquiery";
+import ShowEnquiery from "./Dashboard/user/myrequest/ShowEnquiery";
 
 function App() {
   return (
@@ -52,7 +55,6 @@ function App() {
           },
         }}
       />
-      <Navbar />
       <ScrollToTop />
 
       <Routes>
@@ -67,8 +69,10 @@ function App() {
           <Route path="searchtransport" element={<SearchTransport />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="directory" element={<Directorydata />} />
-             <Route path="searchbar" element={<SearchBar />} />
-               <Route path="userform" element={<UserForm/>} />
+          <Route path="searchbar" element={<SearchBar />} />
+          <Route path="userform" element={<UserForm />} />
+          <Route path="enquiery" element={<Enquiery />} />
+          <Route path="showenquiery" element={<ShowEnquiery />} />
 
           {/* Transporter */}
           <Route path="mybusiness" element={<MyBusiness />} />
@@ -81,28 +85,31 @@ function App() {
         </Route>
         {/* its hoome noraml page  */}
 
-        <Route path="/termscondition" element={<TermsConditions />} />
-        <Route path="/refundpolicy" element={<RefundPolicy />} />
-        <Route path="/contectus" element={<ContectUs />} />
-        <Route path="/privaceypolicy" element={<PrivaceyPolicy />} />
-      
-        <Route path="/" element={<Home />} />
-        <Route path="/queryform" element={<QueryForm />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/contact" element={<Contact />} />
+        {/* protected route  */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/services" element={<Services />} />
           <Route path="/directory" element={<Directory />} />
           <Route path="/broker-dashboard" element={<BrokerDashboard />} />
-
           <Route path="/user-dashboard" element={<UserDashboard />} />
         </Route>
+
+        {/* main layout  */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/queryform" element={<QueryForm />} />
+          <Route path="/termscondition" element={<TermsConditions />} />
+          <Route path="/refundpolicy" element={<RefundPolicy />} />
+          <Route path="/contectus" element={<ContectUs />} />
+          <Route path="/privaceypolicy" element={<PrivaceyPolicy />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="/services" element={<Services />} />
+          ...
+        </Route>
       </Routes>
-      <AppFooter />
     </BrowserRouter>
   );
 }
