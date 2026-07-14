@@ -1,5 +1,5 @@
 import React from "react";
-import SearchBar from "../components/SearchBar";
+
 import HeroCarousel from "../components/HeroCarousel";
 import Feedback from "../components/Feedback";
 import Features from "../components/Features";

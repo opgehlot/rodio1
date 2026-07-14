@@ -12,19 +12,16 @@ import Login from "./pages/Login";
 import BrokerDashboard from "./pages/dashboardpage/BrokerDashboard";
 import TransporterDashboard from "./pages/dashboardpage/TransporterDashboard";
 import UserDashboard from "./pages/dashboardpage/UserDashboard";
-import SearchBar from "./components/SearchBar";
-import Directorydata from "./pages/Directory/Directorydata";
-import UserForm from "./pages/newrequestpage/UserForm";
+import SearchBar from "./Dashboard/user/SearchBar";
+import Directorydata from "./Dashboard/user/Directory/Directorydata";
 import Navbar from "./components/Navbar";
 import AppFooter from "./components/AppFooter";
 import QueryForm from "./components/QueryForm";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import ScrollToTop from "./components/ScrollToTop";
-import Dashboard, { DashboardHome } from "./Dashboard/DashboardHome";
 import Profile from "./Dashboard/Profile";
 import Settings from "./Dashboard/Settings";
-import DashboardLayout from "./Dashboard/DashboardLayout";
 import MyBusiness from "./Dashboard/transporter/MyBusiness";
 import Leads from "./Dashboard/transporter/Leads";
 import MyVehicles from "./Dashboard/transporter/MyVehicles";
@@ -33,8 +30,12 @@ import PrivaceyPolicy from "./terms&condition/PrivaceyPolicy";
 import ContectUs from "./terms&condition/ContectUs";
 import RefundPolicy from "./terms&condition/RefundPolicy";
 import TermsConditions from "./terms&condition/TermsConditions";
-
-
+import MyDashboard from "./Dashboard/MyDashboard";
+import { DashboardLayout } from "./Dashboard/DashboardLayout";
+import SearchTransport from "./Dashboard/user/SearchTransport";
+import Bookings from "./Dashboard/user/Bookings";
+import Clients from "./Dashboard/broker/Clients";
+import UserForm from "./Dashboard/user/UserForm";
 
 function App() {
   return (
@@ -52,59 +53,56 @@ function App() {
         }}
       />
       <Navbar />
-      <ScrollToTop/>
+      <ScrollToTop />
 
-      <Routes><Route path="/dashboard" element={<DashboardLayout />}>
+      <Routes>
+        {/* // it is the dashborard pages  */}
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<MyDashboard />} />
 
-  <Route index element={<DashboardHome/>} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
 
-  <Route path="profile" element={<Profile />} />
-  <Route path="settings" element={<Settings />} />
+          {/* user*/}
+          <Route path="searchtransport" element={<SearchTransport />} />
+          <Route path="bookings" element={<Bookings />} />
+          <Route path="directory" element={<Directorydata />} />
+             <Route path="searchbar" element={<SearchBar />} />
+               <Route path="userform" element={<UserForm/>} />
 
-    {/* user*/}
-  {/* <Route path="search-transport" element={<SearchTransport />} />
-  <Route path="bookings" element={<Bookings />} /> */}
+          {/* Transporter */}
+          <Route path="mybusiness" element={<MyBusiness />} />
+          <Route path="leads" element={<Leads />} />
+          <Route path="myvehicles" element={<MyVehicles />} />
+          <Route path="transportservices" element={<TransportServices />} />
 
-  {/* Transporter */}
-  <Route path="mybusiness" element={<MyBusiness/>} />
-  <Route path="leads" element={<Leads />} />
-  <Route path="myvehicles" element={<MyVehicles />} />
-  <Route path="transportservices" element={<TransportServices />} />
+          {/* Broker */}
+          <Route path="clients" element={<Clients />} />
+        </Route>
+        {/* its hoome noraml page  */}
 
-  {/* Broker */}
-  {/* <Route path="clients" element={<Clients />} /> */}
-
-</Route>
-        
-        
-        <Route path="/termscondition" element={<TermsConditions/>} />
+        <Route path="/termscondition" element={<TermsConditions />} />
         <Route path="/refundpolicy" element={<RefundPolicy />} />
         <Route path="/contectus" element={<ContectUs />} />
         <Route path="/privaceypolicy" element={<PrivaceyPolicy />} />
-        <Route path="/userform" element={<UserForm />} />
+      
         <Route path="/" element={<Home />} />
         <Route path="/queryform" element={<QueryForm />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/searchbar" element={<SearchBar />} />
-        <Route path="/directory" element={<Directorydata />} />
         <Route path="/about" element={<About />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
-         <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute />}>
           <Route path="/services" element={<Services />} />
           <Route path="/directory" element={<Directory />} />
           <Route path="/broker-dashboard" element={<BrokerDashboard />} />
-          <Route
-            path="/dashboard"
-            element={<Dashboard />}
-          />
+
           <Route path="/user-dashboard" element={<UserDashboard />} />
         </Route>
       </Routes>
-       <AppFooter />             
-     
+      <AppFooter />
     </BrowserRouter>
   );
 }

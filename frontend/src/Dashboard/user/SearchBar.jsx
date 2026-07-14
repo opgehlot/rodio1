@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { MapPin, Search, Truck } from "lucide-react";
-import  TransportCard  from "./TransportCard";
-import transports from "../data/transports";
+import  TransportCard  from "../user/TransportCard";
+import transports from "../user/data/transports";
 import Select, { components } from "react-select";
 const MultiValueContainer = (props) => {
   const count = props.getValue().length;

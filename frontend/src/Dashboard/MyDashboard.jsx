@@ -3,7 +3,7 @@ import TransporterDashboard from "./transporter/TransporterDashboard";
 import UserDashboard from "./user/UserDashboard";
 
 
-export function DashboardHome() {
+export function MyDashboard() {
   const role = localStorage.getItem("role");
 
   if (role === "user") {
@@ -20,4 +20,4 @@ export function DashboardHome() {
 
   return <h1>No Dashboard Found</h1>;
 }
-export default DashboardHome;
+export default  MyDashboard;

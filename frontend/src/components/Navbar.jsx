@@ -1,52 +1,50 @@
-import React, { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Menu, X } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
+import  {AuthContext } from "../context/AuthContext"; // apna path
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  const { setUser } = useContext(AuthContext);
+
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role"); // user | transporter | broker
-   console.log("Token:", token);
-console.log("Role:", role);
-
+  console.log("Token:", token);
+  console.log("Role:", role);
 
   const handleLogout = () => {
+    setUser(null);
     localStorage.clear();
     navigate("/");
   };
 
   const guestLinks = [
-   
     { name: "Home", path: "/" },
-     { name: "Dashboard", path: "/dashboard" },
+    { name: "Dashboard", path: "/dashboard" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "Contact", path: "/queryform" },
   ];
 
   const userLinks = [
-     { name: "Dashboard", path: "/dashboard" },
-    { name: "Directory", path: "/directory" },
-    { name: "Vehicle Search", path: "/searchbar" },
-    { name: "Lead Contacts", path: "/userform" },
-      { name: "Contact", path: "/queryform" },
+    { name: "UserDashboard", path: "/dashboard" },
+    { name: "Contact", path: "/queryform" },
   ];
 
   const transporterLinks = [
-    { name: "Dashboard", path: "/dashboard" },
-    { name: "Dashboard", path: "/transporter-dashboard" },
+    { name: "TrasporterDashboard", path: "/dashboard" },
     { name: "My Vehicles", path: "/addvhicle" },
     { name: "Bookings", path: "/transporter/bookings" },
-      { name: "Contact", path: "/queryform" },
+    { name: "Contact", path: "/queryform" },
   ];
 
   const brokerLinks = [
-    { name: "Dashboard", path: "/broker/dashboard" },
+    { name: "brokerDashbord", path: "/dashboard" },
     { name: "Available Loads", path: "/broker/loads" },
     { name: "Clients", path: "/broker/clients" },
-      { name: "Contact", path: "/queryform" },
+    { name: "Contact", path: "/queryform" },
   ];
 
   const getLinks = () => {
@@ -72,18 +70,13 @@ console.log("Role:", role);
   return (
     <nav className="fixed top-0 left-0 w-full bg-white text-black shadow-lg z-30">
       <div className="max-w-7xl mx-auto h-20 px-5 flex items-center justify-between">
-
         {/* Logo */}
-        <NavLink
-          to="/"
-          className="text-2xl font-bold text-orange-500"
-        >
+        <NavLink to="/" className="text-2xl font-bold text-orange-500">
           Rodio
         </NavLink>
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-7">
-
           {links.map((link) => (
             <NavLink
               key={link.name}
@@ -125,10 +118,7 @@ console.log("Role:", role);
         </div>
 
         {/* Mobile Button */}
-        <button
-          className="md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
       </div>
@@ -136,7 +126,6 @@ console.log("Role:", role);
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-slate-700">
-
           {links.map((link) => (
             <NavLink
               key={link.name}
@@ -149,7 +138,6 @@ console.log("Role:", role);
           ))}
 
           <div className="p-5">
-
             {!token ? (
               <div className="space-y-3">
                 <NavLink
@@ -176,7 +164,6 @@ console.log("Role:", role);
                 Logout
               </button>
             )}
-
           </div>
         </div>
       )}

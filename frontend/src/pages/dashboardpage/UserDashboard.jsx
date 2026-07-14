@@ -1,5 +1,5 @@
 import React from 'react'
-import DirectoryPage from '../Directory/Directorydata'
+import DirectoryPage from '../../Dashboard/user/Directory/Directorydata'
 
 
 

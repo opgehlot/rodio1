@@ -12,7 +12,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 
-export default function UserForm() {
+export function UserForm() {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -406,3 +406,4 @@ export default function UserForm() {
     </div>
   );
 }
+export default UserForm;

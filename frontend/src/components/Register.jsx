@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import API from "../api/api";
 import { User, Mail, Lock, Truck, Phone, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { AuthContext } from "../context/AuthContext";
 export function Register() {
   const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +48,7 @@ export function Register() {
         
       );
         console.timeEnd("Register");
+        setUser(res.data.user);
 
       console.log(res.data);
 
@@ -60,7 +63,7 @@ export function Register() {
         confirmPassword: "",
       });
 
-      navigate("/login");
+      navigate("/dashboard");
     } catch (error) {
       console.log("Error:", error.response?.data);
 

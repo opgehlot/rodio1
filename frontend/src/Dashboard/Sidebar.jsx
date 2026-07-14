@@ -1,111 +1,197 @@
 import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  User,
+  Settings,
+  Building2,
+  Truck,
+  Car,
+  FileText,
+  Search,
+  BookOpen,
+  Users,
+  X,
+} from "lucide-react";
 
-export default function Sidebar() {
+export default function Sidebar({ open, setOpen }) {
   const role = localStorage.getItem("role");
 
+  const linkClass = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+      isActive
+        ? "bg-blue-600 text-white"
+        : "text-gray-300 hover:bg-slate-800 hover:text-white"
+    }`;
+
   return (
-    <div className="w-72 min-h-screen bg-slate-900 text-white">
+    <>
+      {/* Overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
 
-      <h2 className="text-2xl font-bold p-6">
-        Dashboard
-      </h2>
+      {/* Sidebar */}
+      <aside
+        className={`fixed lg:static top-0 left-0 h-screen w-80 bg-slate-900 shadow-xl z-50 transform transition-transform duration-300
+        ${open ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0`}
+      >
+        {/* Mobile Close */}
+        <div className="lg:hidden flex justify-end p-4">
+          <button onClick={() => setOpen(false)}>
+            <X className="text-white" />
+          </button>
+        </div>
 
-      <ul className="space-y-2 px-4">
+        {/* Logo */}
+        <div className="px-6 pb-6 border-b border-slate-800">
+          <h2 className="text-3xl font-bold text-white">
+            Dashboard
+          </h2>
+        </div>
 
-        {/* Common Menu */}
+        {/* Menu */}
+        <nav className="p-4 space-y-2">
 
-        <li>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-        </li>
+          <NavLink
+            to="/dashboard"
+            end
+            className={linkClass}
+            onClick={() => setOpen(false)}
+          >
+            <LayoutDashboard size={20} />
+            Dashboard
+          </NavLink>
 
-        <li>
-          <NavLink to="/dashboard/profile">Profile</NavLink>
-        </li>
+          <NavLink
+            to="/dashboard/profile"
+            className={linkClass}
+            onClick={() => setOpen(false)}
+          >
+            <User size={20} />
+            Profile
+          </NavLink>
 
-        <li>
-          <NavLink to="/dashboard/settings">Settings</NavLink>
-        </li>
+          <NavLink
+            to="/dashboard/settings"
+            className={linkClass}
+            onClick={() => setOpen(false)}
+          >
+            <Settings size={20} />
+            Settings
+          </NavLink>
 
-        {/* User */}
+          {/* USER */}
 
-        {role === "user" && (
-          <>
-            <li>
-              <NavLink to="/dashboard/search-transport">
+          {role === "user" && (
+            <>
+              <NavLink
+                to="/dashboard/searchbar"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Search size={20} />
                 Search Transport
               </NavLink>
-            </li>
 
-            <li>
-              <NavLink to="/dashboard/bookings">
+              <NavLink
+                to="/dashboard/bookings"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <BookOpen size={20} />
                 Bookings
               </NavLink>
-            </li>
 
-            <li>
-              <NavLink to="/dashboard/saved">
-                Saved Transporters
+              <NavLink
+                to="/dashboard/directory"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Building2 size={20} />
+                Directory
               </NavLink>
-            </li>
-          </>
-        )}
+              <NavLink
+                to="/dashboard/userform"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Building2 size={20} />
+                UserForm
+              </NavLink>
+            </>
+          )}
 
-        {/* Transporter */}
+          {/* TRANSPORTER */}
 
-        {role === "transporter" && (
-          <>
-            <li>
-              <NavLink to="/dashboard/mybusiness">
+          {role === "transporter" && (
+            <>
+              <NavLink
+                to="/dashboard/mybusiness"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Building2 size={20} />
                 My Business
               </NavLink>
-            </li>
 
-            <li>
-              <NavLink to="/dashboard/transportservices">
+              <NavLink
+                to="/dashboard/transportservices"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Truck size={20} />
                 Transport Services
               </NavLink>
-            </li>
 
-            <li>
-              <NavLink to="/dashboard/leads">
+              <NavLink
+                to="/dashboard/leads"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <FileText size={20} />
                 Leads
               </NavLink>
-            </li>
 
-            <li>
-              <NavLink to="/dashboard/myvehicles">
+              <NavLink
+                to="/dashboard/myvehicles"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Car size={20} />
                 My Vehicles
               </NavLink>
-            </li>
-          </>
-        )}
+            </>
+          )}
 
-        {/* Broker */}
+          {/* BROKER */}
 
-        {role === "broker" && (
-          <>
-            <li>
-              <NavLink to="/dashboard/my-leads">
+          {role === "broker" && (
+            <>
+              <NavLink
+                to="/dashboard/my-leads"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <FileText size={20} />
                 My Leads
               </NavLink>
-            </li>
 
-            <li>
-              <NavLink to="/dashboard/clients">
+              <NavLink
+                to="/dashboard/clients"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Users size={20} />
                 Clients
               </NavLink>
-            </li>
-
-            <li>
-              <NavLink to="/dashboard/transport-services">
-                Transport Services
-              </NavLink>
-            </li>
-          </>
-        )}
-
-      </ul>
-
-    </div>
+            </>
+          )}
+        </nav>
+      </aside>
+    </>
   );
 }
