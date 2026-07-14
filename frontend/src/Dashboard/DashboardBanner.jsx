@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export  function DashboardBanner() {
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-600 text-white p-8 lg:p-12">
+    <div className=" wrelative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-600 text-white p-8 lg:p-12">
 
       {/* Background Circle */}
       <div className="absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full"></div>

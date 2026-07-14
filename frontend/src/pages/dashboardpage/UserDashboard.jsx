@@ -1,5 +1,6 @@
 import React from 'react'
 import DirectoryPage from '../../Dashboard/user/Directory/Directorydata'
+import DashboardLayout from '../../Dashboard/DashboardLayout'
 
 
 
@@ -8,7 +9,7 @@ function UserDashboard() {
   return (
     <div>
      
- <DirectoryPage/>
+     <DashboardLayout/>
         
       
        
