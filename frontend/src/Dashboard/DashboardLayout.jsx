@@ -1,17 +1,35 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Menu } from "lucide-react";
 import Sidebar from "./Sidebar";
 
-export function DashboardLayout() {
+export  function DashboardLayout() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="bg-gray-100 min-h-screen">
+
+      {/* Mobile Header */}
+
+      <header className="lg:hidden sticky top-0 z-40 bg-white shadow flex items-center justify-between px-5 py-4">
+
+        <button onClick={() => setOpen(true)}>
+          <Menu size={28} />
+        </button>
+
+        <h1 className="text-xl font-bold">
+          Rodio TradLink
+        </h1>
+
+      </header>
 
       {/* Sidebar */}
-      <aside className="fixed top-0 left-0 w-72 h-screen z-50">
-        <Sidebar />
-      </aside>
 
-      {/* Main Content */}
-      <main className="ml-72 flex-1 min-h-screen overflow-y-auto p-6">
+      <Sidebar open={open} setOpen={setOpen} />
+
+      {/* Main */}
+
+      <main className="lg:ml-80 p-6">
         <Outlet />
       </main>
 

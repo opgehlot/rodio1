@@ -1,34 +1,28 @@
 import { NavLink } from "react-router-dom";
-import {
-  LayoutDashboard,
-  User,
-  Settings,
-  Building2,
-  Truck,
-  Car,
-  FileText,
-  Search,
-  BookOpen,
-  Users,
-  X,
-} from "lucide-react";
+import { X } from "lucide-react";
 import LogoutButton from "../utils/LogoutButton";
 
-
-
 export default function Sidebar({ open, setOpen }) {
+  const handleClose = () => {
+  if (window.innerWidth < 1024) {
+    setOpen(false);
+  }
+};
+
   const role = localStorage.getItem("role");
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+    `block px-4 py-3 rounded-xl transition
+    ${
       isActive
         ? "bg-blue-600 text-white"
-        : "text-gray-300 hover:bg-slate-800 hover:text-white"
+        : "text-gray-300 hover:bg-slate-800"
     }`;
 
   return (
     <>
       {/* Overlay */}
+
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-40 lg:hidden"
@@ -37,53 +31,67 @@ export default function Sidebar({ open, setOpen }) {
       )}
 
       {/* Sidebar */}
+
       <aside
-        className={`fixed lg:static top-0 left-0 h-screen w-80 bg-slate-900 shadow-xl z-50 transform transition-transform duration-300
+        className={`
+        fixed top-0 left-0
+        w-80
+        h-screen
+        bg-slate-900
+        text-white
+        z-50
+        flex flex-col
+        transition-transform duration-300
+
         ${open ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0`}
+
+        lg:translate-x-0
+        `}
       >
+
         {/* Mobile Close */}
+
         <div className="lg:hidden flex justify-end p-4">
+
           <button onClick={() => setOpen(false)}>
-            <X className="text-white" />
+            <X />
           </button>
+
         </div>
 
         {/* Logo */}
-        <div className="px-6 pb-6 border-b border-slate-800">
-          <h2 className="text-3xl font-bold text-white">
+
+        <div className="px-6 py-6 border-b border-slate-800">
+
+          <h2 className="text-3xl font-bold">
+
             Dashboard
+
           </h2>
+
         </div>
 
         {/* Menu */}
-        <nav className="p-4 space-y-2">
 
-          <NavLink
-            to="/dashboard"
-            end
-            className={linkClass}
-            onClick={() => setOpen(false)}
-          >
-            <LayoutDashboard size={20} />
+        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+
+          <NavLink end to="/dashboard" className={linkClass} onClick={handleClose}>
             Dashboard
           </NavLink>
 
           <NavLink
             to="/dashboard/profile"
             className={linkClass}
-            onClick={() => setOpen(false)}
+            onClick={handleClose}
           >
-            <User size={20} />
             Profile
           </NavLink>
 
           <NavLink
             to="/dashboard/settings"
             className={linkClass}
-            onClick={() => setOpen(false)}
+            onClick={handleClose}
           >
-            <Settings size={20} />
             Settings
           </NavLink>
 
@@ -94,117 +102,115 @@ export default function Sidebar({ open, setOpen }) {
               <NavLink
                 to="/dashboard/searchbar"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Search size={20} />
                 Search Transport
               </NavLink>
+
               <NavLink
                 to="/dashboard/showenquiery"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Search size={20} />
-                Show Enquiery
+                Show Enquiry
               </NavLink>
 
               <NavLink
                 to="/dashboard/enquiery"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <BookOpen size={20} />
                 Bookings
               </NavLink>
 
               <NavLink
                 to="/dashboard/directory"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Building2 size={20} />
                 Directory
               </NavLink>
+
               <NavLink
                 to="/dashboard/userform"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Building2 size={20} />
-                UserForm
+                User Form
               </NavLink>
             </>
           )}
 
-          {/* TRANSPORTER */}
+          {/* Transporter */}
 
           {role === "transporter" && (
             <>
               <NavLink
                 to="/dashboard/mybusiness"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Building2 size={20} />
                 My Business
               </NavLink>
 
               <NavLink
                 to="/dashboard/transportservices"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Truck size={20} />
                 Transport Services
               </NavLink>
 
               <NavLink
                 to="/dashboard/leads"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <FileText size={20} />
                 Leads
               </NavLink>
 
               <NavLink
                 to="/dashboard/myvehicles"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Car size={20} />
                 My Vehicles
               </NavLink>
             </>
           )}
 
-          {/* BROKER */}
+          {/* Broker */}
 
           {role === "broker" && (
             <>
               <NavLink
                 to="/dashboard/my-leads"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <FileText size={20} />
                 My Leads
               </NavLink>
 
               <NavLink
                 to="/dashboard/clients"
                 className={linkClass}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
-                <Users size={20} />
                 Clients
               </NavLink>
             </>
           )}
-          <div className="mt-74 p-4 border-t border-slate-700">
-  <LogoutButton/>
-</div>
+
         </nav>
+
+        {/* Logout */}
+
+        <div className="p-4 border-t border-slate-700">
+
+          <LogoutButton />
+
+        </div>
+
       </aside>
     </>
   );
