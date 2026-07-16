@@ -44,7 +44,7 @@ export  function DashboardBanner() {
             </Link>
 
             <Link
-              to="/dashboard/searchtransport"
+              to="/dashboard/searchbar"
               className="border border-white hover:bg-white hover:text-blue-700 transition px-6 py-3 rounded-xl font-semibold"
             >
               Search Transport

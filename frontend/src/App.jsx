@@ -9,9 +9,8 @@ import Register from "./components/Register";
 import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
-import BrokerDashboard from "./pages/dashboardpage/BrokerDashboard";
-import TransporterDashboard from "./pages/dashboardpage/TransporterDashboard";
-import UserDashboard from "./pages/dashboardpage/UserDashboard";
+// import BrokerDashboard from "./pages/dashboardpage/BrokerDashboard"
+// import UserDashboard from "./pages/dashboardpage/UserDashboard";
 import SearchBar from "./Dashboard/user/SearchBar";
 import Directorydata from "./Dashboard/user/Directory/Directorydata";
 
@@ -39,6 +38,9 @@ import UserForm from "./Dashboard/user/UserForm";
 import MainLayout from "./layout/MainLayout";
 import Enquiery from "./Dashboard/user/myrequest/Enquiery";
 import ShowEnquiery from "./Dashboard/user/myrequest/ShowEnquiery";
+import ChangePassword from "./Dashboard/Changepassword";
+import AddVehicle from "./Dashboard/transporter/Addvehicle";
+import TransporterProfile from "./Dashboard/user/TrasporterProfile";
 
 function App() {
   return (
@@ -64,6 +66,8 @@ function App() {
 
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="changepassword" element={<ChangePassword />} />
+
 
           {/* user*/}
           <Route path="searchtransport" element={<SearchTransport />} />
@@ -73,24 +77,22 @@ function App() {
           <Route path="userform" element={<UserForm />} />
           <Route path="enquiery" element={<Enquiery />} />
           <Route path="showenquiery" element={<ShowEnquiery />} />
+   <Route path="transporter/:id" element={<TransporterProfile />} />
+        
 
           {/* Transporter */}
+
           <Route path="mybusiness" element={<MyBusiness />} />
           <Route path="leads" element={<Leads />} />
           <Route path="myvehicles" element={<MyVehicles />} />
           <Route path="transportservices" element={<TransportServices />} />
+          <Route path="addvehicle" element={<AddVehicle />} />
+              <Route path="register" element={<Register />} />
 
           {/* Broker */}
           <Route path="clients" element={<Clients />} />
         </Route>
-        {/* its hoome noraml page  */}
 
-        {/* protected route  */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/directory" element={<Directory />} />
-          <Route path="/broker-dashboard" element={<BrokerDashboard />} />
-          <Route path="/user-dashboard" element={<UserDashboard />} />
-        </Route>
 
         {/* main layout  */}
         <Route element={<MainLayout />}>

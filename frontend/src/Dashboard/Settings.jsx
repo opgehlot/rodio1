@@ -1,128 +1,150 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import API from "../api/api";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import API from "../api/api";
 
 export default function Settings() {
-  const { user, setUser } = useContext(AuthContext);
-
   const [loading, setLoading] = useState(false);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    role: "",
-
-    companyName: "",
-    gstNumber: "",
-    address: "",
-
-    agencyName: "",
-    officeAddress: "",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      mobile: "",
+      role: "user",
+      companyName: "",
+      gstNumber: "",
+      address: "",
+      agencyName: "",
+      officeAddress: "",
+    },
   });
 
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        name: user.name || "",
-        email: user.email || "",
-        mobile: user.mobile || "",
-        role: user.role || "",
+  const role = watch("role");
 
-        companyName: user.companyName || "",
-        gstNumber: user.gstNumber || "",
-        address: user.address || "",
+const onSubmit = async (data) => {
 
-        agencyName: user.agencyName || "",
-        officeAddress: user.officeAddress || "",
-      });
-    }
-  }, [user]);
+  if (data.role === "transporter") {
+    window.location.href = "/register";
+    return;
+  }
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  if (data.role === "broker") {
+    window.location.href = "/register";
+    return;
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const toastId = toast.loading("Updating Profile...");
 
-    try {
-      setLoading(true);
+  try {
 
-      const token = localStorage.getItem("token");
+    setLoading(true);
 
-      const { data } = await API.put(
-        "/auth/update-profile",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    await API.put("/profile", data);
 
-      setUser(data.user);
+    toast.success("Profile Updated Successfully", {
+      id: toastId,
+    });
 
-      toast.success(data.message);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Update Failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (err) {
+
+    toast.error("Update Failed", {
+      id: toastId,
+    });
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
 
   return (
-    <div className="max-w-3xl">
-      <h2 className="text-2xl font-semibold mb-6">
-        Settings
+    <div className="max-w-3xl mx-auto bg-white shadow rounded-xl p-8 mt-8">
+
+      <h2 className="text-3xl font-bold mb-6">
+        Account Settings
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-5"
+      >
+
+        {/* Name */}
 
         <div>
-          <label>Name</label>
+          <label className="block mb-2 font-medium">
+            Full Name
+          </label>
+
           <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full border rounded p-3"
+            {...register("name", {
+              required: "Name is required",
+            })}
+            className="w-full border rounded-lg p-3"
+            placeholder="Enter Name"
           />
+
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
+        {/* Email */}
+
         <div>
-          <label>Email</label>
+          <label className="block mb-2 font-medium">
+            Email
+          </label>
+
           <input
             type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full border rounded p-3"
+            {...register("email", {
+              required: "Email is required",
+            })}
+            className="w-full border rounded-lg p-3"
+            placeholder="Enter Email"
           />
+
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
+        {/* Mobile */}
+
         <div>
-          <label>Mobile</label>
+          <label className="block mb-2 font-medium">
+            Mobile
+          </label>
+
           <input
-            type="text"
-            name="mobile"
-            value={formData.mobile}
-            onChange={handleChange}
-            className="w-full border rounded p-3"
+            {...register("mobile")}
+            className="w-full border rounded-lg p-3"
+            placeholder="Enter Mobile"
           />
         </div>
 
+        {/* Role */}
+
         <div>
-          <label>Role</label>
+          <label className="block mb-2 font-medium">
+            Select Role
+          </label>
+
           <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="w-full border rounded p-3"
+            {...register("role")}
+            className="w-full border rounded-lg p-3"
           >
             <option value="user">User</option>
             <option value="transporter">Transporter</option>
@@ -130,78 +152,104 @@ export default function Settings() {
           </select>
         </div>
 
-        {formData.role === "transporter" && (
-          <>
-            <div>
-              <label>Company Name</label>
-              <input
-                type="text"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                className="w-full border rounded p-3"
-              />
-            </div>
+        {/* Transporter */}
 
-            <div>
-              <label>GST Number</label>
-              <input
-                type="text"
-                name="gstNumber"
-                value={formData.gstNumber}
-                onChange={handleChange}
-                className="w-full border rounded p-3"
-              />
-            </div>
+        {role === "transporter" && (
+          <div className="space-y-4 border rounded-lg p-5 bg-gray-50">
 
-            <div>
-              <label>Address</label>
-              <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                className="w-full border rounded p-3"
-                rows="3"
-              />
-            </div>
-          </>
+            <h3 className="font-bold text-lg">
+              Transporter Details
+            </h3>
+
+            <input
+              {...register("companyName")}
+              placeholder="Company Name"
+              className="w-full border rounded-lg p-3"
+            />
+
+            <input
+              {...register("gstNumber")}
+              placeholder="GST Number"
+              className="w-full border rounded-lg p-3"
+            />
+
+            <textarea
+              {...register("address")}
+              rows={3}
+              placeholder="Company Address"
+              className="w-full border rounded-lg p-3"
+            />
+
+          </div>
         )}
 
-        {formData.role === "broker" && (
-          <>
-            <div>
-              <label>Agency Name</label>
-              <input
-                type="text"
-                name="agencyName"
-                value={formData.agencyName}
-                onChange={handleChange}
-                className="w-full border rounded p-3"
-              />
-            </div>
+        {/* Broker */}
 
-            <div>
-              <label>Office Address</label>
-              <textarea
-                name="officeAddress"
-                value={formData.officeAddress}
-                onChange={handleChange}
-                className="w-full border rounded p-3"
-                rows="3"
-              />
-            </div>
-          </>
+        {role === "broker" && (
+          <div className="space-y-4 border rounded-lg p-5 bg-gray-50">
+
+            <h3 className="font-bold text-lg">
+              Broker Details
+            </h3>
+
+            <input
+              {...register("agencyName")}
+              placeholder="Agency Name"
+              className="w-full border rounded-lg p-3"
+            />
+
+            <textarea
+              {...register("officeAddress")}
+              rows={3}
+              placeholder="Office Address"
+              className="w-full border rounded-lg p-3"
+            />
+
+          </div>
         )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-600 text-white px-6 py-3 rounded"
-        >
-          {loading ? "Updating..." : "Update"}
-        </button>
+      <button
+  type="submit"
+  disabled={loading}
+  className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold transition-all duration-200 ${
+    loading
+      ? "bg-blue-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700 text-white"
+  }`}
+>
+  {loading ? (
+    <>
+      <svg
+        className="w-5 h-5 animate-spin"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        />
+      </svg>
 
+      Loading...
+    </>
+  ) : role === "user" ? (
+    "Update Profile"
+  ) : (
+    "Continue"
+  )}
+</button>
       </form>
+
     </div>
   );
 }

@@ -1,205 +1,222 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import {
-  User,
-  Phone,
-  Mail,
-  MapPin,
-  ShieldCheck,
-  Camera,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import API from "../api/api";
+import toast from "react-hot-toast";
+import { Mail, Phone, ShieldCheck, Camera } from "lucide-react";
 
 export default function Profile() {
-  const { user } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+  const handleImageUpload = async (e) => {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("profileImage", file);
+
+  const token = localStorage.getItem("token");
+
+  const { data } = await API.put(
+    "/profile",
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  toast.success(data.message);
+
+  getProfile();
+};
+
+  const getProfile = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const { data } = await API.get("/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setUser(data.profile || data.user);
+  } catch (err) {
+    console.log(err);
+    toast.error("Unable to load profile");
+  } finally {
+    setLoading(false);
+  }
+};
+  const handleImage= async (e) => {
+    try {
+      const file = e.target.files[0];
+
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      const token = localStorage.getItem("token");
+
+      setUploading(true);
+
+      const { data } = await API.get(
+        "/profile",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      toast.success(data.message);
+
+      await getProfile();
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response?.data?.message || "Upload Failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <h2 className="text-xl font-semibold">Loading...</h2>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <h2 className="text-xl font-semibold">Profile Not Found</h2>
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full bg-gray-100 min-h-screen">
+    <div className="bg-white rounded-2xl shadow overflow-hidden">
 
-      {/* Cover Banner */}
+      <div className="h-56 bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-700"></div>
 
-      <div className="relative overflow-hidden rounded-2xl bg-[url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=1600')] bg-cover bg-center">
+      <div className="px-8 pb-10">
 
-        {/* Overlay */}
+        <div className="-mt-20 relative w-fit">
 
-        <div className="bg-black/65">
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageUpload}
+          />
 
-          <div className="flex flex-wrap items-center gap-10 px-8 py-10">
+          <img
+            src={
+              user.profileImage
+                ? user.profileImage
+                : `https://ui-avatars.com/api/?name=${user.name}&background=2563eb&color=fff`
+            }
+            alt="Profile"
+            className="w-40 h-40 rounded-full border-4 border-white object-cover shadow-lg"
+          />
 
-            {/* Profile Image */}
+          <button
+            type="button"
+            onClick={() => document.getElementById("profileImage").click()}
+            disabled={uploading}
+            className="absolute bottom-2 right-2 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition"
+          >
+            {uploading ? (
+              <span className="text-xs">...</span>
+            ) : (
+              <Camera size={18} />
+            )}
+          </button>
 
-            <div className="relative">
+        </div>
 
-              <img
-                src={
-                  user?.profileImage ||
-                  `https://ui-avatars.com/api/?name=${user?.name}&background=2563eb&color=fff&size=256`
-                }
-                alt="Profile"
-                className="w-28 h-28 rounded-xl border-4 border-white object-cover"
-              />
+        <div className="mt-6">
 
-              <button className="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-full text-white shadow-lg">
-                <Camera size={18} />
-              </button>
+          <h1 className="text-4xl font-bold text-gray-800">
+            {user.name}
+          </h1>
 
+          <p className="text-gray-500 capitalize text-lg mt-1">
+            {user.role}
+          </p>
+
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+
+          <div className="bg-gray-50 rounded-xl p-5">
+
+            <div className="flex items-center gap-2 text-blue-600 mb-2">
+              <Mail size={20} />
+              <span className="font-semibold">Email</span>
             </div>
 
-            {/* Name */}
+            <p className="text-gray-700 break-all">
+              {user.email}
+            </p>
 
-            <div>
+          </div>
 
-              <h1 className="text-3xl font-bold text-white">
-                {user?.name}
-              </h1>
+          <div className="bg-gray-50 rounded-xl p-5">
 
-              <p className="text-gray-300 mt-1 capitalize">
-                {user?.role}
-              </p>
-
+            <div className="flex items-center gap-2 text-green-600 mb-2">
+              <Phone size={20} />
+              <span className="font-semibold">Mobile</span>
             </div>
 
-            {/* Mobile */}
+            <p className="text-gray-700">
+              {user.phoneNumber || user.mobile}
+            </p>
 
-            <div>
+          </div>
 
-              <p className="text-gray-300 text-sm">
-                Phone Number
-              </p>
+          <div className="bg-gray-50 rounded-xl p-5">
 
-              <div className="flex items-center gap-2 text-white mt-1">
-
-                <Phone size={18} />
-
-                <span>{user?.mobile}</span>
-
-              </div>
-
+            <div className="flex items-center gap-2 text-purple-600 mb-2">
+              <ShieldCheck size={20} />
+              <span className="font-semibold">Role</span>
             </div>
 
-            {/* Email */}
+            <p className="capitalize text-gray-700">
+              {user.role}
+            </p>
 
-            <div>
+          </div>
 
-              <p className="text-gray-300 text-sm">
-                Email
-              </p>
+          <div className="bg-gray-50 rounded-xl p-5">
 
-              <div className="flex items-center gap-2 text-white mt-1">
-
-                <Mail size={18} />
-
-                <span>{user?.email}</span>
-
-              </div>
-
+            <div className="flex items-center gap-2 text-green-600 mb-2">
+              <ShieldCheck size={20} />
+              <span className="font-semibold">Status</span>
             </div>
 
-            {/* Location */}
-
-            <div>
-
-              <p className="text-gray-300 text-sm">
-                Location
-              </p>
-
-              <div className="flex items-center gap-2 text-white mt-1">
-
-                <MapPin size={18} />
-
-                <span>India</span>
-
-              </div>
-
-            </div>
-
-            {/* Status */}
-
-            <div>
-
-              <p className="text-gray-300 text-sm">
-                Account
-              </p>
-
-              <div className="flex items-center gap-2 text-green-300 mt-1">
-
-                <ShieldCheck size={18} />
-
-                <span>Verified</span>
-
-              </div>
-
-            </div>
+            <p className="text-green-600 font-semibold">
+              Verified
+            </p>
 
           </div>
 
         </div>
 
       </div>
-
-      {/* Extra Details */}
-
-      {user?.role === "transporter" && (
-        <div className="mt-8 bg-white rounded-2xl shadow p-8">
-
-          <h2 className="text-2xl font-bold mb-6">
-            Business Information
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-6">
-
-            <div>
-              <p className="text-gray-500">Company Name</p>
-              <h3 className="font-semibold">
-                {user?.companyName || "Not Available"}
-              </h3>
-            </div>
-
-            <div>
-              <p className="text-gray-500">GST Number</p>
-              <h3 className="font-semibold">
-                {user?.gstNumber || "Not Available"}
-              </h3>
-            </div>
-
-            <div>
-              <p className="text-gray-500">Address</p>
-              <h3 className="font-semibold">
-                {user?.address || "Not Available"}
-              </h3>
-            </div>
-
-          </div>
-
-        </div>
-      )}
-
-      {user?.role === "broker" && (
-        <div className="mt-8 bg-white rounded-2xl shadow p-8">
-
-          <h2 className="text-2xl font-bold mb-6">
-            Agency Information
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-6">
-
-            <div>
-              <p className="text-gray-500">Agency Name</p>
-              <h3 className="font-semibold">
-                {user?.agencyName || "Not Available"}
-              </h3>
-            </div>
-
-            <div>
-              <p className="text-gray-500">Office Address</p>
-              <h3 className="font-semibold">
-                {user?.officeAddress || "Not Available"}
-              </h3>
-            </div>
-
-          </div>
-
-        </div>
-      )}
 
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { MapPin, Search, Truck } from "lucide-react";
-import  TransportCard  from "../user/TransportCard";
+import TransportCard from "../user/TransportCard";
 import transports from "../user/data/transports";
 import Select, { components } from "react-select";
 const MultiValueContainer = (props) => {
@@ -22,8 +22,7 @@ export default function SearchBar() {
   const [vehicleTypes, setVehicleTypes] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
-const [vehicleMenuOpen, setVehicleMenuOpen] = useState(false);
-  
+  const [vehicleMenuOpen, setVehicleMenuOpen] = useState(false);
 
   const cityOptions = [
     ...new Set(transports.flatMap((item) => [item.from, item.to])),
@@ -33,75 +32,75 @@ const [vehicleMenuOpen, setVehicleMenuOpen] = useState(false);
   }));
 
   const vehicleOptions = [
-   "Mini Truck",
-        "Pickup",
-        "Tata Ace",
-        "Bolero Pickup",
-        "Eicher",
-        "Truck",
-        "Container",
-        "Trailer",
-        "Open Body Truck",
-        "Closed Body Truck",
-        "Tanker",
-        "Tipper",
-        "LCV",
-        "HCV",
-        "Tempo",
-        "Canter",
-        "Mahindra Jeeto",
-        "Ashok Leyland Dost",
-        "Tractor Trolley",
-        "Refrigerated Truck"
+    "Mini Truck",
+    "Pickup",
+    "Tata Ace",
+    "Bolero Pickup",
+    "Eicher",
+    "Truck",
+    "Container",
+    "Trailer",
+    "Open Body Truck",
+    "Closed Body Truck",
+    "Tanker",
+    "Tipper",
+    "LCV",
+    "HCV",
+    "Tempo",
+    "Canter",
+    "Mahindra Jeeto",
+    "Ashok Leyland Dost",
+    "Tractor Trolley",
+    "Refrigerated Truck",
   ].map((item) => ({
     value: item,
     label: item,
   }));
-const handleSearch = async () => {
-  if (!from || !to) {
-    alert("Please select From and To city");
-    return;
-  }
-
-  try {
-    setLoading(true);
-
-    const vehicles = vehicleTypes.map((v) => v.value).join(",");
-
-    const response = await fetch(
-      `https://rodio-tradelink.onrender.com/api/business/vsearch?from=${encodeURIComponent(
-        from.value
-      )}&to=${encodeURIComponent(
-        to.value
-      )}&vehicleType=${encodeURIComponent(vehicles)}`
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
+  const handleSearch = async () => {
+    if (!from || !to) {
+      alert("Please select From and To city");
+      return;
     }
 
-    const result = await response.json();
+    try {
+      setLoading(true);
 
-    console.log(result);
+      const vehicles = vehicleTypes.map((v) => v.value).join(",");
 
-    // API returns:
-    // { success: true, total: 1, data: [...] }
+      const response = await fetch(
+        `https://rodio-tradelink.onrender.com/api/business/vsearch?from=${encodeURIComponent(
+          from.value,
+        )}&to=${encodeURIComponent(
+          to.value,
+        )}&vehicleType=${encodeURIComponent(vehicles)}`,
+      );
 
-    setFilteredData(result.data);
-   setVehicleMenuOpen(false);
-  } catch (err) {
-    console.error(err);
-    alert("Unable to fetch data");
-  } finally {
-    setLoading(false);
-  }
-};
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      console.log(result);
+
+      // API returns:
+      // { success: true, total: 1, data: [...] }
+
+      setFilteredData(result.data);
+      setVehicleMenuOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert("Unable to fetch data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      <div className="max-w-6xl mx-auto mb-50 bg-blue-800 rounded-2xl shadow-lg p-6">
+      <div className="w-full   mt-7 mb-50 bg-white rounded-2xl shadow-lg p-6">
         <h2 className="text-3xl font-bold text-center mb-6">
-          Find Your Transport
+          FIND YOUR TRANSPORT
         </h2>
 
         <div className="grid md:grid-cols-4 gap-4">
@@ -119,23 +118,22 @@ const handleSearch = async () => {
             placeholder="📍 To City"
           />
 
-       <Select
-  isMulti
-  options={vehicleOptions}
-  value={vehicleTypes}
-  onChange={setVehicleTypes}
-  placeholder="🚚 Vehicle Type"
-  closeMenuOnSelect={false}
-  hideSelectedOptions={false}
-  menuIsOpen={vehicleMenuOpen}
-  onMenuOpen={() => setVehicleMenuOpen(true)}
-  onMenuClose={() => setVehicleMenuOpen(false)}
-  components={{
-    ValueContainer: MultiValueContainer,
-    MultiValue: () => null,
-  }}
-
-/>
+          <Select
+            isMulti
+            options={vehicleOptions}
+            value={vehicleTypes}
+            onChange={setVehicleTypes}
+            placeholder="🚚 Vehicle Type"
+            closeMenuOnSelect={false}
+            hideSelectedOptions={false}
+            menuIsOpen={vehicleMenuOpen}
+            onMenuOpen={() => setVehicleMenuOpen(true)}
+            onMenuClose={() => setVehicleMenuOpen(false)}
+            components={{
+              ValueContainer: MultiValueContainer,
+              MultiValue: () => null,
+            }}
+          />
 
           <button
             onClick={handleSearch}
@@ -147,27 +145,21 @@ const handleSearch = async () => {
         </div>
       </div>
 
-       <div className="max-w-6xl mx-auto mt-16 bg-white rounded-2xl shadow-lg p-6">
-    ...
-  </div>
 
-  {/* Search Results */}
-  <div className="max-w-6xl mx-auto mt-10">
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {filteredData.length > 0 ? (
-      filteredData.map((item) => (
-        <TransportCard
-          key={item._id || item.id}
-          item={item}
-        />
-      ))
-    ) : (
-      <p className="col-span-full text-center text-gray-500">
-        No transport found.
-      </p>
-    )}
-  </div>
-</div>
+      {/* Search Results */}
+      <div className="max-w-6xl mx-auto mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredData.length > 0 ? (
+            filteredData.map((item) => (
+              <TransportCard key={item._id || item.id} item={item} />
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-500">
+              No transport found.
+            </p>
+          )}
+        </div>
+      </div>
     </>
   );
 }

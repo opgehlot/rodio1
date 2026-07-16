@@ -6,6 +6,7 @@ import {
   User,
   ArrowRight,
 } from "lucide-react";
+        import { Link } from "react-router-dom";
 
 function DirectoryCard({ business }) {
   return ( 
@@ -112,11 +113,11 @@ function DirectoryCard({ business }) {
 
       <div className=" border-t p-5">
 
-        <button className="w-full border border-gray-300 rounded-xl py-3 font-medium text-gray-700 hover: text-blue-600 dark:text-sky-600 flex items-center justify-center gap-2 transition">
-          View Details
-          <ArrowRight size={18} />
-        </button>
 
+
+<Link to={`/dashboard/transporter/${business._id}`}>
+  View More
+</Link>
       </div>
 
     </div>

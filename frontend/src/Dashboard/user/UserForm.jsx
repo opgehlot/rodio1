@@ -77,17 +77,17 @@ export function UserForm() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 py-10">
+    <div className="min-h-screen bg-white ">
 
       <div className="max-w-7xl mx-auto px-4">
 
-        <div className="bg-blue-600 rounded-2xl p-8 text-white shadow-xl">
+        <div className="bg-white  p-8 text-black ">
 
           <h1 className="text-4xl font-bold">
-            🚚 Create Transport Request
+            Create Transport Request
           </h1>
 
-          <p className="mt-2 text-orange-100">
+          <p className="mt-2 text-amber-500">
             Fill shipment details and submit your booking.
           </p>
 
@@ -100,7 +100,7 @@ export function UserForm() {
 
           <div className="lg:col-span-2 space-y-8">
 
-            <div className="bg-white rounded-2xl shadow-md p-6">
+            <div className="bg-white ">
 
               <h2 className="text-2xl font-bold mb-6">
                 📦 Shipment Details
@@ -152,6 +152,38 @@ export function UserForm() {
                     <option>Tata Ace</option>
                     <option>Trailer</option>
                   </select>
+
+                </div>
+                <div>
+
+                  <label className="font-semibold">
+                    Goods Type
+                  </label>
+
+                  <input
+                    type="text"
+                    name="goodsType"
+                    value={formData.goodsType}
+                    onChange={handleChange}
+                    className="w-full border rounded-xl h-12 px-4 mt-2"
+                  />
+
+                </div>
+                {/* Weight */}
+
+                <div>
+
+                  <label className="font-semibold">
+                    Weight in(Ton)
+                  </label>
+
+                  <input
+                    type="number"
+                    name="weight"
+                    value={formData.weight}
+                    onChange={handleChange}
+                    className="w-full border rounded-xl h-12 px-4 mt-2"
+                  />
 
                 </div>
 
@@ -211,39 +243,9 @@ export function UserForm() {
 
                 {/* Goods */}
 
-                <div>
+                
 
-                  <label className="font-semibold">
-                    Goods Type
-                  </label>
-
-                  <input
-                    type="text"
-                    name="goodsType"
-                    value={formData.goodsType}
-                    onChange={handleChange}
-                    className="w-full border rounded-xl h-12 px-4 mt-2"
-                  />
-
-                </div>
-
-                {/* Weight */}
-
-                <div>
-
-                  <label className="font-semibold">
-                    Weight in(Ton)
-                  </label>
-
-                  <input
-                    type="number"
-                    name="weight"
-                    value={formData.weight}
-                    onChange={handleChange}
-                    className="w-full border rounded-xl h-12 px-4 mt-2"
-                  />
-
-                </div>
+                
                                 {/* Contact Person */}
                 <div>
                   <label className="font-semibold">
@@ -298,7 +300,7 @@ export function UserForm() {
 
             {/* Remarks */}
 
-            <div className="bg-white rounded-2xl shadow-md p-6">
+            <div className="bg-white ">
 
               <h2 className="text-2xl font-bold mb-5">
                 📝 Additional Information
@@ -374,7 +376,7 @@ export function UserForm() {
                 <div className="flex justify-between">
                   <span>Weight</span>
                   <span className="font-semibold">
-                    {formData.weight || 0} KG
+                    {formData.weight || 0}  TON
                   </span>
                 </div>
 

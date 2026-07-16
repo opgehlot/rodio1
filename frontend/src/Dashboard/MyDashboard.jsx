@@ -1,6 +1,8 @@
 import BrokerDashboard from "./broker/BrokerDashboard";
-import TransporterDashboard from "./transporter/TransporterDashboard";
+import TranspoterDashboard from "./transporter/TranspoterDashboard";
+
 import UserDashboard from "./user/UserDashboard";
+
 
 
 export function MyDashboard() {
@@ -10,8 +12,8 @@ export function MyDashboard() {
     return <UserDashboard />;
   }
 
-  if (role === "transporter") {
-    return <TransporterDashboard />;
+  if (role === "transporter") {     
+    return <TranspoterDashboard/>;
   }
 
   if (role === "broker") {

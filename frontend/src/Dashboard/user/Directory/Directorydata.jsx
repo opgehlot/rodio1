@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import API from "../../../api/api";
-
-
 import DirectoryFilter from "./DirectoryFilter";
 import DirectoryList from "./DirectoryList";
 
 import { stateCityData } from "./stateCityData";
+
+
 
 function DirectoryPage() {
 
@@ -91,3 +91,4 @@ function DirectoryPage() {
 }
 
 export default DirectoryPage;
+

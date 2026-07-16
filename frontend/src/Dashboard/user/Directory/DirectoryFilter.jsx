@@ -1,23 +1,26 @@
 const categories = [
   "Transporter",
+  "Tour and Travels",
+  "Insurance Companey",
   "Broker",
-  "Fleet Owner",
-  "Truck Owner",
-  "Logistics Company",
+  "Truck Owners",
+  "Tanker Trasporter ",
+  "Traillor Trasporter",
+  "Car Carrier",
+  "Bus Services",
   "Warehouse",
-"Courier",
-  "Packing & Moving",
-  "Commission Agent",
+  "Courier",
+  " HouseHold Packer & Movers",
   "RTO Agent",
-  "Finance Agent",
+  "Financer",
+  "Coustom House Agent (CHA)",
+  "Tow Wheeler Driver",
+  "Pickup & Three Wheeler",
+  "Ambulance",
+  "other"
 ];
 
-function DirectoryFilter({
-  filters,
-  setFilters,
-  stateCityData,
-  onSearch,
-}) {
+function DirectoryFilter({ filters, setFilters, stateCityData, onSearch }) {
   return (
     <form onSubmit={onSearch} className="bg-white rounded-xl shadow p-6">
       <div className="grid lg:grid-cols-4 gap-4">

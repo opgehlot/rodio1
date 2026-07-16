@@ -81,6 +81,9 @@ export default function Login() {
       if (response.data.redirectTo) {
         navigate(response.data.redirectTo);
       } else {
+
+        console.log("Response:", response.data);
+console.log("Redirect:", response.data.redirectTo);
         navigate("/");
       }
     } catch (error) {
