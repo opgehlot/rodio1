@@ -61,7 +61,7 @@ export default function AppFooter() {
           {/* Right */}
 
 
- <div className="flex gap-60">
+ <div className="flex gap-35">
   {/* First Column */}
   <div>
     <h3 className="font-semibold text-lg mb-4 text-white">

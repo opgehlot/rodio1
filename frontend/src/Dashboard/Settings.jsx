@@ -85,7 +85,7 @@ const onSubmit = async (data) => {
 
           <input
             {...register("name", {
-              required: "Name is required",
+              
             })}
             className="w-full border rounded-lg p-3"
             placeholder="Enter Name"
@@ -108,7 +108,7 @@ const onSubmit = async (data) => {
           <input
             type="email"
             {...register("email", {
-              required: "Email is required",
+            
             })}
             className="w-full border rounded-lg p-3"
             placeholder="Enter Email"
