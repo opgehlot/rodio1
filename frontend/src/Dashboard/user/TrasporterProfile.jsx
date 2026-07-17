@@ -51,7 +51,7 @@ const TransporterProfile = () => {
 
   return (
     <div className="bg-slate-100 min-h-screen py-10">
-      <div className="max-w-7xl mx-auto">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl shadow-xl text-white p-8 flex flex-col lg:flex-row gap-8 items-center">
@@ -148,7 +148,7 @@ const TransporterProfile = () => {
           </div>
 
           {/* Right */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-7 w-full min-w-0">
 
             <div className="bg-white rounded-2xl shadow-md p-6">
 
@@ -162,7 +162,7 @@ const TransporterProfile = () => {
 
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6">
+            <div className="bg-white rounded-2xl shadow-md p-4">
 
               <h2 className="text-2xl font-bold mb-6">
                 Customer Reviews

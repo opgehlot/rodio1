@@ -11,8 +11,8 @@ const ReviewSection = ({ transporterId }) => {
       try {
         const { data } = await API.get(`/transporters/${transporterId}`);
         setReviews(data.data?.comments || []);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
+      } catch (err) {
+        console.log(err);
       }
     };
 
@@ -24,7 +24,7 @@ const ReviewSection = ({ transporterId }) => {
   const visibleReviews = showAll ? reviews : reviews.slice(0, 5);
 
   return (
-   <div className="w-full max-w-full space-y-4 overflow-hidden">
+    <div className="w-full space-y-4">
       {visibleReviews.length === 0 ? (
         <p className="text-center text-gray-500">No reviews yet.</p>
       ) : (
@@ -32,22 +32,38 @@ const ReviewSection = ({ transporterId }) => {
           {visibleReviews.map((review) => (
             <div
               key={review._id}
-              className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm overflow-hidden"
+              className="w-full bg-white border border-gray-200 rounded-xl p-4"
             >
-              <div className="bg-white border rounded-xl p-4 shadow-sm overflow-hidden w-full">
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-sm sm:text-base md:text-lg break-words leading-6">
-                    {review.user?.name || "Anonymous"}
-                  </h3>
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
 
-                  <p className="mt-4 text-gray-700 leading-7 whitespace-pre-wrap break-all">
-                    {review.comment}
-                  </p>
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+
+                  {review.user?.profileImage ? (
+                    <img
+                      src={review.user.profileImage}
+                      alt={review.user?.name}
+                      className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                    />
+                  ) : (
+                    <FaUserCircle
+                      className="text-gray-400 flex-shrink-0"
+                      size={45}
+                    />
+                  )}
+
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-base break-words">
+                      {review.user?.name || "Anonymous"}
+                    </h3>
+
+                    <p className="text-xs text-gray-500">
+                      {new Date(review.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-wrap items-center gap-1 mt-2 sm:mt-0 sm:justify-end">
-                <div className="flex flex-wrap gap-1 sm:justify-end">
+                <div className="flex gap-1 flex-wrap">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <FaStar
                       key={star}
@@ -61,6 +77,16 @@ const ReviewSection = ({ transporterId }) => {
                 </div>
               </div>
 
+              {/* Comment */}
+              <p
+                className="mt-4 text-gray-700 text-sm sm:text-base leading-7 whitespace-pre-wrap break-words"
+                style={{
+                  overflowWrap: "anywhere",
+                  wordBreak: "break-word",
+                }}
+              >
+                {review.comment}
+              </p>
             </div>
           ))}
 
