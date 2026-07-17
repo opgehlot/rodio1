@@ -50,9 +50,8 @@ export function Register() {
         console.timeEnd("Register");
         setUser(res.data.user);
 
-      console.log(res.data);
 
-      toast.error("Registration Successful!");
+      toast.success("Registration Successful!");
 
       setFormData({
         name: "",
@@ -63,7 +62,7 @@ export function Register() {
         confirmPassword: "",
       });
 
-      navigate("/dashboard");
+      navigate("/login");
     } catch (error) {
       console.log("Error:", error.response?.data);
 

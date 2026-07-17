@@ -60,14 +60,14 @@ export default function Login() {
     try {
       setLoading(true);
 
-      console.log("Sending:", formData);
+      
 
       const response = await API.post("/auth/login", {
         emailOrMobile: formData.emailOrMobile,
         password: formData.password,
       });
 
-      console.log("Response:", response.data);
+  
 
       // Save Token
       localStorage.setItem("token", response.data.token);

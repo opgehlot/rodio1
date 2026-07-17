@@ -86,7 +86,9 @@ function DirectoryFilter({ filters, setFilters, stateCityData, onSearch }) {
           ))}
         </select>
 
-        <button className="bg-orange-500 text-white rounded-lg">Search</button>
+        <button className="bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold px-8 py-4 rounded-lg">
+  Search
+</button>
       </div>
     </form>
   );

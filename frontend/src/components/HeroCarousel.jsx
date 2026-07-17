@@ -3,8 +3,8 @@ import { Carousel as FlowbiteCarousel } from "flowbite-react";
 export function HeroCarousel() {
   return (
     <section className="w-full">
-      <div className="h-[220px] sm:h-[300px] md:h-[420px] lg:h-[500px] xl:h-[550px]">
-        <FlowbiteCarousel slideInterval={1000} indicators={false}>
+      <div className="h-[220px] sm:h-[400px] md:h-[420px] lg:h-[500px] xl:h-[550px]">
+        <FlowbiteCarousel slideInterval={2000} indicators={false}>
           {/* Slide 1 */}
           <div className="relative h-full">
             <img

@@ -136,9 +136,9 @@ export default function SearchBar() {
           />
 <button
   onClick={handleSearch}
-  className="w-full sm:w-auto min-h-[48px] px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2 font-medium transition-all duration-300"
+  className="w-full sm:w-auto min-h-[500px] px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2 font-medium transition-all duration-300"
 >
-  <Search size={18} />
+  <Search size={25} />
   {loading ? "Searching..." : "Search"}
 </button>
         </div>
