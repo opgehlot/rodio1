@@ -6,6 +6,7 @@ import Features from "../components/Features";
 import QueryForm from "../components/QueryForm";
 import Overvision from "../components/Overvision";
 import About from "./About";
+import ReadyToGrow from "./ReadyToGrow";
 
 
 function Home() {
@@ -16,9 +17,11 @@ function Home() {
     
       <Overvision/>
         <About/>
+         <ReadyToGrow/>
       <Feedback/>
     
      <QueryForm/>
+    
      
 
 

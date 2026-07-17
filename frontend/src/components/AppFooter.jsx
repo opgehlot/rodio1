@@ -164,6 +164,81 @@ export default function AppFooter() {
 
   </div>
 </div>
+{/* Meet Our Developers */}
+
+<div className="border-t border-gray-700 mt-10 pt-8">
+  <h3 className="text-2xl font-bold text-center mb-8 text-white">
+    Meet Our Developers
+  </h3>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    {/* Om Gehlot */}
+
+    <div className="bg-slate-900/60 border border-gray-700 rounded-2xl p-6 hover:border-blue-500 transition-all duration-300">
+      <div className="flex items-center gap-4">
+
+        <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold">
+          OG
+        </div>
+
+        <div>
+          <h4 className="text-xl font-semibold text-white">
+            Om Gehlot
+          </h4>
+
+          <p className="text-gray-400 text-sm">
+            Full Stack Developer
+          </p>
+        </div>
+
+      </div>
+
+      <div className="mt-4 flex items-center gap-2 text-gray-300">
+        <Mail size={18} className="text-blue-400" />
+        <a
+          href="mailto:opgehlot73@gmail.com"
+          className="hover:text-blue-400 break-all"
+        >
+          opgehlot73@gmail.com
+        </a>
+      </div>
+    </div>
+
+    {/* Ashutosh Gehlot */}
+
+    <div className="bg-slate-900/60 border border-gray-700 rounded-2xl p-6 hover:border-blue-500 transition-all duration-300">
+      <div className="flex items-center gap-4">
+
+        <div className="w-14 h-14 rounded-full bg-green-600 flex items-center justify-center text-xl font-bold">
+          AG
+        </div>
+
+        <div>
+          <h4 className="text-xl font-semibold text-white">
+            Ashutosh Upadhyay 
+          </h4>
+
+          <p className="text-gray-400 text-sm">
+            Full Stack Developer
+          </p>
+        </div>
+
+      </div>
+
+      <div className="mt-4 flex items-center gap-2 text-gray-300">
+        <Mail size={18} className="text-green-400" />
+        <a
+          href="mailto:ashutoshupadhyay9522@gmail.com"
+          className="hover:text-green-400 break-all"
+        >
+          ashutoshupadhyay9522@gmail.com
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
           </div>
@@ -176,7 +251,7 @@ export default function AppFooter() {
 
         <div className="border-t border-gray-800 mt-6 pt-5 text-center text-sm text-gray-400">
 
-          © {new Date().getFullYear()} Rodio Transport System.
+          © {new Date().getFullYear()}  RODIO.
           All Rights Reserved.
 
         </div>
