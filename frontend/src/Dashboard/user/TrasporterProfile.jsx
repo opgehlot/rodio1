@@ -122,29 +122,17 @@ const TransporterProfile = () => {
 
             <div className="space-y-3">
 
-              <p>
-                <strong>GST :</strong>{" "}
-                {profile.gstNumber}
-              </p>
 
               <p>
                 <strong>Category :</strong>{" "}
                 {profile.category}
               </p>
 
-              <p>
-                <strong>Experience :</strong>{" "}
-                {profile.experience || "N/A"}
-              </p>
+           
 
               <p>
                 <strong>Total Vehicles :</strong>{" "}
                 {profile.totalVehicles || "N/A"}
-              </p>
-
-              <p>
-                <strong>Vehicle Type :</strong>{" "}
-                {profile.vehicleType || "N/A"}
               </p>
 
             </div>

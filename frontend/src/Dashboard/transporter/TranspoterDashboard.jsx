@@ -1,8 +1,12 @@
 import React from 'react'
+import DashboardLayout from '../DashboardLayout'
 
 function TranspoterDashboard() {
   return (
-    <div>TranspoterDashboard</div>
+    <div>
+      <DashboardLayout/>
+
+    </div>
   )
 }
 
