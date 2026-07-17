@@ -1,10 +1,10 @@
 import React from 'react'
-import DashboardLayout from '../DashboardLayout'
+import DashboardBanner from '../DashboardBanner'
 
 function TranspoterDashboard() {
   return (
     <div>
-      <DashboardLayout/>
+      <DashboardBanner/>
 
     </div>
   )
