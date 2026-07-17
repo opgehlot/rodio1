@@ -51,7 +51,7 @@ const TransporterProfile = () => {
 
   return (
     <div className="bg-slate-100 min-h-screen py-10">
-<div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+<div className="max-w-7xl mx-auto px-1 sm:px-2 lg:px-6">
 
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl shadow-xl text-white p-8 flex flex-col lg:flex-row gap-8 items-center">
