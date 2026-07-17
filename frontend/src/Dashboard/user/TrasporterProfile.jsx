@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {
+  FaStar,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaTruck,
+  FaUserTie,
+} from "react-icons/fa";
 import API from "../../api/api";
+import AddRating from "../AddRatting";
+import ReviewSection from "../ReviewSection";
 
 const TransporterProfile = () => {
   const { id } = useParams();
@@ -15,11 +25,7 @@ const TransporterProfile = () => {
   const getProfile = async () => {
     try {
       const res = await API.get(`/transporters/${id}`);
-
-      console.log(res.data);
-
       setProfile(res.data.data);
-
     } catch (err) {
       console.log(err);
     } finally {
@@ -29,7 +35,7 @@ const TransporterProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-xl font-semibold">
+      <div className="min-h-screen flex justify-center items-center text-xl font-bold">
         Loading...
       </div>
     );
@@ -37,133 +43,150 @@ const TransporterProfile = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex justify-center items-center text-xl">
         Transporter Not Found
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
-
-      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="bg-slate-100 min-h-screen py-10">
+      <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-
-        <div className="bg-blue-600 text-white p-8 flex flex-col md:flex-row items-center gap-6">
+        <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl shadow-xl text-white p-8 flex flex-col lg:flex-row gap-8 items-center">
 
           <img
-            src={
-              profile.profileImage ||
-              "https://via.placeholder.com/180"
-            }
-            alt={profile.firmName}
-            className="w-40 h-40 rounded-full border-4 border-white object-cover"
+            src={profile.profileImage || "https://via.placeholder.com/200"}
+            alt=""
+            className="w-48 h-48 rounded-full border-4 border-white object-cover shadow-lg"
           />
 
-          <div>
+          <div className="flex-1">
 
             <h1 className="text-4xl font-bold">
               {profile.firmName}
             </h1>
 
-            <p className="text-lg mt-2">
-              Owner : {profile.ownerName}
+            <p className="text-lg mt-2 flex items-center gap-2">
+              <FaUserTie />
+              {profile.ownerName}
             </p>
 
-            <p>
-              ⭐ {profile.rating || "New Transporter"}
-            </p>
+            <div className="flex items-center gap-2 mt-3">
+              <FaStar className="text-yellow-300" />
+              <span className="text-xl font-semibold">
+                {profile.averageRating || "0.0"}
+              </span>
+
+              <span className="text-gray-200">
+                ({profile.totalReviews || 0} Reviews)
+              </span>
+            </div>
+
+            <button className="mt-6 bg-white text-blue-700 font-semibold px-6 py-3 rounded-xl hover:bg-gray-100 transition">
+              Request Transport
+            </button>
 
           </div>
-
         </div>
 
-        {/* Body */}
+        {/* Main */}
+        <div className="grid lg:grid-cols-3 gap-8 mt-8">
 
-        <div className="grid md:grid-cols-2 gap-8 p-8">
+          {/* Left */}
+          <div className="lg:col-span-1 space-y-6">
 
-          <div>
+            <div className="bg-white rounded-2xl shadow-md p-6">
 
-            <h2 className="text-xl font-bold mb-4">
-              Company Details
-            </h2>
+              <h2 className="font-bold text-xl mb-5">
+                Company Details
+              </h2>
 
-            <div className="space-y-3">
+              <div className="space-y-4">
 
-              <p><strong>Email :</strong> {profile.email}</p>
+                <p className="flex gap-3">
+                  <FaEnvelope className="text-blue-600 mt-1" />
+                  {profile.email}
+                </p>
 
-              <p><strong>Phone :</strong> {profile.phone}</p>
+                <p className="flex gap-3">
+                  <FaPhone className="text-green-600 mt-1" />
+                  {profile.phone}
+                </p>
 
-              <p><strong>Firm :</strong> {profile.firmName}</p>
+                <p className="flex gap-3">
+                  <FaMapMarkerAlt className="text-red-500 mt-1" />
+                  {profile.currentCity}, {profile.currentState}
+                </p>
 
-              <p><strong>Owner :</strong> {profile.ownerName}</p>
+              </div>
 
-              <p>
-                <strong>Location :</strong>{" "}
-                {profile.currentCity},{" "}
-                {profile.currentState}
-              </p>
+            </div>
 
-              <p>
-                <strong>Address :</strong>{" "}
-                {profile.address}
-              </p>
+            <div className="bg-white rounded-2xl shadow-md p-6">
+
+              <h2 className="font-bold text-xl mb-5">
+                Business Info
+              </h2>
+
+              <div className="space-y-3">
+
+                <p>
+                  <strong>Category :</strong> {profile.category}
+                </p>
+
+                <p>
+                  <strong>Total Vehicles :</strong>{" "}
+                  {profile.totalVehicles || "N/A"}
+                </p>
+
+              </div>
 
             </div>
 
           </div>
 
-          <div>
+          {/* Right */}
+          <div className="lg:col-span-2 space-y-6">
 
-            <h2 className="text-xl font-bold mb-4">
-              Business Information
-            </h2>
+            <div className="bg-white rounded-2xl shadow-md p-6">
 
-            <div className="space-y-3">
+              <h2 className="text-2xl font-bold mb-4">
+                About Company
+              </h2>
 
-
-              <p>
-                <strong>Category :</strong>{" "}
-                {profile.category}
-              </p>
-
-           
-
-              <p>
-                <strong>Total Vehicles :</strong>{" "}
-                {profile.totalVehicles || "N/A"}
+              <p className="text-gray-600 leading-8">
+                {profile.description || "No Description Available"}
               </p>
 
             </div>
 
+            <div className="bg-white rounded-2xl shadow-md p-6">
+
+              <h2 className="text-2xl font-bold mb-6">
+                Customer Reviews
+              </h2>
+
+              <ReviewSection transporterId={profile._id} />
+
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md p-6">
+
+              <h2 className="text-xl font-bold mb-4">
+                Give Your Rating
+              </h2>
+
+              <AddRating AddtransporterId={profile._id} />
+
+            </div>
+
           </div>
-
-        </div>
-
-        {/* Description */}
-
-        <div className="px-8 pb-8">
-
-          <h2 className="text-xl font-bold mb-3">
-            About
-          </h2>
-
-          <p className="text-gray-600">
-            {profile.description ||
-              "No Description Available"}
-          </p>
-
-          <button
-            className="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg"
-          >
-            Request Transport
-          </button>
 
         </div>
 
       </div>
-
     </div>
   );
 };
