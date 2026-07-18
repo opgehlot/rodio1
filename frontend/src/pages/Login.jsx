@@ -104,7 +104,7 @@ console.log("Redirect:", response.data.redirectTo);
       <Navbar />
 
       <div className=" mt-20 min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
-        <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden grid lg:grid-cols-2">
+        <div className="w-full max-w-6xl bg-white  shadow-2xl overflow-hidden grid lg:grid-cols-2">
           {/* Left Side */}
           <div className="hidden lg:flex relative bg-gradient-to-br from-blue-900 via-indigo-700 to-blue-500 text-white p-14 flex-col justify-between">
             <div>

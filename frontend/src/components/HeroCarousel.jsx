@@ -1,9 +1,10 @@
 import { Carousel as FlowbiteCarousel } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 export function HeroCarousel() {
   return (
     <section className="w-full">
-      <div className="h-[220px] sm:h-[400px] md:h-[420px] lg:h-[500px] xl:h-[550px]">
+      <div className="h-[300px] sm:h-[400px] md:h-[420px] lg:h-[500px] xl:h-[550px]">
         <FlowbiteCarousel slideInterval={2000} indicators={false}>
           {/* Slide 1 */}
           <div className="relative h-full">
@@ -20,12 +21,15 @@ export function HeroCarousel() {
                 </h1>
 
                 <p className="mt-4 text-sm md:text-xl max-w-xl">
-                  Find verified transporters, brokers and contractors across India.
+                  Find verified transporters, brokers and contractors across
+                  India.
                 </p>
 
-                <button className="mt-6 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold">
-                  Search Transport
-                </button>
+                <Link to="/dummydirctory">
+                  <button className="mt-6 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold text-white">
+                    Search Directory
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

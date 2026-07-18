@@ -1,233 +1,355 @@
 import { useState, useContext } from "react";
-import axios from "axios";
-import API from "../api/api";
-import { User, Mail, Lock, Truck, Phone, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Truck, User, Mail, Lock, Phone } from "lucide-react";
 import toast from "react-hot-toast";
+import API from "../api/api";
 import { AuthContext } from "../context/AuthContext";
-export function Register() {
+
+export default function Register() {
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    role: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const password = watch("password");
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    // Check password match
-    if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match!");
-      return;
-    }
-
+  const onSubmit = async (data) => {
     setLoading(true);
 
     try {
-      console.log("Sending Data:", formData);
-    
+      const res = await API.post("/auth/register", data);
 
-      const res = await API.post(
-      "auth/register",
-        formData,
-        
-      );
-        console.timeEnd("Register");
-        setUser(res.data.user);
+      setUser(res.data.user);
 
+      toast.success("Registration Successful");
 
-      toast.success("Registration Successful!");
-
-      setFormData({
-        name: "",
-        email: "",
-        mobile: "",
-          role: "",
-        password: "",
-        confirmPassword: "",
-      });
+      reset();
 
       navigate("/login");
-    } catch (error) {
-      console.log("Error:", error.response?.data);
-
-      toast.error(error.response?.data?.message || "Registration Failed");
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || "Registration Failed"
+      );
     } finally {
       setLoading(false);
     }
   };
+
   return (
-    <div className=" mt-50 min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2">
-        {/* Left Side */}
-        <div className="bg-blue-600 text-white p-10 flex flex-col justify-center">
-          <div className="flex items-center gap-3 mb-6">
-            <Truck size={40} />
-            <h1 className="text-4xl font-bold">Rodio</h1>
+    <div className=" mt-20 min-h-screen bg-slate-100 flex items-center justify-center px-4 py-10">
+
+      <div className="w-full max-w-5xl bg-white shadow-xl grid md:grid-cols-2">
+
+        {/* Left */}
+
+        <div className="hidden md:flex bg-blue-700 text-white p-10 flex-col justify-center">
+
+          <div className="flex items-center gap-3">
+
+            <Truck size={38} />
+
+            <h1 className="text-4xl font-bold">
+              Rodio
+            </h1>
+
           </div>
 
-          <h2 className="text-3xl font-bold">Create Your Account</h2>
+          <h2 className="text-3xl font-bold mt-8">
+            Join India's Trusted
+            Transport Network
+          </h2>
 
-          <p className="mt-4 text-blue-100">
-            Register as a Broker, Transporter or Contractor and start finding
-            transport opportunities.
+          <p className="mt-5 text-blue-100 leading-7">
+
+            Register as a Transporter,
+            Broker or Shipper and start
+            growing your business with Rodio.
+
           </p>
+
         </div>
 
-        {/* Right Side */}
-        <div className="p-10">
-          <h2 className="text-3xl font-bold">Register</h2>
+        {/* Right */}
 
-          <form className="space-y-5 mt-8" onSubmit={handleRegister}>
+        <div className="p-6 md:p-10">
+
+          <h2 className="text-3xl font-bold">
+            Create Account
+          </h2>
+
+          <p className="text-gray-500 mt-2 mb-8">
+            Fill your details to continue
+          </p>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
+
+            {/* Role */}
+
             <div>
-  <label>I AM A</label>
 
-  <div className="mt-2">
-    <select
-      name="role"
-      value={formData.role}
-      onChange={handleChange}
-      className="w-full border rounded-xl px-4 py-3 outline-none"
-      required
-    >
-      <option value="">Select Role</option>
-      <option value="user">SHIPPER</option>
-      <option value="transporter">Transporter</option>
-      <option value="broker">Broker</option>
-    </select>
-  </div>
-</div>
-            {/* Name */}
-            <div>
-              <label>Name</label>
+              <label className="text-sm font-medium">
+                I Am A
+              </label>
 
-              <div className="flex items-center border rounded-xl px-4 py-3 mt-2">
-                <User className="mr-3 text-gray-400" />
+              <select
+                {...register("role", {
+                  required: "Select Role",
+                })}
+                className="w-full  border border-gray-300 px-3 h-15 outline-none focus:border-blue-600"
+              >
+                <option value="">
+                  Select Role
+                </option>
 
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter Name"
-                  className="w-full outline-none"
-                  
-                  minLength={3}
-                  required
-                />
-              </div>
+                <option value="user">
+                  Shipper
+                </option>
+
+                <option value="transporter">
+                  Transporter
+                </option>
+
+                <option value="broker">
+                  Broker
+                </option>
+
+              </select>
+
+              <p className="text-red-500 text-sm mt-1">
+                {errors.role?.message}
+              </p>
+
             </div>
-            <div>
-              <label>Mobile Number</label>
 
-              <div className="flex items-center border rounded-xl px-4 py-3 mt-2">
-                <Phone className="mr-3 text-gray-400" />
+            {/* Name */}
+
+            <div>
+
+              <label className="text-sm font-medium">
+                Full Name
+              </label>
+
+              <div className="flex items-center border border-gray-300 h-15  px-3">
+
+                <User size={18} className="text-gray-400" />
 
                 <input
-                  type="tel"
-                  name="mobile"
-                
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  placeholder="Enter Mobile Number"
-                  className="w-full outline-none"
-                  maxLength={10}
+                  {...register("name", {
+                    required: "Name Required",
+                    minLength: 3,
+                  })}
+                  className="w-full ml-3 outline-none"
+                  placeholder="Enter full name"
                 />
+
               </div>
+
+              <p className="text-red-500 text-sm mt-1">
+                {errors.name?.message}
+              </p>
+
+            </div>
+
+            {/* Mobile */}
+
+            <div>
+
+              <label className="text-sm font-medium">
+                Mobile Number
+              </label>
+
+              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
+
+                <Phone size={18} className="text-gray-400" />
+
+                <input
+                  {...register("mobile", {
+                    required: "Mobile Required",
+                    minLength: 10,
+                    maxLength: 10,
+                  })}
+                  className="w-full ml-3 outline-none"
+                  placeholder="9876543210"
+                />
+
+              </div>
+
+              <p className="text-red-500 text-sm mt-1">
+                {errors.mobile?.message}
+              </p>
+
             </div>
 
             {/* Email */}
-            <div>
-              <label>Email</label>
 
-              <div className="flex items-center border rounded-xl px-4 py-3 mt-2">
-                <Mail className="mr-3 text-gray-400" />
+            <div>
+
+              <label className="text-sm font-medium">
+                Email
+              </label>
+
+              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
+
+                <Mail size={18} className="text-gray-400" />
 
                 <input
                   type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter Email"
-                  className="w-full outline-none"
+                  {...register("email", {
+                    required: "Email Required",
+                  })}
+                  className="w-full ml-3 outline-none"
+                  placeholder="example@gmail.com"
                 />
+
               </div>
+
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email?.message}
+              </p>
+
             </div>
+                        {/* Password */}
 
-            {/* Password */}
             <div>
-              <label>Password</label>
 
-              <div className="flex items-center border rounded-xl px-4 py-3 mt-2">
-                <Lock className="mr-3 text-gray-400" />
+              <label className="text-sm font-medium">
+                Password
+              </label>
+
+              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
+
+                <Lock size={18} className="text-gray-400" />
 
                 <input
                   type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter Password"
-                  className="w-full outline-none"
+                  {...register("password", {
+                    required: "Password Required",
+                    minLength: {
+                      value: 6,
+                      message: "Minimum 6 characters",
+                    },
+                  })}
+                  className="w-full ml-3 outline-none"
+                  placeholder="********"
                 />
-              </div>
-            </div>
-            <div>
-              <label>Confirm Password</label>
 
-              <div className="flex items-center border rounded-xl px-4 py-3 mt-2">
-                <Lock className="mr-3 text-gray-400" />
+              </div>
+
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password?.message}
+              </p>
+
+            </div>
+
+            {/* Confirm Password */}
+
+            <div>
+
+              <label className="text-sm font-medium">
+                Confirm Password
+              </label>
+
+              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
+
+                <Lock size={18} className="text-gray-400" />
 
                 <input
                   type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Confirm Password"
-                  className="w-full outline-none"
+                  {...register("confirmPassword", {
+                    required: "Confirm your password",
+                    validate: (value) =>
+                      value === password || "Passwords do not match",
+                  })}
+                  className="w-full ml-3 outline-none"
+                  placeholder="********"
                 />
+
               </div>
+
+              <p className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword?.message}
+              </p>
+
             </div>
+
+            {/* Button */}
+
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-xl text-white font-semibold transition ${
+              className={`w-full h-11 text-white font-semibold transition ${
                 loading
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-orange-500 hover:bg-orange-600"
               }`}
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? (
+                <div className="flex justify-center items-center gap-2">
+
+                  <svg
+                    className="animate-spin h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      opacity=".2"
+                    />
+
+                    <path
+                      fill="currentColor"
+                      d="M22 12a10 10 0 0 1-10 10V18a6 6 0 0 0 6-6h4z"
+                    />
+
+                  </svg>
+
+                  Registering...
+
+                </div>
+              ) : (
+                "Create Account"
+              )}
             </button>
-            <div className="mt-6 text-center">
-              <p className="text-gray-600">
-                Already have an account?{" "}
+
+            <div className="text-center pt-2">
+
+              <p className="text-sm text-gray-600">
+
+                Already have an account?
+
                 <Link
                   to="/login"
-                  className="text-blue-600 font-semibold hover:underline"
+                  className="ml-1 text-blue-600 font-semibold hover:underline"
                 >
                   Login
                 </Link>
+
               </p>
+
             </div>
+
           </form>
+
         </div>
+
       </div>
+
     </div>
   );
 }
-export default Register;

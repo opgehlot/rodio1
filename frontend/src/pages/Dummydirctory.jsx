@@ -193,9 +193,10 @@ export function Dummydirectory() {
                     {hideEmail(item.email)}
                   </p>
                 </div>
+                
               </div>
-              <hr />
-            <button
+              
+               <button
               onClick={() =>
                 navigate("/DtransporterDetails", {
                   state: item,
@@ -206,6 +207,8 @@ export function Dummydirectory() {
               View More
               
             </button>
+              
+          
             </div>
 
             
@@ -214,7 +217,7 @@ export function Dummydirectory() {
       </div>
       {/* Pagination */}
 
-      <div className="flex justify-center items-center flex-wrap gap-4 mt-10">
+      <div className="flex justify-center items-center flex-wrap gap-4 mt-7">
         <div className="flex items-center gap-4 text-blue-700 text-lg font-medium">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((page) => (
             <button
