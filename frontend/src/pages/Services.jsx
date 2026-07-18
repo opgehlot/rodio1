@@ -31,7 +31,7 @@ const Services = () => {
       color: "from-blue-500 to-indigo-600",
       description:
         "Search verified trucks, pickups, trailers, tankers and commercial vehicles across India.",
-      path: "/vehicle-search",
+      path: "/register",
     },
     {
       title: "Transporter Search",
@@ -39,7 +39,7 @@ const Services = () => {
       color: "from-green-500 to-emerald-600",
       description:
         "Find trusted transport companies with ratings, reviews and verified profiles.",
-      path: "/transport-search",
+      path: "/register",
     },
     {
       title: "Directory Search",
@@ -47,7 +47,7 @@ const Services = () => {
       color: "from-orange-500 to-red-500",
       description:
         "Explore India's transport business directory with thousands of verified businesses.",
-      path: "/directory",
+      path: "/register",
     },
     {
       title: "Lead Search",
@@ -55,7 +55,7 @@ const Services = () => {
       color: "from-purple-500 to-pink-500",
       description:
         "Discover transport leads and business opportunities from different locations.",
-      path: "/lead-search",
+      path: "/register",
     },
     {
       title: "Broker Search",
@@ -63,7 +63,7 @@ const Services = () => {
       color: "from-cyan-500 to-blue-600",
       description:
         "Find trusted brokers and logistics partners to grow your business.",
-      path: "/broker-search",
+      path: "/register",
     },
     {
       title: "Warehouse Search",
@@ -71,7 +71,7 @@ const Services = () => {
       color: "from-yellow-500 to-orange-500",
       description:
         "Search warehouses, logistics parks and storage facilities near your city.",
-      path: "/warehouse-search",
+      path: "/register",
     },
   ];
 
@@ -106,7 +106,7 @@ const Services = () => {
             <div className="flex flex-wrap gap-5 mt-10">
 
               <button
-                onClick={() => handleNavigate("/directory")}
+                onClick={() => handleNavigate("/register")}
                 className="bg-yellow-400 text-black px-8 py-4 rounded-xl font-semibold hover:scale-105 transition"
               >
                 Explore Services

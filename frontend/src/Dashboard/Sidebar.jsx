@@ -131,7 +131,21 @@ export default function Sidebar({ open, setOpen }) {
 
           {role === "transporter" && (
             <>
-              
+              <NavLink
+                to="/dashboard/userform"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                ADD LOAD ENQUIERY
+              </NavLink>
+
+               <NavLink
+                to="/dashboard/showenquiery"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                SHOW ENQUIERY STATUS 
+              </NavLink>
 {/* 
               <NavLink
                 to="/dashboard/transportservices"
@@ -195,14 +209,36 @@ export default function Sidebar({ open, setOpen }) {
              <>
               
 
-              {/* <NavLink
+              <NavLink
+                to="/dashboard/userform"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                ADD LOAD ENQUIERY
+              </NavLink>
+              
+               <NavLink
+                to="/dashboard/showenquiery"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                SHOW ENQUIERY STATUS 
+              </NavLink>
+{/* 
+              <NavLink
                 to="/dashboard/transportservices"
                 className={linkClass}
                 onClick={handleClose}
               >
-                Transport Services
-              </NavLink>
-               */}
+                TRANSPORT SERVICES
+              </NavLink> */}
+              {/* <NavLink
+                to="/dashboard/addvehicle"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                ADD VEHICLE
+              </NavLink> */}
               <NavLink
                 to="/dashboard/directory"
                 className={linkClass}
@@ -224,19 +260,26 @@ export default function Sidebar({ open, setOpen }) {
                 className={linkClass}
                 onClick={handleClose}
               >
-                Leads
+                LEADS
               </NavLink>
+              <NavLink
+                to="/dashboard/addservices"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                ADD YOUR SERVICES
+              </NavLink>
+
+
+              {/* <NavLink
+                to="/dashboard/myvehicles"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                My Vehicles
+              </NavLink> */}
             </>
-            
           )}
-          
-          <NavLink
-            to="/dashboard/settings"
-            className={linkClass}
-            onClick={handleClose}
-          >
-            EDIT PROFILE 
-          </NavLink>
 
         </nav>
          <NavLink

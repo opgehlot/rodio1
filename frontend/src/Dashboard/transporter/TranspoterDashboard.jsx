@@ -6,7 +6,7 @@ function TranspoterDashboard() {
   return (
     <div>
       <DashboardBanner/>
-      {/* <DashboardReviews/> */}
+      <DashboardReviews/>
 
     </div>
   )

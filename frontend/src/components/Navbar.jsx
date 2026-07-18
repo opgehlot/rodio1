@@ -6,7 +6,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
+
     { name: "Home", path: "/" },
+    { name: "Directory", path: "/dummydirctory" },
+
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "Contact", path: "/queryform" },

@@ -108,10 +108,11 @@ export default function Profile() {
 
   return (
     <div className="bg-white rounded-2xl shadow overflow-hidden">
-
+   
       <div className="h-56 bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-700"></div>
+          <h1>welcome </h1>
 
-      <div className="px-8 pb-10">
+      <div className=" mt-5 px-8 pb-10">
 
         <div className="-mt-20 relative w-fit">
 

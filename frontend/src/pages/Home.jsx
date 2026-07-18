@@ -7,6 +7,7 @@ import QueryForm from "../components/QueryForm";
 import Overvision from "../components/Overvision";
 import About from "./About";
 import ReadyToGrow from "./ReadyToGrow";
+import Dummyserch from "../Dashboard/Dummyserch";
 
 
 function Home() {
@@ -14,6 +15,7 @@ function Home() {
     <div>
   
       <HeroCarousel/>
+      <Dummyserch/>
     
       <Overvision/>
         <About/>

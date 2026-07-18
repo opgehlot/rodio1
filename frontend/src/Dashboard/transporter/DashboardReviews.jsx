@@ -13,12 +13,11 @@ export  function DashboardReviews() {
 }, []);
 
   const fetchReviews = async () => {
-    try {
-      setLoading(true);
+     try {
+      const user = JSON.parse(localStorage.getItem("user"));
 
-const { data } = await API.get("/comment/my-reviews");
+      const { data } = await API.get(`/comment/${user.id}`);
 
- 
 
       setReviews(data.comments || []);
       setAverageRating(data.averageRating || 0);

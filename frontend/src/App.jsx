@@ -42,6 +42,8 @@ import ChangePassword from "./Dashboard/Changepassword";
 import AddVehicle from "./Dashboard/transporter/Addvehicle";
 import TransporterProfile from "./Dashboard/user/TrasporterProfile";
 import AddServices from "./Dashboard/transporter/transportpage/AddServices";
+import Dummydirectory from "./pages/Dummydirctory";
+import DtransporterDetails from "./pages/DtransporterDetails";
 
 function App() {
   return (
@@ -113,6 +115,9 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/dummydirctory" element={<Dummydirectory />} />
+          <Route path="/DtransporterDetails" element={<DtransporterDetails/>} />
+          
           ...
         </Route>
       </Routes>
