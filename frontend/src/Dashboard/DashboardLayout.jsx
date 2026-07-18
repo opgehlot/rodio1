@@ -29,9 +29,9 @@ export  function DashboardLayout() {
 
       {/* Main */}
 
-      <main className="lg:ml-80 p-6">
-        <Outlet />
-      </main>
+     <main className="lg:ml-80 p-4 md:p-6 overflow-x-hidden">
+  <Outlet />
+</main>
 
     </div>
   );
