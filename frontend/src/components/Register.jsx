@@ -95,7 +95,7 @@ export function Register() {
 
           <form className="space-y-5 mt-8" onSubmit={handleRegister}>
             <div>
-  <label>I am a</label>
+  <label>I AM A</label>
 
   <div className="mt-2">
     <select
@@ -106,7 +106,7 @@ export function Register() {
       required
     >
       <option value="">Select Role</option>
-      <option value="user">user</option>
+      <option value="user">SHIPPER</option>
       <option value="transporter">Transporter</option>
       <option value="broker">Broker</option>
     </select>
