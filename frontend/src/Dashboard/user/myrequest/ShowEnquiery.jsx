@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import API from "../../../api/api";
 
-export default function ShowEnquiery() {
-  const [requests, setRequests] = useState([]);
+export default function MyBookings() {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchRequests();
+    fetchBookings();
   }, []);
 
-  const fetchRequests = async () => {
-    try {
-      const res = await API.get("/booking/my-requests");
-      setRequests(res.data.requests || []);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const fetchBookings = async () => {
+  try {
+    const { data } = await API.get("/booking/my-bookings");
+
+    setBookings(data.data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -26,32 +30,36 @@ export default function ShowEnquiery() {
       case "Completed":
         return "bg-blue-100 text-blue-700";
       default:
-        return "bg-red-100 text-red-700";
+        return "bg-gray-100 text-gray-700";
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-60">
+        <p className="text-lg font-semibold">Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 lg:p-8">
 
-      {/* Header */}
-
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8">
 
         <h1 className="text-3xl font-bold">
-          My Requests
+          My Bookings
         </h1>
 
-        <div className="bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold w-fit">
-          Total Requests : {requests.length}
+        <div className="bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold mt-4 md:mt-0">
+          Total Bookings : {bookings.length}
         </div>
 
       </div>
 
-      {/* ========================= */}
-      {/* Desktop Table */}
-      {/* ========================= */}
+      {/* Desktop */}
 
-      <div className="hidden lg:block bg-white rounded-xl shadow overflow-hidden">
+      <div className="hidden lg:block overflow-x-auto bg-white rounded-xl shadow">
 
         <table className="w-full">
 
@@ -59,16 +67,17 @@ export default function ShowEnquiery() {
 
             <tr>
 
-              <th className="px-4 py-3 text-left">#</th>
-              <th className="px-4 py-3 text-left">Service</th>
-              <th className="px-4 py-3 text-left">Vehicle</th>
-              <th className="px-4 py-3 text-left">Pickup</th>
-              <th className="px-4 py-3 text-left">Destination</th>
-              <th className="px-4 py-3 text-left">Goods</th>
-              <th className="px-4 py-3 text-left">Weight</th>
-              <th className="px-4 py-3 text-left">Budget</th>
-              <th className="px-4 py-3 text-left">Date</th>
-              <th className="px-4 py-3 text-center">Status</th>
+              <th className="p-3">#</th>
+              <th className="p-3">Service</th>
+              <th className="p-3">Vehicle</th>
+              <th className="p-3">Pickup</th>
+              <th className="p-3">Destination</th>
+              <th className="p-3">Goods</th>
+              <th className="p-3">Weight</th>
+              <th className="p-3">Contact</th>
+              <th className="p-3">Budget</th>
+              <th className="p-3">Pickup Date</th>
+              <th className="p-3">Status</th>
 
             </tr>
 
@@ -76,45 +85,63 @@ export default function ShowEnquiery() {
 
           <tbody>
 
-            {requests.length > 0 ? (
+            {bookings.length ? (
 
-              requests.map((request, index) => (
+              bookings.map((booking, index) => (
 
                 <tr
-                  key={request._id}
+                  key={booking._id}
                   className="border-b hover:bg-gray-50"
                 >
 
-                  <td className="px-4 py-3">{index + 1}</td>
+                  <td className="p-3">{index + 1}</td>
 
-                  <td className="px-4 py-3">{request.service}</td>
+                  <td className="p-3">{booking.service}</td>
 
-                  <td className="px-4 py-3">{request.vehicleType}</td>
-
-                  <td className="px-4 py-3">{request.pickupLocation}</td>
-
-                  <td className="px-4 py-3">{request.loading_point}</td>
-
-                  <td className="px-4 py-3">{request.goodsType}</td>
-
-                  <td className="px-4 py-3">{request.weight}</td>
-
-                  <td className="px-4 py-3">
-                    ₹ {request.expectedBudget}
+                  <td className="p-3 font-semibold">
+                    {booking.vehicleType}
                   </td>
 
-                  <td className="px-4 py-3">
-                    {request.pickupDate}
+                  <td className="p-3">
+                    {booking.pickupLocation}
                   </td>
 
-                  <td className="px-4 py-3 text-center">
+                  <td className="p-3">
+                    {booking.loading_point}
+                  </td>
+
+                  <td className="p-3">
+                    {booking.goodsType || "-"}
+                  </td>
+
+                  <td className="p-3">
+                    {booking.weight || "-"} Kg
+                  </td>
+
+                  <td className="p-3">
+                    {booking.contactPerson}
+                    <br />
+                    <span className="text-sm text-gray-500">
+                      {booking.contactNumber}
+                    </span>
+                  </td>
+
+                  <td className="p-3">
+                    ₹ {booking.expectedBudget || 0}
+                  </td>
+
+                  <td className="p-3">
+                    {booking.pickupDate}
+                  </td>
+
+                  <td className="p-3">
 
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(
-                        request.status
+                        booking.status
                       )}`}
                     >
-                      {request.status}
+                      {booking.status || "Pending"}
                     </span>
 
                   </td>
@@ -128,10 +155,10 @@ export default function ShowEnquiery() {
               <tr>
 
                 <td
-                  colSpan="10"
-                  className="text-center py-10 text-gray-500"
+                  colSpan="11"
+                  className="text-center py-10"
                 >
-                  No Requests Found
+                  No Bookings Found
                 </td>
 
               </tr>
@@ -144,75 +171,88 @@ export default function ShowEnquiery() {
 
       </div>
 
-      {/* ========================= */}
-      {/* Mobile Cards */}
-      {/* ========================= */}
+      {/* Mobile */}
 
-      <div className="lg:hidden space-y-4">
+      <div className="lg:hidden space-y-5">
 
-        {requests.length > 0 ? (
+        {bookings.length ? (
 
-          requests.map((request, index) => (
+          bookings.map((booking) => (
 
             <div
-              key={request._id}
+              key={booking._id}
               className="bg-white rounded-xl shadow p-5"
             >
 
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex justify-between items-center">
 
                 <h2 className="font-bold text-lg">
-                  {request.service}
+                  {booking.service}
                 </h2>
 
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                    request.status
+                  className={`px-3 py-1 rounded-full text-xs ${getStatusColor(
+                    booking.status
                   )}`}
                 >
-                  {request.status}
+                  {booking.status || "Pending"}
                 </span>
 
               </div>
 
-              <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-2 gap-4 mt-5">
 
                 <div>
                   <p className="text-gray-500">Vehicle</p>
-                  <p className="font-medium">{request.vehicleType}</p>
+                  <p>{booking.vehicleType}</p>
                 </div>
 
                 <div>
                   <p className="text-gray-500">Goods</p>
-                  <p className="font-medium">{request.goodsType}</p>
+                  <p>{booking.goodsType || "-"}</p>
                 </div>
 
                 <div>
                   <p className="text-gray-500">Pickup</p>
-                  <p className="font-medium">{request.pickupLocation}</p>
+                  <p>{booking.pickupLocation}</p>
                 </div>
 
                 <div>
                   <p className="text-gray-500">Destination</p>
-                  <p className="font-medium">{request.loading_point}</p>
+                  <p>{booking.loading_point}</p>
                 </div>
 
                 <div>
                   <p className="text-gray-500">Weight</p>
-                  <p className="font-medium">{request.weight}</p>
+                  <p>{booking.weight || "-"} Kg</p>
                 </div>
 
                 <div>
                   <p className="text-gray-500">Budget</p>
-                  <p className="font-medium">
-                    ₹ {request.expectedBudget}
+                  <p>₹ {booking.expectedBudget || 0}</p>
+                </div>
+
+                <div className="col-span-2">
+                  <p className="text-gray-500">Contact</p>
+                  <p>
+                    {booking.contactPerson}
+                  </p>
+                  <p className="text-sm">
+                    {booking.contactNumber}
                   </p>
                 </div>
 
                 <div className="col-span-2">
                   <p className="text-gray-500">Pickup Date</p>
-                  <p className="font-medium">{request.pickupDate}</p>
+                  <p>{booking.pickupDate}</p>
                 </div>
+
+                {booking.remarks && (
+                  <div className="col-span-2">
+                    <p className="text-gray-500">Remarks</p>
+                    <p>{booking.remarks}</p>
+                  </div>
+                )}
 
               </div>
 
@@ -222,8 +262,8 @@ export default function ShowEnquiery() {
 
         ) : (
 
-          <div className="bg-white rounded-xl shadow p-10 text-center text-gray-500">
-            No Requests Found
+          <div className="text-center py-10 bg-white rounded-xl shadow">
+            No Bookings Found
           </div>
 
         )}

@@ -41,6 +41,7 @@ import ShowEnquiery from "./Dashboard/user/myrequest/ShowEnquiery";
 import ChangePassword from "./Dashboard/Changepassword";
 import AddVehicle from "./Dashboard/transporter/Addvehicle";
 import TransporterProfile from "./Dashboard/user/TrasporterProfile";
+import AddServices from "./Dashboard/transporter/transportpage/AddServices";
 
 function App() {
   return (
@@ -88,6 +89,9 @@ function App() {
           <Route path="transportservices" element={<TransportServices />} />
           <Route path="addvehicle" element={<AddVehicle />} />
               <Route path="register" element={<Register />} />
+              <Route path="addservices" element={<AddServices />} />
+
+
 
           {/* Broker */}
           <Route path="clients" element={<Clients />} />

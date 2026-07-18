@@ -5,94 +5,78 @@ import API from "../api/api";
 
 export default function Settings() {
   const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       name: "",
       email: "",
       mobile: "",
-      role: "user",
-      companyName: "",
-      gstNumber: "",
-      address: "",
-      agencyName: "",
-      officeAddress: "",
     },
   });
 
-  const role = watch("role");
+  const onSubmit = async (data) => {
+    const toastId = toast.loading("Updating Profile...");
 
-const onSubmit = async (data) => {
+    try {
+      setLoading(true);
 
-  if (data.role === "transporter") {
-    window.location.href = "/register";
-    return;
-  }
+      await API.put("/profile", data);
 
-  if (data.role === "broker") {
-    window.location.href = "/register";
-    return;
-  }
-
-  const toastId = toast.loading("Updating Profile...");
-
-  try {
-
-    setLoading(true);
-
-    await API.put("/profile", data);
-
-    toast.success("Profile Updated Successfully", {
-      id: toastId,
-    });
-
-  } catch (err) {
-
-    toast.error("Update Failed", {
-      id: toastId,
-    });
-
-  } finally {
-
-    setLoading(false);
-
-  }
-
-};
+      toast.success("Profile Updated Successfully", {
+        id: toastId,
+      });
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || "Update Failed",
+        {
+          id: toastId,
+        }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white shadow rounded-xl p-8 mt-8">
 
-      <h2 className="text-3xl font-bold mb-6">
+  <div className="min-h-screen bg-slate-100 px-4 py-10">
+
+    <div className="max-w-3xl mx-auto">
+
+      <h2 className="text-4xl font-bold text-gray-800 mb-2">
         Account Settings
       </h2>
 
+      <p className="text-gray-600 mb-10">
+        Update your personal information.
+      </p>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
+        className="space-y-8"
       >
 
         {/* Name */}
 
         <div>
-          <label className="block mb-2 font-medium">
+          <label className="block text-lg font-medium text-gray-700 mb-2">
             Full Name
           </label>
 
           <input
             {...register("name", {
-              
+              required: "Name is required",
             })}
-            className="w-full border rounded-lg p-3"
-            placeholder="Enter Name"
+            placeholder="Enter your full name"
+            className="w-full h-14 px-4 rounded-xl border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
           />
 
           {errors.name && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="text-red-500 mt-1">
               {errors.name.message}
             </p>
           )}
@@ -101,21 +85,21 @@ const onSubmit = async (data) => {
         {/* Email */}
 
         <div>
-          <label className="block mb-2 font-medium">
-            Email
+          <label className="block text-lg font-medium text-gray-700 mb-2">
+            Email Address
           </label>
 
           <input
             type="email"
             {...register("email", {
-            
+              required: "Email is required",
             })}
-            className="w-full border rounded-lg p-3"
-            placeholder="Enter Email"
+            placeholder="Enter your email"
+            className="w-full h-14 px-4 rounded-xl border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
           />
 
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="text-red-500 mt-1">
               {errors.email.message}
             </p>
           )}
@@ -124,132 +108,29 @@ const onSubmit = async (data) => {
         {/* Mobile */}
 
         <div>
-          <label className="block mb-2 font-medium">
-            Mobile
+          <label className="block text-lg font-medium text-gray-700 mb-2">
+            Mobile Number
           </label>
 
           <input
             {...register("mobile")}
-            className="w-full border rounded-lg p-3"
-            placeholder="Enter Mobile"
+            placeholder="Enter mobile number"
+            className="w-full h-14 px-4 rounded-xl border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
           />
         </div>
 
-        {/* Role */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full h-14 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold transition"
+        >
+          {loading ? "Updating..." : "Update Profile"}
+        </button>
 
-        <div>
-          <label className="block mb-2 font-medium">
-            Select Role
-          </label>
-
-          <select
-            {...register("role")}
-            className="w-full border rounded-lg p-3"
-          >
-            <option value="user">User</option>
-            <option value="transporter">Transporter</option>
-            <option value="broker">Broker</option>
-          </select>
-        </div>
-
-        {/* Transporter */}
-
-        {role === "transporter" && (
-          <div className="space-y-4 border rounded-lg p-5 bg-gray-50">
-
-            <h3 className="font-bold text-lg">
-              Transporter Details
-            </h3>
-
-            <input
-              {...register("companyName")}
-              placeholder="Company Name"
-              className="w-full border rounded-lg p-3"
-            />
-
-            <input
-              {...register("gstNumber")}
-              placeholder="GST Number"
-              className="w-full border rounded-lg p-3"
-            />
-
-            <textarea
-              {...register("address")}
-              rows={3}
-              placeholder="Company Address"
-              className="w-full border rounded-lg p-3"
-            />
-
-          </div>
-        )}
-
-        {/* Broker */}
-
-        {role === "broker" && (
-          <div className="space-y-4 border rounded-lg p-5 bg-gray-50">
-
-            <h3 className="font-bold text-lg">
-              Broker Details
-            </h3>
-
-            <input
-              {...register("agencyName")}
-              placeholder="Agency Name"
-              className="w-full border rounded-lg p-3"
-            />
-
-            <textarea
-              {...register("officeAddress")}
-              rows={3}
-              placeholder="Office Address"
-              className="w-full border rounded-lg p-3"
-            />
-
-          </div>
-        )}
-
-      <button
-  type="submit"
-  disabled={loading}
-  className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold transition-all duration-200 ${
-    loading
-      ? "bg-blue-400 cursor-not-allowed"
-      : "bg-blue-600 hover:bg-blue-700 text-white"
-  }`}
->
-  {loading ? (
-    <>
-      <svg
-        className="w-5 h-5 animate-spin"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        />
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        />
-      </svg>
-
-      Loading...
-    </>
-  ) : role === "user" ? (
-    "Update Profile"
-  ) : (
-    "Continue"
-  )}
-</button>
       </form>
 
     </div>
+
+  </div>
   );
 }

@@ -9,10 +9,10 @@ import {
   Globe,
   Upload,
 } from "lucide-react";
-import API from "../../api/api";
+import API from "../../../api/api";
 
 
-export  function Addvhicle() {
+export  function AddServices() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     category: "",
@@ -783,4 +783,4 @@ console.log("Token:", token);
     </div>
   );
 }
-export default Addvhicle;
+export default AddServices;

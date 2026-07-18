@@ -87,13 +87,6 @@ export default function Sidebar({ open, setOpen }) {
             PROFILE
           </NavLink>
 
-          <NavLink
-            to="/dashboard/settings"
-            className={linkClass}
-            onClick={handleClose}
-          >
-            EDIT PROFILE 
-          </NavLink>
 
           {/* USER */}
 
@@ -138,28 +131,78 @@ export default function Sidebar({ open, setOpen }) {
 
           {role === "transporter" && (
             <>
+              
+{/* 
               <NavLink
-                to="/dashboard/mybusiness"
+                to="/dashboard/transportservices"
                 className={linkClass}
                 onClick={handleClose}
               >
-                My Business
+                TRANSPORT SERVICES
+              </NavLink> */}
+              {/* <NavLink
+                to="/dashboard/addvehicle"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                ADD VEHICLE
+              </NavLink> */}
+              <NavLink
+                to="/dashboard/directory"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                DIRECTORY
+              </NavLink>
+               <NavLink
+                to="/dashboard/searchbar"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                SEARCH TRANSPORT
               </NavLink>
 
+
               <NavLink
+                to="/dashboard/leads"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                LEADS
+              </NavLink>
+              <NavLink
+                to="/dashboard/addservices"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                ADD YOUR SERVICES
+              </NavLink>
+
+
+              {/* <NavLink
+                to="/dashboard/myvehicles"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                My Vehicles
+              </NavLink> */}
+            </>
+          )}
+
+          {/* Broker */}
+
+          {role === "broker" && (
+             <>
+              
+
+              {/* <NavLink
                 to="/dashboard/transportservices"
                 className={linkClass}
                 onClick={handleClose}
               >
                 Transport Services
               </NavLink>
-              <NavLink
-                to="/dashboard/addvehicle"
-                className={linkClass}
-                onClick={handleClose}
-              >
-                ADD VEHICLE
-              </NavLink>
+               */}
               <NavLink
                 to="/dashboard/directory"
                 className={linkClass}
@@ -183,38 +226,17 @@ export default function Sidebar({ open, setOpen }) {
               >
                 Leads
               </NavLink>
-
-              <NavLink
-                to="/dashboard/myvehicles"
-                className={linkClass}
-                onClick={handleClose}
-              >
-                My Vehicles
-              </NavLink>
             </>
+            
           )}
-
-          {/* Broker */}
-
-          {role === "broker" && (
-            <>
-              <NavLink
-                to="/dashboard/my-leads"
-                className={linkClass}
-                onClick={handleClose}
-              >
-                My Leads
-              </NavLink>
-
-              <NavLink
-                to="/dashboard/clients"
-                className={linkClass}
-                onClick={handleClose}
-              >
-                Clients
-              </NavLink>
-            </>
-          )}
+          
+          <NavLink
+            to="/dashboard/settings"
+            className={linkClass}
+            onClick={handleClose}
+          >
+            EDIT PROFILE 
+          </NavLink>
 
         </nav>
          <NavLink

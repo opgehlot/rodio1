@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import API from "../../api/api";
-import LeadCard from "../LeadCard";
+import LeadCard from "../../components/LeadCard";
 import {
   FaSearch,
   FaTruckMoving,
   FaSyncAlt,
 } from "react-icons/fa";
 
-const Leads = () => {
+const AllLeads = () => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -283,4 +283,4 @@ const Leads = () => {
   );
 };
 
-export default Leads;
+export default AllLeads;
