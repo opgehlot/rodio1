@@ -125,7 +125,7 @@ export function Dummydirectory() {
 >
             {/* Header */}
 
-            <div className="p-6 flex justify-between">
+            <div className="p-4 flex justify-between">
               <div className="flex gap-3">
                 <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center">
                   <Building2 size={30} className="text-gray-700" />
@@ -152,7 +152,7 @@ export function Dummydirectory() {
             <hr />
 
             {/* Details */}
-<div className="p-6 space-y-6 flex-1">
+<div className="p-4 space-y-6 flex-1">
               <div className="flex gap-3">
                 <MapPin size={24} className="text-blue-600 mt-1" />
 
