@@ -19,6 +19,8 @@ const categories = [
   "Ambulance",
   "other"
 ];
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 function DirectoryFilter({ filters, setFilters, stateCityData, onSearch }) {
   return (
