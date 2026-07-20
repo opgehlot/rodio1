@@ -45,6 +45,7 @@ import Dummydirectory from "./pages/Dummydirctory";
 import DtransporterDetails from "./pages/DtransporterDetails";
 import BidCard from "./Dashboard/BidCard";
 import BidList from "./Dashboard/user/myrequest/BidList";
+import AcceptedBid from "./Dashboard/transporter/AcceptedBid";
 
 
 function App() {
@@ -95,6 +96,8 @@ function App() {
           <Route path="addvehicle" element={<AddVehicle />} />
               <Route path="register" element={<Register />} />
               <Route path="addservices" element={<AddServices />} />
+              <Route path="acceptedbid" element={<AcceptedBid />} />
+              
 
 
 
