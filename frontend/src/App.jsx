@@ -51,16 +51,20 @@ function App() {
   return (
     <BrowserRouter>
       <Toaster
-        position="top-right"
-        reverseOrder={false}
-        toastOptions={{
-          duration: 3000,
-          style: {
-            borderRadius: "12px",
-            background: "#1f2937",
-            color: "#fff",
-          },
-        }}
+  position="top-center"
+  reverseOrder={false}
+  containerStyle={{
+    top: 20,
+  }}
+  toastOptions={{
+    duration: 3000,
+    style: {
+      borderRadius: "12px",
+      background: "#1f2937",
+      color: "#fff",
+    },
+  }}
+
       />
       <ScrollToTop />
 

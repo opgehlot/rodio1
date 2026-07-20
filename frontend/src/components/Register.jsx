@@ -26,15 +26,22 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const res = await API.post("/auth/register", data);
+     const res = await API.post("/auth/register", data);
 
-      setUser(res.data.user);
+// Save Login Data
+localStorage.setItem("token", res.data.token);
+localStorage.setItem("user", JSON.stringify(res.data.user));
+localStorage.setItem("role", res.data.user.role);
 
-      toast.success("Registration Successful");
+// Context
+setUser(res.data.user);
 
-      reset();
+toast.success(res.data.message);
 
-      navigate("/login");
+reset();
+
+// Dashboard
+navigate(res.data.redirectTo || "/dashboard");
     } catch (err) {
       toast.error(
         err.response?.data?.message || "Registration Failed"

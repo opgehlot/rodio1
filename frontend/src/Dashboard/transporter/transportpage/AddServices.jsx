@@ -209,15 +209,29 @@ const handleSubmit = async (e) => {
   setLoading(true);
 
   try {
+    const token = localStorage.getItem("token");
 
-    navigate("/business-plans", {
-      state: {
-        formData,
-      },
-    });
+    const response = await API.post(
+      "/business/registerbusiness",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    toast.success(response.data.message);
+
+    // Success ke baad dashboard ya next page
+    navigate("/dashboard");
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
+
+    toast.error(
+      error.response?.data?.message || "Business registration failed"
+    );
   } finally {
     setLoading(false);
   }
@@ -773,17 +787,17 @@ const handleSubmit = async (e) => {
                   ← Previous
                 </button>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 disabled:bg-gray-400"
-                >
-                  {loading && (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  )}
-
-                  {loading ? "Please wait..." : "Continue"}
-                </button>
+               <button
+  type="submit"
+  disabled={loading}
+  className={`w-full py-3 rounded-lg text-white font-semibold ${
+    loading
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700"
+  }`}
+>
+  {loading ? "Submitting..." : "Register Business"}
+</button>
               </div>
             </div>
           )}
