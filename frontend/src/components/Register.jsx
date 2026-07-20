@@ -244,8 +244,8 @@ navigate(res.data.redirectTo || "/dashboard");
                   {...register("password", {
                     required: "Password Required",
                     minLength: {
-                      value: 6,
-                      message: "Minimum 6 characters",
+                      value: 4,
+                      message: "Minimum 4 characters",
                     },
                   })}
                   className="w-full ml-3 outline-none"
