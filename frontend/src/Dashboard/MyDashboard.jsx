@@ -20,6 +20,6 @@ export function MyDashboard() {
     return <BrokerDashboard />;
   }
 
-  return <h1>No Dashboard Found</h1>;
+  return <Navigate to="/login" replace />;
 }
 export default  MyDashboard;

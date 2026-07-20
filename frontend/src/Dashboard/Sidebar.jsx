@@ -12,11 +12,12 @@ export default function Sidebar({ open, setOpen }) {
   const role = localStorage.getItem("role");
 
   const linkClass = ({ isActive }) =>
-    `block px-4 py-3 rounded-xl transition
-    ${
-      isActive ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-slate-800"
-    }`;
-
+  `block px-4 py-3 text-base rounded-xl transition
+   ${
+     isActive
+       ? "bg-blue-600 text-white"
+       : "text-gray-300 hover:bg-slate-800"
+   }`;
   return (
     <>
       {/* Overlay */}
@@ -30,22 +31,20 @@ export default function Sidebar({ open, setOpen }) {
 
       {/* Sidebar */}
 
-      <aside
-        className={`
-        fixed top-0 left-0
-        w-80
-        h-screen
-        bg-slate-900
-        text-white
-        z-50
-        flex flex-col
-        transition-transform duration-300
-
-        ${open ? "translate-x-0" : "-translate-x-full"}
-
-        lg:translate-x-0
-        `}
-      >
+     <aside
+  className={`
+    fixed top-0 left-0
+    w-72 sm:w-80 lg:w-[340px]
+    h-screen
+    bg-slate-900
+    text-white
+    z-50
+    flex flex-col
+    transition-transform duration-300
+    ${open ? "translate-x-0" : "-translate-x-full"}
+    lg:translate-x-0
+  `}
+>
         {/* Mobile Close */}
 
         <div className="lg:hidden flex justify-end p-4">
@@ -56,13 +55,13 @@ export default function Sidebar({ open, setOpen }) {
 
         {/* Logo */}
 
-        <div className="px-6 py-6 border-b border-slate-800">
-          <h2 className="text-3xl font-bold">Dashboard</h2>
-        </div>
+        <div className="px-5 py-4 border-b border-slate-800">
+  <h2 className="text-2xl font-bold">Dashboard</h2>
+</div>
 
         {/* Menu */}
 
-        <nav className="flex-1 p-4 space-y-2 overflow-hidden lg:overflow-y-auto">
+     <nav className="flex-1 overflow-y-auto p-4 space-y-2">
           <NavLink
             end
             to="/dashboard"
@@ -289,21 +288,21 @@ export default function Sidebar({ open, setOpen }) {
             </>
           )}
         </nav>
-        <div>
-          <NavLink
-          to="/dashboard/changepassword"
-          className={linkClass}
-          onClick={handleClose}
-        >
-          CHANGEPASSOWED
-        </NavLink>
-        </div>
+          <div className="border-t border-slate-700 p-4 space-y-3">
+    <NavLink
+      to="/dashboard/changepassword"
+      className={linkClass}
+      onClick={handleClose}
+    >
+      CHANGE PASSWORD
+    </NavLink>
+
+    <LogoutButton />
+  </div>
 
         {/* Logout */}
 
-        <div className="p-4 border-t border-slate-700">
-          <LogoutButton />
-        </div>
+       
       </aside>
     </>
   );

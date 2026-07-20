@@ -66,6 +66,7 @@ export default function Login() {
         emailOrMobile: formData.emailOrMobile,
         password: formData.password,
       });
+      console.log(response);
 
   
 
