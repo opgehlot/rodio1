@@ -47,7 +47,6 @@ import BidCard from "./Dashboard/BidCard";
 import BidList from "./Dashboard/user/myrequest/BidList";
 import AcceptedBid from "./Dashboard/transporter/AcceptedBid";
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -75,17 +74,15 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="changepassword" element={<ChangePassword />} />
 
-
           {/* user*/}
           <Route path="searchtransport" element={<SearchTransport />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="directory" element={<Directorydata />} />
           <Route path="searchbar" element={<SearchBar />} />
           <Route path="userform" element={<UserForm />} />
-        
+
           <Route path="showenquiery" element={<ShowEnquiery />} />
-   <Route path="transporter/:id" element={<TransporterProfile />} />
-        
+          <Route path="transporter/:id" element={<TransporterProfile />} />
 
           {/* Transporter */}
 
@@ -94,17 +91,13 @@ function App() {
           <Route path="myvehicles" element={<MyVehicles />} />
           <Route path="transportservices" element={<TransportServices />} />
           <Route path="addvehicle" element={<AddVehicle />} />
-              <Route path="register" element={<Register />} />
-              <Route path="addservices" element={<AddServices />} />
-              <Route path="acceptedbid" element={<AcceptedBid />} />
-              
-
-
+          <Route path="register" element={<Register />} />
+          <Route path="addservices" element={<AddServices />} />
+          <Route path="acceptedbid" element={<AcceptedBid />} />
 
           {/* Broker */}
           <Route path="clients" element={<Clients />} />
         </Route>
-
 
         {/* main layout  */}
         <Route element={<MainLayout />}>
@@ -122,8 +115,10 @@ function App() {
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/services" element={<Services />} />
           <Route path="/dummydirctory" element={<Dummydirectory />} />
-          <Route path="/DtransporterDetails" element={<DtransporterDetails/>} />
-          
+          <Route
+            path="/DtransporterDetails"
+            element={<DtransporterDetails />}
+          />
           ...
         </Route>
       </Routes>

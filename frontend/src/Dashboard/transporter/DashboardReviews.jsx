@@ -16,7 +16,10 @@ export  function DashboardReviews() {
      try {
       const user = JSON.parse(localStorage.getItem("user"));
 
-      const { data } = await API.get(`/comment/${user.id}`);
+console.log(user);
+
+const { data } = await API.get(`/comment/${user.id}`);
+      // const { data } = await API.get(`/comment/${user.businessId}`);
 
 
       setReviews(data.comments || []);

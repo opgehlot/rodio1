@@ -4,19 +4,17 @@ import LogoutButton from "../utils/LogoutButton";
 
 export default function Sidebar({ open, setOpen }) {
   const handleClose = () => {
-  if (window.innerWidth < 1024) {
-    setOpen(false);
-  }
-};
+    if (window.innerWidth < 1024) {
+      setOpen(false);
+    }
+  };
 
   const role = localStorage.getItem("role");
 
   const linkClass = ({ isActive }) =>
     `block px-4 py-3 rounded-xl transition
     ${
-      isActive
-        ? "bg-blue-600 text-white"
-        : "text-gray-300 hover:bg-slate-800"
+      isActive ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-slate-800"
     }`;
 
   return (
@@ -48,34 +46,29 @@ export default function Sidebar({ open, setOpen }) {
         lg:translate-x-0
         `}
       >
-
         {/* Mobile Close */}
 
         <div className="lg:hidden flex justify-end p-4">
-
           <button onClick={() => setOpen(false)}>
             <X />
           </button>
-
         </div>
 
         {/* Logo */}
 
         <div className="px-6 py-6 border-b border-slate-800">
-
-          <h2 className="text-3xl font-bold">
-
-            Dashboard
-
-          </h2>
-
+          <h2 className="text-3xl font-bold">Dashboard</h2>
         </div>
 
         {/* Menu */}
 
-        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
-
-          <NavLink end to="/dashboard" className={linkClass} onClick={handleClose}>
+        <nav className="flex-1 p-4 space-y-2 overflow-hidden lg:overflow-y-auto">
+          <NavLink
+            end
+            to="/dashboard"
+            className={linkClass}
+            onClick={handleClose}
+          >
             DASHBOARD
           </NavLink>
 
@@ -87,12 +80,11 @@ export default function Sidebar({ open, setOpen }) {
             PROFILE
           </NavLink>
 
-
           {/* USER */}
 
           {role === "user" && (
             <>
-            <NavLink
+              <NavLink
                 to="/dashboard/directory"
                 className={linkClass}
                 onClick={handleClose}
@@ -108,7 +100,7 @@ export default function Sidebar({ open, setOpen }) {
                 SEARCH TRANSPORT
               </NavLink>
 
-                <NavLink
+              <NavLink
                 to="/dashboard/userform"
                 className={linkClass}
                 onClick={handleClose}
@@ -121,16 +113,15 @@ export default function Sidebar({ open, setOpen }) {
                 className={linkClass}
                 onClick={handleClose}
               >
-                SHOW ENQUIERY STATUS 
+                SHOW ENQUIERY STATUS
               </NavLink>
               <NavLink
                 to="/dashboard/settings"
                 className={linkClass}
                 onClick={handleClose}
-              >UPDATE PROFILE 
+              >
+                UPDATE PROFILE
               </NavLink>
-
-
             </>
           )}
 
@@ -146,22 +137,22 @@ export default function Sidebar({ open, setOpen }) {
                 ADD LOAD ENQUIERY
               </NavLink>
 
-               <NavLink
+              <NavLink
                 to="/dashboard/showenquiery"
                 className={linkClass}
                 onClick={handleClose}
               >
-                SHOW ENQUIERY STATUS 
+                SHOW ENQUIERY STATUS
               </NavLink>
-               <NavLink
+              <NavLink
                 to="/dashboard/acceptedbid"
                 className={linkClass}
                 onClick={handleClose}
               >
                 ACCEPTED BID
               </NavLink>
-              
-{/* 
+
+              {/* 
               <NavLink
                 to="/dashboard/transportservices"
                 className={linkClass}
@@ -183,14 +174,13 @@ export default function Sidebar({ open, setOpen }) {
               >
                 DIRECTORY
               </NavLink>
-               <NavLink
+              <NavLink
                 to="/dashboard/searchbar"
                 className={linkClass}
                 onClick={handleClose}
               >
                 SEARCH TRANSPORT
               </NavLink>
-
 
               <NavLink
                 to="/dashboard/leads"
@@ -210,9 +200,9 @@ export default function Sidebar({ open, setOpen }) {
                 to="/dashboard/settings"
                 className={linkClass}
                 onClick={handleClose}
-              >UPDATE PROFILE 
+              >
+                UPDATE PROFILE
               </NavLink>
-
 
               {/* <NavLink
                 to="/dashboard/myvehicles"
@@ -227,9 +217,7 @@ export default function Sidebar({ open, setOpen }) {
           {/* Broker */}
 
           {role === "broker" && (
-             <>
-              
-
+            <>
               <NavLink
                 to="/dashboard/userform"
                 className={linkClass}
@@ -237,15 +225,15 @@ export default function Sidebar({ open, setOpen }) {
               >
                 ADD LOAD ENQUIERY
               </NavLink>
-              
-               <NavLink
+
+              <NavLink
                 to="/dashboard/showenquiery"
                 className={linkClass}
                 onClick={handleClose}
               >
-                SHOW ENQUIERY STATUS 
+                SHOW ENQUIERY STATUS
               </NavLink>
-{/* 
+              {/* 
               <NavLink
                 to="/dashboard/transportservices"
                 className={linkClass}
@@ -267,14 +255,13 @@ export default function Sidebar({ open, setOpen }) {
               >
                 DIRECTORY
               </NavLink>
-               <NavLink
+              <NavLink
                 to="/dashboard/searchbar"
                 className={linkClass}
                 onClick={handleClose}
               >
                 SEARCH TRANSPORT
               </NavLink>
-
 
               <NavLink
                 to="/dashboard/leads"
@@ -283,6 +270,7 @@ export default function Sidebar({ open, setOpen }) {
               >
                 LEADS
               </NavLink>
+
               <NavLink
                 to="/dashboard/addservices"
                 className={linkClass}
@@ -291,33 +279,31 @@ export default function Sidebar({ open, setOpen }) {
                 ADD YOUR SERVICES
               </NavLink>
 
-
               <NavLink
                 to="/dashboard/settings"
                 className={linkClass}
                 onClick={handleClose}
-              >UPDATE PROFILE 
+              >
+                UPDATE PROFILE
               </NavLink>
             </>
           )}
-
         </nav>
-         <NavLink
-                to="/dashboard/changepassword"
-                className={linkClass}
-                onClick={handleClose}
-              >
-                CHANGEPASSOWED
-              </NavLink>
+        <div>
+          <NavLink
+          to="/dashboard/changepassword"
+          className={linkClass}
+          onClick={handleClose}
+        >
+          CHANGEPASSOWED
+        </NavLink>
+        </div>
 
         {/* Logout */}
 
         <div className="p-4 border-t border-slate-700">
-
           <LogoutButton />
-
         </div>
-
       </aside>
     </>
   );

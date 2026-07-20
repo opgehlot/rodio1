@@ -13,10 +13,12 @@ import API from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 
 export function AddServices() {
-  
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
+const TOTAL_STEPS = 6;
+
+const progress = (step / TOTAL_STEPS) * 100;
 
   const [formData, setFormData] = useState({
     category: "",
@@ -81,84 +83,145 @@ export function AddServices() {
     "Tractor Trolley",
     "Refrigerated Truck",
   ];
-  const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
 
-    if (type === "checkbox") {
-      if (name === "acceptedTerms") {
-        setFormData({
-          ...formData,
-          acceptedTerms: checked,
-        });
-      } else {
-        const updated = checked
-          ? [...formData.vehicleTypes, value]
-          : formData.vehicleTypes.filter((v) => v !== value);
+const handleChange = (e) => {
+  const { name, value, type, checked, files } = e.target;
 
-        setFormData({
-          ...formData,
-          vehicleTypes: updated,
-        });
-      }
+  if (type === "checkbox") {
+    if (name === "acceptedTerms") {
+      setFormData((prev) => ({
+        ...prev,
+        acceptedTerms: checked,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        vehicleTypes: checked
+          ? [...prev.vehicleTypes, value]
+          : prev.vehicleTypes.filter((v) => v !== value),
+      }));
+    }
+    return;
+  }
 
+  if (type === "file") {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files[0],
+    }));
+    return;
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
+
+const nextStep = () => {
+
+  // STEP 1
+  if (step === 1) {
+
+    if (
+      !formData.category ||
+      !formData.firmName ||
+      !formData.ownerName
+    ) {
+      alert("Please fill Business Information.");
       return;
     }
 
-    if (type === "file") {
-      setFormData({
-        ...formData,
-        [name]: files[0],
-      });
+  }
 
+  // STEP 2
+  if (step === 2) {
+
+    if (
+      !formData.address ||
+      !formData.currentState ||
+      !formData.currentCity ||
+      !formData.pincode
+    ) {
+      alert("Please complete Address Details.");
       return;
     }
 
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  }
 
-  const nextStep = () => {
-    setStep((prev) => prev + 1);
-  };
+  // STEP 3
+  if (step === 3) {
 
-  const prevStep = () => {
-    setStep((prev) => prev - 1);
-  };
+    if (
+      !formData.from ||
+      !formData.to ||
+      formData.vehicleTypes.length === 0
+    ) {
+      alert("Please complete Transport Details.");
+      return;
+    }
 
-  const token = localStorage.getItem("token");
+  }
 
+  // STEP 4
+  if (step === 4) {
 
-const handleSubmit = (e) => {
+    if (!formData.phoneNumber) {
+      alert("Please enter Mobile Number.");
+      return;
+    }
+
+  }
+
+  // STEP 5
+  if (step === 5) {
+
+    if (!formData.photo) {
+      alert("Please upload Business Photo.");
+      return;
+    }
+
+  }
+
+  if (step < TOTAL_STEPS) {
+    setStep(step + 1);
+  }
+
+};
+const prevStep = () => {
+
+  if (step > 1) {
+    setStep(step - 1);
+  }
+
+};
+
+// Final Submit
+const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Terms validation
   if (!formData.acceptedTerms) {
     alert("Please accept Terms & Conditions");
     return;
   }
 
-  // Required field validation
-  if (
-    !formData.category ||
-    !formData.firmName ||
-    !formData.ownerName ||
-    !formData.phoneNumber
-  ) {
-    alert("Please fill all required fields.");
-    return;
+  setLoading(true);
+
+  try {
+
+    navigate("/business-plans", {
+      state: {
+        formData,
+      },
+    });
+
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
   }
-
-  // Go to Business Plans page
-  navigate("/business-plans", {
-    state: {
-      formData,
-    },
-  });
 };
-
-     
 
   return (
     <div className="min-h-screen bg-slate-100 py-10">
@@ -178,22 +241,31 @@ const handleSubmit = (e) => {
         {/* Progress Bar */}
 
         <div className="bg-white rounded-2xl shadow-sm border mt-6 p-6">
-          <div className="flex justify-between">
-            <h2 className="text-xl font-bold">Step {step} / 5</h2>
 
-            <span className="text-orange-500 font-bold">{step * 20}%</span>
-          </div>
+  <div className="flex items-center justify-between mb-4">
 
-          <div className="w-full bg-gray-200 h-3 rounded-full mt-4">
-            <div
-              className="bg-orange-500 h-3 rounded-full transition-all duration-500"
-              style={{
-                width: `${step * 20}%`,
-              }}
-            ></div>
-          </div>
-        </div>
+    <h2 className="text-xl font-bold">
+      Step {step} of {TOTAL_STEPS}
+    </h2>
 
+    <span className="text-orange-600 font-semibold">
+      {Math.round(progress)}%
+    </span>
+
+  </div>
+
+  <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+
+    <div
+      className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-500 ease-in-out"
+      style={{
+        width: `${progress}%`,
+      }}
+    />
+
+  </div>
+
+</div>
         <form onSubmit={handleSubmit} className="space-y-8 mt-8">
           {/* ================= STEP 1 ================= */}
 
@@ -704,9 +776,13 @@ const handleSubmit = (e) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-8 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white disabled:opacity-50"
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 disabled:bg-gray-400"
                 >
-                  {loading ? "Submitting..." : "Register Business"}
+                  {loading && (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  )}
+
+                  {loading ? "Please wait..." : "Continue"}
                 </button>
               </div>
             </div>
