@@ -123,6 +123,13 @@ export default function Sidebar({ open, setOpen }) {
               >
                 SHOW ENQUIERY STATUS 
               </NavLink>
+              <NavLink
+                to="/dashboard/settings"
+                className={linkClass}
+                onClick={handleClose}
+              >UPDATE PROFILE 
+              </NavLink>
+
 
             </>
           )}
@@ -146,6 +153,7 @@ export default function Sidebar({ open, setOpen }) {
               >
                 SHOW ENQUIERY STATUS 
               </NavLink>
+              
 {/* 
               <NavLink
                 to="/dashboard/transportservices"
@@ -190,6 +198,12 @@ export default function Sidebar({ open, setOpen }) {
                 onClick={handleClose}
               >
                 ADD YOUR SERVICES
+              </NavLink>
+              <NavLink
+                to="/dashboard/settings"
+                className={linkClass}
+                onClick={handleClose}
+              >UPDATE PROFILE 
               </NavLink>
 
 
@@ -271,13 +285,12 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
 
-              {/* <NavLink
-                to="/dashboard/myvehicles"
+              <NavLink
+                to="/dashboard/settings"
                 className={linkClass}
                 onClick={handleClose}
-              >
-                My Vehicles
-              </NavLink> */}
+              >UPDATE PROFILE 
+              </NavLink>
             </>
           )}
 

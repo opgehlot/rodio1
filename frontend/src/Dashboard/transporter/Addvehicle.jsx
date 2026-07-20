@@ -1,232 +1,379 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import API from "../../api/api"; // apne project ke hisaab se path change karo
 
 export function AddVehicle() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      const formData = new FormData();
 
-    const formData = new FormData();
+      // Text Fields
+      formData.append("vehicleNumber", data.vehicleNumber);
+      formData.append("vehicleType", data.vehicleType);
+      formData.append("capacity", data.capacity);
+      formData.append("driverName", data.driverName);
+      formData.append("driverMobile", data.driverMobile);
+      formData.append("source", data.source);
+      formData.append("destination", data.destination);
 
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key]);
-    });
+      // Files
+      if (data.rcBook?.[0]) {
+        formData.append("rcBook", data.rcBook[0]);
+      }
 
-    // Files
-    formData.set("rcBook", data.rcBook[0]);
-    formData.set("insurance", data.insurance[0]);
-    formData.set("fitness", data.fitness[0]);
-    formData.set("permit", data.permit[0]);
-    formData.set("pollution", data.pollution[0]);
-    formData.set("vehiclePhoto", data.vehiclePhoto[0]);
+      if (data.insurance?.[0]) {
+        formData.append("insurance", data.insurance[0]);
+      }
 
-    // API Call
-    // await API.post("/transporter/add-vehicle", formData);
+      if (data.fitness?.[0]) {
+        formData.append("fitness", data.fitness[0]);
+      }
 
-    reset();
+      if (data.permit?.[0]) {
+        formData.append("permit", data.permit[0]);
+      }
+
+      if (data.pollution?.[0]) {
+        formData.append("pollution", data.pollution[0]);
+      }
+
+      if (data.vehiclePhoto?.[0]) {
+        formData.append("vehiclePhoto", data.vehiclePhoto[0]);
+      }
+
+      const res = await API.post("/vehicle/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert(res.data.message || "Vehicle Added Successfully");
+
+      reset();
+      setStep(1);
+    } catch (error) {
+      console.log(error);
+
+      alert(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-white rounded-xl shadow">
-      <h2 className="text-3xl font-bold mb-8">Add Vehicle</h2>
+    <div className="min-h-screen bg-slate-100 py-10">
+      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-700 to-indigo-700 p-8">
+          <h1 className="text-4xl font-bold text-white">Add Vehicle</h1>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
-      >
-        {/* Vehicle Number */}
-
-        <div>
-          <label>Vehicle Number</label>
-
-          <input
-            className="w-full border rounded p-3"
-            placeholder="MP04AB1234"
-            {...register("vehicleNumber", {
-              required: "Vehicle Number is required",
-            })}
-          />
-
-          <p className="text-red-500 text-sm">
-            {errors.vehicleNumber?.message}
+          <p className="text-blue-100 mt-2">
+            Fill vehicle details step by step.
           </p>
         </div>
 
-        {/* Vehicle Type */}
+        {/* Progress */}
+        <div className="px-8 pt-8">
+          <div className="flex justify-between mb-2">
+            <span className="font-semibold">Step {step} of 3</span>
 
-        <div>
-          <label>Vehicle Type</label>
+            <span>{step === 1 ? "33%" : step === 2 ? "66%" : "100%"}</span>
+          </div>
 
-          <select
-            className="w-full border rounded p-3"
-            {...register("vehicleType", {
-              required: "Vehicle Type required",
-            })}
-          >
-            <option value="">Select</option>
-            <option>Truck</option>
-            <option>Container</option>
-            <option>Tanker</option>
-            <option>Pickup</option>
-            <option>Trailer</option>
-          </select>
-
-          <p className="text-red-500 text-sm">{errors.vehicleType?.message}</p>
+          <div className="w-full h-3 bg-gray-200 rounded-full">
+            <div
+              className={`h-3 rounded-full bg-blue-600 transition-all duration-500 ${
+                step === 1 ? "w-1/3" : step === 2 ? "w-2/3" : "w-full"
+              }`}
+            ></div>
+          </div>
         </div>
 
-        {/* Capacity */}
+        <form onSubmit={handleSubmit(onSubmit)} className="p-8">
+          {/* STEP 1 */}
 
-        <div>
-          <label>Capacity (Ton)</label>
+          {step === 1 && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Vehicle Details</h2>
 
-          <input
-            type="number"
-            className="w-full border rounded p-3"
-            {...register("capacity", {
-              required: "Capacity required",
-            })}
-          />
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Vehicle Number */}
 
-          <p className="text-red-500 text-sm">{errors.capacity?.message}</p>
-        </div>
+                <div>
+                  <label className="font-medium">Vehicle Number</label>
 
-        {/* Driver Name */}
+                  <input
+                    className="w-full mt-2 border rounded-lg p-3"
+                    placeholder="MP04AB1234"
+                    {...register("vehicleNumber", {
+                      required: "Vehicle Number is required",
+                    })}
+                  />
 
-        <div>
-          <label>Driver Name</label>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.vehicleNumber?.message}
+                  </p>
+                </div>
 
-          <input
-            className="w-full border rounded p-3"
-            {...register("driverName", {
-              required: "Driver Name required",
-            })}
-          />
+                {/* Vehicle Type */}
 
-          <p className="text-red-500 text-sm">{errors.driverName?.message}</p>
-        </div>
+                <div>
+                  <label className="font-medium">Vehicle Type</label>
 
-        {/* Driver Mobile */}
+                  <select
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("vehicleType", {
+                      required: "Vehicle Type is required",
+                    })}
+                  >
+                    <option value="">Select Type</option>
+                    <option>Truck</option>
+                    <option>Container</option>
+                    <option>Tanker</option>
+                    <option>Trailer</option>
+                    <option>Pickup</option>
+                  </select>
 
-        <div>
-          <label>Driver Mobile</label>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.vehicleType?.message}
+                  </p>
+                </div>
 
-          <input
-            className="w-full border rounded p-3"
-            {...register("driverMobile", {
-              required: "Driver Mobile required",
-              pattern: {
-                value: /^[6-9]\d{9}$/,
-                message: "Invalid Mobile Number",
-              },
-            })}
-          />
+                {/* Capacity */}
 
-          <p className="text-red-500 text-sm">{errors.driverMobile?.message}</p>
-        </div>
+                <div>
+                  <label className="font-medium">Capacity (Ton)</label>
 
-        {/* Source */}
+                  <input
+                    type="number"
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("capacity", {
+                      required: "Capacity is required",
+                    })}
+                  />
 
-        <div>
-          <label>Source City</label>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.capacity?.message}
+                  </p>
+                </div>
+              </div>
 
-          <input
-            className="w-full border rounded p-3"
-            {...register("source", {
-              required: "Source required",
-            })}
-          />
+              <div className="flex justify-end mt-10">
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
 
-          <p className="text-red-500 text-sm">{errors.source?.message}</p>
-        </div>
+          {/* Step 2 and Step 3 will come in Part 2 */}
+          {/* STEP 2 */}
 
-        {/* Destination */}
+          {step === 2 && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">
+                Driver & Route Details
+              </h2>
 
-        <div>
-          <label>Destination City</label>
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Driver Name */}
 
-          <input
-            className="w-full border rounded p-3"
-            {...register("destination", {
-              required: "Destination required",
-            })}
-          />
+                <div>
+                  <label className="font-medium">Driver Name</label>
 
-          <p className="text-red-500 text-sm">{errors.destination?.message}</p>
-        </div>
+                  <input
+                    className="w-full mt-2 border rounded-lg p-3"
+                    placeholder="Enter Driver Name"
+                    {...register("driverName", {
+                      required: "Driver Name is required",
+                    })}
+                  />
 
-        {/* RC */}
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.driverName?.message}
+                  </p>
+                </div>
 
-        <div>
-          <label>RC Book</label>
+                {/* Driver Mobile */}
 
-          <input
-            type="file"
-            className="w-full"
-            {...register("rcBook", {
-              required: "RC Book required",
-            })}
-          />
+                <div>
+                  <label className="font-medium">Driver Mobile</label>
 
-          <p className="text-red-500 text-sm">{errors.rcBook?.message}</p>
-        </div>
+                  <input
+                    className="w-full mt-2 border rounded-lg p-3"
+                    placeholder="9876543210"
+                    {...register("driverMobile", {
+                      required: "Driver Mobile is required",
+                      pattern: {
+                        value: /^[6-9]\d{9}$/,
+                        message: "Enter Valid Mobile Number",
+                      },
+                    })}
+                  />
 
-        {/* Insurance */}
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.driverMobile?.message}
+                  </p>
+                </div>
 
-        <div>
-          <label>Insurance</label>
+                {/* Source */}
 
-          <input
-            type="file"
-            className="w-full"
-            {...register("insurance", {
-              required: "Insurance required",
-            })}
-          />
-        </div>
+                <div>
+                  <label className="font-medium">Source City</label>
 
-        {/* Fitness */}
+                  <input
+                    className="w-full mt-2 border rounded-lg p-3"
+                    placeholder="Bhopal"
+                    {...register("source", {
+                      required: "Source is required",
+                    })}
+                  />
 
-        <div>
-          <label>Fitness Certificate</label>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.source?.message}
+                  </p>
+                </div>
 
-          <input type="file" className="w-full" {...register("fitness")} />
-        </div>
+                {/* Destination */}
 
-        {/* Permit */}
+                <div>
+                  <label className="font-medium">Destination City</label>
 
-        <div>
-          <label>Permit</label>
+                  <input
+                    className="w-full mt-2 border rounded-lg p-3"
+                    placeholder="Indore"
+                    {...register("destination", {
+                      required: "Destination is required",
+                    })}
+                  />
 
-          <input type="file" className="w-full" {...register("permit")} />
-        </div>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.destination?.message}
+                  </p>
+                </div>
+              </div>
 
-        {/* PUC */}
+              <div className="flex justify-between mt-10">
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className="bg-gray-300 hover:bg-gray-400 px-8 py-3 rounded-xl"
+                >
+                  ← Previous
+                </button>
 
-        <div>
-          <label>PUC Certificate</label>
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
+          {/* STEP 3 */}
 
-          <input type="file" className="w-full" {...register("pollution")} />
-        </div>
+          {step === 3 && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Vehicle Documents</h2>
 
-        {/* Vehicle Photo */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="font-medium">RC Book</label>
 
-        <div>
-          <label>Vehicle Photo</label>
+                  <input
+                    type="file"
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("rcBook", {
+                      required: "RC Book Required",
+                    })}
+                  />
 
-          <input type="file" className="w-full" {...register("vehiclePhoto")} />
-        </div>
+                  <p className="text-red-500 text-sm">
+                    {errors.rcBook?.message}
+                  </p>
+                </div>
 
-        <div className="md:col-span-2">
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-            Add Vehicle
-          </button>
-        </div>
-      </form>
+                <div>
+                  <label className="font-medium">Insurance</label>
+
+                  <input
+                    type="file"
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("insurance", {
+                      required: "Insurance Required",
+                    })}
+                  />
+
+                  <p className="text-red-500 text-sm">
+                    {errors.insurance?.message}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="font-medium">Fitness</label>
+
+                  <input
+                    type="file"
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("fitness")}
+                  />
+                </div>
+
+                <div>
+                  <label className="font-medium">Permit</label>
+
+                  <input
+                    type="file"
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("permit")}
+                  />
+                </div>
+
+                <div>
+                  <label className="font-medium">PUC Certificate</label>
+
+                  <input
+                    type="file"
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("pollution")}
+                  />
+                </div>
+
+                <div>
+                  <label className="font-medium">Vehicle Photo</label>
+
+                  <input
+                    type="file"
+                    className="w-full mt-2 border rounded-lg p-3"
+                    {...register("vehiclePhoto")}
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-between mt-10">
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className="bg-gray-400 hover:bg-gray-500 text-white px-8 py-3 rounded-xl"
+                >
+                  ← Previous
+                </button>
+
+                <button
+                  type="submit"
+                  className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl"
+                >
+                  Add Vehicle
+                </button>
+              </div>
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

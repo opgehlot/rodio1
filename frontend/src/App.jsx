@@ -36,7 +36,6 @@ import Bookings from "./Dashboard/user/Bookings";
 import Clients from "./Dashboard/broker/Clients";
 import UserForm from "./Dashboard/user/UserForm";
 import MainLayout from "./layout/MainLayout";
-import Enquiery from "./Dashboard/user/myrequest/Enquiery";
 import ShowEnquiery from "./Dashboard/user/myrequest/ShowEnquiery";
 import ChangePassword from "./Dashboard/Changepassword";
 import AddVehicle from "./Dashboard/transporter/Addvehicle";
@@ -44,6 +43,9 @@ import TransporterProfile from "./Dashboard/user/TrasporterProfile";
 import AddServices from "./Dashboard/transporter/transportpage/AddServices";
 import Dummydirectory from "./pages/Dummydirctory";
 import DtransporterDetails from "./pages/DtransporterDetails";
+import BidCard from "./Dashboard/BidCard";
+import BidList from "./Dashboard/user/myrequest/BidList";
+
 
 function App() {
   return (
@@ -66,6 +68,7 @@ function App() {
         {/* // it is the dashborard pages  */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<MyDashboard />} />
+          <Route path="bid-list/:id" element={<BidList />} />
 
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
@@ -78,7 +81,7 @@ function App() {
           <Route path="directory" element={<Directorydata />} />
           <Route path="searchbar" element={<SearchBar />} />
           <Route path="userform" element={<UserForm />} />
-          <Route path="enquiery" element={<Enquiery />} />
+        
           <Route path="showenquiery" element={<ShowEnquiery />} />
    <Route path="transporter/:id" element={<TransporterProfile />} />
         
