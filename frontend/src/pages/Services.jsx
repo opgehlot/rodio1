@@ -141,12 +141,12 @@ const Services = () => {
 
       <section className="max-w-7xl mx-auto py-20 px-6">
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
 
           {[
             ["5000+", "Businesses"],
-            ["1200+", "Transporters"],
-            ["500+", "Fleet Owners"],
+            ["5000+", "Transporters"],
+        
             ["24x7", "Support"],
           ].map((item, index) => (
 
@@ -651,14 +651,14 @@ const Services = () => {
     <div className="space-y-5">
 
       {[
-        {
-          q: "Is registration free?",
-          a: "Yes, registration is completely free for all users.",
-        },
-        {
-          q: "Can I search transporters without registration?",
-          a: "Basic browsing is available, but advanced search requires registration.",
-        },
+        // {
+        //   q: "Is registration free?",
+        //   a: "Yes, registration is completely free for all users.",
+        // },
+        // {
+        //   q: "Can I search transporters without registration?",
+        //   a: "Basic browsing is available, but advanced search requires registration.",
+        // },
         {
           q: "How are transporters verified?",
           a: "Our team manually verifies transporter profiles before approval.",

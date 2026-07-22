@@ -10,9 +10,9 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "Directory", path: "/dummydirctory" },
 
-    { name: "About", path: "/about" },
+    { name: "About Us", path: "/about" },
     { name: "Services", path: "/services" },
-    { name: "Contact", path: "/queryform" },
+    { name: "Contact Us", path: "/queryform" },
     { name: "Login", path: "/login" },
     { name: "Register", path: "/register" },
   ];

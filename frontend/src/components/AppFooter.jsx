@@ -71,14 +71,14 @@ export default function Footer() {
                 </li>
 
                 <li>
-                  <Link to="/search" className="hover:text-blue-400">
+                  <Link to="/register" className="hover:text-blue-400">
                     Search Transport
                   </Link>
                 </li>
 
                 <li>
-                  <Link to="/contact" className="hover:text-blue-400">
-                    Contact
+                  <Link to="/queryform" className="hover:text-blue-400">
+                    Contact Us
                   </Link>
                 </li>
               </ul>
@@ -109,7 +109,7 @@ export default function Footer() {
                 </li>
 
                 <li>
-                  <Link to="/contectus" className="hover:text-blue-400">
+                  <Link to="/queryform" className="hover:text-blue-400">
                     Contact Us
                   </Link>
                 </li>

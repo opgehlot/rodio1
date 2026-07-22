@@ -2,25 +2,27 @@ import { useEffect, useState } from "react";
 import API from "../../api/api";
 import { FaStar, FaUserCircle } from "react-icons/fa";
 
-export  function DashboardReviews() {
+export function DashboardReviews() {
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetchReviews();
-}, []);
+    fetchReviews();
+  }, []);
+  
 
   const fetchReviews = async () => {
-     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+  try {
+    const businessId = localStorage.getItem("businessId");
 
-console.log(user);
+    if (!businessId) {
+      console.error("Business ID not found in localStorage");
+      return;
+    }
 
-const { data } = await API.get(`/comment/${user.id}`);
-      // const { data } = await API.get(`/comment/${user.businessId}`);
-
+    const { data } = await API.get(`/comment/${businessId}`);
 
       setReviews(data.comments || []);
       setAverageRating(data.averageRating || 0);
@@ -42,22 +44,17 @@ const { data } = await API.get(`/comment/${user.id}`);
 
   return (
     <div className="w-full px-3 sm:px-5 lg:px-8 py-6">
-
       {/* Rating Summary */}
 
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-6 text-white mb-8">
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
           <div>
-
             <h2 className="text-5xl font-bold">
               {Number(averageRating).toFixed(1)}
             </h2>
 
             <div className="flex mt-3">
-
-              {[1,2,3,4,5].map((star)=>(
+              {[1, 2, 3, 4, 5].map((star) => (
                 <FaStar
                   key={star}
                   className={
@@ -67,41 +64,25 @@ const { data } = await API.get(`/comment/${user.id}`);
                   }
                 />
               ))}
-
             </div>
 
-            <p className="mt-3 text-blue-100">
-              Average Customer Rating
-            </p>
-
+            <p className="mt-3 text-blue-100">Average Customer Rating</p>
           </div>
 
           <div className="flex items-center md:justify-end">
-
             <div>
+              <h2 className="text-5xl font-bold">{totalReviews}</h2>
 
-              <h2 className="text-5xl font-bold">
-                {totalReviews}
-              </h2>
-
-              <p className="text-blue-100 mt-2">
-                Total Customer Reviews
-              </p>
-
+              <p className="text-blue-100 mt-2">Total Customer Reviews</p>
             </div>
-
           </div>
-
         </div>
-
       </div>
 
       {/* Reviews */}
 
       {reviews.length === 0 ? (
-
         <div className="bg-white rounded-2xl shadow p-10 text-center">
-
           <h3 className="text-2xl font-semibold text-gray-700">
             No Reviews Yet
           </h3>
@@ -109,59 +90,37 @@ const { data } = await API.get(`/comment/${user.id}`);
           <p className="text-gray-500 mt-3">
             Customers haven't reviewed your service yet.
           </p>
-
         </div>
-
       ) : (
-
         <div className="space-y-5">
-
           {reviews.map((review) => (
-
             <div
               key={review._id}
               className="bg-white rounded-2xl shadow hover:shadow-lg transition p-5"
             >
-
               <div className="flex flex-col sm:flex-row sm:justify-between gap-5">
-
                 <div className="flex gap-4">
-
                   {review.user?.profileImage ? (
-
                     <img
                       src={review.user.profileImage}
                       alt=""
                       className="w-14 h-14 rounded-full object-cover"
                     />
-
                   ) : (
-
-                    <FaUserCircle
-                      size={55}
-                      className="text-gray-400"
-                    />
-
+                    <FaUserCircle size={55} className="text-gray-400" />
                   )}
 
                   <div>
-
-                    <h3 className="font-bold text-lg">
-                      {review.user?.name}
-                    </h3>
+                    <h3 className="font-bold text-lg">{review.user?.name}</h3>
 
                     <p className="text-gray-500 text-sm">
                       {new Date(review.createdAt).toLocaleDateString()}
                     </p>
-
                   </div>
-
                 </div>
 
                 <div className="flex">
-
-                  {[1,2,3,4,5].map((star)=>(
-
+                  {[1, 2, 3, 4, 5].map((star) => (
                     <FaStar
                       key={star}
                       className={
@@ -170,29 +129,19 @@ const { data } = await API.get(`/comment/${user.id}`);
                           : "text-gray-300"
                       }
                     />
-
                   ))}
-
                 </div>
-
               </div>
 
               <div className="mt-5">
-
                 <p className="text-gray-700 leading-8 break-words">
                   {review.comment}
                 </p>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       )}
-
     </div>
   );
 }

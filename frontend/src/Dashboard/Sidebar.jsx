@@ -232,6 +232,14 @@ export default function Sidebar({ open, setOpen }) {
               >
                 SHOW ENQUIERY STATUS
               </NavLink>
+               <NavLink
+                to="/dashboard/acceptedbid"
+                className={linkClass}
+                onClick={handleClose}
+              >
+                ACCEPTED BID
+              </NavLink>
+
               {/* 
               <NavLink
                 to="/dashboard/transportservices"

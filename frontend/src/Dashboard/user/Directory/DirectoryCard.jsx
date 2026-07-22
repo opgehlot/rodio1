@@ -5,122 +5,202 @@ import {
   Building2,
   User,
   ArrowRight,
+  BadgeCheck,
+  Truck,
 } from "lucide-react";
         import { Link } from "react-router-dom";
 
 function DirectoryCard({ business }) {
   return ( 
     
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+   <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
 
-      {/* Header */}
-      <div className="p-6 border-b">
+  {/* Header */}
+  <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-6 text-white">
 
-        <div className="flex items-center gap-4">
+    <div className="flex justify-between items-start">
 
-          <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center">
-            <Building2 className="text-gray-700" size={28} />
-          </div>
+      <div>
 
-          <div className="flex-1">
+        <div className="flex items-center gap-2">
 
-            <h2 className="text-xl font-bold text-blue-600 dark:text-sky-600">
-              {business.firmName}
-            </h2>
+          <Truck size={24} />
 
-            <p className=" text-blue-600 dark:text-sky-600 flex items-center gap-2 mt-1">
-              <User size={16} />
-              {business.ownerName}
-            </p>
-
-          </div>
-
-          <span className="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 text-blue-600 dark:text-sky-600">
-            {business.category}
-          </span>
+          <h2 className="text-2xl font-bold">
+            {business.firmName}
+          </h2>
 
         </div>
+
+        <p className="text-blue-100 mt-2">
+          {business.category}
+        </p>
 
       </div>
 
-      {/* Body */}
+      <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
 
-      <div className="p-6 space-y-5">
+        <BadgeCheck size={15} />
 
-        <div className="flex gap-3">
+        Verified
 
-          <MapPin className="  text-blue-600 dark:text-sky-600 text-gray-500 mt-1" size={18} />
-
-          <div>
-            <p className="text-sm font-semibold text-gray-700">
-              Address
-            </p>
-            <p className="text-gray-500 text-sm">
-              {business.address}
-            </p>
-          </div>
-
-        </div>
-
-        <div className="flex gap-3">
-
-          <MapPin className="  text-blue-600 dark:text-sky-600 text-gray-500 mt-1" size={18} />
-
-          <div>
-            <p className="text-sm font-semibold text-gray-700">
-              Location
-            </p>
-            <p className="text-gray-500 text-sm">
-              {business.currentCity}, {business.currentState}
-            </p>
-          </div>
-
-        </div>
-
-        <div className="flex gap-3">
-
-          <Phone className=" text-blue-600 dark:text-sky-600 text-gray-500 mt-1" size={18} />
-
-          <div>
-            <p className="  text-blue-600 text-sm font-semibold text-gray-700">
-              Phone
-            </p>
-            <p className="text-gray-500 text-sm">
-              {business.phoneNumber}
-            </p>
-          </div>
-
-        </div>
-
-        <div className="flex gap-3">
-
-          <Mail className="text-gray-500 mt-1  text-blue-600 dark:text-sky-600" size={18} />
-
-          <div>
-            <p className=" text-sm font-semibold text-gray-700">
-              Email
-            </p>
-            <p className="text-gray-500 text-sm break-all">
-              {business.email}
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* Footer */}
-
-      <div className=" border-t p-5">
-
-
-
-<Link to={`/dashboard/transporter/${business._id}`}>
-  View More
-</Link>
       </div>
 
     </div>
+
+  </div>
+
+  {/* Body */}
+
+  <div className="p-6">
+
+    {/* Route */}
+
+    <div className="grid grid-cols-3 items-center mb-6">
+
+      <div>
+
+        <p className="text-xs text-gray-500">Pickup</p>
+
+        <h3 className="font-bold text-lg">
+          {business.from}
+        </h3>
+
+      </div>
+
+      <div className="flex justify-center">
+
+        <ArrowRight className="text-blue-600" size={30} />
+
+      </div>
+
+      <div className="text-right">
+
+        <p className="text-xs text-gray-500">
+          Destination
+        </p>
+
+        <h3 className="font-bold text-lg">
+          {business.to}
+        </h3>
+
+      </div>
+
+    </div>
+
+    {/* Cards */}
+
+    <div className="grid grid-cols-2 gap-4 mb-5">
+
+      <div className="bg-gray-50 rounded-2xl p-4">
+
+        <Truck className="text-blue-600 mb-2" size={18} />
+
+        <p className="text-xs text-gray-500">
+          Vehicles
+        </p>
+
+        <h3 className="font-semibold mt-1">
+          {business.vehicleTypes?.join(", ")}
+        </h3>
+
+      </div>
+
+      <div className="bg-gray-50 rounded-2xl p-4">
+
+        <MapPin className="text-red-500 mb-2" size={18} />
+
+        <p className="text-xs text-gray-500">
+          Location
+        </p>
+
+        <h3 className="font-semibold mt-1">
+          {business.currentCity}
+        </h3>
+
+      </div>
+
+    </div>
+
+    {/* Contact */}
+
+    <div className="grid grid-cols-2 gap-5 mb-5">
+
+      <div className="flex gap-3">
+
+        <Phone className="text-green-600 mt-1" size={20} />
+
+        <div>
+
+          <p className="text-xs text-gray-500">
+            Contact
+          </p>
+
+          <p className="font-semibold">
+            {business.phoneNumber}
+          </p>
+
+        </div>
+
+      </div>
+
+      <div className="flex gap-3">
+
+        <Mail className="text-orange-500 mt-1" size={20} />
+
+        <div>
+
+          <p className="text-xs text-gray-500">
+            Email
+          </p>
+
+          <p className="font-semibold break-all">
+            {business.email}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {/* Address */}
+
+    <div className="bg-blue-50 rounded-2xl p-4">
+
+      <p className="text-xs text-gray-500">
+        Address
+      </p>
+
+      <p className="font-medium text-gray-700 mt-1">
+        {business.address}
+      </p>
+
+    </div>
+
+  </div>
+
+  {/* Footer */}
+
+  <div className="border-t p-5 flex gap-4">
+
+    <a
+      href={`tel:${business.phoneNumber}`}
+      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-center font-semibold transition"
+    >
+      📞 Call
+    </a>
+
+    <Link
+      to={`/dashboard/transporter/${business._id}`}
+      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-center font-semibold transition"
+    >
+      View Details
+    </Link>
+
+  </div>
+
+</div>
   );
 }
 

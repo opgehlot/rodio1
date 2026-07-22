@@ -44,62 +44,55 @@ export default function Login() {
   }
 };
   // Handle Login
-  const handleLogin = async (e) => {
-    e.preventDefault();
-   
-    if (!formData.emailOrMobile.trim()) {
-      toast.error("Please enter Email or Mobile");
-      return;
+ const handleLogin = async (e) => {
+  e.preventDefault();
+
+  if (!formData.emailOrMobile.trim()) {
+    toast.error("Please enter Email or Mobile");
+    return;
+  }
+
+  if (!formData.password.trim()) {
+    toast.error("Please enter Password");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const { data } = await API.post("/auth/login", {
+      emailOrMobile: formData.emailOrMobile,
+      password: formData.password,
+    });
+
+    console.log("Login Response:", data);
+
+    // Save login data
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("role", data.user.role);
+
+    if (data.businessId) {
+      localStorage.setItem("businessId", data.businessId);
     }
 
-    if (!formData.password.trim()) {
-      toast.error("Please enter Password");
-      return;
+    toast.success(data.message || "Login Successful");
+
+    navigate(data.redirectTo || "/");
+  } catch (error) {
+    console.error("Login Error:", error);
+
+    if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
+    } else if (error.request) {
+      toast.error("Server not responding");
+    } else {
+      toast.error("Something went wrong");
     }
-
-    try {
-      setLoading(true);
-
-      
-
-      const response = await API.post("/auth/login", {
-        emailOrMobile: formData.emailOrMobile,
-        password: formData.password,
-      });
-      console.log(response);
-
-  
-
-      // Save Token
-      localStorage.setItem("token", response.data.token);
-
-      // Save User
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("role", response.data.user.role);
-
-      toast.success(response.data.message);
-
-      if (response.data.redirectTo) {
-        navigate(response.data.redirectTo);
-      } else {
-
-        console.log("Response:", response.data);
-console.log("Redirect:", response.data.redirectTo);
-        navigate("/");
-      }
-    } catch (error) {
-      console.error(error);
-
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Server Error");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <>
       <Navbar />

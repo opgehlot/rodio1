@@ -17,12 +17,14 @@ function Home() {
       <HeroCarousel/>
       <Dummyserch/>
     
+    
       <Overvision/>
         <About/>
          <ReadyToGrow/>
       <Feedback/>
     
      <QueryForm/>
+ 
     
      
 

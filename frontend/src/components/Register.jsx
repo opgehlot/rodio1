@@ -94,7 +94,7 @@ export default function Register() {
               >
                 <option value="">Select Role</option>
 
-                <option value="user">Shipper</option>
+                <option value="user">Shipper/Other</option>
 
                 <option value="transporter">Transporter</option>
 

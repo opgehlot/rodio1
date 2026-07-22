@@ -40,12 +40,15 @@ import ShowEnquiery from "./Dashboard/user/myrequest/ShowEnquiery";
 import ChangePassword from "./Dashboard/Changepassword";
 import AddVehicle from "./Dashboard/transporter/Addvehicle";
 import TransporterProfile from "./Dashboard/user/TrasporterProfile";
-import AddServices from "./Dashboard/transporter/transportpage/AddServices";
 import Dummydirectory from "./pages/Dummydirctory";
 import DtransporterDetails from "./pages/DtransporterDetails";
 import BidCard from "./Dashboard/BidCard";
 import BidList from "./Dashboard/user/myrequest/BidList";
 import AcceptedBid from "./Dashboard/transporter/AcceptedBid";
+import AddServices from "./pages/addServices/AddServices";
+import PlanSelection from "../payment/PlanSelection";
+import Receipt from "../payment/Receipt";
+
 
 function App() {
   return (
@@ -98,9 +101,26 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="addservices" element={<AddServices />} />
           <Route path="acceptedbid" element={<AcceptedBid />} />
+            <Route path="planselection" element={<PlanSelection/>} />
+            <Route path="receipt/:paymentId" element={<Receipt/>} />
+          
+          
+          
+         
 
           {/* Broker */}
           <Route path="clients" element={<Clients />} />
+
+         {/* paymentpage  */}
+      
+
+
+
+
+
+
+
+
         </Route>
 
         {/* main layout  */}
@@ -123,6 +143,8 @@ function App() {
             path="/DtransporterDetails"
             element={<DtransporterDetails />}
           />
+             
+       
           ...
         </Route>
       </Routes>
