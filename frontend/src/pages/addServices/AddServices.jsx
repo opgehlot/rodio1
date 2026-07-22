@@ -11,15 +11,20 @@ import Step3Transport from "../addservicesescomponents/Step3Transport";
 import Step4Contact from "../addservicesescomponents/Step4Contact";
 import Step5Documents from "../addservicesescomponents/Step5Documents";
 import Step6Review from "../addservicesescomponents/Step6Review";
+import { useBusinessRegistration } from "../addServices/BusinessRegistrationContext";
+
 
 import {
   categories,
   vehicleOptions,
 } from "../addServices/constants";
 
+
 const TOTAL_STEPS = 6;
 
 export  function AddServices() {
+  const { setBusinessData } = useBusinessRegistration();
+
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
@@ -112,63 +117,11 @@ export  function AddServices() {
     setStep((prev) => prev - 1);
   };
 
-  const onSubmit = async (data) => {
-    try {
-      setLoading(true);
+ const onSubmit = async (data) => {
+  setBusinessData(data);
 
-      const formData = new FormData();
-
-      Object.keys(data).forEach((key) => {
-        if (key === "vehicleTypes") {
-          data.vehicleTypes.forEach((item) =>
-            formData.append("vehicleTypes", item)
-          );
-        } else if (
-          [
-            "aadhaar",
-            "panCard",
-            "gumasta",
-            "gstCertificate",
-          ].includes(key)
-        ) {
-          if (data[key]?.[0]) {
-            formData.append(key, data[key][0]);
-          }
-        } else {
-          formData.append(key, data[key]);
-        }
-      });
-
-      const res = await API.post(
-        "/business/registerbusiness",
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      );
-
-      toast.success(
-        res.data.message ||
-          "Registration Successful"
-      );
-
-      reset();
-
-      setStep(1);
-
-      navigate("/dashboard/planselection");
-    } catch (err) {
-      toast.error(
-        err.response?.data?.message ||
-          "Registration Failed"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  navigate("/dashboard/planselection");
+};
 
   return (
     <div className="min-h-screen bg-orange-50 py-10 px-4">

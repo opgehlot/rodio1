@@ -49,6 +49,17 @@ const Receipt = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+  if (receipt) {
+    const timer = setTimeout(() => {
+      navigate("/dashboard");
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }
+}, [receipt, navigate]);
+
+
     const downloadPDF = async () => {
     const input = receiptRef.current;
 
@@ -143,11 +154,11 @@ const Receipt = () => {
 
         </div>
 
-        <div
-          ref={receiptRef}
-          className="bg-white rounded-2xl shadow-xl overflow-hidden"
-          
-        >
+       <div
+  ref={receiptRef}
+  data-print
+  className="bg-white rounded-2xl shadow-xl overflow-hidden"
+>
                 {/* Header */}
 
 <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white p-8">
@@ -406,39 +417,7 @@ const Receipt = () => {
 
         </div>
 
-        {/* Refund */}
-
-        <div className="p-8 border-b">
-
-          <h2 className="text-2xl font-bold mb-6">
-            Refund Details
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-6">
-
-            <div>
-              <p className="text-sm text-gray-500">
-                Refund Amount
-              </p>
-
-              <p className="font-semibold">
-                ₹ {receipt.refundAmount}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500">
-                Refund Status
-              </p>
-
-              <p className="font-semibold">
-                {receipt.refundStatus || "Not Refunded"}
-              </p>
-            </div>
-
-          </div>
-
-        </div>
+       
 
         {/* Footer */}
 
@@ -478,13 +457,23 @@ const Receipt = () => {
         </div>
 
       </div>
+      <div className="mt-8 flex justify-center">
+  <button
+    onClick={() => navigate("/dashboard")}
+    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold"
+  >
+    Go to Dashboard
+  </button>
+</div>
 
     </div>
+    
 
 
 
 
 );
+
 
 };
 
