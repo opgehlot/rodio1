@@ -21,7 +21,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 w-full bg-white shadow-lg z-30">
       <div className="max-w-7xl mx-auto h-20 px-5 flex items-center justify-between">
         <NavLink to="/" className="text-2xl font-bold text-orange-500">
-          Rodio
+          RODIO Tradelink
         </NavLink>
 
         {/* Desktop */}

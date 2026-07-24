@@ -145,7 +145,7 @@ const Services = () => {
 
           {[
             ["5000+", "Businesses"],
-            ["5000+", "Transporters"],
+            ["8000+", "Transporters"],
         
             ["24x7", "Support"],
           ].map((item, index) => (

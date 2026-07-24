@@ -195,7 +195,7 @@ export default function Footer() {
           <div className="border-t border-slate-800 mt-6 pt-4 flex flex-col md:flex-row justify-between items-center gap-3">
             <p className="text-sm text-gray-400 text-center md:text-left">
               © {new Date().getFullYear()}{" "}
-              <span className="font-semibold text-white">RODIO</span>. All
+              <span className="font-semibold text-white">RODIO Tradelink</span>. All
               Rights Reserved.
             </p>
 

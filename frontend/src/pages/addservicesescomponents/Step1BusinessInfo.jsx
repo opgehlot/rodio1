@@ -146,9 +146,9 @@ export default function Step1BusinessInfo({
 
           </div>
 
-          {/* Business ID */}
+         
 
-          <div>
+          {/* <div>
 
             <label className="block text-sm font-semibold mb-2">
               Business ID
@@ -161,7 +161,7 @@ export default function Step1BusinessInfo({
               className="w-full h-12 rounded-xl border border-gray-300 px-4 outline-none focus:border-orange-500"
             />
 
-          </div>
+          </div> */}
 
         </div>
 

@@ -48,6 +48,7 @@ import AcceptedBid from "./Dashboard/transporter/AcceptedBid";
 import AddServices from "./pages/addServices/AddServices";
 import PlanSelection from "../payment/PlanSelection";
 import Receipt from "../payment/Receipt";
+import DashboardHome from "./pages/addServices/DashboardHome";
 
 
 function App() {
@@ -103,6 +104,7 @@ function App() {
           <Route path="acceptedbid" element={<AcceptedBid />} />
             <Route path="planselection" element={<PlanSelection/>} />
             <Route path="receipt/:paymentId" element={<Receipt/>} />
+            <Route path="/dashboard" element={<DashboardHome />} />
           
           
           

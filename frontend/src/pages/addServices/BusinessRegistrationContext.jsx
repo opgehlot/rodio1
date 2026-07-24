@@ -1,26 +1,47 @@
 import { createContext, useContext, useState } from "react";
 
-const BusinessRegistrationContext = createContext();
+// 1. Context Create
+export const BusinessRegistrationContext = createContext();
 
-export const BusinessRegistrationProvider = ({ children }) => {
-  const [businessData, setBusinessData] = useState(null);
+// 2. Provider Component (Primary Export for Fast Refresh)
+export function BusinessRegistrationProvider({ children }) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [businessData, setBusinessData] = useState({});
 
   const clearBusinessData = () => {
-    setBusinessData(null);
+    setBusinessData({});
+    setCurrentStep(1);
+  };
+
+  const updateBusinessData = (newData) => {
+    setBusinessData((prevData) => ({
+      ...prevData,
+      ...newData,
+    }));
   };
 
   return (
     <BusinessRegistrationContext.Provider
       value={{
         businessData,
-        setBusinessData,
+        setBusinessData: updateBusinessData,
+        currentStep,
+        setCurrentStep,
         clearBusinessData,
       }}
     >
       {children}
     </BusinessRegistrationContext.Provider>
   );
-};
+}
 
-export const useBusinessRegistration = () =>
-  useContext(BusinessRegistrationContext);
+// 3. Custom Hook Export
+export const useBusinessRegistration = () => {
+  const context = useContext(BusinessRegistrationContext);
+  if (!context) {
+    throw new Error(
+      "useBusinessRegistration must be used within a BusinessRegistrationProvider"
+    );
+  }
+  return context;
+};

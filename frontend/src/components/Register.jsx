@@ -94,11 +94,15 @@ export default function Register() {
               >
                 <option value="">Select Role</option>
 
-                <option value="user">Shipper/Other</option>
+                <option value="user">
+                  Shipper/Manufacture Comapany/Coustmer/Tader
+                </option>
 
-                <option value="transporter">Transporter</option>
+                <option value="transporter">
+                  Transporter(Service Provider)
+                </option>
 
-                <option value="broker">Broker</option>
+                <option value="broker">Broker(sevice Agent)</option>
               </select>
 
               <p className="text-red-500 text-sm mt-1">
@@ -136,32 +140,41 @@ export default function Register() {
 
               <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
                 <Phone size={18} className="text-gray-400" />
-<input
-  type="text"
-  inputMode="numeric"
-  maxLength={10}
-  className="w-full ml-3 outline-none border-none focus:outline-none focus:ring-0"
-  {...register("mobile", {
-    required: "Mobile Required",
-    pattern: {
-      value: /^[0-9]{10}$/,
-      message: "Enter valid mobile number",
-    },
-  })}
-  onKeyDown={(e) => {
-    if (
-      !/[0-9]/.test(e.key) &&
-      !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)
-    ) {
-      e.preventDefault();
-    }
-  }}
-  onPaste={(e) => {
-    e.preventDefault();
-    const text = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 10);
-    e.target.value = text;
-  }}
-/>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={10}
+                  className="w-full ml-3 outline-none border-none focus:outline-none focus:ring-0"
+                  {...register("mobile", {
+                    required: "Mobile Required",
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message: "Enter valid mobile number",
+                    },
+                  })}
+                  onKeyDown={(e) => {
+                    if (
+                      !/[0-9]/.test(e.key) &&
+                      ![
+                        "Backspace",
+                        "Delete",
+                        "ArrowLeft",
+                        "ArrowRight",
+                        "Tab",
+                      ].includes(e.key)
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onPaste={(e) => {
+                    e.preventDefault();
+                    const text = e.clipboardData
+                      .getData("text")
+                      .replace(/\D/g, "")
+                      .slice(0, 10);
+                    e.target.value = text;
+                  }}
+                />
               </div>
 
               <p className="text-red-500 text-sm mt-1">
@@ -198,23 +211,23 @@ export default function Register() {
 
               <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
                 <Lock size={18} className="text-gray-400" />
-<input
-  type="password"
-  maxLength={8}
-  {...register("password", {
-    required: "Password is required",
-    minLength: {
-      value: 4,
-      message: "Password must be a min 4 charcters",
-    },
-    maxLength: {
-      value: 8,
-      message: "Password must be 8 characters",
-    },
-  })}
-  className="w-full outline-none"
-  placeholder="Enter Password"
-/>
+                <input
+                  type="password"
+                  maxLength={8}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 4,
+                      message: "Password must be a min 4 charcters",
+                    },
+                    maxLength: {
+                      value: 8,
+                      message: "Password must be 8 characters",
+                    },
+                  })}
+                  className="w-full outline-none"
+                  placeholder="Enter Password"
+                />
               </div>
 
               <p className="text-red-500 text-sm mt-1">

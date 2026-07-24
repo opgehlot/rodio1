@@ -201,7 +201,7 @@ export default function UserForm() {
                     </label>
 
                      <select
-    {...register("category", {
+    {...register("service", {
       required: "Category is required",
     })}
     className="w-full h-12 border border-gray-300 rounded-none px-4 mt-2"

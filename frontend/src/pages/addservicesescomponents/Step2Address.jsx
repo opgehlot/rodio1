@@ -35,40 +35,41 @@ export default function Step2Address({
 
       {/* Body */}
 
+
       <div className="p-6 md:p-8">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           {/* City */}
 
-          {/* Address */}
-
-          <div className="md:col-span-2">
+          <div>
 
             <label className="block text-sm font-semibold mb-2">
-              Full Address
+              City
               <span className="text-red-500 ml-1">*</span>
             </label>
 
-            <textarea
-              rows={4}
-              placeholder="Enter complete address"
-              {...register("address", {
-                required: "Address is required",
+            <input
+              type="text"
+              placeholder="Enter City"
+              {...register("currentCity", {
+                required: "City is required",
               })}
-              className={`w-full rounded-xl border p-4 outline-none resize-none ${
-                errors.address
+              className={`w-full h-12 rounded-xl border px-4 outline-none ${
+                errors.currentCity
                   ? "border-red-500"
                   : "border-gray-300 focus:border-orange-500"
               }`}
             />
 
-            {errors.address && (
+            {errors.currentCity && (
               <p className="text-red-500 text-sm mt-2">
-                {errors.address.message}
+                {errors.currentCity.message}
               </p>
             )}
 
           </div>
 
+         
           {/* State */}
 
           <div>
@@ -99,35 +100,7 @@ export default function Step2Address({
 
           </div>
 
-          {/* City */}
-
-          <div>
-
-            <label className="block text-sm font-semibold mb-2">
-              City
-              <span className="text-red-500 ml-1">*</span>
-            </label>
-
-            <input
-              type="text"
-              placeholder="Enter City"
-              {...register("currentCity", {
-                required: "City is required",
-              })}
-              className={`w-full h-12 rounded-xl border px-4 outline-none ${
-                errors.currentCity
-                  ? "border-red-500"
-                  : "border-gray-300 focus:border-orange-500"
-              }`}
-            />
-
-            {errors.currentCity && (
-              <p className="text-red-500 text-sm mt-2">
-                {errors.currentCity.message}
-              </p>
-            )}
-
-          </div>
+         
 
           {/* Pincode */}
 
@@ -163,6 +136,36 @@ export default function Step2Address({
             )}
 
           </div>
+           {/* Address */}
+
+          <div className="md:col-span-2">
+
+            <label className="block text-sm font-semibold mb-2">
+              Full Address
+              <span className="text-red-500 ml-1">*</span>
+            </label>
+
+            <textarea
+              rows={4}
+              placeholder="Enter complete address"
+              {...register("address", {
+                required: "Address is required",
+              })}
+              className={`w-full rounded-xl border p-4 outline-none resize-none ${
+                errors.address
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-orange-500"
+              }`}
+            />
+
+            {errors.address && (
+              <p className="text-red-500 text-sm mt-2">
+                {errors.address.message}
+              </p>
+            )}
+
+          </div>
+
 
         </div>
 

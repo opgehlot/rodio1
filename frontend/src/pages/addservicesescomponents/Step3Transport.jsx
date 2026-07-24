@@ -1,19 +1,90 @@
-import { Truck, ChevronLeft, ChevronRight } from "lucide-react";
+
+import {
+ stateOptions,
+  stateCityData,
+} from "../addServices/constantss";
+
+
+import { Controller, useFieldArray } from "react-hook-form";
+import Select from "react-select";
+import {
+  Truck,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Trash2,
+} from "lucide-react";
+
+
 
 export default function Step3Transport({
+  control,
   register,
+  watch,
+  setValue,
   errors,
   nextStep,
   prevStep,
   vehicleOptions,
-}) {
+}) {// ===========================
+  // Working Areas
+  // ===========================
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "workingAreas",
+  });
+
+  const workingAreas = watch("workingAreas") || [];
+
+  // ===========================
+  // React Select Styles
+  // ===========================
+
+  const customStyles = {
+    control: (base) => ({
+      ...base,
+      minHeight: 48,
+      borderRadius: 12,
+      borderColor: "#d1d5db",
+      boxShadow: "none",
+      "&:hover": {
+        borderColor: "#f97316",
+      },
+    }),
+
+    menu: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+
+    menuList: (base) => ({
+      ...base,
+      maxHeight: 220,
+    }),
+  };
+
+  // ===========================
+  // Add / Remove Working Area
+  // ===========================
+
+  const addWorkingArea = () => {
+    append({
+      state: "",
+      cities: [],
+    });
+  };
+
+  const removeWorkingArea = (index) => {
+    remove(index);
+  };
+
   return (
     <div className="bg-white rounded-3xl shadow-xl border border-orange-100 overflow-hidden">
 
       {/* Header */}
 
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-5">
-
         <div className="flex items-center gap-4">
 
           <div className="bg-white/20 p-3 rounded-xl">
@@ -22,89 +93,161 @@ export default function Step3Transport({
 
           <div>
             <h2 className="text-2xl font-bold text-white">
-              Transport Details
+              Working Areas
             </h2>
 
             <p className="text-orange-100 mt-1">
-              Add your transport routes and available vehicles.
+              Select all states and cities where you provide transport services.
             </p>
           </div>
 
         </div>
-
       </div>
 
       {/* Body */}
 
       <div className="p-6 md:p-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {fields.map((field, index) => (
 
-          {/* From */}
+          <div
+            key={field.id}
+            className="border rounded-2xl p-5 mb-6"
+          >
+                        {/* State */}
 
-          <div>
+            <div className="grid md:grid-cols-2 gap-5">
 
-            <label className="block text-sm font-semibold mb-2">
-              Line From
-              <span className="text-red-500 ml-1">*</span>
-            </label>
+              <div>
+                <label className="block text-sm font-semibold mb-2">
+                  State
+                </label>
 
-            <input
-              type="text"
-              placeholder="Ex. Indore"
-              {...register("from", {
-                required: "Line From is required",
-              })}
-              className={`w-full h-12 rounded-xl border px-4 outline-none ${
-                errors.from
-                  ? "border-red-500"
-                  : "border-gray-300 focus:border-orange-500"
-              }`}
-            />
+                <Controller
+                  control={control}
+                  name={`workingAreas.${index}.state`}
+                  rules={{
+                    required: "Please select a state",
+                  }}
+                  render={({ field }) => (
+                    <Select
+                      options={stateOptions}
+                      styles={customStyles}
+                      placeholder="Select State"
+                      value={
+                        stateOptions.find(
+                          (item) => item.value === field.value
+                        ) || null
+                      }
+                      onChange={(selected) => {
+                        field.onChange(selected?.value || "");
 
-            {errors.from && (
-              <p className="text-red-500 text-sm mt-2">
-                {errors.from.message}
-              </p>
+                        // Reset cities when state changes
+                        setValue(
+                          `workingAreas.${index}.cities`,
+                          [],
+                          {
+                            shouldValidate: true,
+                          }
+                        );
+                      }}
+                    />
+                  )}
+                />
+
+                {errors?.workingAreas?.[index]?.state && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.workingAreas[index].state.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Cities */}
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">
+                  Cities
+                </label>
+
+                <Controller
+                  control={control}
+                  name={`workingAreas.${index}.cities`}
+                  rules={{
+                    validate: (value) =>
+                      value?.length > 0 ||
+                      "Please select at least one city",
+                  }}
+                  render={({ field }) => (
+                    <Select
+                      isMulti
+                      styles={customStyles}
+                      placeholder="Select Cities"
+                      options={
+                        stateCityData[
+                          workingAreas[index]?.state
+                        ] || []
+                      }
+                      value={
+                        (field.value || []).map((city) => ({
+                          value: city,
+                          label: city,
+                        }))
+                      }
+                      onChange={(selected) => {
+                        field.onChange(
+                          selected
+                            ? selected.map((item) => item.value)
+                            : []
+                        );
+                      }}
+                    />
+                  )}
+                />
+
+                {errors?.workingAreas?.[index]?.cities && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.workingAreas[index].cities.message}
+                  </p>
+                )}
+              </div>
+
+            </div>
+
+            {/* Remove Button */}
+
+            {fields.length > 1 && (
+              <div className="mt-5 flex justify-end">
+
+                <button
+                  type="button"
+                  onClick={() => removeWorkingArea(index)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
+                >
+                  <Trash2 size={18} />
+                  Remove
+                </button>
+
+              </div>
             )}
 
           </div>
+        ))}
 
-          {/* To */}
+        {/* Add Working Area */}
 
-          <div>
+        <button
+          type="button"
+          onClick={addWorkingArea}
+          className="flex items-center gap-2 bg-orange-100 text-orange-700 px-5 py-3 rounded-xl hover:bg-orange-200 transition"
+        >
+          <Plus size={18} />
+          Add Working Area
+        </button>
+                {/* ===========================
+            Vehicle Types
+        ============================ */}
 
-            <label className="block text-sm font-semibold mb-2">
-              Line To
-              <span className="text-red-500 ml-1">*</span>
-            </label>
-
-            <input
-              type="text"
-              placeholder="Ex. Mumbai"
-              {...register("to", {
-                required: "Line To is required",
-              })}
-              className={`w-full h-12 rounded-xl border px-4 outline-none ${
-                errors.to
-                  ? "border-red-500"
-                  : "border-gray-300 focus:border-orange-500"
-              }`}
-            />
-
-            {errors.to && (
-              <p className="text-red-500 text-sm mt-2">
-                {errors.to.message}
-              </p>
-            )}
-
-          </div>
-
-        </div>
-
-        {/* Vehicle Types */}
-
-        <div className="mt-8">
+        <div className="mt-10">
 
           <label className="block text-lg font-bold text-gray-800 mb-2">
             Vehicle Types
@@ -115,14 +258,15 @@ export default function Step3Transport({
             Select all vehicle types available in your business.
           </p>
 
-          {/* Part 5B starts from here */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
 
             {vehicleOptions.map((vehicle) => (
+
               <label
                 key={vehicle}
-                className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-orange-500 hover:bg-orange-50 transition-all"
+                className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-orange-500 hover:bg-orange-50 transition"
               >
+
                 <input
                   type="checkbox"
                   value={vehicle}
@@ -137,12 +281,14 @@ export default function Step3Transport({
                 <span className="text-sm font-medium text-gray-700">
                   {vehicle}
                 </span>
+
               </label>
+
             ))}
 
           </div>
 
-          {errors.vehicleTypes && (
+          {errors?.vehicleTypes && (
             <p className="text-red-500 text-sm mt-3">
               {errors.vehicleTypes.message}
             </p>
@@ -150,7 +296,9 @@ export default function Step3Transport({
 
         </div>
 
-        {/* Buttons */}
+        {/* ===========================
+            Navigation Buttons
+        ============================ */}
 
         <div className="mt-10 flex flex-col sm:flex-row justify-between gap-4">
 
@@ -175,7 +323,6 @@ export default function Step3Transport({
         </div>
 
       </div>
-
     </div>
   );
 }

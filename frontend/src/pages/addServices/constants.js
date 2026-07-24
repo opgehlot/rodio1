@@ -40,3 +40,4 @@ export const vehicleOptions = [
   "Refrigerated Truck",
   "Tractor Trolley",
 ];
+export default vehicleOptions;

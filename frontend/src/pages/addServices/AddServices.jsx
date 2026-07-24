@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -13,50 +13,76 @@ import Step5Documents from "../addservicesescomponents/Step5Documents";
 import Step6Review from "../addservicesescomponents/Step6Review";
 import { useBusinessRegistration } from "../addServices/BusinessRegistrationContext";
 
-
 import {
   categories,
   vehicleOptions,
 } from "../addServices/constants";
 
-
 const TOTAL_STEPS = 6;
 
-export  function AddServices() {
-  const { setBusinessData } = useBusinessRegistration();
+export function AddServices() {
+  const {
+    businessData,
+    setBusinessData,
+    currentStep,
+    setCurrentStep,
+  } = useBusinessRegistration();
 
   const navigate = useNavigate();
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(currentStep || 1);
   const [loading, setLoading] = useState(false);
 
+  // Sync react-hook-form default values with persistent context data
   const {
     register,
     handleSubmit,
     watch,
     trigger,
+    control,
+    setValue,
     reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      category: "",
-      firmName: "",
-      ownerName: "",
-      businessId: "",
-      address: "",
-      currentState: "",
-      currentCity: "",
-      pincode: "",
-      from: "",
-      to: "",
-      vehicleTypes: [],
-      phoneNumber: "",
-      alternatePhone: "",
-      email: "",
-      website: "",
-      acceptedTerms: false,
+      category: businessData?.category || "",
+      firmName: businessData?.firmName || "",
+      ownerName: businessData?.ownerName || "",
+      address: businessData?.address || "",
+      currentState: businessData?.currentState || "",
+      currentCity: businessData?.currentCity || "",
+      pincode: businessData?.pincode || "",
+
+      workingAreas: businessData?.workingAreas || [
+        {
+          state: "",
+          cities: [],
+        },
+      ],
+
+      vehicleTypes: businessData?.vehicleTypes || [],
+
+      phoneNumber: businessData?.phoneNumber || "",
+      alternatePhone: businessData?.alternatePhone || "",
+      email: businessData?.email || "",
+      website: businessData?.website || "",
+
+      // Documents step fields default values
+      identityDoc: businessData?.identityDoc || null,
+      panCard: businessData?.panCard || null,
+      gumasta: businessData?.gumasta || null,
+      gstCertificate: businessData?.gstCertificate || null,
+
+      acceptedTerms: businessData?.acceptedTerms || false,
     },
   });
+
+  // Keep local step and context step synchronized
+  useEffect(() => {
+    if (currentStep) {
+      setStep(currentStep);
+    }
+  }, [currentStep]);
 
   const nextStep = async () => {
     let fields = [];
@@ -76,27 +102,15 @@ export  function AddServices() {
         break;
 
       case 3:
-        fields = [
-          "from",
-          "to",
-          "vehicleTypes",
-        ];
+        fields = ["workingAreas", "vehicleTypes"];
         break;
 
       case 4:
-        fields = [
-          "phoneNumber",
-          "email",
-        ];
+        fields = ["phoneNumber", "email"];
         break;
 
       case 5:
-        fields = [
-          "aadhaar",
-          "panCard",
-          "gumasta",
-          "gstCertificate",
-        ];
+        fields = ["identityDoc", "panCard", "gumasta", "gstCertificate"];
         break;
 
       default:
@@ -110,33 +124,42 @@ export  function AddServices() {
       return;
     }
 
-    setStep((prev) => prev + 1);
+    const next = step + 1;
+    setStep(next);
+    setCurrentStep(next);
   };
 
   const prevStep = () => {
-    setStep((prev) => prev - 1);
+    const prev = step - 1;
+    setStep(prev);
+    setCurrentStep(prev);
   };
 
- const onSubmit = async (data) => {
-  setBusinessData(data);
-
-  navigate("/dashboard/planselection");
-};
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      // Save full form dataset into Context
+     setBusinessData(data);
+      
+      // If API integration is required before redirecting:
+      // await API.post("/services", data);
+      
+      toast.success("Service registration step submitted!");
+      // Navigating as per workflow chart requirement
+      navigate("/dashboard/planselection");
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Submission failed!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-orange-50 py-10 px-4">
-
       <div className="max-w-6xl mx-auto">
+        <ProgressBar step={step} totalSteps={TOTAL_STEPS} />
 
-        <ProgressBar
-          step={step}
-          totalSteps={TOTAL_STEPS}
-        />
-
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mt-8"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           {step === 1 && (
             <Step1BusinessInfo
               register={register}
@@ -158,6 +181,9 @@ export  function AddServices() {
           {step === 3 && (
             <Step3Transport
               register={register}
+              control={control}
+              setValue={setValue}
+              watch={watch}
               errors={errors}
               nextStep={nextStep}
               prevStep={prevStep}
@@ -193,10 +219,9 @@ export  function AddServices() {
             />
           )}
         </form>
-
       </div>
-
     </div>
   );
 }
+
 export default AddServices;
