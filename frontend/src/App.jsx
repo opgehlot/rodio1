@@ -54,22 +54,20 @@ import DashboardHome from "./pages/addServices/DashboardHome";
 function App() {
   return (
     <BrowserRouter>
-      <Toaster
+     <Toaster
   position="top-center"
   reverseOrder={false}
-  containerStyle={{
-    top: 20,
-  }}
   toastOptions={{
     duration: 3000,
     style: {
       borderRadius: "12px",
       background: "#1f2937",
       color: "#fff",
+      padding: "12px 20px",
+      textAlign: "center",
     },
   }}
-
-      />
+/>
       <ScrollToTop />
 
       <Routes>

@@ -1,0 +1,19 @@
+{
+  "welcome": "Welcome",
+  "login": "Login",
+  "register": "Register",
+  "dashboard": "Dashboard",
+  "logout": "Logout",
+
+  "navbar": {
+    "brandName": "RODIO Tradelink",
+    "home": "Home",
+    "directory": "Directory",
+    "aboutUs": "About Us",
+    "services": "Services",
+    "contactUs": "Contact Us",
+    "login": "Login",
+    "register": "Register",
+    "toggleMenu": "Toggle Menu"
+  }
+}

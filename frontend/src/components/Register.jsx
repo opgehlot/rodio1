@@ -95,14 +95,14 @@ export default function Register() {
                 <option value="">Select Role</option>
 
                 <option value="user">
-                  Shipper/Manufacture Comapany/Coustmer/Tader
+                Shipper / Manufacturing Company / Customer / Trader
                 </option>
 
                 <option value="transporter">
                   Transporter(Service Provider)
                 </option>
 
-                <option value="broker">Broker(sevice Agent)</option>
+                <option value="broker">Broker(service Agent)</option>
               </select>
 
               <p className="text-red-500 text-sm mt-1">
