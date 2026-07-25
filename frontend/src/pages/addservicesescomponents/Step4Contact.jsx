@@ -55,20 +55,25 @@ export default function Step4Contact({
             </label>
 
             <input
-              type="tel"
-              placeholder="9876543210"
-              {...register("phoneNumber", {
-                required: "Phone Number is required",
-                pattern: {
-                  value: /^[6-9]\d{9}$/,
-                  message: "Enter valid 10 digit mobile number",
-                },
-              })}
-              className={`w-full h-12 rounded-xl border px-4 outline-none ${
-                errors.phoneNumber
-                  ? "border-red-500"
-                  : "border-gray-300 focus:border-orange-500"
-              }`}
+  type="tel"
+  placeholder="0000000000"
+  maxLength={10}
+  onInput={(e) => {
+    e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10);
+  }}
+  {...register("phoneNumber", {
+    required: "Phone Number is required",
+    pattern: {
+      value: /^[6-9]\d{9}$/,
+      message: "Enter valid 10 digit mobile number",
+    },
+  })}
+  className={`w-full h-12 rounded-xl border px-4 outline-none ${
+    errors.phoneNumber
+      ? "border-red-500"
+      : "border-gray-300 focus:border-orange-500"
+  }`}
+
             />
 
             {errors.phoneNumber && (

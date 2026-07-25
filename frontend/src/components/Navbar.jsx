@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const links = [
     { name: t("navbar.home", "Home"), path: "/" },
-    { name: t("navbar.directory", "Directory"), path: "/dummydirctory" },
+    { name: t("navbar.directory", "Directory"), path: "/directory" },
     { name: t("navbar.aboutUs", "About Us"), path: "/about" },
     { name: t("navbar.services", "Services"), path: "/services" },
     { name: t("navbar.contactUs", "Contact Us"), path: "/queryform" },
