@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/api";
-import Profile from "../../Dashboard/Profile"; // Profile component import kiya gaya hai
+import Profile from "../../Dashboard/Profile"; 
+import EditBusinessProfile from "../../pages/addServices/EditBusinessProfile"; 
 
 import {
   Building2,
@@ -19,12 +20,13 @@ import {
   Phone,
   Briefcase,
   PlusCircle,
+  Edit3,
 } from "lucide-react";
 
 const DashboardHome = () => {
   const navigate = useNavigate();
 
-  // API State
+  // API States
   const [business, setBusiness] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,52 +34,53 @@ const DashboardHome = () => {
   // UI Interactive States
   const [isReferralOpen, setIsReferralOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Fetch Dashboard Data
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        setLoading(true);
-        setError("");
+  const fetchDashboard = async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-        const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-        if (!token) {
-          setError("Token not found. Please login again.");
-          setLoading(false);
-          return;
-        }
-
-        const response = await API.get("/dashboard", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.data?.success) {
-          setBusiness(response.data.data);
-        } else {
-          setBusiness(null);
-        }
-      } catch (err) {
-        console.error("Dashboard API Error:", err.response?.data || err);
-
-        if (err.response?.status === 401) {
-          setError("Session expired. Please login again.");
-          return;
-        }
-        setBusiness(null);
-      } finally {
+      if (!token) {
+        setError("Token not found. Please login again.");
         setLoading(false);
+        return;
       }
-    };
 
+      const response = await API.get("/dashboard", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data?.success) {
+        setBusiness(response.data.data);
+      } else {
+        setBusiness(response.data); // Fallback if success wrapper is missing
+      }
+    } catch (err) {
+      console.error("Dashboard API Error:", err.response?.data || err);
+
+      if (err.response?.status === 401) {
+        setError("Session expired. Please login again.");
+        return;
+      }
+      setBusiness(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchDashboard();
   }, []);
 
   const isProfileComplete = 
     business?.profileCompleted === true || 
-    (Boolean(business?.firmName) && Boolean(business?.ownerName || business?.name) && Boolean(business?.mobile));
+    (Boolean(business?.firmName) && Boolean(business?.ownerName || business?.name) && Boolean(business?.mobile || business?.phoneNumber));
 
   const subscriptionStatus = business?.subscription?.status || "inactive";
   const subscriptionPlan = business?.subscription?.plan || "No Plan";
@@ -134,7 +137,7 @@ const DashboardHome = () => {
           <p className="text-slate-600 mt-2 text-base">{error}</p>
           <button
             onClick={() => navigate("/login")}
-            className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-base px-6 py-3.5 rounded-2xl shadow-lg shadow-orange-500/25 transition-all"
+            className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-base px-6 py-3.5 rounded-2xl shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
           >
             Go to Login
           </button>
@@ -147,16 +150,15 @@ const DashboardHome = () => {
     <div className="min-h-screen bg-slate-100/70 p-4 sm:p-6 lg:p-10 font-sans text-slate-800">
       <div className="max-w-6xl mx-auto space-y-8">
 
-        {/* ================= PURANA DARK HEADER REMOVED ================= */}
-        {/* Us purane header banner ki jagah ab aapka Naya Profile Component yahan hai */}
+        {/* Profile Header */}
         <Profile />
 
-        {/* ================= REFERRAL ACCORDION ================= */}
+        {/* Referral Section */}
         {referralCode && (
           <div className="bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-white border border-orange-200/80 rounded-2xl p-5 shadow-sm">
             <button
               onClick={() => setIsReferralOpen(!isReferralOpen)}
-              className="w-full flex items-center justify-between text-left group"
+              className="w-full flex items-center justify-between text-left group cursor-pointer"
             >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-lg shadow-orange-500/25">
@@ -179,7 +181,6 @@ const DashboardHome = () => {
               </div>
             </button>
 
-            {/* Collapsible Content */}
             <div
               className={`grid transition-all duration-300 ease-in-out ${
                 isReferralOpen
@@ -200,21 +201,13 @@ const DashboardHome = () => {
 
                   <button
                     onClick={handleCopyCode}
-                    className={`w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+                    className={`w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
                       copied
                         ? "bg-emerald-600 text-white"
                         : "bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/15"
                     }`}
                   >
-                    {copied ? (
-                      <>
-                        <Check size={18} /> Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={18} /> Copy Code
-                      </>
-                    )}
+                    {copied ? <><Check size={18} /> Copied!</> : <><Copy size={18} /> Copy Code</>}
                   </button>
                 </div>
               </div>
@@ -222,10 +215,10 @@ const DashboardHome = () => {
           </div>
         )}
 
-        {/* ================= MAIN CARDS SECTION ================= */}
+        {/* Main Grid Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-          {/* 1. BUSINESS PROFILE CARD */}
+          {/* 1. Business Profile Card with EDIT BUTTON */}
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-lg flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-5 border-b border-slate-100">
@@ -239,17 +232,16 @@ const DashboardHome = () => {
                   </div>
                 </div>
 
-                {!isProfileComplete && (
-                  <button
-                    onClick={() => navigate("/dashboard/addservices")}
-                    className="text-xs sm:text-sm font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5"
-                  >
-                    Complete <ArrowRight size={16} />
-                  </button>
-                )}
+                {/* EDIT BUTTON: Opens the Edit Profile Modal */}
+                <button
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="text-xs sm:text-sm font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                >
+                  <Edit3 size={16} /> Edit Profile
+                </button>
               </div>
 
-              {/* Information Table */}
+              {/* Profile Details List */}
               <div className="mt-6 space-y-4">
                 <div className="flex justify-between items-center text-base py-1">
                   <span className="text-slate-500 font-medium flex items-center gap-2.5 text-sm sm:text-base">
@@ -283,24 +275,23 @@ const DashboardHome = () => {
                     <Phone size={18} className="text-slate-400" /> Mobile
                   </span>
                   <span className="font-bold text-slate-800 text-sm sm:text-base">
-                    {business?.mobile || "-"}
+                    {business?.mobile || business?.phoneNumber || "-"}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Warning only shows if Profile is genuinely incomplete */}
             {!isProfileComplete && (
               <div className="mt-8 p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center gap-3">
                 <AlertCircle size={20} className="text-amber-600 shrink-0" />
                 <p className="text-xs sm:text-sm font-semibold text-amber-800">
-                  Your profile is incomplete. Complete setup to gain full access.
+                  Your profile is incomplete. Click Edit Profile to fill missing details.
                 </p>
               </div>
             )}
           </div>
 
-          {/* 2. SUBSCRIPTION DETAILS CARD */}
+          {/* 2. Subscription Details Card */}
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-lg flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-5 border-b border-slate-100">
@@ -320,15 +311,14 @@ const DashboardHome = () => {
                       ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                       : isSubscriptionExpired
                       ? "bg-red-100 text-red-800 border border-red-300"
-                      : "bg-amber-100 text-amber-800 border border-amber-300 animate-pulse"
+                      : "bg-amber-100 text-amber-800 border border-amber-300"
                   }`}
                 >
                   {subscriptionStatus}
                 </span>
               </div>
 
-              {/* Active Plan View */}
-              {isSubscriptionActive && (
+              {isSubscriptionActive ? (
                 <div className="mt-6 space-y-4">
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
                     <span className="text-sm text-slate-500 font-bold">Active Plan</span>
@@ -351,47 +341,50 @@ const DashboardHome = () => {
                     </div>
                   </div>
                 </div>
-              )}
-
-              {/* Inactive / Expired View */}
-              {!isSubscriptionActive && (
+              ) : (
                 <div className="mt-6 p-5 rounded-2xl bg-slate-50 border border-slate-200 text-center">
                   <p className="font-extrabold text-slate-800 text-base">
                     {isSubscriptionExpired ? "Subscription Expired" : "No Active Subscription"}
                   </p>
                   <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                    Select a service plan to unlock full dashboard access & receive leads.
+                    Select a service plan to unlock full dashboard benefits.
                   </p>
                 </div>
               )}
             </div>
 
-            {/* BUTTON LOGIC */}
             {subscriptionStatus === "inactive" && (
               <button
                 onClick={() => navigate("/dashboard/addservices")}
-                className="mt-8 w-full py-4 px-5 rounded-2xl font-black text-sm bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2 animate-bounce ring-4 ring-orange-400/20"
+                className="mt-8 w-full py-4 px-5 rounded-2xl font-black text-sm bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <PlusCircle size={20} />
-                Add Services
+                <PlusCircle size={20} /> Add Services
               </button>
             )}
 
             {subscriptionStatus === "expired" && (
               <button
                 onClick={() => navigate("/dashboard/planselection")}
-                className="mt-8 w-full py-4 px-5 rounded-2xl font-black text-sm bg-red-600 hover:bg-red-700 text-white transition-all shadow-lg shadow-red-600/20 flex items-center justify-center gap-2"
+                className="mt-8 w-full py-4 px-5 rounded-2xl font-black text-sm bg-red-600 hover:bg-red-700 text-white transition-all shadow-lg shadow-red-600/20 flex items-center justify-center gap-2 cursor-pointer"
               >
-                Renew Your Plan
-                <ArrowRight size={18} />
+                Renew Your Plan <ArrowRight size={18} />
               </button>
             )}
-
           </div>
 
         </div>
 
       </div>
+
+      {/* EDIT PROFILE MODAL: Click karne par khulega aur save hone par dashboard refresh hoga */}
+      {isEditModalOpen && (
+        <EditBusinessProfile
+          onClose={() => setIsEditModalOpen(false)}
+          onUpdateSuccess={() => {
+            fetchDashboard();
+          }}
+        />
+      )}
     </div>
   );
 };

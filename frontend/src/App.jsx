@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
+
 // Layouts
 import MainLayout from "./layout/MainLayout";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
