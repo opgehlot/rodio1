@@ -1,12 +1,14 @@
 import React from 'react'
-import DashboardHome from '../../pages/addServices/DashboardHome'
-import DashboardReviews from './DashboardReviews'
+
+
+import Dashboard from '../../pages/dashboardpage/Dashboard'
+import Profile from '../Profile'
 
 function TranspoterDashboard() {
   return (
-    <div><DashboardHome/>
-       <DashboardReviews/>    
-    
+    <div>
+      <Profile/>
+      <Dashboard/>
     </div>
   )
 }

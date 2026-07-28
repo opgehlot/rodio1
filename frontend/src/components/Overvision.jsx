@@ -38,7 +38,7 @@ export function Overvision() {
 
           {/* Vision */}
           <motion.div
-  className="bg-gradient-to-br from-lime-300 to-green-400 rounded-3xl p-10 shadow-xl"
+  className="bg-white rounded-3xl p-10 shadow-xl border border-gray-100"
   initial={{ x: -150, opacity: 0 }}
   whileInView={{ x: 0, opacity: 1 }}
   transition={{ duration: 0.8 }}
@@ -52,11 +52,11 @@ export function Overvision() {
               </div>
 
               <div>
-                <h2 className="text-3xl font-bold text-gray-800">
+                <h2 className="text-3xl font-bold text-gray-900">
                   Our Vision
                 </h2>
 
-                <p className="text-gray-700">
+                <p className="text-gray-600">
                   Transforming India's transport ecosystem.
                 </p>
               </div>
@@ -97,7 +97,7 @@ export function Overvision() {
 
           {/* Mission */}
          <motion.div
-  className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-10 shadow-xl text-white"
+  className="bg-white rounded-3xl p-10 shadow-xl border border-gray-100"
   initial={{ x: 200, opacity: 0 }}
   whileInView={{ x: 0, opacity: 1 }}
   transition={{ duration: 0.90 }}
@@ -110,11 +110,11 @@ export function Overvision() {
               </div>
 
               <div>
-                <h2 className="text-3xl font-bold">
+                <h2 className="text-3xl font-bold text-gray-900">
                   Our Mission
                 </h2>
 
-                <p className="text-blue-100">
+                <p className="text-gray-600">
                   Making transport faster, smarter and more transparent.
                 </p>
               </div>
@@ -124,12 +124,12 @@ export function Overvision() {
             <div className="space-y-6">
 
               <div className="flex gap-4">
-                <ShieldCheck className="text-green-300 mt-1" />
+                <ShieldCheck className="text-green-700 mt-1" />
                 <div>
                   <h3 className="font-bold text-xl">
                     Verified Transporters
                   </h3>
-                  <p className="text-blue-100">
+                  <p>
                     Every transporter on Rodio is verified so customers can
                     book with confidence and peace of mind.
                   </p>
@@ -137,12 +137,12 @@ export function Overvision() {
               </div>
 
               <div className="flex gap-4">
-                <Users className="text-green-300 mt-1" />
+                <Users className="text-green-700 mt-1" />
                 <div>
                   <h3 className="font-bold text-xl">
                     One Platform for Everyone
                   </h3>
-                  <p className="text-blue-100">
+                  <p>
                     We connect truck owners, fleet owners, brokers,
                     transporters and customers on a single digital platform,
                     making transport easy, affordable and accessible.

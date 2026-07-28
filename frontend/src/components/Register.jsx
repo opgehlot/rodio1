@@ -1,14 +1,21 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Truck, User, Mail, Lock, Phone } from "lucide-react";
+
+import {
+  Truck,
+  Lock,
+  Phone,
+  ShieldCheck,
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
+
 import toast from "react-hot-toast";
 import API from "../api/api";
-import { AuthContext } from "../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
 
@@ -18,293 +25,684 @@ export default function Register() {
     watch,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      role: "",
+      mobile: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const password = watch("password");
 
-  const onSubmit = async (data) => {
-    setLoading(true);
+  // =====================================================
+  // REGISTER
+  // =====================================================
 
+  const onSubmit = async (formData) => {
     try {
-      const res = await API.post("/auth/register", data);
+      setLoading(true);
 
-      // Save Login Data
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      localStorage.setItem("role", res.data.user.role);
+      // Clean mobile number
+      const mobile = formData.mobile.replace(/\D/g, "").slice(0, 10);
 
-      // Context
-      setUser(res.data.user);
+      const payload = {
+        role: formData.role,
+        mobile,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      };
 
-      toast.success(res.data.message);
+      console.log("REGISTER PAYLOAD:", payload);
+
+      // ================================================
+      // API CALL
+      // ================================================
+
+      const { data } = await API.post("/auth/register", payload);
+
+      console.log("REGISTER RESPONSE:", data);
+
+      if (!data?.success) {
+        toast.error(data?.message || "Registration Failed");
+        return;
+      }
+
+      // ================================================
+      // SAVE TOKEN
+      // ================================================
+
+      if (data?.token) {
+        localStorage.setItem("token", data.token);
+      }
+
+      // ================================================
+      // SAVE USER
+      // No AuthContext here
+      // ================================================
+
+      if (data?.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
+
+      // ================================================
+      // SAVE ROLE
+      // ================================================
+
+      if (data?.user?.role) {
+        localStorage.setItem("role", data.user.role);
+      }
+
+      toast.success(data?.message || "Registration Successful");
 
       reset();
 
-      // Dashboard
-      navigate(res.data.redirectTo || "/dashboard");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Registration Failed");
+      // ================================================
+      // REDIRECT
+      // ================================================
+
+      navigate(data?.redirectTo || "/dashboard");
+    } catch (error) {
+      console.error("REGISTER ERROR:", error);
+
+      console.error("SERVER RESPONSE:", error?.response?.data);
+
+      toast.error(error?.response?.data?.message || "Registration Failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className=" mt-20 min-h-screen bg-slate-100 flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-5xl bg-white shadow-xl grid md:grid-cols-2">
-        {/* Left */}
+    <div className="pt-[70px] w-full bg-white flex flex-col lg:flex-row">
+      {/* ================================================= */}
+      {/* LEFT SIDE */}
+      {/* ================================================= */}
 
-        <div className="hidden md:flex bg-blue-700 text-white p-10 flex-col justify-center">
-          <div className="flex items-center gap-3">
-            <Truck size={38} />
+      <div
+        className="
+          hidden
+          lg:flex
+          lg:w-1/2
+          bg-white
+          p-16
+          flex-col
+          justify-between
+          items-center
+          text-center
+          border-r
+          border-slate-100
+        "
+      >
+        {/* BRAND */}
 
-            <h1 className="text-4xl font-bold">Rodio</h1>
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+            <Truck size={32} />
           </div>
 
-          <h2 className="text-3xl font-bold mt-8">
-            Join India's Trusted Transport Network
-          </h2>
-
-          <p className="mt-5 text-blue-100 leading-7">
-            Register as a Transporter, Broker or Shipper and start growing your
-            business with Rodio.
-          </p>
+          <span className="text-2xl font-semibold tracking-widest text-slate-800">
+            RODIO
+          </span>
         </div>
 
-        {/* Right */}
+        {/* CONTENT */}
 
-        <div className="p-6 md:p-10">
-          <h2 className="text-3xl font-bold">Create Account</h2>
+        <div className="my-auto py-12 max-w-lg space-y-6">
+          <div
+            className="
+              inline-flex
+              items-center
+              gap-2
+              px-4
+              py-1.5 
+              rounded-full
+              bg-blue-50
+              border
+              border-blue-100
+              text-blue-600
+              text-xs
+              font-semibold
+              tracking-widest
+              uppercase
+            "
+          >
+            <Sparkles size={14} />
+            JOIN THE REVOLUTION
+          </div>
 
-          <p className="text-gray-500 mt-2 mb-8">
-            Fill your details to continue
+          <h2
+            className="
+              text-5xl
+              xl:text-6xl
+              font-bold 
+              tracking-tight
+              text-slate-900
+              leading-[1.1]
+            "
+          >
+            Scale Your Logistics Business with{" "}
+            <span className="text-blue-600">RODIO</span>
+          </h2>
+
+          <p className="text-slate-500 text-base font-medium leading-relaxed">
+            The smart transport platform connecting transporters, brokers,
+            shippers, and businesses across India.
           </p>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Role */}
+          <div
+            className="
+              pt-6
+              flex
+              flex-col
+              sm:flex-row
+              items-center
+              justify-center
+              gap-6
+            "
+          >
+            <div
+              className="
+                flex
+                items-center
+                gap-2.5
+                text-sm
+                font-semibold
+                text-slate-600
+                uppercase
+                tracking-wider
+              "
+            >
+              <div
+                className="
+                  w-7
+                  h-7
+                  rounded-full
+                  bg-emerald-50
+                  text-emerald-600
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
+                <ShieldCheck size={16} />
+              </div>
+
+              <span>SECURE REGISTRATION</span>
+            </div>
+
+            <div
+              className="
+                flex
+                items-center
+                gap-2.5
+                text-sm
+                font-semibold
+                text-slate-600
+                uppercase
+                tracking-wider
+              "
+            >
+              <div
+                className="
+                  w-7
+                  h-7
+                  rounded-full
+                  bg-blue-50
+                  text-blue-600
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
+                <ArrowRight size={16} />
+              </div>
+
+              <span>GET STARTED</span>
+            </div>
+          </div>
+        </div>
+
+        {/* COPYRIGHT */}
+
+        <div
+          className="
+            text-xs
+            font-medium
+            text-slate-400
+            uppercase
+            tracking-widest
+          "
+        >
+          © {new Date().getFullYear()} RODIO. ALL RIGHTS RESERVED.
+        </div>
+      </div>
+
+      {/* ================================================= */}
+      {/* RIGHT SIDE */}
+      {/* ================================================= */}
+
+      <div
+        className="
+          w-full
+          lg:w-1/2
+          flex
+          items-center
+          justify-center
+          p-6
+          sm:p-12
+          lg:py-16 lg:px-20
+          bg-white
+        "
+      >
+        <div className="w-full max-w-md">
+          {/* MOBILE LOGO */}
+
+          <div
+            className="
+              flex
+              lg:hidden
+              items-center
+              gap-2.5
+              mb-6
+              text-slate-900
+            "
+          >
+            <div
+              className="
+                p-2.5
+                bg-blue-600
+                rounded-xl
+                text-white
+              "
+            >
+              <Truck size={24} />
+            </div>
+
+            <span
+              className="
+                text-2xl
+                font-semibold
+                tracking-widest
+              "
+            >
+              RODIO
+            </span>
+          </div>
+
+          {/* TITLE */}
+
+          <div className="mb-8">
+            <h2
+              className="
+                text-4xl
+                font-bold
+                text-slate-900
+                tracking-tight
+              "
+            >
+              Create Account
+            </h2>
+
+            <p
+              className="
+                text-slate-500
+                text-sm
+                mt-2 
+                font-medium
+              "
+            >
+              Enter your details to continue.
+            </p>
+          </div>
+
+          {/* ================================================= */}
+          {/* FORM */}
+          {/* ================================================= */}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* ================================================= */}
+            {/* ROLE */}
+            {/* ================================================= */}
 
             <div>
-              <label className="text-sm font-medium">I Am A</label>
+              <label
+                className="
+                  block
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  mb-2
+                "
+              >
+                I am a
+              </label>
 
               <select
                 {...register("role", {
-                  required: "Select Role",
+                  required: "PLEASE SELECT A ROLE",
                 })}
-                className="w-full  border border-gray-300 px-3 h-15 outline-none focus:border-blue-600"
+                className="
+                  w-full
+                  bg-slate-50
+                  border-2
+                  border-slate-200 
+                  rounded-xl
+                  px-4
+                  py-3.5
+                  text-base
+                  font-medium 
+                  focus:border-blue-600
+                  focus:bg-white
+                  focus:ring-4
+                  focus:ring-blue-600/10
+                  transition-all
+                  cursor-pointer
+                "
               >
                 <option value="">Select Role</option>
 
-                <option value="user">
-                Shipper / Manufacturing Company / Customer / Trader
-                </option>
+                <option value="user">Shipper / Company / Trader</option>
 
-                <option value="transporter">
-                  Transporter(Service Provider)
-                </option>
+                <option value="transporter">Transporter</option>
 
-                <option value="broker">Broker(service Agent)</option>
+                <option value="broker">Broker</option>
               </select>
 
-              <p className="text-red-500 text-sm mt-1">
-                {errors.role?.message}
-              </p>
+              {errors.role && (
+                <p
+                  className="
+                    text-red-500
+                    text-xs
+                    mt-2
+                    font-semibold
+                    uppercase
+                  "
+                >
+                  {errors.role.message}
+                </p>
+              )}
             </div>
 
-            {/* Name */}
+            {/* ================================================= */}
+            {/* MOBILE */}
+            {/* ================================================= */}
 
             <div>
-              <label className="text-sm font-medium">Full Name</label>
+              <label
+                className="
+                  block
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  mb-2
+                "
+              >
+                Mobile Number
+              </label>
 
-              <div className="flex items-center border border-gray-300 h-15  px-3">
-                <User size={18} className="text-gray-400" />
+              <div
+                className="
+                  flex
+                  items-center
+                  bg-slate-50
+                  border-2
+                  border-slate-200
+                  rounded-xl
+                  px-4
+                  py-4
+                  focus-within:border-blue-600
+                  focus-within:bg-white
+                  focus-within:ring-4
+                  focus-within:ring-blue-600/10
+                  transition-all
+                "
+              >
+                <Phone size={20} className="text-slate-400 flex-shrink-0" />
 
-                <input
-                  {...register("name", {
-                    required: "Name Required",
-                    minLength: 3,
-                  })}
-                  className="w-full ml-3 outline-none"
-                  placeholder="Enter full name"
-                />
-              </div>
-
-              <p className="text-red-500 text-sm mt-1">
-                {errors.name?.message}
-              </p>
-            </div>
-
-            {/* Mobile */}
-
-            <div>
-              <label className="text-sm font-medium">Mobile Number</label>
-
-              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
-                <Phone size={18} className="text-gray-400" />
                 <input
                   type="text"
                   inputMode="numeric"
                   maxLength={10}
-                  className="w-full ml-3 outline-none border-none focus:outline-none focus:ring-0"
+                  placeholder="Enter 10-digit mobile number"
+                  className="
+                    w-full
+                    bg-transparent
+                    ml-3 
+                    text-base
+                    font-medium
+                    placeholder:text-slate-400
+                    outline-none
+                  "
                   {...register("mobile", {
-                    required: "Mobile Required",
+                    required: "MOBILE NUMBER IS REQUIRED",
+
                     pattern: {
-                      value: /^[0-9]{10}$/,
-                      message: "Enter valid mobile number",
+                      value: /^[6-9][0-9]{9}$/,
+                      message: "ENTER A VALID INDIAN MOBILE NUMBER",
                     },
                   })}
-                  onKeyDown={(e) => {
-                    if (
-                      !/[0-9]/.test(e.key) &&
-                      ![
-                        "Backspace",
-                        "Delete",
-                        "ArrowLeft",
-                        "ArrowRight",
-                        "Tab",
-                      ].includes(e.key)
-                    ) {
-                      e.preventDefault();
-                    }
-                  }}
-                  onPaste={(e) => {
-                    e.preventDefault();
-                    const text = e.clipboardData
-                      .getData("text")
+                  onInput={(e) => {
+                    e.target.value = e.target.value
                       .replace(/\D/g, "")
                       .slice(0, 10);
-                    e.target.value = text;
                   }}
                 />
               </div>
 
-              <p className="text-red-500 text-sm mt-1">
-                {errors.mobile?.message}
-              </p>
+              {errors.mobile && (
+                <p
+                  className="
+                    text-red-500
+                    text-xs
+                    mt-2
+                    font-semibold
+                    uppercase
+                  "
+                >
+                  {errors.mobile.message}
+                </p>
+              )}
             </div>
 
-            {/* Email */}
+            {/* ================================================= */}
+            {/* PASSWORD */}
+            {/* ================================================= */}
 
             <div>
-              <label className="text-sm font-medium">Email</label>
+              <label
+                className="
+                  block
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  mb-2
+                "
+              >
+                Password
+              </label>
 
-              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
-                <Mail size={18} className="text-gray-400" />
+              <div
+                className="
+                  flex
+                  items-center
+                  bg-slate-50
+                  border-2
+                  border-slate-200
+                  rounded-xl
+                  px-4
+                  py-4
+                  focus-within:border-blue-600
+                  focus-within:ring-4
+                  focus-within:ring-blue-600/10
+                "
+              >
+                <Lock size={20} className="text-slate-400" />
 
-                <input
-                  type="email"
-                  {...register("email", {
-                    required: "Email Required",
-                  })}
-                  className="w-full ml-3 outline-none"
-                  placeholder="example@gmail.com"
-                />
-              </div>
-
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email?.message}
-              </p>
-            </div>
-            {/* Password */}
-
-            <div>
-              <label className="text-sm font-medium">Password</label>
-
-              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
-                <Lock size={18} className="text-gray-400" />
                 <input
                   type="password"
                   maxLength={8}
+                  placeholder="ENTER 4 TO 8 CHARACTER PASSWORD"
+                  className="
+                    w-full
+                    bg-transparent
+                    ml-3
+                    text-base 
+                    font-medium
+                    outline-none
+                  "
                   {...register("password", {
-                    required: "Password is required",
+                    required: "PASSWORD IS REQUIRED",
+
                     minLength: {
                       value: 4,
-                      message: "Password must be a min 4 charcters",
+                      message: "PASSWORD MUST BE AT LEAST 4 CHARACTERS",
                     },
+
                     maxLength: {
                       value: 8,
-                      message: "Password must be 8 characters",
+                      message: "PASSWORD CANNOT EXCEED 8 CHARACTERS",
                     },
                   })}
-                  className="w-full outline-none"
-                  placeholder="Enter Password"
                 />
               </div>
 
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password?.message}
-              </p>
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-2 font-semibold uppercase">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
-            {/* Confirm Password */}
+            {/* ================================================= */}
+            {/* CONFIRM PASSWORD */}
+            {/* ================================================= */}
 
             <div>
-              <label className="text-sm font-medium">Confirm Password</label>
+              <label
+                className="
+                  block
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  mb-2
+                "
+              >
+                Confirm Password
+              </label>
 
-              <div className="flex items-center border border-gray-300 h-15 mt-1 px-3">
-                <Lock size={18} className="text-gray-400" />
+              <div
+                className="
+                  flex
+                  items-center
+                  bg-slate-50
+                  border-2
+                  border-slate-200
+                  rounded-xl
+                  px-4
+                  py-4
+                  focus-within:border-blue-600
+                  focus-within:ring-4
+                  focus-within:ring-blue-600/10
+                "
+              >
+                <Lock size={20} className="text-slate-400" />
 
                 <input
                   type="password"
+                  maxLength={8}
+                  placeholder="RE-ENTER PASSWORD"
+                  className="
+                    w-full
+                    bg-transparent
+                    ml-3
+                    text-base 
+                    font-medium
+                    outline-none
+                  "
                   {...register("confirmPassword", {
-                    required: "Confirm your password",
+                    required: "PLEASE CONFIRM YOUR PASSWORD",
+
                     validate: (value) =>
-                      value === password || "Passwords do not match",
+                      value === password || "PASSWORDS DO NOT MATCH",
                   })}
-                  className="w-full ml-3 outline-none"
-                  placeholder="********"
                 />
               </div>
 
-              <p className="text-red-500 text-sm mt-1">
-                {errors.confirmPassword?.message}
-              </p>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-2 font-semibold uppercase">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
             </div>
 
-            {/* Button */}
+            {/* ================================================= */}
+            {/* SUBMIT */}
+            {/* ================================================= */}
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full h-11 text-white font-semibold transition ${
-                loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-orange-500 hover:bg-orange-600"
-              }`}
+              className="
+                w-full mt-4 bg-blue-600 hover:bg-blue-700 
+                text-white
+                font-semibold
+                py-4
+                rounded-xl
+                text-sm
+                tracking-widest
+                uppercase
+                shadow-lg hover:shadow-xl
+                transition-all
+                disabled:opacity-50
+                disabled:cursor-not-allowed
+                flex
+                items-center
+                justify-center
+                gap-2
+              "
             >
               {loading ? (
-                <div className="flex justify-center items-center gap-2">
-                  <svg
-                    className="animate-spin h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      opacity=".2"
-                    />
-
-                    <path
-                      fill="currentColor"
-                      d="M22 12a10 10 0 0 1-10 10V18a6 6 0 0 0 6-6h4z"
-                    />
-                  </svg>
-                  Registering...
-                </div>
+                <>
+                  <div
+                    className="
+                      w-5
+                      h-5
+                      border-2
+                      border-white
+                      border-t-transparent
+                      rounded-full
+                      animate-spin
+                    "
+                  />
+                  CREATING ACCOUNT...
+                </>
               ) : (
-                "Create Account"
+                <>
+                  CREATE ACCOUNT
+                  <ArrowRight size={19} />
+                </>
               )}
             </button>
 
-            <div className="text-center pt-2">
-              <p className="text-sm text-gray-600">
-                Already have an account?
+            {/* LOGIN */}
+
+            <div className="text-center pt-3">
+              <p
+                className="
+                  text-sm 
+                  text-slate-600
+                "
+              >
+                Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="ml-1 text-blue-600 font-semibold hover:underline"
+                  className="
+                    text-blue-600
+                    font-semibold
+                    hover:underline
+                  "
                 >
                   Login
                 </Link>

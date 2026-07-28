@@ -1,10 +1,12 @@
 import React from 'react'
-import DashboardHome from '../../pages/addServices/DashboardHome'
 import DashboardReviews from '../transporter/DashboardReviews'
+import Dashboard from '../../pages/dashboardpage/Dashboard'
 
 function BrokerDashboard() {
   return (
-    <div><DashboardHome/>
+    <div>
+    
+            <Dashboard/>
        <DashboardReviews/>    
     
     </div>

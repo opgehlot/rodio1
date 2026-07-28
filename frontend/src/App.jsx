@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-
 // Layouts
 import MainLayout from "./layout/MainLayout";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
@@ -16,7 +15,6 @@ import Register from "./components/Register";
 import QueryForm from "./components/QueryForm";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-
 // Terms
 import TermsConditions from "./terms&condition/TermsConditions";
 import RefundPolicy from "./terms&condition/RefundPolicy";
@@ -27,12 +25,11 @@ import PrivaceyPolicy from "./terms&condition/PrivaceyPolicy";
 import ScrollToTop from "./components/ScrollToTop";
 
 // Dashboard Home
-import DashboardHome from "./pages/addServices/DashboardHome";
 
 // User
 import SearchTransport from "./Dashboard/user/SearchTransport";
 import SearchBar from "./Dashboard/user/SearchBar";
-import Directorydata from "./Dashboard/user/Directory/Directorydata";
+
 import UserForm from "./Dashboard/user/UserForm";
 import ShowEnquiery from "./Dashboard/user/myrequest/ShowEnquiery";
 import TransporterProfile from "./Dashboard/user/TrasporterProfile";
@@ -44,26 +41,37 @@ import Settings from "./Dashboard/Settings";
 import ChangePassword from "./Dashboard/Changepassword";
 
 // Transporter
+
 import MyBusiness from "./Dashboard/transporter/MyBusiness";
 import Leads from "./Dashboard/transporter/Leads";
-import MyVehicles from "./Dashboard/transporter/MyVehicles";
 import TransportServices from "./Dashboard/transporter/TransportServices";
-import AddVehicle from "./Dashboard/transporter/Addvehicle";
+
 import AcceptedBid from "./Dashboard/transporter/AcceptedBid";
 
 // Broker
 import Clients from "./Dashboard/broker/Clients";
 
 // Services
-import AddServices from "./pages/addServices/AddServices";
+
 
 // Payment
 import PlanSelection from "../payment/PlanSelection";
 import Receipt from "../payment/Receipt";
 
+import AddVehicle from "./pages/dashboardpage/AddVehicle";
+import MyVehicles from "./pages/dashboardpage/MyVehicles";
+import AddRoute from "./pages/dashboardpage/AddRoute";
+import MyRoutes from "./pages/dashboardpage/MyRoutes";
+import Dashboard from "./pages/dashboardpage/Dashboard";
+import MyDashboard from "./Dashboard/MyDashboard";
+import AddServices from "./pages/dashboardpage/AddServices";
+import UploadDocuments from "./pages/dashboardpage/UploadDocuments";
+import DirectoryFilterSection from "./components/DirectoryFilterSection";
+import WorkingAreas from "./pages/dashboardpage/WorkingArea";
+import MyDocuments from "./pages/dashboardpage/Mydocment";
+
+
 // Dummy Pages
-import Dummydirectory from "./pages/Dummydirctory";
-import DtransporterDetails from "./pages/DtransporterDetails";
 
 function App() {
   return (
@@ -85,35 +93,53 @@ function App() {
       <ScrollToTop />
 
       <Routes>
-
         {/* ================= Dashboard ================= */}
 
         <Route path="/dashboard" element={<DashboardLayout />}>
-
           {/* Dashboard Home */}
-          <Route index element={<DashboardHome />} />
+          <Route index element={<MyDashboard/>} />
+          
+          
 
           {/* Common */}
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="changepassword" element={<ChangePassword />} />
+          <Route path="directory" element={<DirectoryFilterSection />} />
+     
+
+        
 
           {/* User */}
           <Route path="searchtransport" element={<SearchTransport />} />
-          <Route path="directory" element={<Directorydata />} />
+        
           <Route path="searchbar" element={<SearchBar />} />
           <Route path="userform" element={<UserForm />} />
           <Route path="showenquiery" element={<ShowEnquiery />} />
           <Route path="bid-list/:id" element={<BidList />} />
           <Route path="transporter/:id" element={<TransporterProfile />} />
 
+          <Route path="addvehicle" element={<AddVehicle />} />
+          <Route path="workingareas" element={<WorkingAreas/>} />
+
+          <Route path="myvehicles" element={<MyVehicles />} />
+          <Route path="uploaddocuments" element={<UploadDocuments />} />
+          <Route path="mydocument" element={<MyDocuments />} />
+
+          <Route path="addroute" element={<AddRoute />} />
+          <Route path="myroutes" element={<MyRoutes />} />
+         
+
+          <Route path="myroutes" element={<MyRoutes />} />
+          <Route path="addservices" element={<AddServices/>} />
+
           {/* Transporter */}
           <Route path="mybusiness" element={<MyBusiness />} />
           <Route path="leads" element={<Leads />} />
-          <Route path="myvehicles" element={<MyVehicles />} />
+      
           <Route path="transportservices" element={<TransportServices />} />
-          <Route path="addvehicle" element={<AddVehicle />} />
-          <Route path="addservices" element={<AddServices />} />
+      
+         
           <Route path="acceptedbid" element={<AcceptedBid />} />
 
           {/* Broker */}
@@ -122,20 +148,18 @@ function App() {
           {/* Payment */}
           <Route path="planselection" element={<PlanSelection />} />
           <Route path="receipt/:paymentId" element={<Receipt />} />
-
+          
         </Route>
 
         {/* ================= Website ================= */}
 
         <Route element={<MainLayout />}>
-
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* Same Directory without Sidebar */}
-          <Route path="/directory" element={<Directorydata />} />
+         
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -149,16 +173,8 @@ function App() {
           <Route path="/refundpolicy" element={<RefundPolicy />} />
           <Route path="/contectus" element={<ContectUs />} />
           <Route path="/privaceypolicy" element={<PrivaceyPolicy />} />
-
-          {/* Dummy */}
-          <Route path="/dummydirctory" element={<Dummydirectory />} />
-          <Route
-            path="/DtransporterDetails"
-            element={<DtransporterDetails />}
-          />
-
+          <Route path="/directory" element={<DirectoryFilterSection/>} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );

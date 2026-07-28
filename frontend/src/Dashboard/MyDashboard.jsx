@@ -4,7 +4,7 @@ import BrokerDashboard from "./broker/BrokerDashboard";
 import TranspoterDashboard from "./transporter/TranspoterDashboard";
 import UserDashboard from "./user/UserDashboard";
 
-export default function MyDashboard() {
+export    function MyDashboard() {
   const role = localStorage.getItem("role");
 
   // Agar login nahi hai
@@ -30,3 +30,4 @@ export default function MyDashboard() {
   // Invalid role
   return <Navigate to="/login" replace />;
 }
+export default MyDashboard;

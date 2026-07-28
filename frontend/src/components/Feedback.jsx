@@ -49,6 +49,7 @@ export function Feedback() {
               transition={{ delay: index * 0.2 }}
               whileHover={{ y: -10 }}
               className="bg-blue-900/90 rounded-3xl shadow-lg border border-orange-100 p-8 hover:shadow-2xl transition-all duration-300"
+              className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300"
             >
 
               <Quote className="text-white w-10 h-10 mb-5" />
@@ -58,15 +59,15 @@ export function Feedback() {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    size={18}
-                    fill="#F59E0B"
-                    color="#F59E0B"
+                    size={20}
+                    fill="#facc15" // yellow-400
+                    color="#facc15" // yellow-400
                   />
                 ))}
 
               </div>
 
-              <p className="text-white italic leading-7">
+              <p className="text-gray-700 italic leading-7">
                 "{item.text}"
               </p>
 
@@ -75,7 +76,7 @@ export function Feedback() {
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-14 h-14 rounded-full border-2 border-orange-500"
+                  className="w-14 h-14 rounded-full border-2 border-blue-500"
                 />
 
                 <div>
@@ -84,7 +85,7 @@ export function Feedback() {
                     {item.name}
                   </h3>
 
-                  <p className="text-white text-sm">
+                  <p className="text-gray-500 text-sm">
                     {item.role}
                   </p>
 

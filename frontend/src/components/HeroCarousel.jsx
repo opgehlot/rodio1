@@ -25,7 +25,7 @@ export function HeroCarousel() {
                   India.
                 </p>
 
-                <Link to="/dummydirctory">
+                <Link to="/directory">
                   <button className="mt-6 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold text-white">
                     Search Directory
                   </button>
