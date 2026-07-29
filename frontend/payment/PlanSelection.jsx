@@ -195,17 +195,18 @@ export function PlanSelection() {
               businessId: business._id,
               planId: plan.id,
               referralCode: referralCode.trim().toUpperCase() || undefined,
-            });
+            });   
 
             if (!verifyRes.data?.success) {
               setIsGeneratingReceipt(false);
               toast.error(verifyRes.data?.message || "Payment verification failed.");
               return;
             }
-
+  
             toast.success("Payment successful! Business activated.");
             setReferralCode("");
             setSelectedPlan(null);
+            
 
             const paymentMongoId =
               verifyRes.data?.paymentId || response.razorpay_payment_id;
