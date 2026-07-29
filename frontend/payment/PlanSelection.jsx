@@ -37,7 +37,7 @@ export function PlanSelection() {
     id: "premium",
     name: "Premium",
     price: 999,
-    duration: "30 Days",
+    duration: "6 months",
     features: [
       "Unlimited Booking",
       "Priority Support 24/7",
