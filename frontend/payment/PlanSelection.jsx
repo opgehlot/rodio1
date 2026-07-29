@@ -36,7 +36,7 @@ export function PlanSelection() {
   const plan = {
     id: "premium",
     name: "Premium",
-    price: 101,
+    price: 999,
     duration: "30 Days",
     features: [
       "Unlimited Booking",

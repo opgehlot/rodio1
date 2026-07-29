@@ -117,7 +117,10 @@ function App() {
           <Route path="userform" element={<UserForm />} />
           <Route path="showenquiery" element={<ShowEnquiery />} />
           <Route path="bid-list/:id" element={<BidList />} />
-          <Route path="transporter/:id" element={<TransporterProfile />} />
+          <Route
+  path="business/public/:id"
+  element={<TransporterProfile />}
+/>
 
           <Route path="addvehicle" element={<AddVehicle />} />
           <Route path="workingareas" element={<WorkingAreas/>} />
@@ -125,6 +128,7 @@ function App() {
           <Route path="myvehicles" element={<MyVehicles />} />
           <Route path="uploaddocuments" element={<UploadDocuments />} />
           <Route path="mydocument" element={<MyDocuments />} />
+        
 
           <Route path="addroute" element={<AddRoute />} />
           <Route path="myroutes" element={<MyRoutes />} />

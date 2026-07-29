@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // Added useNavigate
 import API from "../api/api";
 import { Search, MapPin, Briefcase, Filter, X, Truck } from "lucide-react";
 
@@ -124,6 +125,7 @@ const LocationSearchInput = ({ placeholder, selectedValue, onSelectLocation }) =
 // 2. MAIN DIRECTORY FILTER & RESULTS COMPONENT
 // ==========================================
 const DirectoryFilterSection = () => {
+  const navigate = useNavigate(); // Hook initialized for navigation
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [category, setCategory] = useState("");
@@ -153,11 +155,7 @@ const DirectoryFilterSection = () => {
 
       const response = await API.get("/directory", { params: queryParams });
       
-      console.log("Full API Response:", response);
-      console.log("Response Data Object:", response.data);
-
       if (response.data) {
-        // Correctly target response.data.data according to your API structure
         const extractedData = response.data.data || [];
         setDirectoryData(extractedData);
       }
@@ -259,14 +257,10 @@ const DirectoryFilterSection = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {directoryData.map((item, index) => {
-              console.log(`📦 Rendering Data Card [${index}]:`, item);
-
               return (
                 <div key={item._id || index} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-md hover:shadow-lg transition">
                   <div className="flex justify-between items-start mb-3">
-                    {/* Using firmName as provided in your data response */}
                     <h4 className="font-bold text-gray-800 text-lg capitalize">{item.firmName}</h4>
-                    {/* Capitalizing role tag */}
                     <span className="bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full capitalize">
                       {item.role || "Transporter"}
                     </span>
@@ -279,7 +273,6 @@ const DirectoryFilterSection = () => {
 
                   <p className="text-sm text-gray-700 mb-3 font-medium">📞 {item.phoneNumber}</p>
 
-                  {/* Vehicle Information from your data */}
                   <div className="mb-4 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
                     <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 mb-1">
                       <Truck size={14} className="text-blue-600" />
@@ -296,9 +289,16 @@ const DirectoryFilterSection = () => {
                     )}
                   </div>
 
+                  {/* FIXED BUTTON WITH NAVIGATION */}
                   <button 
-                    onClick={() => console.log("👉 User clicked specific data card:", item)}
-                    className="w-full py-2 bg-gray-50 hover:bg-blue-600 hover:text-white text-blue-600 text-sm font-bold rounded-xl transition"
+                    onClick={() => {
+                      // Aapke item._id ya id ke hisaab se route set karein
+                      const profileId = item._id || item.id;
+                      if (profileId) {
+                        navigate(`/business/public/${profileId}`); // Ya fir jo bhi apka PublicBusinessProfile ka route ho
+                      }
+                    }}
+                    className="cursor-pointer w-full py-2 bg-gray-50 hover:bg-blue-600 hover:text-white text-blue-600 text-sm font-bold rounded-xl transition"
                   >
                     View Profile & Details
                   </button>
