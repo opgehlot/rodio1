@@ -51,9 +51,7 @@ export function Features() {
             WHY CHOOSE RODIO
           </span>
 
-          <h2 className="text-4xl font-bold mt-5">
-            Powerful Features
-          </h2>
+          
 
           <p className="text-gray-500 mt-4">
             Everything you need to manage transport efficiently.

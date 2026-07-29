@@ -1,7 +1,28 @@
 import { Link } from "react-router-dom";
-import { Truck, Mail, Phone, MapPin } from "lucide-react";
+import {
+  Truck,
+  MapPin,
+  Mail,
+  Phone,
+  MessageCircle, // Using MessageCircle for WhatsApp
+} from "lucide-react";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaXTwitter,
+} from "react-icons/fa6";
 
 export default function Footer() {
+  // Social media links configuration
+  const socialLinks = [
+    { name: "Facebook", icon: FaFacebook, url: "https://www.facebook.com/people/Rodio-Tradelink/61555783336993/" },
+    { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/rodiotradelink/" },
+    { name: "X", icon: FaXTwitter, url: "https://x.com/rodiotradelink" },
+    { name: "LinkedIn", icon: FaLinkedin, url: "https://www.linkedin.com/company/rodio-tradelink/" },
+    { name: "WhatsApp Group", icon: MessageCircle, url: "https://chat.whatsapp.com/F2j64qVFR3L90s52vUv3cR" },
+  ];
+
   return (
     <>
       <footer className="bg-gray-100 text-gray-700 border-t border-gray-200">
@@ -24,30 +45,47 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div>
-              <h3 className="font-semibold text-gray-800 text-lg mb-4">Quick Links</h3>
+              <h3 className="font-semibold text-gray-800 text-lg mb-4">
+                Quick Links
+              </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
-                  <Link to="/" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link to="/about" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/about"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     About
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/services"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Services
                   </Link>
                 </li>
                 <li>
-                  <Link to="/register" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/register"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Search Transport
                   </Link>
                 </li>
                 <li>
-                  <Link to="/queryform" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/queryform"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Contact Us
                   </Link>
                 </li>
@@ -56,7 +94,9 @@ export default function Footer() {
 
             {/* Policies */}
             <div>
-              <h3 className="font-semibold text-gray-800 text-lg mb-4">Policies</h3>
+              <h3 className="font-semibold text-gray-800 text-lg mb-4">
+                Policies
+              </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
                   <Link
@@ -82,38 +122,44 @@ export default function Footer() {
                     Privacy Policy
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="/queryform"
-                    className="hover:text-blue-600 transition-colors"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
               </ul>
             </div>
-            {/* Company */}
 
+            {/* Company */}
             <div>
-              <h3 className="font-semibold text-gray-800 text-lg mb-4">Company</h3>
+              <h3 className="font-semibold text-gray-800 text-lg mb-4">
+                Company
+              </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
-                  <Link to="/register" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/register"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Become Transporter
                   </Link>
                 </li>
                 <li>
-                  <Link to="/register" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/register"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Become Broker
                   </Link>
                 </li>
                 <li>
-                  <Link to="/register" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/register"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Ship with Rodio
                   </Link>
                 </li>
                 <li>
-                  <Link to="/login" className="hover:text-blue-600 transition-colors">
+                  <Link
+                    to="/login"
+                    className="hover:text-blue-600 transition-colors"
+                  >
                     Login
                   </Link>
                 </li>
@@ -121,11 +167,12 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Section */}
-          <div className="border-t border-gray-200 mt-8 pt-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Contact & Social Section Combined */}
+          <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col lg:flex-row justify-between gap-8">
+             {/* Contact Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                   <Mail size={18} />
                 </div>
                 <div>
@@ -136,22 +183,48 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                   <Phone size={18} />
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Phone</p>
-                  <p className="text-sm font-medium text-gray-800">+91 8319501708</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    +91 12345 67890
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+              <div className="flex items-center gap-3 md:col-span-2">
+                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                   <MapPin size={18} />
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Address</p>
-                  <p className="text-sm font-medium text-gray-800">Indore, Madhya Pradesh</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    India
+                  </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="flex flex-col items-center lg:items-end gap-3">
+              <p className="text-sm font-medium text-gray-800">Follow Us</p>
+              <div className="flex items-center gap-3">
+                {socialLinks.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <a
+                      key={link.name}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2.5 bg-white text-gray-600 rounded-full shadow-sm hover:bg-blue-600 hover:text-white transition-all duration-300 ring-1 ring-gray-200"
+                      aria-label={link.name}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -160,8 +233,8 @@ export default function Footer() {
           <div className="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
             <p className="text-sm text-gray-500 text-center md:text-left">
               © {new Date().getFullYear()}{" "}
-              <span className="font-semibold text-gray-800">RODIO Tradelink</span>. All
-              Rights Reserved.
+              <span className="font-semibold text-gray-800">RODIO Tradelink</span>
+              . All Rights Reserved.
             </p>
             <p className="text-xs text-gray-500 text-center">
               Made with ❤️ in India

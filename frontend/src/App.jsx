@@ -118,7 +118,7 @@ function App() {
           <Route path="showenquiery" element={<ShowEnquiery />} />
           <Route path="bid-list/:id" element={<BidList />} />
           <Route
-  path="/business/public/:id"
+  path="business/public/:id"
   element={<TransporterProfile />}
 />
 
