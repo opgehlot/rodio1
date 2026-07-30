@@ -146,7 +146,7 @@ export default function Login() {
       // REDIRECT
       // ======================================
 
-      navigate(data.redirectTo || "/dashboard");
+     navigate(data.redirectTo || "/dashboard", { replace: true });
     } catch (error) {
       console.error("LOGIN ERROR:", error);
 

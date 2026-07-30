@@ -166,19 +166,24 @@ const DirectoryFilterSection = () => {
   const [directoryData, setDirectoryData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // CATEGORY LIST
+  // UPDATED CATEGORY LIST
   const transportCategories = [
     { label: "All Categories", value: "" },
-    { label: "Transporter / Fleet Owner", value: "transporter" },
-    { label: "Transport Broker / Commission Agent", value: "Broker" },
-    { label: "Packers & Movers", value: "PackersMovers" },
-    { label: "Transport Contractor", value: "Contractor" },
-    { label: "Logistics Company", value: "Logistics" },
-    { label: "Crane & Hydra Service", value: "CraneService" },
-    { label: "broker", value: "broker" },
+    { label: "Transporter", value: "Transporter" },
+    { label: "Broker", value: "Broker" },
+    { label: "Fleet Owner", value: "Fleet Owner" },
+    { label: "Truck Owner", value: "Truck Owner" },
+    { label: "Logistics Company", value: "Logistics Company" },
+    { label: "Warehouse", value: "Warehouse" },
+    { label: "Courier", value: "Courier" },
+    { label: "Packers & Movers", value: "Packers & Movers" },
+    { label: "Commission Agent", value: "Commission Agent" },
+    { label: "RTO Agent", value: "RTO Agent" },
+    { label: "Finance Agent", value: "Finance Agent" },
+    { label: "Others", value: "Others" },
   ];
 
-  // FETCH DIRECTORY (Added pagination limit/infinite scrolling parameter if backend supports it, e.g., limit=0 or high limit to fetch ALL cards)
+  // FETCH DIRECTORY USING `/api/v1/businesses/search` WITH LIMIT 1000
   const fetchDirectoryData = async (filters = {}) => {
     try {
       setLoading(true);
@@ -187,10 +192,10 @@ const DirectoryFilterSection = () => {
         state: filters.state !== undefined ? filters.state : selectedState,
         city: filters.city !== undefined ? filters.city : selectedCity,
         category: filters.category !== undefined ? filters.category : category,
-        limit: 1000, // Fetching all records/all cards instead of default pagination limit
+        limit: 1000, // Fetches all matching business records
       };
 
-      const response = await API.get("/directory", {
+      const response = await API.get("/businesses/search", {
         params: queryParams,
       });
 
@@ -198,7 +203,7 @@ const DirectoryFilterSection = () => {
         setDirectoryData(response.data.data || []);
       }
     } catch (error) {
-      console.log("Directory Error", error);
+      console.log("Directory Search Error", error);
     } finally {
       setLoading(false);
     }
@@ -321,7 +326,7 @@ const DirectoryFilterSection = () => {
           No Transport Found
         </div>
       ) : (
-        /* CARDS CONTAINER WITH CUSTOM SCROLLBAR & FIXED MAX HEIGHT */
+        /* CARDS CONTAINER WITH SCROLLBAR & FIXED MAX HEIGHT */
         <div className="max-h-[800px] overflow-y-auto pr-2 custom-scrollbar space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {directoryData.map((item, index) => {
@@ -349,7 +354,7 @@ const DirectoryFilterSection = () => {
                           <h4 className="font-bold text-lg">{item.firmName}</h4>
                         </div>
                         <p className="text-blue-100 text-xs capitalize">
-                          {item.role || "Transporter"}
+                          {item.category || "Transporter"}
                         </p>
                       </div>
                     </div>
@@ -361,7 +366,7 @@ const DirectoryFilterSection = () => {
                     <div className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-2xl">
                       <MapPin size={18} className="text-red-500 shrink-0" />
                       <span className="font-medium">
-                        {item.city}, {item.state}
+                        {item.currentCity}, {item.currentState}
                       </span>
                     </div>
 
@@ -369,11 +374,11 @@ const DirectoryFilterSection = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
                         <span className="text-xs text-gray-400 block mb-1">
-                          Total Vehicles
+                          Rating
                         </span>
                         <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm">
                           <Truck size={15} className="text-blue-600" />
-                          <span>{item.totalVehicles || 0} Vehicles</span>
+                          <span>{item.averageRating || 0} ({item.totalReviews || 0})</span>
                         </div>
                       </div>
 
@@ -405,20 +410,6 @@ const DirectoryFilterSection = () => {
                             </span>
                           ))}
                         </div>
-                      </div>
-                    )}
-
-                    {/* Vehicle Types (if available) */}
-                    {item.vehicleTypes && item.vehicleTypes.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
-                        {item.vehicleTypes.map((v, i) => (
-                          <span
-                            key={i}
-                            className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-medium"
-                          >
-                            {v}
-                          </span>
-                        ))}
                       </div>
                     )}
                   </div>

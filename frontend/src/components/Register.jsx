@@ -135,7 +135,7 @@ export default function Register() {
 
       console.log("NAVIGATE TO :", data.redirectTo || "/dashboard");
 
-      navigate(data.redirectTo || "/dashboard");
+      navigate(data.redirectTo || "/dashboard", { replace: true });
     } catch (error) {
       console.log("=========== REGISTER ERROR ===========");
 
