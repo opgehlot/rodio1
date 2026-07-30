@@ -178,7 +178,7 @@ const DirectoryFilterSection = () => {
     { label: "broker", value: "broker" },
   ];
 
-  // FETCH DIRECTORY
+  // FETCH DIRECTORY (Added pagination limit/infinite scrolling parameter if backend supports it, e.g., limit=0 or high limit to fetch ALL cards)
   const fetchDirectoryData = async (filters = {}) => {
     try {
       setLoading(true);
@@ -187,6 +187,7 @@ const DirectoryFilterSection = () => {
         state: filters.state !== undefined ? filters.state : selectedState,
         city: filters.city !== undefined ? filters.city : selectedCity,
         category: filters.category !== undefined ? filters.category : category,
+        limit: 1000, // Fetching all records/all cards instead of default pagination limit
       };
 
       const response = await API.get("/directory", {
@@ -320,138 +321,141 @@ const DirectoryFilterSection = () => {
           No Transport Found
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {directoryData.map((item, index) => {
-            const displayPhone = isLoggedIn
-              ? item.phoneNumber
-              : maskPhoneNumber(item.phoneNumber);
+        /* CARDS CONTAINER WITH CUSTOM SCROLLBAR & FIXED MAX HEIGHT */
+        <div className="max-h-[800px] overflow-y-auto pr-2 custom-scrollbar space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {directoryData.map((item, index) => {
+              const displayPhone = isLoggedIn
+                ? item.phoneNumber
+                : maskPhoneNumber(item.phoneNumber);
 
-            return (
-              <div
-                key={item._id || index}
-                className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col justify-between relative"
-              >
-                {/* TOP HEADER SECTION */}
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white relative">
-                  {/* Verified Badge on Top-Right Corner */}
-                  <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md border border-white/30 text-white px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1 shadow-sm">
-                    <CheckCircle2 size={13} className="text-emerald-300 fill-emerald-500/20" />
-                    <span>Verified</span>
-                  </div>
+              return (
+                <div
+                  key={item._id || index}
+                  className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col justify-between relative"
+                >
+                  {/* TOP HEADER SECTION */}
+                  <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white relative">
+                    {/* Verified Badge on Top-Right Corner */}
+                    <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md border border-white/30 text-white px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1 shadow-sm">
+                      <CheckCircle2 size={13} className="text-emerald-300 fill-emerald-500/20" />
+                      <span>Verified</span>
+                    </div>
 
-                  <div className="flex justify-between items-start pr-20">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <Truck size={20} className="text-white" />
-                        <h4 className="font-bold text-lg">{item.firmName}</h4>
+                    <div className="flex justify-between items-start pr-20">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <Truck size={20} className="text-white" />
+                          <h4 className="font-bold text-lg">{item.firmName}</h4>
+                        </div>
+                        <p className="text-blue-100 text-xs capitalize">
+                          {item.role || "Transporter"}
+                        </p>
                       </div>
-                      <p className="text-blue-100 text-xs capitalize">
-                        {item.role || "Transporter"}
-                      </p>
                     </div>
                   </div>
-                </div>
 
-                {/* BODY CONTENT */}
-                <div className="p-5 space-y-4 flex-1">
-                  {/* Location Info */}
-                  <div className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-2xl">
-                    <MapPin size={18} className="text-red-500 shrink-0" />
-                    <span className="font-medium">
-                      {item.city}, {item.state}
-                    </span>
-                  </div>
-
-                  {/* Contact & Info Grid */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
-                      <span className="text-xs text-gray-400 block mb-1">
-                        Total Vehicles
+                  {/* BODY CONTENT */}
+                  <div className="p-5 space-y-4 flex-1">
+                    {/* Location Info */}
+                    <div className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-2xl">
+                      <MapPin size={18} className="text-red-500 shrink-0" />
+                      <span className="font-medium">
+                        {item.city}, {item.state}
                       </span>
-                      <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm">
-                        <Truck size={15} className="text-blue-600" />
-                        <span>{item.totalVehicles || 0} Vehicles</span>
+                    </div>
+
+                    {/* Contact & Info Grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                        <span className="text-xs text-gray-400 block mb-1">
+                          Total Vehicles
+                        </span>
+                        <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm">
+                          <Truck size={15} className="text-blue-600" />
+                          <span>{item.totalVehicles || 0} Vehicles</span>
+                        </div>
+                      </div>
+
+                      <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                        <span className="text-xs text-gray-400 block mb-1">
+                          Phone Number
+                        </span>
+                        <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm truncate">
+                          <Phone size={15} className="text-green-600 shrink-0" />
+                          <span className="truncate">{displayPhone}</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
-                      <span className="text-xs text-gray-400 block mb-1">
-                        Phone Number
-                      </span>
-                      <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm truncate">
-                        <Phone size={15} className="text-green-600 shrink-0" />
-                        <span className="truncate">{displayPhone}</span>
+                    {/* Working Areas */}
+                    {item.workingAreas && item.workingAreas.length > 0 && (
+                      <div className="bg-blue-50/50 border border-blue-100 p-3 rounded-2xl">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-blue-700 mb-2">
+                          <Globe size={14} />
+                          <span>Working Areas:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {item.workingAreas.map((area, i) => (
+                            <span
+                              key={area._id || i}
+                              className="bg-white border border-blue-200 text-blue-800 px-2 py-1 rounded-lg text-xs font-medium"
+                            >
+                              {area.cities.join(", ")} ({area.state})
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    )}
 
-                  {/* Working Areas */}
-                  {item.workingAreas && item.workingAreas.length > 0 && (
-                    <div className="bg-blue-50/50 border border-blue-100 p-3 rounded-2xl">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-blue-700 mb-2">
-                        <Globe size={14} />
-                        <span>Working Areas:</span>
-                      </div>
+                    {/* Vehicle Types (if available) */}
+                    {item.vehicleTypes && item.vehicleTypes.length > 0 && (
                       <div className="flex flex-wrap gap-1">
-                        {item.workingAreas.map((area, i) => (
+                        {item.vehicleTypes.map((v, i) => (
                           <span
-                            key={area._id || i}
-                            className="bg-white border border-blue-200 text-blue-800 px-2 py-1 rounded-lg text-xs font-medium"
+                            key={i}
+                            className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-medium"
                           >
-                            {area.cities.join(", ")} ({area.state})
+                            {v}
                           </span>
                         ))}
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
-                  {/* Vehicle Types (if available) */}
-                  {item.vehicleTypes && item.vehicleTypes.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {item.vehicleTypes.map((v, i) => (
-                        <span
-                          key={i}
-                          className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-medium"
-                        >
-                          {v}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  {/* FOOTER ACTIONS */}
+                  <div className="p-5 pt-0 border-t border-gray-100 mt-auto bg-white grid grid-cols-2 gap-3">
+                    <a
+                      href={`tel:${item.phoneNumber}`}
+                      onClick={(e) => {
+                        if (!isLoggedIn) {
+                          e.preventDefault();
+                          navigate("/login");
+                        }
+                      }}
+                      className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/20"
+                    >
+                      <Phone size={15} />
+                      Call
+                    </a>
+
+                    <button
+                      onClick={() => {
+                        if (!isLoggedIn) {
+                          navigate("/login");
+                          return;
+                        }
+                        navigate(`/dashboard/transporters/${item._id}`);
+                      }}
+                      className="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-blue-600/20"
+                    >
+                      View Profile
+                    </button>
+                  </div>
                 </div>
-
-                {/* FOOTER ACTIONS */}
-                <div className="p-5 pt-0 border-t border-gray-100 mt-auto bg-white grid grid-cols-2 gap-3">
-                  <a
-                    href={`tel:${item.phoneNumber}`}
-                    onClick={(e) => {
-                      if (!isLoggedIn) {
-                        e.preventDefault();
-                        navigate("/login");
-                      }
-                    }}
-                    className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/20"
-                  >
-                    <Phone size={15} />
-                    Call
-                  </a>
-
-                  <button
-                    onClick={() => {
-                      if (!isLoggedIn) {
-                        navigate("/login");
-                        return;
-                      }
-                      navigate(`/dashboard/transporters/${item._id}`);
-                    }}
-                    className="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-blue-600/20"
-                  >
-                    View Profile
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
