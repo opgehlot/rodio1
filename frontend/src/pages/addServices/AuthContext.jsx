@@ -1,161 +1,117 @@
 import { createContext, useEffect, useState } from "react";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-
   // ==========================
   // USER
   // ==========================
   const [user, setUser] = useState(() => {
-    const data = localStorage.getItem("user");
-    return data ? JSON.parse(data) : null;
+    try {
+      return JSON.parse(localStorage.getItem("user")) || null;
+    } catch {
+      return null;
+    }
   });
-
 
   // ==========================
   // REGISTER DATA
   // ==========================
   const [registerData, setRegisterData] = useState(() => {
-    const data = localStorage.getItem("registerData");
-    return data ? JSON.parse(data) : null;
+    try {
+      return JSON.parse(localStorage.getItem("registerData")) || null;
+    } catch {
+      return null;
+    }
   });
-
 
   // ==========================
   // BUSINESS
   // ==========================
   const [business, setBusiness] = useState(() => {
-    const data = localStorage.getItem("business");
-    return data ? JSON.parse(data) : null;
+    try {
+      return JSON.parse(localStorage.getItem("business")) || null;
+    } catch {
+      return null;
+    }
   });
 
-
   // ==========================
-  // LOGIN CHECK
+  // LOGIN STATUS
   // ==========================
-  const isLoggedIn = !!user;
-
-
+  const isLoggedIn = Boolean(user);
 
   // ==========================
   // USER STORAGE
   // ==========================
   useEffect(() => {
-
-    if(user){
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
-    }
-    else{
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
       localStorage.removeItem("user");
     }
-
-  },[user]);
-
-
+  }, [user]);
 
   // ==========================
   // REGISTER DATA STORAGE
   // ==========================
-  useEffect(()=>{
-
-    if(registerData){
-
+  useEffect(() => {
+    if (registerData) {
       localStorage.setItem(
         "registerData",
         JSON.stringify(registerData)
       );
-
-    }
-    else{
-
+    } else {
       localStorage.removeItem("registerData");
-
     }
-
-  },[registerData]);
-
-
+  }, [registerData]);
 
   // ==========================
   // BUSINESS STORAGE
   // ==========================
-  useEffect(()=>{
-
-    if(business){
-
+  useEffect(() => {
+    if (business) {
       localStorage.setItem(
         "business",
         JSON.stringify(business)
       );
-
-    }
-    else{
-
+    } else {
       localStorage.removeItem("business");
-
     }
-
-  },[business]);
-
-
+  }, [business]);
 
   // ==========================
   // LOGOUT
   // ==========================
   const logout = () => {
-
     setUser(null);
-
     setRegisterData(null);
-
     setBusiness(null);
-
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("registerData");
     localStorage.removeItem("business");
-
   };
 
+  const value = {
+    user,
+    setUser,
 
+    registerData,
+    setRegisterData,
+
+    business,
+    setBusiness,
+
+    isLoggedIn,
+
+    logout,
+  };
 
   return (
-
-    <AuthContext.Provider
-      value={{
-
-        user,
-        setUser,
-
-
-        // LOGIN STATUS
-        isLoggedIn,
-
-
-        // REGISTER FORM DATA
-        registerData,
-        setRegisterData,
-
-
-        // BUSINESS DATA
-        business,
-        setBusiness,
-
-
-        logout,
-
-      }}
-    >
-
+    <AuthContext.Provider value={value}>
       {children}
-
     </AuthContext.Provider>
-
   );
-
 }

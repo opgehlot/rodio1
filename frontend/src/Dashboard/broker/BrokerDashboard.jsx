@@ -1,16 +1,16 @@
-import React from 'react'
-import DashboardReviews from '../transporter/DashboardReviews'
-import Dashboard from '../../pages/dashboardpage/Dashboard'
+import React from "react";
+import Dashboard from "../../pages/dashboardpage/Dashboard";
+import Profile from "../Profile";
 
 function BrokerDashboard() {
   return (
-    <div>
-    
-            <Dashboard/>
-       <DashboardReviews/>    
-    
-    </div>
-  )
+    <>
+      <div>
+        <Profile />
+        <Dashboard />
+      </div>
+    </>
+  );
 }
 
-export default BrokerDashboard
+export default BrokerDashboard;

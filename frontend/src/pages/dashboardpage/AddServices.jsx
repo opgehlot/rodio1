@@ -45,13 +45,15 @@ export function AddServices() {
   // AUTH CONTEXT
   // ======================================================
   const { user, registerData } = useContext(AuthContext);
+  console.log("=========== AUTH CONTEXT ===========");
+  console.log("Auth User :", user);
+  console.log("Register Data :", registerData);
+  console.log("===================================");
 
-  const mobile =
-    user?.mobile ||
-    user?.phoneNumber ||
-    registerData?.mobile ||
-    registerData?.phoneNumber ||
-    "";
+const mobile =
+  user?.mobile ||
+  user?.phoneNumber ||
+  "";
 
   // ======================================================
   // STATE

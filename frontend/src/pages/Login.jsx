@@ -34,9 +34,7 @@ export default function Login() {
     if (name === "emailOrMobile") {
       // Agar first character number hai
       if (/^\d/.test(value)) {
-        const mobile = value
-          .replace(/\D/g, "")
-          .slice(0, 10);
+        const mobile = value.replace(/\D/g, "").slice(0, 10);
 
         setFormData((prev) => ({
           ...prev,
@@ -79,39 +77,27 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const { data } = await API.post(
-        "/auth/login",
-        {
-          emailOrMobile:
-            formData.emailOrMobile.trim(),
+      const { data } = await API.post("/auth/login", {
+        emailOrMobile: formData.emailOrMobile.trim(),
 
-          password:
-            formData.password,
-        }
-      );
+        password: formData.password,
+      });
 
       console.log("LOGIN RESPONSE:", data);
       console.log("LOGIN USER:", data.user);
-      console.log(
-        "LOGIN MOBILE:",
-        data.user?.mobile
-      );
+      console.log("LOGIN MOBILE:", data.user?.mobile);
 
       // ======================================
       // CHECK RESPONSE
       // ======================================
 
       if (!data?.token) {
-        toast.error(
-          "Token not received from server"
-        );
+        toast.error("Token not received from server");
         return;
       }
 
       if (!data?.user) {
-        toast.error(
-          "User data not received from server"
-        );
+        toast.error("User data not received from server");
         return;
       }
 
@@ -119,10 +105,7 @@ export default function Login() {
       // SAVE TOKEN
       // ======================================
 
-      localStorage.setItem(
-        "token",
-        data.token
-      );
+      localStorage.setItem("token", data.token);
 
       // ======================================
       // IMPORTANT:
@@ -133,20 +116,14 @@ export default function Login() {
 
       // AuthContext itself can persist user,
       // but keeping this is also fine.
-      localStorage.setItem(
-        "user",
-        JSON.stringify(data.user)
-      );
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       // ======================================
       // ROLE
       // ======================================
 
       if (data.user?.role) {
-        localStorage.setItem(
-          "role",
-          data.user.role
-        );
+        localStorage.setItem("role", data.user.role);
       }
 
       // ======================================
@@ -154,53 +131,31 @@ export default function Login() {
       // ======================================
 
       if (data.businessId) {
-        localStorage.setItem(
-          "businessId",
-          data.businessId
-        );
+        localStorage.setItem("businessId", data.businessId);
       } else {
-        localStorage.removeItem(
-          "businessId"
-        );
+        localStorage.removeItem("businessId");
       }
 
       // ======================================
       // SUCCESS
       // ======================================
 
-      toast.success(
-        data.message ||
-          "Login Successful"
-      );
+      toast.success(data.message || "Login Successful");
 
       // ======================================
       // REDIRECT
       // ======================================
 
-      navigate(
-        data.redirectTo ||
-          "/dashboard"
-      );
+      navigate(data.redirectTo || "/dashboard");
     } catch (error) {
-      console.error(
-        "LOGIN ERROR:",
-        error
-      );
+      console.error("LOGIN ERROR:", error);
 
-      if (
-        error.response?.data?.message
-      ) {
-        toast.error(
-          error.response.data.message
-        );
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
       } else if (error.request) {
-        toast.error(
-          "Server not responding"
-        );
+        toast.error("Server not responding");
       } else {
-        toast.error(
-          "Something went wrong"
-        );
+        toast.error("Something went wrong");
       }
     } finally {
       setLoading(false);

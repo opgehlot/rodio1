@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 import {
   Truck,
@@ -11,13 +12,25 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import toast from "react-hot-toast";
 import API from "../api/api";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
+
+  // ==========================
+  // AUTH CONTEXT
+  // ==========================
+  const { user, setUser, registerData, setRegisterData } =
+    useContext(AuthContext);
+
+  console.log("=========== AUTH CONTEXT ===========");
+  console.log("Auth User :", user);
+  console.log("Register Data :", registerData);
+  console.log("setUser :", typeof setUser);
+  console.log("setRegisterData :", typeof setRegisterData);
+  console.log("===================================");
 
   const {
     register,
@@ -36,84 +49,113 @@ export default function Register() {
 
   const password = watch("password");
 
-  // =====================================================
+  // ====================================
   // REGISTER
-  // =====================================================
+  // ====================================
 
   const onSubmit = async (formData) => {
+    console.log("========= REGISTER START =========");
+
     try {
       setLoading(true);
 
-      // Clean mobile number
-      const mobile = formData.mobile.replace(/\D/g, "").slice(0, 10);
+      console.log("FORM DATA :", formData);
 
       const payload = {
         role: formData.role,
-        mobile,
+        mobile: formData.mobile.replace(/\D/g, "").slice(0, 10),
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       };
 
-      console.log("REGISTER PAYLOAD:", payload);
+      console.log("REQUEST PAYLOAD :", payload);
 
-      // ================================================
-      // API CALL
-      // ================================================
+      const response = await API.post("/auth/register", payload);
 
-      const { data } = await API.post("/auth/register", payload);
+      console.log("FULL RESPONSE :", response);
 
-      console.log("REGISTER RESPONSE:", data);
+      const data = response.data;
 
-      if (!data?.success) {
-        toast.error(data?.message || "Registration Failed");
+      console.log("RESPONSE DATA :", data);
+
+      if (!data.success) {
+        console.log("Registration Failed");
+
+        toast.error(data.message);
+
         return;
       }
 
-      // ================================================
-      // SAVE TOKEN
-      // ================================================
+      console.log("Registration Success");
 
-      if (data?.token) {
+      // ==========================
+      // TOKEN
+      // ==========================
+
+      if (data.token) {
         localStorage.setItem("token", data.token);
+
+        console.log("TOKEN SAVED");
       }
 
-      // ================================================
-      // SAVE USER
-      // No AuthContext here
-      // ================================================
+      // ==========================
+      // USER
+      // ==========================
 
-      if (data?.user) {
+      if (data.user) {
+        console.log("USER FROM BACKEND :", data.user);
+
+        setUser(data.user);
+
+        console.log("setUser Executed");
+
+        if (typeof setRegisterData === "function") {
+          setRegisterData(data.user);
+          console.log("setRegisterData Executed");
+        } else {
+          console.log("setRegisterData NOT FOUND");
+        }
+
         localStorage.setItem("user", JSON.stringify(data.user));
+
+        console.log("USER SAVED IN LOCAL STORAGE");
       }
 
-      // ================================================
-      // SAVE ROLE
-      // ================================================
-
-      if (data?.user?.role) {
+      if (data.user?.role) {
         localStorage.setItem("role", data.user.role);
+
+        console.log("ROLE SAVED");
       }
 
-      toast.success(data?.message || "Registration Successful");
+      toast.success(data.message);
+
+      console.log("FORM RESET");
 
       reset();
 
-      // ================================================
-      // REDIRECT
-      // ================================================
+      console.log("NAVIGATE TO :", data.redirectTo || "/dashboard");
 
-      navigate(data?.redirectTo || "/dashboard");
+      navigate(data.redirectTo || "/dashboard");
     } catch (error) {
-      console.error("REGISTER ERROR:", error);
+      console.log("=========== REGISTER ERROR ===========");
 
-      console.error("SERVER RESPONSE:", error?.response?.data);
+      console.log("Error :", error);
 
-      toast.error(error?.response?.data?.message || "Registration Failed");
+      console.log("Response :", error.response);
+
+      console.log("Response Data :", error.response?.data);
+
+      console.log("Status :", error.response?.status);
+
+      toast.error(error.response?.data?.message || "Registration Failed");
     } finally {
       setLoading(false);
+
+      console.log("Loading False");
+
+      console.log("========= REGISTER END =========");
     }
   };
-
   return (
     <div className="pt-[70px] w-full bg-white flex flex-col lg:flex-row">
       {/* ================================================= */}
@@ -122,18 +164,18 @@ export default function Register() {
 
       <div
         className="
-          hidden
-          lg:flex
-          lg:w-1/2
-          bg-white
-          p-16
-          flex-col
-          justify-between
-          items-center
-          text-center
-          border-r
-          border-slate-100
-        "
+        hidden
+        lg:flex
+        lg:w-1/2
+        bg-white
+        p-16
+        flex-col
+        justify-between
+        items-center
+        text-center
+        border-r
+        border-slate-100
+      "
       >
         {/* BRAND */}
 
@@ -152,21 +194,21 @@ export default function Register() {
         <div className="my-auto py-12 max-w-lg space-y-6">
           <div
             className="
-              inline-flex
-              items-center
-              gap-2
-              px-4
-              py-1.5 
-              rounded-full
-              bg-blue-50
-              border
-              border-blue-100
-              text-blue-600
-              text-xs
-              font-semibold
-              tracking-widest
-              uppercase
-            "
+            inline-flex
+            items-center
+            gap-2
+            px-4
+            py-1.5
+            rounded-full
+            bg-blue-50
+            border
+            border-blue-100
+            text-blue-600
+            text-xs
+            font-semibold
+            tracking-widest
+            uppercase
+          "
           >
             <Sparkles size={14} />
             JOIN THE REVOLUTION
@@ -174,13 +216,13 @@ export default function Register() {
 
           <h2
             className="
-              text-5xl
-              xl:text-6xl
-              font-bold 
-              tracking-tight
-              text-slate-900
-              leading-[1.1]
-            "
+            text-5xl
+            xl:text-6xl
+            font-bold
+            tracking-tight
+            text-slate-900
+            leading-[1.1]
+          "
           >
             Scale Your Logistics Business with{" "}
             <span className="text-blue-600">RODIO</span>
@@ -193,38 +235,38 @@ export default function Register() {
 
           <div
             className="
-              pt-6
-              flex
-              flex-col
-              sm:flex-row
-              items-center
-              justify-center
-              gap-6
-            "
+            pt-6
+            flex
+            flex-col
+            sm:flex-row
+            items-center
+            justify-center
+            gap-6
+          "
           >
             <div
               className="
-                flex
-                items-center
-                gap-2.5
-                text-sm
-                font-semibold
-                text-slate-600
-                uppercase
-                tracking-wider
-              "
+              flex
+              items-center
+              gap-2.5
+              text-sm
+              font-semibold
+              text-slate-600
+              uppercase
+              tracking-wider
+            "
             >
               <div
                 className="
-                  w-7
-                  h-7
-                  rounded-full
-                  bg-emerald-50
-                  text-emerald-600
-                  flex
-                  items-center
-                  justify-center
-                "
+                w-7
+                h-7
+                rounded-full
+                bg-emerald-50
+                text-emerald-600
+                flex
+                items-center
+                justify-center
+              "
               >
                 <ShieldCheck size={16} />
               </div>
@@ -234,27 +276,27 @@ export default function Register() {
 
             <div
               className="
-                flex
-                items-center
-                gap-2.5
-                text-sm
-                font-semibold
-                text-slate-600
-                uppercase
-                tracking-wider
-              "
+              flex
+              items-center
+              gap-2.5
+              text-sm
+              font-semibold
+              text-slate-600
+              uppercase
+              tracking-wider
+            "
             >
               <div
                 className="
-                  w-7
-                  h-7
-                  rounded-full
-                  bg-blue-50
-                  text-blue-600
-                  flex
-                  items-center
-                  justify-center
-                "
+                w-7
+                h-7
+                rounded-full
+                bg-blue-50
+                text-blue-600
+                flex
+                items-center
+                justify-center
+              "
               >
                 <ArrowRight size={16} />
               </div>
@@ -268,64 +310,64 @@ export default function Register() {
 
         <div
           className="
-            text-xs
-            font-medium
-            text-slate-400
-            uppercase
-            tracking-widest
-          "
+          text-xs
+          font-medium
+          text-slate-400
+          uppercase
+          tracking-widest
+        "
         >
           © {new Date().getFullYear()} RODIO. ALL RIGHTS RESERVED.
         </div>
       </div>
-
       {/* ================================================= */}
       {/* RIGHT SIDE */}
       {/* ================================================= */}
 
       <div
         className="
-          w-full
-          lg:w-1/2
-          flex
-          items-center
-          justify-center
-          p-6
-          sm:p-12
-          lg:py-16 lg:px-20
-          bg-white
-        "
+        w-full
+        lg:w-1/2
+        flex
+        items-center
+        justify-center
+        p-6
+        sm:p-12
+        lg:py-16
+        lg:px-20
+        bg-white
+      "
       >
         <div className="w-full max-w-md">
           {/* MOBILE LOGO */}
 
           <div
             className="
-              flex
-              lg:hidden
-              items-center
-              gap-2.5
-              mb-6
-              text-slate-900
-            "
+            flex
+            lg:hidden
+            items-center
+            gap-2.5
+            mb-6
+            text-slate-900
+          "
           >
             <div
               className="
-                p-2.5
-                bg-blue-600
-                rounded-xl
-                text-white
-              "
+              p-2.5
+              bg-blue-600
+              rounded-xl
+              text-white
+            "
             >
               <Truck size={24} />
             </div>
 
             <span
               className="
-                text-2xl
-                font-semibold
-                tracking-widest
-              "
+              text-2xl
+              font-semibold
+              tracking-widest
+            "
             >
               RODIO
             </span>
@@ -336,22 +378,22 @@ export default function Register() {
           <div className="mb-8">
             <h2
               className="
-                text-4xl
-                font-bold
-                text-slate-900
-                tracking-tight
-              "
+              text-4xl
+              font-bold
+              text-slate-900
+              tracking-tight
+            "
             >
               Create Account
             </h2>
 
             <p
               className="
-                text-slate-500
-                text-sm
-                mt-2 
-                font-medium
-              "
+              text-slate-500
+              text-sm
+              mt-2
+              font-medium
+            "
             >
               Enter your details to continue.
             </p>
@@ -369,12 +411,12 @@ export default function Register() {
             <div>
               <label
                 className="
-                  block
-                  text-sm
-                  font-medium
-                  text-slate-700
-                  mb-2
-                "
+                block
+                text-sm
+                font-medium
+                text-slate-700
+                mb-2
+              "
               >
                 I am a
               </label>
@@ -384,22 +426,22 @@ export default function Register() {
                   required: "PLEASE SELECT A ROLE",
                 })}
                 className="
-                  w-full
-                  bg-slate-50
-                  border-2
-                  border-slate-200 
-                  rounded-xl
-                  px-4
-                  py-3.5
-                  text-base
-                  font-medium 
-                  focus:border-blue-600
-                  focus:bg-white
-                  focus:ring-4
-                  focus:ring-blue-600/10
-                  transition-all
-                  cursor-pointer
-                "
+                w-full
+                bg-slate-50
+                border-2
+                border-slate-200
+                rounded-xl
+                px-4
+                py-3.5
+                text-base
+                font-medium
+                focus:border-blue-600
+                focus:bg-white
+                focus:ring-4
+                focus:ring-blue-600/10
+                transition-all
+                cursor-pointer
+              "
               >
                 <option value="">Select Role</option>
 
@@ -411,15 +453,7 @@ export default function Register() {
               </select>
 
               {errors.role && (
-                <p
-                  className="
-                    text-red-500
-                    text-xs
-                    mt-2
-                    font-semibold
-                    uppercase
-                  "
-                >
+                <p className="text-red-500 text-xs mt-2 font-semibold uppercase">
                   {errors.role.message}
                 </p>
               )}
@@ -432,32 +466,32 @@ export default function Register() {
             <div>
               <label
                 className="
-                  block
-                  text-sm
-                  font-medium
-                  text-slate-700
-                  mb-2
-                "
+                block
+                text-sm
+                font-medium
+                text-slate-700
+                mb-2
+              "
               >
                 Mobile Number
               </label>
 
               <div
                 className="
-                  flex
-                  items-center
-                  bg-slate-50
-                  border-2
-                  border-slate-200
-                  rounded-xl
-                  px-4
-                  py-4
-                  focus-within:border-blue-600
-                  focus-within:bg-white
-                  focus-within:ring-4
-                  focus-within:ring-blue-600/10
-                  transition-all
-                "
+                flex
+                items-center
+                bg-slate-50
+                border-2
+                border-slate-200
+                rounded-xl
+                px-4
+                py-4
+                focus-within:border-blue-600
+                focus-within:bg-white
+                focus-within:ring-4
+                focus-within:ring-blue-600/10
+                transition-all
+              "
               >
                 <Phone size={20} className="text-slate-400 flex-shrink-0" />
 
@@ -467,17 +501,16 @@ export default function Register() {
                   maxLength={10}
                   placeholder="Enter 10-digit mobile number"
                   className="
-                    w-full
-                    bg-transparent
-                    ml-3 
-                    text-base
-                    font-medium
-                    placeholder:text-slate-400
-                    outline-none
-                  "
+                  w-full
+                  bg-transparent
+                  ml-3
+                  text-base
+                  font-medium
+                  placeholder:text-slate-400
+                  outline-none
+                "
                   {...register("mobile", {
                     required: "MOBILE NUMBER IS REQUIRED",
-
                     pattern: {
                       value: /^[6-9][0-9]{9}$/,
                       message: "ENTER A VALID INDIAN MOBILE NUMBER",
@@ -492,20 +525,11 @@ export default function Register() {
               </div>
 
               {errors.mobile && (
-                <p
-                  className="
-                    text-red-500
-                    text-xs
-                    mt-2
-                    font-semibold
-                    uppercase
-                  "
-                >
+                <p className="text-red-500 text-xs mt-2 font-semibold uppercase">
                   {errors.mobile.message}
                 </p>
               )}
             </div>
-
             {/* ================================================= */}
             {/* PASSWORD */}
             {/* ================================================= */}
@@ -513,30 +537,30 @@ export default function Register() {
             <div>
               <label
                 className="
-                  block
-                  text-sm
-                  font-medium
-                  text-slate-700
-                  mb-2
-                "
+                block
+                text-sm
+                font-medium
+                text-slate-700
+                mb-2
+              "
               >
                 Password
               </label>
 
               <div
                 className="
-                  flex
-                  items-center
-                  bg-slate-50
-                  border-2
-                  border-slate-200
-                  rounded-xl
-                  px-4
-                  py-4
-                  focus-within:border-blue-600
-                  focus-within:ring-4
-                  focus-within:ring-blue-600/10
-                "
+                flex
+                items-center
+                bg-slate-50
+                border-2
+                border-slate-200
+                rounded-xl
+                px-4
+                py-4
+                focus-within:border-blue-600
+                focus-within:ring-4
+                focus-within:ring-blue-600/10
+              "
               >
                 <Lock size={20} className="text-slate-400" />
 
@@ -545,13 +569,13 @@ export default function Register() {
                   maxLength={8}
                   placeholder="ENTER 4 TO 8 CHARACTER PASSWORD"
                   className="
-                    w-full
-                    bg-transparent
-                    ml-3
-                    text-base 
-                    font-medium
-                    outline-none
-                  "
+                  w-full
+                  bg-transparent
+                  ml-3
+                  text-base
+                  font-medium
+                  outline-none
+                "
                   {...register("password", {
                     required: "PASSWORD IS REQUIRED",
 
@@ -582,30 +606,30 @@ export default function Register() {
             <div>
               <label
                 className="
-                  block
-                  text-sm
-                  font-medium
-                  text-slate-700
-                  mb-2
-                "
+                block
+                text-sm
+                font-medium
+                text-slate-700
+                mb-2
+              "
               >
                 Confirm Password
               </label>
 
               <div
                 className="
-                  flex
-                  items-center
-                  bg-slate-50
-                  border-2
-                  border-slate-200
-                  rounded-xl
-                  px-4
-                  py-4
-                  focus-within:border-blue-600
-                  focus-within:ring-4
-                  focus-within:ring-blue-600/10
-                "
+                flex
+                items-center
+                bg-slate-50
+                border-2
+                border-slate-200
+                rounded-xl
+                px-4
+                py-4
+                focus-within:border-blue-600
+                focus-within:ring-4
+                focus-within:ring-blue-600/10
+              "
               >
                 <Lock size={20} className="text-slate-400" />
 
@@ -614,13 +638,13 @@ export default function Register() {
                   maxLength={8}
                   placeholder="RE-ENTER PASSWORD"
                   className="
-                    w-full
-                    bg-transparent
-                    ml-3
-                    text-base 
-                    font-medium
-                    outline-none
-                  "
+                  w-full
+                  bg-transparent
+                  ml-3
+                  text-base
+                  font-medium
+                  outline-none
+                "
                   {...register("confirmPassword", {
                     required: "PLEASE CONFIRM YOUR PASSWORD",
 
@@ -638,43 +662,47 @@ export default function Register() {
             </div>
 
             {/* ================================================= */}
-            {/* SUBMIT */}
+            {/* SUBMIT BUTTON */}
             {/* ================================================= */}
 
             <button
               type="submit"
               disabled={loading}
               className="
-                w-full mt-4 bg-blue-600 hover:bg-blue-700 
-                text-white
-                font-semibold
-                py-4
-                rounded-xl
-                text-sm
-                tracking-widest
-                uppercase
-                shadow-lg hover:shadow-xl
-                transition-all
-                disabled:opacity-50
-                disabled:cursor-not-allowed
-                flex
-                items-center
-                justify-center
-                gap-2
-              "
+              w-full
+              mt-4
+              bg-blue-600
+              hover:bg-blue-700
+              text-white
+              font-semibold
+              py-4
+              rounded-xl
+              text-sm
+              tracking-widest
+              uppercase
+              shadow-lg
+              hover:shadow-xl
+              transition-all
+              disabled:opacity-50
+              disabled:cursor-not-allowed
+              flex
+              items-center
+              justify-center
+              gap-2
+            "
             >
               {loading ? (
                 <>
                   <div
                     className="
-                      w-5
-                      h-5
-                      border-2
-                      border-white
-                      border-t-transparent
-                      rounded-full
-                      animate-spin
-                    "
+                    w-5
+                    h-5
+                    border-2
+                    border-white
+                    border-t-transparent
+                    rounded-full
+                    animate-spin
+                  "
                   />
                   CREATING ACCOUNT...
                 </>
@@ -686,23 +714,18 @@ export default function Register() {
               )}
             </button>
 
-            {/* LOGIN */}
+            {/* LOGIN LINK */}
 
             <div className="text-center pt-3">
-              <p
-                className="
-                  text-sm 
-                  text-slate-600
-                "
-              >
+              <p className="text-sm text-slate-600">
                 Already have an account?{" "}
                 <Link
                   to="/login"
                   className="
-                    text-blue-600
-                    font-semibold
-                    hover:underline
-                  "
+                  text-blue-600
+                  font-semibold
+                  hover:underline
+                "
                 >
                   Login
                 </Link>

@@ -12,6 +12,7 @@ export default function Profile() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,12 +22,12 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    fetchProfile();
+    fetchProfile(true); // Pehli baar load hone par true bhejenge taaki loading screen aaye
   }, []);
 
-  const fetchProfile = async () => {
+  const fetchProfile = async (isInitial = false) => {
     try {
-      setLoading(true);
+      if (isInitial) setLoading(true);
       const response = await API.get("/profile");
       const data = response.data?.profile || response.data?.data || null;
       setProfileData(data);
@@ -43,7 +44,7 @@ export default function Profile() {
       console.error("Profile Fetch Error:", error);
       toast.error("Failed to load profile details");
     } finally {
-      setLoading(false);
+      if (isInitial) setLoading(false);
     }
   };
 
@@ -74,7 +75,8 @@ export default function Profile() {
       if (response.data?.success) {
         toast.success("Profile Updated Successfully!");
         setIsEditing(false);
-        fetchProfile();
+        setPreviewImage(null);
+        fetchProfile(false); // Bina pura component reload kiye data refresh hoga
       } else {
         toast.error(response.data?.message || "Failed to update profile");
       }
@@ -95,6 +97,13 @@ export default function Profile() {
       return;
     }
 
+    // Instant local preview dikhane ke liye taaki user ko turant pata chale
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+
     try {
       setUploadingPhoto(true);
       const data = new FormData();
@@ -106,11 +115,12 @@ export default function Profile() {
 
       if (response.data?.success) {
         toast.success("Profile photo updated successfully!");
-        fetchProfile();
+        fetchProfile(false); // Background mein data update hoga
       }
     } catch (error) {
       console.error("Photo Upload Error:", error);
       toast.error("Error uploading photo");
+      setPreviewImage(null); // Error aane par purana image wapas aa jayega
     } finally {
       setUploadingPhoto(false);
     }
@@ -129,7 +139,8 @@ export default function Profile() {
     );
   }
 
-  const profileImage = profileData?.profileImage || "https://res.cloudinary.com/tyt9mt1f/image/upload/v1784103262/DUMMYIMAGE_xuc0xa.jpg";
+  const fallbackImage = "https://res.cloudinary.com/tyt9mt1f/image/upload/v1784103262/DUMMYIMAGE_xuc0xa.jpg";
+  const profileImage = previewImage || profileData?.profileImage || fallbackImage;
 
   return (
     <div className="w-full bg-white rounded-3xl mb-4 min-h-[300px] px-4 md:px-12 py-0 my-0">
@@ -158,7 +169,7 @@ export default function Profile() {
         )}
       </div>
 
-      {/* Main Content Area (Designed as part of page, not a floating card) */}
+      {/* Main Content Area */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -168,18 +179,18 @@ export default function Profile() {
         <div className="flex flex-col sm:flex-row items-center gap-6 mb-10 pb-8 border-b border-slate-100">
           <div className="relative group">
             <div className="w-24 h-24 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center overflow-hidden border border-slate-200">
-  <img
-    src={profileImage}
-    alt="Profile"
-    className="w-full h-full object-cover"
-  />
-</div>
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
             <button
               type="button"
               disabled={uploadingPhoto}
               onClick={() => fileInputRef.current?.click()}
-              className="absolute inset-0 bg-black/60 rounded-2xl flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition cursor-pointer"
+              className="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition cursor-pointer"
             >
               {uploadingPhoto ? (
                 <Loader2 className="animate-spin" size={20} />
@@ -268,7 +279,7 @@ export default function Profile() {
                   value={formData.email} 
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
-                  required 
+                  
                 />
               </div>
 
@@ -280,7 +291,7 @@ export default function Profile() {
                   value={formData.phoneNumber} 
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
-                  required 
+                 
                 />
               </div>
 
