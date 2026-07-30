@@ -1,33 +1,45 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom"; // Added useNavigate
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/api";
-import { Search, MapPin, Briefcase, Filter, X, Truck } from "lucide-react";
+import { Search, MapPin, Briefcase, Filter, X, Truck, Phone, CheckCircle2, Globe } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 // ==========================================
 // 1. LOCATION SEARCH INPUT COMPONENT
 // ==========================================
-const LocationSearchInput = ({ placeholder, selectedValue, onSelectLocation }) => {
+
+const LocationSearchInput = ({
+  placeholder,
+  selectedValue,
+  onSelectLocation,
+}) => {
   const [searchTerm, setSearchTerm] = useState(selectedValue || "");
   const [suggestions, setSuggestions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
     setSearchTerm(selectedValue || "");
   }, [selectedValue]);
 
+  // outside click close
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
+  // location search api
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm.trim().length >= 2) {
@@ -40,9 +52,11 @@ const LocationSearchInput = ({ placeholder, selectedValue, onSelectLocation }) =
             }
           })
           .catch((err) => {
-            console.error("Location search error:", err);
+            console.log("Location Error", err);
           })
-          .finally(() => setLoading(false));
+          .finally(() => {
+            setLoading(false);
+          });
       } else {
         setSuggestions([]);
         setIsOpen(false);
@@ -76,18 +90,22 @@ const LocationSearchInput = ({ placeholder, selectedValue, onSelectLocation }) =
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            if (!e.target.value) onSelectLocation(null);
+            if (!e.target.value) {
+              onSelectLocation(null);
+            }
           }}
           className={`w-full h-[46px] pl-4 pr-10 bg-gray-50 border ${
-            isFocused ? "border-blue-500 ring-2 ring-blue-500/20" : "border-gray-200"
-          } rounded-xl text-sm font-medium text-gray-700 placeholder-gray-400 outline-none transition-all`}
+            isFocused
+              ? "border-blue-500 ring-2 ring-blue-500/20"
+              : "border-gray-200"
+          } rounded-xl text-sm outline-none`}
         />
-        
+
         {searchTerm && (
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3 text-gray-400 hover:text-gray-600 p-1"
+            className="absolute right-3 text-gray-400 hover:text-gray-600"
           >
             <X size={16} />
           </button>
@@ -97,9 +115,13 @@ const LocationSearchInput = ({ placeholder, selectedValue, onSelectLocation }) =
       {isOpen && (
         <ul className="absolute top-full mt-2 w-full bg-white rounded-2xl shadow-lg border border-gray-100 max-h-60 overflow-y-auto z-[1000] p-2">
           {loading && suggestions.length === 0 ? (
-            <li className="px-4 py-2 text-sm text-center text-gray-500">Loading...</li>
-          ) : !loading && suggestions.length === 0 ? (
-            <li className="px-4 py-2 text-sm text-center text-gray-500">No results found</li>
+            <li className="px-4 py-2 text-sm text-center text-gray-500">
+              Loading...
+            </li>
+          ) : suggestions.length === 0 ? (
+            <li className="px-4 py-2 text-sm text-center text-gray-500">
+              No results found
+            </li>
           ) : (
             suggestions.map((item, i) => (
               <li
@@ -109,7 +131,11 @@ const LocationSearchInput = ({ placeholder, selectedValue, onSelectLocation }) =
               >
                 <div>
                   <strong className="font-semibold">{item.name}</strong>
-                  {item.state && <span className="text-gray-500 text-xs ml-1">({item.state})</span>}
+                  {item.state && (
+                    <span className="text-gray-500 text-xs ml-1">
+                      ({item.state})
+                    </span>
+                  )}
                 </div>
               </li>
             ))
@@ -120,19 +146,27 @@ const LocationSearchInput = ({ placeholder, selectedValue, onSelectLocation }) =
   );
 };
 
-
 // ==========================================
 // 2. MAIN DIRECTORY FILTER & RESULTS COMPONENT
 // ==========================================
+
 const DirectoryFilterSection = () => {
-  const navigate = useNavigate(); // Hook initialized for navigation
+  const navigate = useNavigate();
+
+  // AUTH CONTEXT
+  const { user } = useContext(AuthContext);
+  const isLoggedIn = !!user;
+
+  // FILTER STATES
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [category, setCategory] = useState("");
 
+  // DIRECTORY DATA
   const [directoryData, setDirectoryData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // CATEGORY LIST
   const transportCategories = [
     { label: "All Categories", value: "" },
     { label: "Transporter / Fleet Owner", value: "transporter" },
@@ -141,37 +175,43 @@ const DirectoryFilterSection = () => {
     { label: "Transport Contractor", value: "Contractor" },
     { label: "Logistics Company", value: "Logistics" },
     { label: "Crane & Hydra Service", value: "CraneService" },
+    { label: "broker", value: "broker" },
   ];
 
+  // FETCH DIRECTORY
   const fetchDirectoryData = async (filters = {}) => {
     try {
       setLoading(true);
-      
+
       const queryParams = {
         state: filters.state !== undefined ? filters.state : selectedState,
         city: filters.city !== undefined ? filters.city : selectedCity,
         category: filters.category !== undefined ? filters.category : category,
       };
 
-      const response = await API.get("/directory", { params: queryParams });
-      
+      const response = await API.get("/directory", {
+        params: queryParams,
+      });
+
       if (response.data) {
-        const extractedData = response.data.data || [];
-        setDirectoryData(extractedData);
+        setDirectoryData(response.data.data || []);
       }
     } catch (error) {
-      console.error("Failed to fetch directory data:", error);
+      console.log("Directory Error", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // LOAD DATA FIRST TIME
   useEffect(() => {
     fetchDirectoryData();
   }, []);
 
+  // SEARCH BUTTON
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+
     fetchDirectoryData({
       state: selectedState,
       city: selectedCity,
@@ -179,22 +219,43 @@ const DirectoryFilterSection = () => {
     });
   };
 
+  // MASK PHONE
+  const maskPhoneNumber = (number) => {
+    if (!number) {
+      return "Not Provided";
+    }
+
+    const strNumber = String(number);
+
+    if (strNumber.length >= 10) {
+      return "XXXXXX" + strNumber.slice(-4);
+    }
+
+    return "XXXXXXXXXX";
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6">
-      
+      {/* SEARCH BOX */}
       <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 mb-8">
         <div className="flex items-center gap-2 mb-6">
           <Filter className="text-blue-600" size={22} />
-          <h2 className="text-xl font-bold text-gray-800">Find Transport Directory</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            Find Transport Directory
+          </h2>
         </div>
 
-        <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-end">
-          
-          <div className="flex flex-col">
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-end"
+        >
+          {/* STATE */}
+          <div>
+            <label className="text-xs font-bold text-gray-600 flex items-center gap-1 mb-2">
               <MapPin size={15} className="text-blue-600" />
               State Search
             </label>
+
             <LocationSearchInput
               placeholder="Search State..."
               selectedValue={selectedState}
@@ -202,113 +263,197 @@ const DirectoryFilterSection = () => {
             />
           </div>
 
-          <div className="flex flex-col">
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-              <MapPin size={15} className="text-emerald-600" />
-              City / Gaon Search
+          {/* CITY */}
+          <div>
+            <label className="text-xs font-bold text-gray-600 flex items-center gap-1 mb-2">
+              <MapPin size={15} className="text-green-600" />
+              City Search
             </label>
+
             <LocationSearchInput
-              placeholder="Search City or Gaon..."
+              placeholder="Search City..."
               selectedValue={selectedCity}
               onSelectLocation={(loc) => setSelectedCity(loc ? loc.name : "")}
             />
           </div>
 
-          <div className="flex flex-col">
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+          {/* CATEGORY */}
+          <div>
+            <label className="text-xs font-bold text-gray-600 flex items-center gap-1 mb-2">
               <Briefcase size={15} className="text-orange-500" />
-              Transport Category
+              Category
             </label>
+
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full h-[46px] px-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className="w-full h-[46px] bg-gray-50 border rounded-xl px-3 text-sm outline-none"
             >
-              {transportCategories.map((cat, idx) => (
-                <option key={idx} value={cat.value}>{cat.label}</option>
+              {transportCategories.map((cat, index) => (
+                <option key={index} value={cat.value}>
+                  {cat.label}
+                </option>
               ))}
             </select>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              className="w-full h-[46px] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/25 active:scale-95"
-            >
-              <Search size={18} />
-              <span>Search Directory</span>
-            </button>
-          </div>
-
+          {/* SEARCH BUTTON */}
+          <button
+            type="submit"
+            className="h-[46px] bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2"
+          >
+            <Search size={18} />
+            Search Directory
+          </button>
         </form>
       </div>
 
-      <div className="mt-6">
-        <h3 className="text-2xl font-bold text-gray-800 mb-4">Directory Results</h3>
+      {/* DIRECTORY RESULT */}
+      <h3 className="text-2xl font-bold text-gray-800 mb-5">
+        Directory Results
+      </h3>
 
-        {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        ) : directoryData.length === 0 ? (
-          <div className="bg-white rounded-2xl p-10 text-center border border-gray-100 shadow-sm">
-            <p className="text-gray-500 text-sm">No transporters or brokers found matching your filter.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {directoryData.map((item, index) => {
-              return (
-                <div key={item._id || index} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-md hover:shadow-lg transition">
-                  <div className="flex justify-between items-start mb-3">
-                    <h4 className="font-bold text-gray-800 text-lg capitalize">{item.firmName}</h4>
-                    <span className="bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full capitalize">
-                      {item.role || "Transporter"}
+      {loading ? (
+        <div className="text-center py-20">Loading...</div>
+      ) : directoryData.length === 0 ? (
+        <div className="bg-white rounded-xl p-10 text-center">
+          No Transport Found
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {directoryData.map((item, index) => {
+            const displayPhone = isLoggedIn
+              ? item.phoneNumber
+              : maskPhoneNumber(item.phoneNumber);
+
+            return (
+              <div
+                key={item._id || index}
+                className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col justify-between relative"
+              >
+                {/* TOP HEADER SECTION */}
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white relative">
+                  {/* Verified Badge on Top-Right Corner */}
+                  <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md border border-white/30 text-white px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1 shadow-sm">
+                    <CheckCircle2 size={13} className="text-emerald-300 fill-emerald-500/20" />
+                    <span>Verified</span>
+                  </div>
+
+                  <div className="flex justify-between items-start pr-20">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Truck size={20} className="text-white" />
+                        <h4 className="font-bold text-lg">{item.firmName}</h4>
+                      </div>
+                      <p className="text-blue-100 text-xs capitalize">
+                        {item.role || "Transporter"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* BODY CONTENT */}
+                <div className="p-5 space-y-4 flex-1">
+                  {/* Location Info */}
+                  <div className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-2xl">
+                    <MapPin size={18} className="text-red-500 shrink-0" />
+                    <span className="font-medium">
+                      {item.city}, {item.state}
                     </span>
                   </div>
 
-                  <p className="text-sm text-gray-600 mb-2 flex items-center gap-1">
-                    <MapPin size={14} className="text-gray-400" />
-                    {item.city}, {item.state}
-                  </p>
-
-                  <p className="text-sm text-gray-700 mb-3 font-medium">📞 {item.phoneNumber}</p>
-
-                  <div className="mb-4 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 mb-1">
-                      <Truck size={14} className="text-blue-600" />
-                      <span>Total Vehicles: {item.totalVehicles}</span>
+                  {/* Contact & Info Grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                      <span className="text-xs text-gray-400 block mb-1">
+                        Total Vehicles
+                      </span>
+                      <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm">
+                        <Truck size={15} className="text-blue-600" />
+                        <span>{item.totalVehicles || 0} Vehicles</span>
+                      </div>
                     </div>
-                    {item.vehicleTypes && item.vehicleTypes.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-1.5">
-                        {item.vehicleTypes.map((vType, vIdx) => (
-                          <span key={vIdx} className="bg-white border border-gray-200 text-gray-600 text-[11px] px-2 py-0.5 rounded-md font-medium">
-                            {vType}
+
+                    <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                      <span className="text-xs text-gray-400 block mb-1">
+                        Phone Number
+                      </span>
+                      <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm truncate">
+                        <Phone size={15} className="text-green-600 shrink-0" />
+                        <span className="truncate">{displayPhone}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Working Areas */}
+                  {item.workingAreas && item.workingAreas.length > 0 && (
+                    <div className="bg-blue-50/50 border border-blue-100 p-3 rounded-2xl">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-blue-700 mb-2">
+                        <Globe size={14} />
+                        <span>Working Areas:</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {item.workingAreas.map((area, i) => (
+                          <span
+                            key={area._id || i}
+                            className="bg-white border border-blue-200 text-blue-800 px-2 py-1 rounded-lg text-xs font-medium"
+                          >
+                            {area.cities.join(", ")} ({area.state})
                           </span>
                         ))}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
-                  {/* FIXED BUTTON WITH NAVIGATION */}
-                  <button 
-                    onClick={() => {
-                      // Aapke item._id ya id ke hisaab se route set karein
-                      const profileId = item._id || item.id;
-                      if (profileId) {
-                        navigate(`/business/public/${profileId}`); // Ya fir jo bhi apka PublicBusinessProfile ka route ho
+                  {/* Vehicle Types (if available) */}
+                  {item.vehicleTypes && item.vehicleTypes.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {item.vehicleTypes.map((v, i) => (
+                        <span
+                          key={i}
+                          className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-medium"
+                        >
+                          {v}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* FOOTER ACTIONS */}
+                <div className="p-5 pt-0 border-t border-gray-100 mt-auto bg-white grid grid-cols-2 gap-3">
+                  <a
+                    href={`tel:${item.phoneNumber}`}
+                    onClick={(e) => {
+                      if (!isLoggedIn) {
+                        e.preventDefault();
+                        navigate("/login");
                       }
                     }}
-                    className="cursor-pointer w-full py-2 bg-gray-50 hover:bg-blue-600 hover:text-white text-blue-600 text-sm font-bold rounded-xl transition"
+                    className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/20"
                   >
-                    View Profile & Details
+                    <Phone size={15} />
+                    Call
+                  </a>
+
+                  <button
+                    onClick={() => {
+                      if (!isLoggedIn) {
+                        navigate("/login");
+                        return;
+                      }
+                      navigate(`/dashboard/transporters/${item._id}`);
+                    }}
+                    className="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-blue-600/20"
+                  >
+                    View Profile
                   </button>
                 </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

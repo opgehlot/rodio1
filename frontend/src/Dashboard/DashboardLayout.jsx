@@ -18,7 +18,7 @@ export function DashboardLayout() {
 
       <Sidebar open={open} setOpen={setOpen} />
 
-      <main className="lg:ml-[340px] p-4 md:p-6 overflow-x-hidden">
+     <main className="lg:ml-[300px] bg-slate-100 p-4 md:p-6 overflow-x-hidden">
         <Outlet />
       </main>
     </div>

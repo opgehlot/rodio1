@@ -10,7 +10,15 @@ import {
   FaWarehouse,
   FaArrowRight,
   FaCheckCircle,
+  FaStar,
 } from "react-icons/fa";
+import {
+  ShieldCheck,
+  Zap,
+  FileText,
+  Globe,
+  TrendingUp,
+} from "lucide-react";
 
 const Services = () => {
   const navigate = useNavigate();
@@ -242,43 +250,56 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
                 title: "Verified Businesses",
                 desc: "Every transporter and business profile is manually verified for better trust.",
+                icon: <ShieldCheck className="text-blue-600" size={30} />,
               },
               {
                 title: "Fast Search",
                 desc: "Search vehicles, transporters and businesses within seconds.",
+                icon: <Zap className="text-blue-600" size={30} />,
               },
               {
                 title: "Daily Business Leads",
                 desc: "Receive genuine transport enquiries and logistics opportunities.",
+                icon: <FileText className="text-blue-600" size={30} />,
               },
               {
                 title: "Nationwide Network",
                 desc: "Connect with transport companies from every state of India.",
+                icon: <Globe className="text-blue-600" size={30} />,
               },
               {
                 title: "Ratings & Reviews",
                 desc: "Choose reliable businesses based on customer feedback.",
+                icon: <FaStar className="text-blue-600" size={30} />,
               },
               {
                 title: "Business Growth",
                 desc: "Increase visibility and attract more customers online.",
+                icon: <TrendingUp className="text-blue-600" size={30} />,
               },
             ].map((item, index) => (
               <motion.div
                 key={index}
-                className="bg-gray-50 rounded-2xl p-8 border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300"
+                className="bg-gray-50 rounded-2xl p-8 border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300 flex flex-col items-start"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                <p className="text-gray-600 leading-7">{item.desc}</p>
+                <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-5">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-800">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 leading-7 flex-grow">
+                  {item.desc}
+                </p>
               </motion.div>
             ))}
           </div>

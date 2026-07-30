@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaTruck, FaIdCard, FaWeightHanging, FaBoxes } from "react-icons/fa";
 import API from "../../api/api";
 
-export  function AddVehicle() {
+export function AddVehicle() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -27,21 +28,16 @@ export  function AddVehicle() {
     try {
       setLoading(true);
 
-      const response = await API.post(
-        "/vehicles",
-        form
-      );
+      const response = await API.post("/vehicles", form);
 
       toast.success(
-        response.data.message ||
-          "Vehicle added successfully"
+        response.data.message || "Vehicle added successfully"
       );
 
       navigate("/dashboard/my-vehicles");
     } catch (error) {
       toast.error(
-        error?.response?.data?.message ||
-          "Vehicle add nahi hua"
+        error?.response?.data?.message || "Vehicle add nahi hua"
       );
     } finally {
       setLoading(false);
@@ -49,104 +45,121 @@ export  function AddVehicle() {
   };
 
   return (
-    <div className="min-h-screen bg-orange-50 p-5">
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow p-7">
-        <h1 className="text-2xl font-bold mb-6">
-          Add Vehicle
-        </h1>
+    <div className="w-full min-h-screen bg-gray-100 text-gray-900 py-8 px-4 sm:px-6">
+      <div className="max-w-2xl mx-auto bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-6 sm:p-8">
+        
+        {/* Header */}
+        <div className="border-b-2 border-gray-200 pb-5 mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="bg-gray-900 text-white p-3 rounded-xl">
+              <FaTruck size={22} />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              Add Vehicle
+            </h1>
+          </div>
+          <p className="text-gray-600 text-sm sm:text-base font-medium">
+            Register your transport vehicle details for fleet management.
+          </p>
+        </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-5"
-        >
-          <div>
-            <label className="font-medium">
-              Vehicle Type
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          
+          {/* Vehicle Type */}
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+              Vehicle Type <span className="text-red-500">*</span>
             </label>
-
-            <select
-              name="vehicleType"
-              value={form.vehicleType}
-              onChange={handleChange}
-              required
-              className="w-full border rounded-xl p-3 mt-2"
-            >
-              <option value="">
-                Select Vehicle
-              </option>
-
-              <option value="Truck">Truck</option>
-              <option value="Trailer">Trailer</option>
-              <option value="Container">
-                Container
-              </option>
-              <option value="Pickup">Pickup</option>
-            </select>
+            <div className="relative flex items-center">
+              <FaTruck className="absolute left-3 text-gray-500 pointer-events-none" />
+              <select
+                name="vehicleType"
+                value={form.vehicleType}
+                onChange={handleChange}
+                required
+                className="w-full bg-white border-2 border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-900 font-semibold focus:outline-none focus:border-gray-900 transition-colors cursor-pointer"
+              >
+                <option value="">Select Vehicle Type</option>
+                <option value="Truck">Truck</option>
+                <option value="Trailer">Trailer</option>
+                <option value="Container">Container</option>
+                <option value="Pickup">Pickup</option>
+              </select>
+            </div>
           </div>
 
-          <div>
-            <label className="font-medium">
-              Vehicle Number
+          {/* Vehicle Number */}
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+              Vehicle Number <span className="text-red-500">*</span>
             </label>
-
-            <input
-              name="vehicleNumber"
-              value={form.vehicleNumber}
-              onChange={handleChange}
-              placeholder="RJ19AB1234"
-              required
-              className="w-full border rounded-xl p-3 mt-2 uppercase"
-            />
+            <div className="relative flex items-center">
+              <FaIdCard className="absolute left-3 text-gray-500" />
+              <input
+                type="text"
+                name="vehicleNumber"
+                value={form.vehicleNumber}
+                onChange={handleChange}
+                placeholder="RJ19AB1234"
+                required
+                className="w-full bg-white border-2 border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-900 font-semibold uppercase focus:outline-none focus:border-gray-900 transition-colors placeholder:normal-case placeholder:font-normal"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="font-medium">
+          {/* Capacity */}
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
               Capacity
             </label>
-
-            <input
-              name="capacity"
-              value={form.capacity}
-              onChange={handleChange}
-              placeholder="20 Ton"
-              className="w-full border rounded-xl p-3 mt-2"
-            />
+            <div className="relative flex items-center">
+              <FaWeightHanging className="absolute left-3 text-gray-500" />
+              <input
+                type="text"
+                name="capacity"
+                value={form.capacity}
+                onChange={handleChange}
+                placeholder="e.g. 20 Ton"
+                className="w-full bg-white border-2 border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-900 font-semibold focus:outline-none focus:border-gray-900 transition-colors"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="font-medium">
+          {/* Body Type */}
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
               Body Type
             </label>
-
-            <select
-              name="bodyType"
-              value={form.bodyType}
-              onChange={handleChange}
-              className="w-full border rounded-xl p-3 mt-2"
-            >
-              <option value="">
-                Select Body Type
-              </option>
-
-              <option value="Open">Open</option>
-              <option value="Closed">Closed</option>
-              <option value="Container">
-                Container
-              </option>
-            </select>
+            <div className="relative flex items-center">
+              <FaBoxes className="absolute left-3 text-gray-500 pointer-events-none" />
+              <select
+                name="bodyType"
+                value={form.bodyType}
+                onChange={handleChange}
+                className="w-full bg-white border-2 border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-900 font-semibold focus:outline-none focus:border-gray-900 transition-colors cursor-pointer"
+              >
+                <option value="">Select Body Type</option>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+                <option value="Container">Container</option>
+              </select>
+            </div>
           </div>
 
+          {/* Submit Button */}
           <button
+            type="submit"
             disabled={loading}
-            className="w-full bg-orange-500 text-white py-3 rounded-xl font-semibold disabled:bg-gray-400"
+            className="w-full bg-gray-900 hover:bg-black text-white py-3.5 rounded-xl font-bold tracking-wide shadow-md transition-all disabled:bg-gray-400 cursor-pointer"
           >
-            {loading
-              ? "Adding..."
-              : "Add Vehicle"}
+            {loading ? "Adding Vehicle..." : "Add Vehicle"}
           </button>
         </form>
+
       </div>
     </div>
   );
 }
+
 export default AddVehicle;

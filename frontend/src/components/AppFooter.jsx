@@ -16,11 +16,36 @@ import {
 export default function Footer() {
   // Social media links configuration
   const socialLinks = [
-    { name: "Facebook", icon: FaFacebook, url: "https://www.facebook.com/people/Rodio-Tradelink/61555783336993/" },
-    { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/rodiotradelink/" },
-    { name: "X", icon: FaXTwitter, url: "https://x.com/rodiotradelink" },
-    { name: "LinkedIn", icon: FaLinkedin, url: "https://www.linkedin.com/company/rodio-tradelink/" },
-    { name: "WhatsApp Group", icon: MessageCircle, url: "https://chat.whatsapp.com/F2j64qVFR3L90s52vUv3cR" },
+    {
+      name: "Facebook",
+      icon: FaFacebook,
+      url: "https://www.facebook.com/people/Rodio-Tradelink/61555783336993/",
+      color: "text-blue-600",
+    },
+    {
+      name: "Instagram",
+      icon: FaInstagram,
+      url: "https://www.instagram.com/rodiotradelink/",
+      color: "text-pink-600",
+    },
+    {
+      name: "X",
+      icon: FaXTwitter,
+      url: "https://x.com/rodiotradelink",
+      color: "text-gray-800",
+    },
+    {
+      name: "LinkedIn",
+      icon: FaLinkedin,
+      url: "https://www.linkedin.com/company/rodio-tradelink/",
+      color: "text-blue-700",
+    },
+    {
+      name: "WhatsApp Group",
+      icon: MessageCircle,
+      url: "https://chat.whatsapp.com/F2j64qVFR3L90s52vUv3cR",
+      color: "text-green-500",
+    },
   ];
 
   return (
@@ -34,7 +59,7 @@ export default function Footer() {
                 <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center">
                   <Truck className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-800">Rodio</h2>
+                <h2 className="text-4xl font-bold text-gray-800">Rodio</h2>
               </div>
               <p className="mt-2 text-gray-600 leading-7 text-sm">
                 India's Smart Transport Platform connecting transporters,
@@ -45,13 +70,13 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div>
-              <h3 className="font-semibold text-gray-800 text-lg mb-4">
+              <h3 className="font-semibold text-gray-800 text-xl mb-4">
                 Quick Links
               </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
                   <Link
-                    to="/"
+                    to="/" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Home
@@ -59,7 +84,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/about"
+                    to="/about" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     About
@@ -67,7 +92,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/services"
+                    to="/services" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Services
@@ -75,7 +100,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/register"
+                    to="/register" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Search Transport
@@ -83,7 +108,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/queryform"
+                    to="/queryform" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Contact Us
@@ -94,13 +119,13 @@ export default function Footer() {
 
             {/* Policies */}
             <div>
-              <h3 className="font-semibold text-gray-800 text-lg mb-4">
+              <h3 className="font-semibold text-gray-800 text-xl mb-4">
                 Policies
               </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
                   <Link
-                    to="/termscondition"
+                    to="/termscondition" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Terms & Conditions
@@ -108,7 +133,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/refundpolicy"
+                    to="/refundpolicy" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Refund Policy
@@ -116,7 +141,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/privaceypolicy"
+                    to="/privaceypolicy" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Privacy Policy
@@ -127,13 +152,13 @@ export default function Footer() {
 
             {/* Company */}
             <div>
-              <h3 className="font-semibold text-gray-800 text-lg mb-4">
+              <h3 className="font-semibold text-gray-800 text-xl mb-4">
                 Company
               </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
                   <Link
-                    to="/register"
+                    to="/register" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Become Transporter
@@ -141,7 +166,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/register"
+                    to="/register" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Become Broker
@@ -149,7 +174,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/register"
+                    to="/register" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Ship with Rodio
@@ -157,7 +182,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/login"
+                    to="/login" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Login
@@ -176,9 +201,9 @@ export default function Footer() {
                   <Mail size={18} />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Email</p>
-                  <p className="text-sm break-all font-medium text-gray-800">
-                    rodiotransport@gmail.com
+                  <p className="text-sm text-gray-500">Email</p>
+                  <p className="text-base break-all font-medium text-gray-800">
+                    support.rodiotradelink@gmail.com
                   </p>
                 </div>
               </div>
@@ -187,9 +212,9 @@ export default function Footer() {
                   <Phone size={18} />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Phone</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    +91 12345 67890
+                  <p className="text-sm text-gray-500">Phone</p>
+                  <p className="text-base font-medium text-gray-800">
+                    +91 9993738255
                   </p>
                 </div>
               </div>
@@ -198,8 +223,8 @@ export default function Footer() {
                   <MapPin size={18} />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Address</p>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm text-gray-500">Address</p>
+                  <p className="text-base font-medium text-gray-800">
                     India
                   </p>
                 </div>
@@ -208,7 +233,7 @@ export default function Footer() {
 
             {/* Social Media Links */}
             <div className="flex flex-col items-center lg:items-end gap-3">
-              <p className="text-sm font-medium text-gray-800">Follow Us</p>
+              <p className="text-base font-medium text-gray-800">Follow Us</p>
               <div className="flex items-center gap-3">
                 {socialLinks.map((link) => {
                   const Icon = link.icon;
@@ -218,10 +243,10 @@ export default function Footer() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 bg-white text-gray-600 rounded-full shadow-sm hover:bg-blue-600 hover:text-white transition-all duration-300 ring-1 ring-gray-200"
+                      className="p-3.5 bg-white rounded-full shadow-sm hover:bg-gray-100 transition-all duration-300 ring-1 ring-gray-200"
                       aria-label={link.name}
                     >
-                      <Icon className="w-5 h-5" />
+                      <Icon className={`w-6 h-6 ${link.color}`} />
                     </a>
                   );
                 })}
@@ -236,7 +261,7 @@ export default function Footer() {
               <span className="font-semibold text-gray-800">RODIO Tradelink</span>
               . All Rights Reserved.
             </p>
-            <p className="text-xs text-gray-500 text-center">
+            <p className="text-sm text-gray-500 text-center">
               Made with ❤️ in India
             </p>
           </div>

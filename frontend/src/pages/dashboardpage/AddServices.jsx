@@ -15,7 +15,6 @@ import {
   Loader2,
   ShieldCheck,
   BriefcaseBusiness,
-  Sparkles,
 } from "lucide-react";
 
 import API from "../../api/api";
@@ -247,8 +246,8 @@ export function AddServices() {
 
   if (fetchingDraft) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <Loader2 className="animate-spin text-orange-500" size={36} />
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <Loader2 className="animate-spin text-gray-900" size={36} />
       </div>
     );
   }
@@ -258,40 +257,35 @@ export function AddServices() {
   // ======================================================
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/60 via-white to-orange-50/40 px-4 py-10 md:py-12">
-      <div className="max-w-7xl mx-auto">
+    <div className="w-full min-h-screen bg-gray-100 text-gray-900 px-4 py-8 md:py-12">
+      <div className="max-w-3xl mx-auto">
         
-        {/* TOP BADGE & TITLE */}
+        {/* TOP TITLE SECTION */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100/80 text-orange-700 text-xs font-semibold tracking-wide mb-3 shadow-sm">
-            <Sparkles size={14} />
-            <span>Business Setup Portal</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
             Register Your Business
           </h1>
-          <p className="text-gray-500 mt-2 text-sm sm:text-base max-w-lg mx-auto">
-            Provide your establishment credentials to unlock premium network features.
+          <p className="text-gray-600 mt-2 text-sm sm:text-base max-w-lg mx-auto font-medium">
+            Provide your establishment credentials to set up your official profile.
           </p>
         </div>
 
         {/* MAIN CARD CONTAINER */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-3xl border border-orange-100 shadow-xl shadow-orange-950/5 overflow-hidden transition-all max-w-3xl mx-auto"
+          className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm overflow-hidden transition-all"
         >
           {/* HEADER BAR */}
-          <div className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-6 sm:px-8 py-6 text-white relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-            <div className="flex items-center gap-4 relative z-10">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-inner">
-                <Building2 size={28} className="text-white" />
+          <div className="bg-gray-900 text-white px-6 sm:px-8 py-6 border-b-2 border-gray-300">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center border border-white/20 shrink-0">
+                <Building2 size={26} className="text-white" />
               </div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
                   Business Information
                 </h2>
-                <p className="text-orange-100 text-xs sm:text-sm mt-0.5">
+                <p className="text-gray-400 text-xs sm:text-sm mt-0.5 font-medium">
                   Fill in your official corporate details below.
                 </p>
               </div>
@@ -299,11 +293,11 @@ export function AddServices() {
           </div>
 
           {/* FORM BODY */}
-          <div className="p-6 sm:p-10 space-y-6">
+          <div className="p-6 sm:p-8 space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               
               {/* REGISTERED MOBILE */}
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Registered Mobile Number <span className="text-red-500">*</span>
                 </label>
@@ -314,16 +308,16 @@ export function AddServices() {
                     value={mobile}
                     readOnly
                     tabIndex={-1}
-                    className="w-full h-12 rounded-2xl border border-gray-200 bg-gray-50 text-gray-600 pl-11 pr-4 outline-none cursor-not-allowed font-medium text-sm"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white text-gray-700 pl-11 pr-4 outline-none cursor-not-allowed font-semibold text-sm"
                   />
                 </div>
-                <p className="text-[11px] text-gray-400 mt-1.5 ml-1">
+                <p className="text-[11px] text-gray-500 mt-1.5 ml-1 font-medium">
                   * Tied securely to your authenticated session.
                 </p>
               </div>
 
               {/* BUSINESS CATEGORY */}
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Business Category <span className="text-red-500">*</span>
                 </label>
@@ -333,7 +327,7 @@ export function AddServices() {
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="w-full h-12 rounded-2xl border border-gray-200 bg-white pl-11 pr-10 outline-none cursor-pointer focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-10 outline-none cursor-pointer focus:border-gray-900 text-sm font-semibold transition-all text-gray-900"
                   >
                     <option value="" disabled>
                       Select Category
@@ -348,7 +342,7 @@ export function AddServices() {
               </div>
 
               {/* NAME */}
-              <div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Your Full Name <span className="text-red-500">*</span>
                 </label>
@@ -360,13 +354,13 @@ export function AddServices() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Enter your name"
-                    className="w-full h-12 rounded-2xl border border-gray-200 pl-11 pr-4 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700 placeholder:text-gray-400"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-4 outline-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
               {/* EMAIL */}
-              <div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Email Address <span className="text-gray-400 font-normal lowercase">(optional)</span>
                 </label>
@@ -378,13 +372,13 @@ export function AddServices() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="name@example.com"
-                    className="w-full h-12 rounded-2xl border border-gray-200 pl-11 pr-4 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700 placeholder:text-gray-400"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-4 outline-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
               {/* FIRM NAME */}
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Firm / Company Name <span className="text-red-500">*</span>
                 </label>
@@ -396,13 +390,13 @@ export function AddServices() {
                     value={formData.firmName}
                     onChange={handleChange}
                     placeholder="e.g. Balaji Roadlines"
-                    className="w-full h-12 rounded-2xl border border-gray-200 pl-11 pr-4 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700 placeholder:text-gray-400"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-4 outline-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
               {/* BUSINESS ADDRESS */}
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Business Address <span className="text-red-500">*</span>
                 </label>
@@ -414,13 +408,13 @@ export function AddServices() {
                     onChange={handleChange}
                     rows={3}
                     placeholder="Enter street, landmark, or area details"
-                    className="w-full rounded-2xl border border-gray-200 pl-11 pr-4 py-3 outline-none resize-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700 placeholder:text-gray-400"
+                    className="w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 py-3 outline-none resize-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
               {/* CITY */}
-              <div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   City <span className="text-red-500">*</span>
                 </label>
@@ -432,13 +426,13 @@ export function AddServices() {
                     value={formData.currentCity}
                     onChange={handleChange}
                     placeholder="Enter city"
-                    className="w-full h-12 rounded-2xl border border-gray-200 pl-11 pr-4 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700 placeholder:text-gray-400"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-4 outline-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
               {/* STATE */}
-              <div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   State <span className="text-red-500">*</span>
                 </label>
@@ -450,13 +444,13 @@ export function AddServices() {
                     value={formData.currentState}
                     onChange={handleChange}
                     placeholder="Enter state"
-                    className="w-full h-12 rounded-2xl border border-gray-200 pl-11 pr-4 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700 placeholder:text-gray-400"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-4 outline-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
               {/* PINCODE */}
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Pincode <span className="text-red-500">*</span>
                 </label>
@@ -470,23 +464,23 @@ export function AddServices() {
                     maxLength={6}
                     inputMode="numeric"
                     placeholder="6-digit postal code"
-                    className="w-full h-12 rounded-2xl border border-gray-200 pl-11 pr-4 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-sm font-medium transition-all text-gray-700 placeholder:text-gray-400"
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-4 outline-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
             </div>
 
             {/* PAYMENT SECURITY BANNER */}
-            <div className="bg-orange-50/70 border border-orange-200/60 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5">
-              <div className="p-2 bg-orange-100 rounded-xl text-orange-600 shrink-0">
-                <ShieldCheck size={22} />
+            <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4 sm:p-5 flex items-start gap-3.5">
+              <div className="p-2 bg-gray-900 text-white rounded-lg shrink-0 mt-0.5">
+                <ShieldCheck size={20} />
               </div>
               <div>
                 <h3 className="font-bold text-gray-900 text-sm">
                   Complete Verification & Payment
                 </h3>
-                <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                  Your inputs will be stored as a secure draft. Final step involves completing the activation payment.
+                <p className="text-xs text-gray-600 mt-0.5 leading-relaxed font-medium">
+                  Your inputs will be stored securely. The final step involves completing the profile activation payment.
                 </p>
               </div>
             </div>
@@ -496,7 +490,7 @@ export function AddServices() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-auto min-w-[260px] h-12 px-8 rounded-2xl bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 hover:shadow-orange-600/30 hover:from-orange-500 hover:to-orange-600 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+                className="w-full sm:w-auto min-w-[260px] h-12 px-8 rounded-xl bg-gray-900 hover:bg-black text-white font-bold flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed text-sm"
               >
                 {loading ? (
                   <>

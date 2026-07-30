@@ -42,13 +42,13 @@ const SearchTransportBar = () => {
     <div className="w-full max-w-6xl mx-auto my-6">
       {/* Top Header Section */}
       <div className="text-center mb-6">
-        <span className="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
-          Fast & Reliable Logistics
+        <span className="bg-blue-100 text-blue-700 text-1xl font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+          Fast & Reliable Logistics platform
         </span>
         <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 mt-2">
-          Find Available Transport & Verified Trucks Instantly
+          Find Verified  Transporters  Instantly
         </h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-1xl text-blue-950 mt-1">
           Connect with trusted carriers across cities and villages seamlessly.
         </p>
       </div>
@@ -58,7 +58,7 @@ const SearchTransportBar = () => {
         
         {/* 1. FROM LOCATION SEARCH (ORIGIN) */}
         <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+          <label className="text-xm font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
             <MapPin size={15} className="text-blue-600" />
             From (Origin)
           </label>
@@ -72,7 +72,7 @@ const SearchTransportBar = () => {
 
         {/* 2. TO LOCATION SEARCH (DESTINATION) */}
         <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+          <label className="text-xm font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
             <MapPin size={15} className="text-emerald-600" />
             To (Destination)
           </label>
@@ -86,7 +86,7 @@ const SearchTransportBar = () => {
 
         {/* 3. VEHICLE TYPE */}
         <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+          <label className="text-xm font-bold text-gray-600 uppercase tracking-wide mb-2 flex items-center gap-1.5">
             <Truck size={15} className="text-orange-500" />
             Vehicle Type
           </label>

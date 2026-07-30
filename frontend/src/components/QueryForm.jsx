@@ -3,7 +3,7 @@ import { User, Phone, Mail, FileText, MessageSquare } from "lucide-react";
 import API from "../api/api";
 import toast from "react-hot-toast";
 
-export default function QueryForm() {
+export  function QueryForm() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -175,3 +175,4 @@ export default function QueryForm() {
     </section>
   );
 }
+export default QueryForm;

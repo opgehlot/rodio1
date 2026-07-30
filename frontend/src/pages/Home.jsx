@@ -4,6 +4,7 @@ import Features from '../components/Features';
 import Overvision from '../components/Overvision';
 import Feedback from '../components/Feedback';
 import SearchTransportBar from '../Dashboard/user/SearchBar';
+import QueryForm from '../components/QueryForm';
 
 function Home() {
   return (
@@ -14,6 +15,7 @@ function Home() {
       <Features />
       <Overvision />
       <Feedback />
+      <QueryForm/>
     </div>
   );
 }

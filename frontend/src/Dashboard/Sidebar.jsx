@@ -338,7 +338,7 @@ useEffect(() => {
                 {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
               </NavLink>
 
-              <NavLink
+              {/* <NavLink
                 to={subscriptionActive ? "/dashboard/editprofile" : "/dashboard"}
                 className={linkClass}
                 onClick={(e) => {
@@ -362,7 +362,7 @@ useEffect(() => {
                   <Settings size={20} />
                   <span>Update Profile</span>
                 </div>
-              </NavLink>
+              </NavLink> */}
             </>
           )}
 
@@ -501,7 +501,7 @@ useEffect(() => {
               </NavLink>
 
             
-              <NavLink
+              {/* <NavLink
                 to={subscriptionActive ? "/dashboard/editprofile" : "/dashboard"}
                 className={linkClass}
                 onClick={(e) => {
@@ -518,7 +518,7 @@ useEffect(() => {
                   <span>Edit Full Profile</span>
                 </div>
                 {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-              </NavLink>
+              </NavLink> */}
 
               <NavLink to="/dashboard/settings" className={linkClass} onClick={handleClose}>
                 <div className="flex items-center gap-3.5">

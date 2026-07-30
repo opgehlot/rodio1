@@ -117,11 +117,10 @@ function App() {
           <Route path="userform" element={<UserForm />} />
           <Route path="showenquiery" element={<ShowEnquiery />} />
           <Route path="bid-list/:id" element={<BidList />} />
-          <Route
-  path="business/public/:id"
+   <Route
+  path="transporters/:id"
   element={<TransporterProfile />}
 />
-
           <Route path="addvehicle" element={<AddVehicle />} />
           <Route path="workingareas" element={<WorkingAreas/>} />
 

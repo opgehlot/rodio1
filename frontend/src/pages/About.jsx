@@ -23,7 +23,7 @@ export default function About() {
               ABOUT RODIO
             </span>
             <h1 className="text-5xl lg:text-6xl font-extrabold mt-6 leading-tight">
-              India's Smart{" "}
+              India's Digital{" "}
               <span className="text-blue-600">Transport Platform</span>
             </h1>
             <p className="mt-6 text-lg text-gray-600 leading-8">
