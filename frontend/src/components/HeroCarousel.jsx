@@ -15,12 +15,13 @@ export function HeroCarousel() {
             />
 
             <div className="absolute inset-0 bg-black/50 flex items-center">
-              <div className="max-w-7xl mx-auto px-6 text-white">
+              {/* Added pt-12 md:pt-16 to push text down from navbar */}
+              <div className="max-w-7xl mx-auto px-6 text-white pt-12 md:pt-16">
+                <hr className="border-t border-transparent" />
                 <h1 className="text-2xl md:text-5xl font-bold">
                   India's Trusted Transport Network 
                 </h1>
                 
-
                 <p className="mt-4 text-sm md:text-xl max-w-xl">
                   Find verified transporters, brokers and contractors across
                   India.
@@ -44,7 +45,8 @@ export function HeroCarousel() {
             />
 
             <div className="absolute inset-0 bg-black/50 flex items-center">
-              <div className="max-w-7xl mx-auto px-6 text-white">
+              {/* Added pt-12 md:pt-16 to push text down from navbar */}
+              <div className="max-w-7xl mx-auto px-6 text-white pt-12 md:pt-16">
                 <h1 className="text-2xl md:text-5xl font-bold">
                   Fast & Secure Logistics Platform
                 </h1>
@@ -52,7 +54,7 @@ export function HeroCarousel() {
                 <p className="mt-4 text-sm md:text-xl">
                   Connect with trusted transport companies.
                 </p>
-                 <Link to="/directory">
+                <Link to="/directory">
                   <button className="mt-6 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold text-white">
                     Search Directory
                   </button>
@@ -65,4 +67,5 @@ export function HeroCarousel() {
     </section>
   );
 }
+
 export default HeroCarousel;
