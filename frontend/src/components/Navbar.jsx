@@ -30,7 +30,7 @@ export default function Navbar() {
     ...(isLoggedIn
       ? [
           {
-            name: t("navbar.dashboard", "Dashboard"),
+            name: t("navbar.dashboard", "My Dashboard"),
             path: "/dashboard",
           },
         ]

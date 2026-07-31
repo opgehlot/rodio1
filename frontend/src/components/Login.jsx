@@ -1,15 +1,25 @@
 import { useContext, useState } from "react";
 import API from "../api/api";
-import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Loader2, Truck, Sparkles, ArrowRight } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import {
+  Mail,
+  Lock,
+  Loader2,
+  Truck,
+  Sparkles,
+  ArrowRight,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import toast from "react-hot-toast";
-import Navbar from "../components/Navbar";
+import Navbar from "./Navbar";
 
 // Auth Context
 import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // ==========================================
   // AUTH CONTEXT
@@ -18,6 +28,7 @@ export default function Login() {
   const { setUser } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     emailOrMobile: "",
@@ -79,7 +90,6 @@ export default function Login() {
 
       const { data } = await API.post("/auth/login", {
         emailOrMobile: formData.emailOrMobile.trim(),
-
         password: formData.password,
       });
 
@@ -146,7 +156,10 @@ export default function Login() {
       // REDIRECT
       // ======================================
 
-     navigate(data.redirectTo || "/dashboard", { replace: true });
+      const redirectTo =
+        location.state?.from?.pathname || data.redirectTo || "/";
+
+      navigate(redirectTo, { replace: true });
     } catch (error) {
       console.error("LOGIN ERROR:", error);
 
@@ -255,9 +268,9 @@ export default function Login() {
                   Password
                 </label>
                 <div className="flex items-center bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-4 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-600/10">
-                  <Lock size={20} className="text-slate-400" />
+                  <Lock size={20} className="text-slate-400 flex-shrink-0" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
@@ -265,6 +278,13 @@ export default function Login() {
                     className="w-full bg-transparent ml-3 text-base font-medium text-slate-800 outline-none"
                     autoComplete="current-password"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-slate-400 hover:text-slate-600 focus:outline-none ml-2 flex-shrink-0"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
                 </div>
               </div>
 
@@ -306,7 +326,7 @@ export default function Login() {
                   to="/register"
                   className="text-blue-600 font-semibold hover:underline"
                 >
-                  Register
+                   New Register
                 </Link>
               </p>
             </div>

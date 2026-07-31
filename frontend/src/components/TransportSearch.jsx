@@ -10,13 +10,13 @@ import {
   ShieldCheck,
   Building2,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import API from "../../api/api";
-import LocationSearchInput from "./LocationSearchInput";
+import API from "../api/api";
+import LocationSearchInput from "../Dashboard/user/LocationSearchInput";
 
-const SearchTransportBar = () => {
+const TransportSearch = () => {
   const navigate = useNavigate();
 
   const [fromLocation, setFromLocation] = useState(null);
@@ -449,4 +449,4 @@ const SearchTransportBar = () => {
   );
 };
 
-export default SearchTransportBar;
+export default TransportSearch;

@@ -1,7 +1,17 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api/api";
-import { Search, MapPin, Briefcase, Filter, X, Truck, Phone, CheckCircle2, Globe } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Briefcase,
+  Filter,
+  X,
+  Truck,
+  Phone,
+  CheckCircle2,
+  Globe,
+} from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 
 // ==========================================
@@ -149,9 +159,9 @@ const LocationSearchInput = ({
 // ==========================================
 // 2. MAIN DIRECTORY FILTER & RESULTS COMPONENT
 // ==========================================
-
-const DirectoryFilterSection = () => {
+const Directory = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // AUTH CONTEXT
   const { user } = useContext(AuthContext);
@@ -343,7 +353,10 @@ const DirectoryFilterSection = () => {
                   <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white relative">
                     {/* Verified Badge on Top-Right Corner */}
                     <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md border border-white/30 text-white px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1 shadow-sm">
-                      <CheckCircle2 size={13} className="text-emerald-300 fill-emerald-500/20" />
+                      <CheckCircle2
+                        size={13}
+                        className="text-emerald-300 fill-emerald-500/20"
+                      />
                       <span>Verified</span>
                     </div>
 
@@ -378,7 +391,9 @@ const DirectoryFilterSection = () => {
                         </span>
                         <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm">
                           <Truck size={15} className="text-blue-600" />
-                          <span>{item.averageRating || 0} ({item.totalReviews || 0})</span>
+                          <span>
+                            {item.averageRating || 0} ({item.totalReviews || 0})
+                          </span>
                         </div>
                       </div>
 
@@ -387,7 +402,10 @@ const DirectoryFilterSection = () => {
                           Phone Number
                         </span>
                         <div className="flex items-center gap-1.5 text-gray-800 font-bold text-sm truncate">
-                          <Phone size={15} className="text-green-600 shrink-0" />
+                          <Phone
+                            size={15}
+                            className="text-green-600 shrink-0"
+                          />
                           <span className="truncate">{displayPhone}</span>
                         </div>
                       </div>
@@ -421,7 +439,11 @@ const DirectoryFilterSection = () => {
                       onClick={(e) => {
                         if (!isLoggedIn) {
                           e.preventDefault();
-                          navigate("/login");
+                          navigate("/login", {
+                            state: {
+                              from: location,
+                            },
+                          });
                         }
                       }}
                       className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/20"
@@ -433,7 +455,11 @@ const DirectoryFilterSection = () => {
                     <button
                       onClick={() => {
                         if (!isLoggedIn) {
-                          navigate("/login");
+                          navigate("/login", {
+                            state: {
+                              from: location,
+                            },
+                          });
                           return;
                         }
                         navigate(`/dashboard/transporters/${item._id}`);
@@ -453,4 +479,4 @@ const DirectoryFilterSection = () => {
   );
 };
 
-export default DirectoryFilterSection;
+export default Directory;

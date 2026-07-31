@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -10,27 +10,72 @@ import {
   ShieldCheck,
   ArrowRight,
   Sparkles,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 import API from "../api/api";
 import { AuthContext } from "../context/AuthContext";
 
+const roleOptions = [
+  {
+    value: "user",
+    label: "User / Manufacturer / Trader / Shipper/Other",
+  },
+  {
+    value: "transporter",
+    label: "Transporter (Service Provider) ",
+  },
+   
+  {
+    value: "fleet_owner",
+    label: "Fleet Owner",
+  },
+  {
+    value: "cha_agent",
+    label: "CHA Agent (Custom House Agent)",
+  },
+  {
+    value: "courier",
+    label: "Courier / Cargo Carrier",
+  },
+  {
+    value: "bus_service",
+    label: "Bus Service",
+  },
+  {
+    value: "travel_taxi",
+    label: "Travel & Taxi Service",
+  },
+  {
+    value: "truck_body_builder",
+    label: " Bus/Truck Body Builder",
+  },
+  {
+    value: "rto_agent",
+    label: "RTO Agent",
+  },
+  {
+    value: "finance_company",
+    label: "Finance Company",
+  },
+  {
+    value: "Insurance_company",
+    label: "Insurance_company",
+  },
+];
+
 export default function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // ==========================
   // AUTH CONTEXT
   // ==========================
   const { user, setUser, registerData, setRegisterData } =
     useContext(AuthContext);
-
-  console.log("=========== AUTH CONTEXT ===========");
-  console.log("Auth User :", user);
-  console.log("Register Data :", registerData);
-  console.log("setUser :", typeof setUser);
-  console.log("setRegisterData :", typeof setRegisterData);
-  console.log("===================================");
 
   const {
     register,
@@ -54,12 +99,8 @@ export default function Register() {
   // ====================================
 
   const onSubmit = async (formData) => {
-    console.log("========= REGISTER START =========");
-
     try {
       setLoading(true);
-
-      console.log("FORM DATA :", formData);
 
       const payload = {
         role: formData.role,
@@ -68,94 +109,40 @@ export default function Register() {
         confirmPassword: formData.confirmPassword,
       };
 
-      console.log("REQUEST PAYLOAD :", payload);
-
       const response = await API.post("/auth/register", payload);
-
-      console.log("FULL RESPONSE :", response);
-
       const data = response.data;
 
-      console.log("RESPONSE DATA :", data);
-
       if (!data.success) {
-        console.log("Registration Failed");
-
         toast.error(data.message);
-
         return;
       }
 
-      console.log("Registration Success");
-
-      // ==========================
-      // TOKEN
-      // ==========================
-
       if (data.token) {
         localStorage.setItem("token", data.token);
-
-        console.log("TOKEN SAVED");
       }
 
-      // ==========================
-      // USER
-      // ==========================
-
       if (data.user) {
-        console.log("USER FROM BACKEND :", data.user);
-
         setUser(data.user);
-
-        console.log("setUser Executed");
-
         if (typeof setRegisterData === "function") {
           setRegisterData(data.user);
-          console.log("setRegisterData Executed");
-        } else {
-          console.log("setRegisterData NOT FOUND");
         }
-
         localStorage.setItem("user", JSON.stringify(data.user));
-
-        console.log("USER SAVED IN LOCAL STORAGE");
       }
 
       if (data.user?.role) {
         localStorage.setItem("role", data.user.role);
-
-        console.log("ROLE SAVED");
       }
 
       toast.success(data.message);
-
-      console.log("FORM RESET");
-
       reset();
-
-      console.log("NAVIGATE TO :", data.redirectTo || "/dashboard");
-
       navigate(data.redirectTo || "/dashboard", { replace: true });
     } catch (error) {
-      console.log("=========== REGISTER ERROR ===========");
-
-      console.log("Error :", error);
-
-      console.log("Response :", error.response);
-
-      console.log("Response Data :", error.response?.data);
-
-      console.log("Status :", error.response?.status);
-
       toast.error(error.response?.data?.message || "Registration Failed");
     } finally {
       setLoading(false);
-
-      console.log("Loading False");
-
-      console.log("========= REGISTER END =========");
     }
   };
+
   return (
     <div className="pt-[70px] w-full bg-white flex flex-col lg:flex-row">
       {/* ================================================= */}
@@ -177,8 +164,6 @@ export default function Register() {
         border-slate-100
       "
       >
-        {/* BRAND */}
-
         <div className="flex items-center gap-3">
           <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
             <Truck size={32} />
@@ -188,8 +173,6 @@ export default function Register() {
             RODIO
           </span>
         </div>
-
-        {/* CONTENT */}
 
         <div className="my-auto py-12 max-w-lg space-y-6">
           <div
@@ -306,8 +289,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* COPYRIGHT */}
-
         <div
           className="
           text-xs
@@ -320,6 +301,7 @@ export default function Register() {
           © {new Date().getFullYear()} RODIO. ALL RIGHTS RESERVED.
         </div>
       </div>
+
       {/* ================================================= */}
       {/* RIGHT SIDE */}
       {/* ================================================= */}
@@ -339,8 +321,6 @@ export default function Register() {
       "
       >
         <div className="w-full max-w-md">
-          {/* MOBILE LOGO */}
-
           <div
             className="
             flex
@@ -372,8 +352,6 @@ export default function Register() {
               RODIO
             </span>
           </div>
-
-          {/* TITLE */}
 
           <div className="mb-8">
             <h2
@@ -444,12 +422,11 @@ export default function Register() {
               "
               >
                 <option value="">Select Role</option>
-
-                <option value="user">Shipper / Company / Trader</option>
-
-                <option value="transporter">Transporter</option>
-
-                <option value="broker">Broker</option>
+                {roleOptions.map((role) => (
+                  <option key={role.value} value={role.value}>
+                    {role.label}
+                  </option>
+                ))}
               </select>
 
               {errors.role && (
@@ -513,7 +490,7 @@ export default function Register() {
                     required: "MOBILE NUMBER IS REQUIRED",
                     pattern: {
                       value: /^[6-9][0-9]{9}$/,
-                      message: "ENTER A VALID INDIAN MOBILE NUMBER",
+                      message: "ENTER A VALID  MOBILE NUMBER",
                     },
                   })}
                   onInput={(e) => {
@@ -530,6 +507,7 @@ export default function Register() {
                 </p>
               )}
             </div>
+
             {/* ================================================= */}
             {/* PASSWORD */}
             {/* ================================================= */}
@@ -562,10 +540,10 @@ export default function Register() {
                 focus-within:ring-blue-600/10
               "
               >
-                <Lock size={20} className="text-slate-400" />
+                <Lock size={20} className="text-slate-400 flex-shrink-0" />
 
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   maxLength={8}
                   placeholder="ENTER 4 TO 8 CHARACTER PASSWORD"
                   className="
@@ -578,18 +556,24 @@ export default function Register() {
                 "
                   {...register("password", {
                     required: "PASSWORD IS REQUIRED",
-
                     minLength: {
                       value: 4,
                       message: "PASSWORD MUST BE AT LEAST 4 CHARACTERS",
                     },
-
                     maxLength: {
                       value: 8,
                       message: "PASSWORD CANNOT EXCEED 8 CHARACTERS",
                     },
                   })}
                 />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-slate-400 hover:text-slate-600 focus:outline-none ml-2"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
 
               {errors.password && (
@@ -631,10 +615,10 @@ export default function Register() {
                 focus-within:ring-blue-600/10
               "
               >
-                <Lock size={20} className="text-slate-400" />
+                <Lock size={20} className="text-slate-400 flex-shrink-0" />
 
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   maxLength={8}
                   placeholder="RE-ENTER PASSWORD"
                   className="
@@ -647,11 +631,18 @@ export default function Register() {
                 "
                   {...register("confirmPassword", {
                     required: "PLEASE CONFIRM YOUR PASSWORD",
-
                     validate: (value) =>
                       value === password || "PASSWORDS DO NOT MATCH",
                   })}
                 />
+
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="text-slate-400 hover:text-slate-600 focus:outline-none ml-2"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
 
               {errors.confirmPassword && (

@@ -1,21 +1,24 @@
-import React from 'react';
-import HeroCarousel from '../components/HeroCarousel';
-import Features from '../components/Features';
-import Overvision from '../components/Overvision';
-import Feedback from '../components/Feedback';
-import SearchTransportBar from '../Dashboard/user/SearchBar';
-import QueryForm from '../components/QueryForm';
+import { useState } from "react";
+import HeroCarousel from "../components/HeroCarousel";
+import DaynamicHomeComponent from "../components/DaynamicHomeComponent";
+import Features from "../components/Features";
+import Overvision from "../components/Overvision";
+import Feedback from "../components/Feedback";
+import QueryForm from "../components/QueryForm";
 
 function Home() {
+  const [activeTab, setActiveTab] = useState("search");
+
   return (
     <div>
-      <HeroCarousel />
-      <SearchTransportBar/>
-     
+      <HeroCarousel setActiveTab={setActiveTab} />
+
+      <DaynamicHomeComponent activeTab={activeTab} />
+
       <Features />
       <Overvision />
       <Feedback />
-      <QueryForm/>
+      <QueryForm />
     </div>
   );
 }
