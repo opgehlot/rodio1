@@ -1,10 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Crown, User, Mail, Phone, Building, Loader2, Camera, Edit3, Save, X } from "lucide-react";
+import {
+  Crown,
+  User,
+  Mail,
+  Phone,
+  Building,
+  Loader2,
+  Camera,
+  Edit3,
+  Save,
+  X,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import API from "../api/api";
 
-export default function Profile() {
+export  function Profile() {
   const fileInputRef = useRef(null);
 
   const [profileData, setProfileData] = useState(null);
@@ -22,7 +33,7 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    fetchProfile(true); // Pehli baar load hone par true bhejenge taaki loading screen aaye
+    fetchProfile(true); 
   }, []);
 
   const fetchProfile = async (isInitial = false) => {
@@ -49,7 +60,16 @@ export default function Profile() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Mobile number validation: Sirf numbers aur max 10 digits
+    if (name === "phoneNumber") {
+      const phoneNumber = value.replace(/\D/g, "").slice(0, 10);
+      setFormData((prev) => ({ ...prev, phoneNumber }));
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleUpdateProfile = async (e) => {
@@ -63,7 +83,7 @@ export default function Profile() {
       if (formData.password) {
         data.append("password", formData.password);
       }
-      
+
       if (fileInputRef.current?.files?.[0]) {
         data.append("profileImage", fileInputRef.current.files[0]);
       }
@@ -76,7 +96,7 @@ export default function Profile() {
         toast.success("Profile Updated Successfully!");
         setIsEditing(false);
         setPreviewImage(null);
-        fetchProfile(false); // Bina pura component reload kiye data refresh hoga
+        fetchProfile(false); 
       } else {
         toast.error(response.data?.message || "Failed to update profile");
       }
@@ -97,7 +117,6 @@ export default function Profile() {
       return;
     }
 
-    // Instant local preview dikhane ke liye taaki user ko turant pata chale
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewImage(reader.result);
@@ -115,12 +134,12 @@ export default function Profile() {
 
       if (response.data?.success) {
         toast.success("Profile photo updated successfully!");
-        fetchProfile(false); // Background mein data update hoga
+        fetchProfile(false); 
       }
     } catch (error) {
       console.error("Photo Upload Error:", error);
       toast.error("Error uploading photo");
-      setPreviewImage(null); // Error aane par purana image wapas aa jayega
+      setPreviewImage(null); 
     } finally {
       setUploadingPhoto(false);
     }
@@ -139,8 +158,10 @@ export default function Profile() {
     );
   }
 
-  const fallbackImage = "https://res.cloudinary.com/tyt9mt1f/image/upload/v1784103262/DUMMYIMAGE_xuc0xa.jpg";
-  const profileImage = previewImage || profileData?.profileImage || fallbackImage;
+  const fallbackImage =
+    "https://res.cloudinary.com/tyt9mt1f/image/upload/v1784103262/DUMMYIMAGE_xuc0xa.jpg";
+  const profileImage =
+    previewImage || profileData?.profileImage || fallbackImage;
 
   return (
     <div className="w-full bg-white rounded-3xl mb-4 min-h-[300px] px-4 md:px-12 py-0 my-0">
@@ -170,7 +191,7 @@ export default function Profile() {
       </div>
 
       {/* Main Content Area */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
@@ -197,12 +218,14 @@ export default function Profile() {
               ) : (
                 <>
                   <Camera size={20} />
-                  <span className="text-[10px] font-black uppercase mt-1">Change</span>
+                  <span className="text-[10px] font-black uppercase mt-1">
+                    Change
+                  </span>
                 </>
               )}
             </button>
 
-            <input 
+            <input
               type="file"
               ref={fileInputRef}
               onChange={handlePhotoChange}
@@ -210,10 +233,14 @@ export default function Profile() {
               className="hidden"
             />
           </div>
-          
+
           <div className="text-center sm:text-left space-y-1">
-            <h2 className="text-2xl font-black text-slate-900 uppercase">{profileData?.name || "User"}</h2>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">{profileData?.email || "No Email"}</p>
+            <h2 className="text-2xl font-black text-slate-900 uppercase">
+              {profileData?.name || "User"}
+            </h2>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              {profileData?.email || "No Email"}
+            </p>
             <div className="pt-1">
               <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-blue-100">
                 <Crown size={12} /> {profileData?.role || "Member"}
@@ -225,34 +252,60 @@ export default function Profile() {
         {!isEditing ? (
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-              <div className="text-slate-500 mt-0.5"><User size={20} /></div>
+              <div className="text-slate-500 mt-0.5">
+                <User size={20} />
+              </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Full Name</p>
-                <p className="font-bold text-slate-800 text-sm mt-0.5">{profileData?.name || "Not Provided"}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  Full Name
+                </p>
+                <p className="font-bold text-slate-800 text-sm mt-0.5">
+                  {profileData?.name || "Not Provided"}
+                </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-              <div className="text-slate-500 mt-0.5"><Building size={20} /></div>
+              <div className="text-slate-500 mt-0.5">
+                <Building size={20} />
+              </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Role / Designation</p>
-                <p className="font-bold text-slate-800 text-sm mt-0.5">{profileData?.role || "Not Provided"}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  Role / Designation
+                </p>
+                <p className="font-bold text-slate-800 text-sm mt-0.5">
+                  {profileData?.role || "Not Provided"}
+                </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-              <div className="text-slate-500 mt-0.5"><Mail size={20} /></div>
+              <div className="text-slate-500 mt-0.5">
+                <Mail size={20} />
+              </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Email Address</p>
-                <p className="font-bold text-slate-800 text-sm mt-0.5">{profileData?.email || "Not Provided"}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  Email Address
+                </p>
+                <p className="font-bold text-slate-800 text-sm mt-0.5">
+                  {profileData?.email || "Not Provided"}
+                </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-              <div className="text-slate-500 mt-0.5"><Phone size={20} /></div>
+              <div className="text-slate-500 mt-0.5">
+                <Phone size={20} />
+              </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Mobile Number</p>
-                <p className="font-bold text-slate-800 text-sm mt-0.5">{profileData?.phoneNumber || profileData?.mobile || "Not Provided"}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  Mobile Number
+                </p>
+                <p className="font-bold text-slate-800 text-sm mt-0.5">
+                  {profileData?.phoneNumber ||
+                    profileData?.mobile ||
+                    "Not Provided"}
+                </p>
               </div>
             </div>
           </div>
@@ -260,48 +313,55 @@ export default function Profile() {
           <form onSubmit={handleUpdateProfile} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">Full Name</label>
-                <input 
-                  type="text" 
-                  name="name" 
-                  value={formData.name} 
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
-                  required 
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">Email Address</label>
-                <input 
-                  type="email" 
-                  name="email" 
-                  value={formData.email} 
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
-                  
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">Mobile Number</label>
-                <input 
-                  type="text" 
-                  name="phoneNumber" 
-                  value={formData.phoneNumber} 
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                  Mobile Number
+                </label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
                   onChange={handleChange}
+                  maxLength={10}
+                  placeholder="Enter 10-digit mobile number"
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
-                 
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">New Password (Optional)</label>
-                <input 
-                  type="password" 
-                  name="password" 
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                  New Password (Optional)
+                </label>
+                <input
+                  type="password"
+                  name="password"
                   placeholder="Leave blank to keep current"
-                  value={formData.password} 
+                  value={formData.password}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
                 />
@@ -314,7 +374,11 @@ export default function Profile() {
                 disabled={saving}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl text-xs font-black tracking-widest uppercase flex items-center gap-2 transition active:scale-95 disabled:opacity-50"
               >
-                {saving ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
+                {saving ? (
+                  <Loader2 className="animate-spin" size={16} />
+                ) : (
+                  <Save size={16} />
+                )}
                 <span>Save Changes</span>
               </button>
             </div>
@@ -324,3 +388,6 @@ export default function Profile() {
     </div>
   );
 }
+
+export default Profile;
+//

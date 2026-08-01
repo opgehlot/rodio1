@@ -20,13 +20,12 @@ import { AuthContext } from "../context/AuthContext";
 const roleOptions = [
   {
     value: "user",
-    label: "User / Manufacturer / Trader / Shipper/Other",
+    label: "User / Manufacturer / Trader / Shipper / Other",
   },
   {
     value: "transporter",
-    label: "Transporter (Service Provider) ",
+    label: "Transporter (Service Provider)",
   },
-   
   {
     value: "fleet_owner",
     label: "Fleet Owner",
@@ -49,7 +48,7 @@ const roleOptions = [
   },
   {
     value: "truck_body_builder",
-    label: " Bus/Truck Body Builder",
+    label: "Bus / Truck Body Builder",
   },
   {
     value: "rto_agent",
@@ -60,8 +59,20 @@ const roleOptions = [
     label: "Finance Company",
   },
   {
-    value: "Insurance_company",
-    label: "Insurance_company",
+    value: "finance_agent",
+    label: "Finance Agent",
+  },
+  {
+    value: "packers_movers",
+    label: "Packers & Movers",
+  },
+  {
+    value: "insurance_company",
+    label: "Insurance Company",
+  },
+  {
+    value: "car_carrier",
+    label: "Car Carrier",
   },
 ];
 

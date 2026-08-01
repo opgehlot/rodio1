@@ -86,7 +86,15 @@ export default function Sidebar({ open, setOpen }) {
     }
   };
 
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role"); 
+  const transportRoles = [
+  "transporter",
+  "fleet_owner",
+  "cha_agent",
+  "travel_taxi",
+  "courier",
+  "car_carrier",
+];
 
   // Dynamic Class for NavLinks with White-Themed Styling
   const linkClass = ({ isActive }) =>
@@ -176,7 +184,7 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Search Transport page */}
-              <NavLink to="/dashboard/tansportsearch" className={linkClass} onClick={handleClose}>
+              <NavLink to="/dashboard/transportsearch" className={linkClass} onClick={handleClose}>
                 <div className="flex items-center gap-3.5">
                   <Search size={20} />
                   <span>Search Transport</span>
@@ -210,7 +218,7 @@ export default function Sidebar({ open, setOpen }) {
           )}
 
           {/* ================= TRANSPORTER ROLE (Selected items locked/unlocked based on payment) ================= */}
-          {role === "transporter" && (
+          {transportRoles.includes(role) && (
             <>
               {/* Navigate to Add Load Enquiry form */}
               <NavLink to="/dashboard/userform" className={linkClass} onClick={handleClose}>
@@ -237,7 +245,7 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Search Transport page */}
-              <NavLink to="/dashboard/searchbar" className={linkClass} onClick={handleClose}>
+              <NavLink to="/dashboard/transportsearch" className={linkClass} onClick={handleClose}>
                 <div className="flex items-center gap-3.5">
                   <Search size={20} />
                   <span>Search Transport</span>
@@ -271,6 +279,24 @@ export default function Sidebar({ open, setOpen }) {
                 </div>
                 {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
               </NavLink>
+              <NavLink
+  to={subscriptionActive ? "/dashboard/MyVehicles" : "/dashboard"}
+  className={linkClass}
+  onClick={(e) => {
+    if (!subscriptionActive) {
+      e.preventDefault();
+      toast.error("Please complete payment to unlock My Vehicles.");
+    } else {
+      handleClose();
+    }
+  }}
+>
+  <div className="flex items-center gap-3.5">
+    <Truck size={20} />
+    <span>My Vehicles</span>
+  </div>
+  {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
+</NavLink>
 
               {/* Navigate to Add Vehicles (Subscription Restricted) */}
               <NavLink
@@ -363,14 +389,17 @@ export default function Sidebar({ open, setOpen }) {
           )}
 
           {/* ================= OTHER ROLES (COMING SOON MESSAGE) ================= */}
-          {role && role !== "user" && role !== "transporter" && (
+          {role &&
+  role !== "user" &&
+  !transportRoles.includes(role) && (
             <div className="p-4 my-2 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-2">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider">
                 <Sparkles size={12} />
                 Coming Soon
               </div>
               <p className="text-xs font-medium text-slate-500">
-                This dashboard role is under development.
+                Your dashboard is under development.
+We'll launch it very soon.
               </p>
             </div>
           )}

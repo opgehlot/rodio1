@@ -69,7 +69,7 @@ export default function Settings() {
 
           <input
             {...register("name", {
-              required: "Name is required",
+             
             })}
             placeholder="Enter your full name"
             className="w-full h-14 px-4 rounded-xl border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"

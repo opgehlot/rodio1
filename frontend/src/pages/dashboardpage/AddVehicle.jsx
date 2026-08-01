@@ -34,7 +34,7 @@ export function AddVehicle() {
         response.data.message || "Vehicle added successfully"
       );
 
-      navigate("/dashboard/my-vehicles");
+      navigate("/dashboard/myvehicles");
     } catch (error) {
       toast.error(
         error?.response?.data?.message || "Vehicle add nahi hua"
@@ -81,10 +81,48 @@ export function AddVehicle() {
                 className="w-full bg-white border-2 border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-900 font-semibold focus:outline-none focus:border-gray-900 transition-colors cursor-pointer"
               >
                 <option value="">Select Vehicle Type</option>
-                <option value="Truck">Truck</option>
-                <option value="Trailer">Trailer</option>
-                <option value="Container">Container</option>
-                <option value="Pickup">Pickup</option>
+                <option value="Mini Truck">Mini Truck</option>
+<option value="Pickup">Pickup</option>
+<option value="Tata Ace">Tata Ace</option>
+<option value="Bolero Pickup">Bolero Pickup</option>
+<option value="Mahindra Jeeto">Mahindra Jeeto</option>
+<option value="Ashok Leyland Dost">Ashok Leyland Dost</option>
+<option value="Tempo">Tempo</option>
+<option value="Canter">Canter</option>
+<option value="Eicher">Eicher</option>
+<option value="Truck">Truck</option>
+<option value="LCV">LCV</option>
+<option value="HCV">HCV</option>
+<option value="14 Feet Truck">14 Feet Truck</option>
+<option value="17 Feet Truck">17 Feet Truck</option>
+<option value="19 Feet Truck">19 Feet Truck</option>
+<option value="22 Feet Truck">22 Feet Truck</option>
+<option value="24 Feet Truck">24 Feet Truck</option>
+<option value="32 Feet Truck">32 Feet Truck</option>
+<option value="Open Body">Open Body</option>
+<option value="Closed Body">Closed Body</option>
+<option value="20 Feet Container">20 Feet Container</option>
+<option value="32 Feet Container">32 Feet Container</option>
+<option value="Trailer">Trailer</option>
+<option value="Flat Bed Trailer">Flat Bed Trailer</option>
+<option value="Low Bed Trailer">Low Bed Trailer</option>
+<option value="Semi Trailer">Semi Trailer</option>
+<option value="Hydraulic Trailer">Hydraulic Trailer</option>
+<option value="Tipper">Tipper</option>
+<option value="Dumper">Dumper</option>
+<option value="Tanker">Tanker</option>
+<option value="Water Tanker">Water Tanker</option>
+<option value="Fuel Tanker">Fuel Tanker</option>
+<option value="Cement Bulker">Cement Bulker</option>
+<option value="Refrigerated Truck">Refrigerated Truck</option>
+<option value="Car Carrier">Car Carrier</option>
+<option value="Bike Carrier">Bike Carrier</option>
+<option value="Auto Carrier">Auto Carrier</option>
+<option value="ODC Trailer">ODC Trailer</option>
+<option value="Multi Axle Trailer">Multi Axle Trailer</option>
+<option value="Crane">Crane</option>
+<option value="Hyva">Hyva</option>
+<option value="Transit Mixer">Transit Mixer</option>
               </select>
             </div>
           </div>
