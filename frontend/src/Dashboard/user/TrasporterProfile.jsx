@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FaStar, FaMapMarkerAlt, FaTruck, FaUserCircle } from "react-icons/fa";
+import { FaStar, FaMapMarkerAlt, FaUserCircle, FaImages, FaTimes, FaSearchPlus, FaSearchMinus } from "react-icons/fa";
 
 import API from "../../api/api";
 import AddRating from "../AddRatting";
@@ -10,6 +10,10 @@ const TransporterProfile = () => {
   const { id } = useParams();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // States for Full-Screen Modal & Zooming
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   useEffect(() => {
     if (id) {
@@ -29,6 +33,22 @@ const TransporterProfile = () => {
     }
   };
 
+  // Handlers for Zoom In / Zoom Out / Reset
+  const handleZoomIn = (e) => {
+    e.stopPropagation();
+    setZoomLevel((prev) => Math.min(prev + 0.5, 3)); // Max zoom limit: 3x
+  };
+
+  const handleZoomOut = (e) => {
+    e.stopPropagation();
+    setZoomLevel((prev) => Math.max(prev - 0.5, 1)); // Min zoom limit: 1x
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setZoomLevel(1); // Reset zoom on close
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center text-xl md:text-3xl font-medium text-gray-600 bg-gray-100 px-4 text-center">
@@ -46,7 +66,7 @@ const TransporterProfile = () => {
   }
 
   const SectionTitle = ({ children }) => (
-    <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6 border-b-2 border-gray-200 pb-3">
+    <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6 border-b-2 border-gray-200 pb-3 flex items-center gap-2">
       {children}
     </h2>
   );
@@ -61,8 +81,10 @@ const TransporterProfile = () => {
     </div>
   );
 
+  const galleryItems = profile.gallery || profile.profile?.gallery || [];
+
   return (
-    <div className="w-full min-h-screen bg-gray-100 text-gray-900 pb-8 md:pb-12 overflow-x-hidden">
+    <div className="w-full min-h-screen bg-gray-100 text-gray-900 pb-8 md:pb-12 overflow-x-hidden relative">
       
       {/* Hero Header Section */}
       <header className="bg-white border-b-2 border-gray-300 shadow-sm">
@@ -110,7 +132,7 @@ const TransporterProfile = () => {
       {/* Main Content Grid */}
       <main className="max-w-[95rem] mx-auto px-4 sm:px-6 py-6 md:py-10 grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8">
         
-        {/* Left Column - Contact Info Only */}
+        {/* Left Column - Contact Info & Gallery */}
         <div className="xl:col-span-1 space-y-6 md:space-y-8">
           
           {/* Contact Section */}
@@ -129,6 +151,44 @@ const TransporterProfile = () => {
                  </dd>
               </div>
             </dl>
+          </section>
+
+          {/* Gallery Section */}
+          <section className="bg-white p-5 sm:p-8 rounded-2xl border-2 border-gray-200 shadow-sm">
+            <SectionTitle>
+              <FaImages className="text-gray-700 text-lg" />
+              Firm Gallery
+            </SectionTitle>
+            
+            {galleryItems.length > 0 ? (
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                {galleryItems.map((item, index) => (
+                  <div 
+                    key={item._id || index} 
+                    onClick={() => {
+                      setSelectedImage(item);
+                      setZoomLevel(1);
+                    }}
+                    className="overflow-hidden rounded-xl border border-gray-200 bg-gray-50 aspect-square relative group cursor-pointer shadow-sm hover:shadow-md transition-all"
+                  >
+                    <img
+                      src={item.imageUrl}
+                      alt={item.caption || `Gallery item ${index + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {item.caption && (
+                      <div className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-xs p-1.5 truncate text-center">
+                        {item.caption}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-sm sm:text-base font-medium bg-gray-50 p-4 rounded-xl border border-gray-200 text-center">
+                No gallery photos available.
+              </p>
+            )}
           </section>
 
         </div>
@@ -150,6 +210,59 @@ const TransporterProfile = () => {
 
         </div>
       </main>
+
+      {/* Full-Screen Image Modal with Zoom In / Zoom Out */}
+      {selectedImage && (
+        <div 
+          onClick={closeModal}
+          className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4 backdrop-blur-sm overflow-hidden"
+        >
+          {/* Action Toolbar */}
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-3 z-50">
+            <button 
+              onClick={handleZoomIn}
+              title="Zoom In"
+              className="bg-white/20 hover:bg-white/30 text-white p-3 rounded-full transition-colors backdrop-blur-md"
+            >
+              <FaSearchPlus size={18} />
+            </button>
+            <button 
+              onClick={handleZoomOut}
+              title="Zoom Out"
+              className="bg-white/20 hover:bg-white/30 text-white p-3 rounded-full transition-colors backdrop-blur-md"
+            >
+              <FaSearchMinus size={18} />
+            </button>
+            <button 
+              onClick={closeModal}
+              title="Close"
+              className="bg-red-600/80 hover:bg-red-600 text-white p-3 rounded-full transition-colors shadow-lg"
+            >
+              <FaTimes size={18} />
+            </button>
+          </div>
+
+          {/* Zoomable Image Container */}
+          <div 
+            className="relative max-w-full max-h-[85vh] overflow-auto flex items-center justify-center p-2"
+            onClick={(e) => e.stopPropagation()} // Prevent clicking background from closing when viewing zoomed image
+          >
+            <img
+              src={selectedImage.imageUrl}
+              alt={selectedImage.caption || "Full view"}
+              style={{ transform: `scale(${zoomLevel})`, transition: "transform 0.2s ease-in-out" }}
+              className="max-h-[80vh] object-contain rounded-lg shadow-2xl cursor-grab"
+            />
+          </div>
+
+          {/* Caption info if available */}
+          {selectedImage.caption && (
+            <p className="mt-4 text-white text-sm sm:text-base font-medium bg-black/50 px-4 py-2 rounded-xl border border-white/10 text-center max-w-md">
+              {selectedImage.caption}
+            </p>
+          )}
+        </div>
+      )}
 
     </div>
   );

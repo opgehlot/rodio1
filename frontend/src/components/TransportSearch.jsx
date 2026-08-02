@@ -7,10 +7,10 @@ import {
   MapPinned,
   User,
   Loader2,
-  ShieldCheck,
   Building2,
+  Lock,
 } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import API from "../api/api";
@@ -32,7 +32,8 @@ const TransportSearch = () => {
     return !!localStorage.getItem("token");
   };
 
-  // Component load hote hi default saare vehicles fetch karne ke liye
+  const isLoggedIn = checkUserLoggedIn();
+
   useEffect(() => {
     fetchAllVehicles();
   }, []);
@@ -55,8 +56,8 @@ const TransportSearch = () => {
 
   const handleSearch = async () => {
     try {
-      if (!checkUserLoggedIn()) {
-        toast.error("Please login first to search routes!", {
+      if (!isLoggedIn) {
+        toast.error("Please login or register first to search routes!", {
           id: "login-required",
         });
         navigate("/login");
@@ -80,10 +81,7 @@ const TransportSearch = () => {
           ? toLocation.name || toLocation.label
           : toLocation;
 
-      const params = {
-        from,
-        to,
-      };
+      const params = { from, to };
 
       if (vehicleType) {
         params.vehicleType = vehicleType;
@@ -91,9 +89,7 @@ const TransportSearch = () => {
 
       setLoading(true);
 
-      const { data } = await API.get("/vehicles/search", {
-        params,
-      });
+      const { data } = await API.get("/vehicles/search", { params });
 
       setLoading(false);
 
@@ -113,7 +109,6 @@ const TransportSearch = () => {
   };
 
   // Restrict items to 6 if user is not logged in
-  const isLoggedIn = checkUserLoggedIn();
   const displayedVehicles = isLoggedIn ? vehicles : vehicles.slice(0, 6);
 
   return (
@@ -125,7 +120,7 @@ const TransportSearch = () => {
             India's Trusted Transport Network
           </span>
           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight">
-            Find Verified Transporters
+            Find Verified Transport Services 
           </h1>
           <p className="text-blue-100 text-xs md:text-sm font-bold uppercase tracking-wider max-w-xl mx-auto">
             Search trucks, commercial vehicles, and reliable transport services
@@ -203,7 +198,7 @@ const TransportSearch = () => {
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-[#2263F1] via-[#395DEF] to-[#4758EE] hover:from-[#1D5CE8] hover:via-[#3357E8] hover:to-[#4252E8] text-white rounded-xl py-3 px-4 text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 disabled:opacity-50 h-[46px]"
+              className="w-full bg-gradient-to-r from-[#2263F1] via-[#395DEF] to-[#4758EE] text-white rounded-xl py-3 px-4 text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 disabled:opacity-50 h-[46px]"
             >
               {loading ? (
                 <>
@@ -226,7 +221,10 @@ const TransportSearch = () => {
             Available Vehicles / Search Results
           </h2>
           <span className="text-xs font-black bg-slate-200 text-slate-700 px-3 py-1 rounded-full uppercase tracking-wider">
-            {isLoggedIn ? vehicles.length : `${displayedVehicles.length} of ${vehicles.length}`} Vehicles Shown
+            {isLoggedIn
+              ? vehicles.length
+              : `${displayedVehicles.length} of ${vehicles.length}`}{" "}
+            Vehicles Shown
           </span>
         </div>
 
@@ -270,7 +268,14 @@ const TransportSearch = () => {
                 const rawPhoneNumber =
                   vehicle.business?.phoneNumber || vehicle.phoneNumber || "N/A";
 
-                // Mask phone number if user is not logged in
+                const firmName = isLoggedIn
+                  ? vehicle.business?.firmName || "Transport Firm"
+                  : "🔒 Protected Transport Firm";
+
+                const ownerName = isLoggedIn
+                  ? vehicle.business?.ownerName || "Owner"
+                  : "🔒 Hidden Owner";
+
                 const phoneNumber = isLoggedIn ? rawPhoneNumber : "XXXXXXXXXX";
 
                 return (
@@ -282,9 +287,8 @@ const TransportSearch = () => {
                     <div className="bg-gradient-to-r from-[#2263F1] via-[#395DEF] to-[#4758EE] p-5 text-white">
                       <div className="flex justify-between items-start">
                         <h3 className="text-base font-black uppercase truncate max-w-[200px]">
-                          {vehicle.business?.firmName || "Transport Firm"}
+                          {firmName}
                         </h3>
-                        {/* Role Badge with Icon */}
                         <span className="bg-blue-600/30 border border-blue-400/30 text-blue-300 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
                           <Building2 size={12} />
                           {role}
@@ -292,9 +296,7 @@ const TransportSearch = () => {
                       </div>
                       <div className="flex items-center gap-1.5 text-white text-xs font-bold uppercase tracking-wider mt-1.5">
                         <User size={14} className="text-white" />
-                        <span className="text-white">
-                          {vehicle.business?.ownerName || "Owner"}
-                        </span>
+                        <span>{ownerName}</span>
                       </div>
                     </div>
 
@@ -314,11 +316,10 @@ const TransportSearch = () => {
                           Vehicle Number
                         </span>
                         <span className="font-black uppercase text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">
-                          {vehicle.vehicleNumber}
+                          {isLoggedIn ? vehicle.vehicleNumber : "DL-XX-XXXX"}
                         </span>
                       </div>
 
-                      {/* Phone Number Field */}
                       <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
                         <span className="font-bold uppercase tracking-widest text-slate-400">
                           Phone Number
@@ -363,7 +364,9 @@ const TransportSearch = () => {
                         </div>
                         <div>
                           <p className="font-black uppercase text-slate-800">
-                            {vehicle.business?.currentCity || "Location Not Set"}
+                            {isLoggedIn
+                              ? vehicle.business?.currentCity || "Location Not Set"
+                              : "🔒 Login to view location"}
                           </p>
                           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                             {vehicle.business?.currentState || "India"}
@@ -372,7 +375,7 @@ const TransportSearch = () => {
                       </div>
                     </div>
 
-                    {/* Call / WhatsApp Actions */}
+                    {/* Actions */}
                     <div className="p-5 pt-0 grid grid-cols-2 gap-3">
                       {isLoggedIn ? (
                         <>
@@ -397,23 +400,24 @@ const TransportSearch = () => {
                         <>
                           <button
                             onClick={() => {
-                              toast.error("Please login to call transporter!");
+                              toast.error("Please login or register to call transporter!");
                               navigate("/login");
                             }}
                             className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-3 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95"
                           >
-                            <Phone size={14} />
-                            <span>Call Now</span>
+                            <Lock size={12} />
+                            <span>Unlock Call</span>
                           </button>
 
                           <button
                             onClick={() => {
-                              toast.error("Please login to message transporter!");
+                              toast.error("Please login or register to message transporter!");
                               navigate("/login");
                             }}
                             className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-3 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
                           >
-                            <span>WhatsApp</span>
+                            <Lock size={12} />
+                            <span>Unlock WA</span>
                           </button>
                         </>
                       )}

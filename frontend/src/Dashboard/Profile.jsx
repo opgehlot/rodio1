@@ -11,11 +11,12 @@ import {
   Edit3,
   Save,
   X,
+  Building2,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import API from "../api/api";
 
-export  function Profile() {
+export function Profile() {
   const fileInputRef = useRef(null);
 
   const [profileData, setProfileData] = useState(null);
@@ -29,6 +30,7 @@ export  function Profile() {
     name: "",
     email: "",
     phoneNumber: "",
+    firmName: "",
     password: "",
   });
 
@@ -48,6 +50,7 @@ export  function Profile() {
           name: data.name || "",
           email: data.email || "",
           phoneNumber: data.phoneNumber || data.mobile || "",
+          firmName: data.firmName || data.businessName || "",
           password: "",
         });
       }
@@ -80,6 +83,7 @@ export  function Profile() {
       data.append("name", formData.name);
       data.append("email", formData.email);
       data.append("phoneNumber", formData.phoneNumber);
+      data.append("firmName", formData.firmName);
       if (formData.password) {
         data.append("password", formData.password);
       }
@@ -267,6 +271,20 @@ export  function Profile() {
 
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
               <div className="text-slate-500 mt-0.5">
+                <Building2 size={20} />
+              </div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  Firm Name
+                </p>
+                <p className="font-bold text-slate-800 text-sm mt-0.5">
+                  {profileData?.firmName || profileData?.businessName || "Not Provided"}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <div className="text-slate-500 mt-0.5">
                 <Building size={20} />
               </div>
               <div>
@@ -293,7 +311,7 @@ export  function Profile() {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+            <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 md:col-span-2">
               <div className="text-slate-500 mt-0.5">
                 <Phone size={20} />
               </div>
@@ -327,6 +345,20 @@ export  function Profile() {
 
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                  Firm Name
+                </label>
+                <input
+                  type="text"
+                  name="firmName"
+                  value={formData.firmName}
+                  onChange={handleChange}
+                  placeholder="Enter firm name"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">
                   Email Address
                 </label>
                 <input
@@ -353,7 +385,7 @@ export  function Profile() {
                 />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 md:col-span-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-600">
                   New Password (Optional)
                 </label>
@@ -390,4 +422,3 @@ export  function Profile() {
 }
 
 export default Profile;
-//

@@ -405,10 +405,20 @@ export  function Login() {
       console.log("FULL LOGIN RESPONSE:", resData);
 
       // Extract properties safely supporting both flat and nested backend layouts
-      const token = resData.token || resData.data?.token;
-      const user = resData.user || resData.data?.user;
-      const businessId = resData.businessId || resData.data?.businessId;
-      const redirectTo = resData.redirectTo || resData.data?.redirectTo;
+   
+     const token = resData.token || resData.data?.token;
+
+const user = {
+  ...(resData.user || resData.data?.user),
+  isSubscriptionActive: resData.isSubscriptionActive,
+  subscription: resData.subscription,
+};
+
+const businessId = resData.businessId || resData.data?.businessId;
+const redirectTo = resData.redirectTo || resData.data?.redirectTo;
+
+localStorage.setItem("token", token);
+localStorage.setItem("user", JSON.stringify(user));
 
       // Debugging check to see what failed if it doesn't run
       if (!token || !user) {
@@ -565,14 +575,14 @@ export  function Login() {
               </div>
 
               {/* FORGOT PASSWORD */}
-              <div className="text-right">
+              {/* <div className="text-right">
                 <Link
                   to="/forgotpassword"
                   className="text-sm font-semibold text-blue-600 hover:underline"
                 >
                   Forgot Password?
                 </Link>
-              </div>
+              </div> */}
 
               {/* LOGIN BUTTON */}
               <button

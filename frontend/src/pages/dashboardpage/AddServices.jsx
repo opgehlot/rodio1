@@ -20,24 +20,6 @@ import {
 import API from "../../api/api";
 import { AuthContext } from "../../context/AuthContext";
 
-// ======================================================
-// BUSINESS CATEGORIES
-// ======================================================
-
-const BUSINESS_CATEGORIES = [
-  "Transporter",
-  "Broker",
-  "Fleet Owner",
-  "Truck Owner",
-  "Logistics Company",
-  "Warehouse",
-  "Courier",
-  "Packers & Movers",
-  "RTO Agent",
-  "Finance Agent",
-  "Other",
-];
-
 export function AddServices() {
   const navigate = useNavigate();
 
@@ -45,15 +27,16 @@ export function AddServices() {
   // AUTH CONTEXT
   // ======================================================
   const { user, registerData } = useContext(AuthContext);
-  console.log("=========== AUTH CONTEXT ===========");
-  console.log("Auth User :", user);
-  console.log("Register Data :", registerData);
-  console.log("===================================");
 
-const mobile =
-  user?.mobile ||
-  user?.phoneNumber ||
-  "";
+  const mobile =
+    user?.mobile ||
+    user?.phoneNumber ||
+    registerData?.mobile ||
+    "";
+
+  // Register ya Auth se category aur firmName nikalna
+  const fixedCategory = user?.role || registerData?.role || "";
+  const fixedFirmName = user?.firmName || registerData?.firmName || user?.businessName || "";
 
   // ======================================================
   // STATE
@@ -63,10 +46,10 @@ const mobile =
   const [fetchingDraft, setFetchingDraft] = useState(true);
 
   const [formData, setFormData] = useState({
-    category: "",
+    category: fixedCategory,
     name: user?.name || registerData?.name || "",
     email: user?.email || registerData?.email || "",
-    firmName: "",
+    firmName: fixedFirmName,
     address: "",
     currentCity: "",
     currentState: "",
@@ -97,7 +80,7 @@ const mobile =
 
           setFormData((prev) => ({
             ...prev,
-            category: business.category || prev.category,
+            category: business.category || fixedCategory,
             name:
               business.name ||
               user?.name ||
@@ -108,7 +91,10 @@ const mobile =
               user?.email ||
               registerData?.email ||
               "",
-            firmName: business.firmName || prev.firmName,
+            firmName: 
+              business.firmName || 
+              fixedFirmName || 
+              "",
             address: business.address || prev.address,
             currentCity: business.currentCity || prev.currentCity,
             currentState: business.currentState || prev.currentState,
@@ -125,7 +111,7 @@ const mobile =
     };
 
     loadDraft();
-  }, [navigate, user, registerData]);
+  }, [navigate, user, registerData, fixedCategory, fixedFirmName]);
 
   // ======================================================
   // HANDLE INPUT
@@ -161,7 +147,7 @@ const mobile =
       return false;
     }
     if (!formData.category) {
-      toast.error("Please select a business category");
+      toast.error("Business category is missing");
       return false;
     }
     if (!formData.name.trim()) {
@@ -176,7 +162,7 @@ const mobile =
       return false;
     }
     if (!formData.firmName.trim()) {
-      toast.error("Firm name is required");
+      toast.error("Firm name is missing");
       return false;
     }
     if (!formData.address.trim()) {
@@ -318,29 +304,24 @@ const mobile =
                 </p>
               </div>
 
-              {/* BUSINESS CATEGORY */}
+              {/* BUSINESS CATEGORY (READ-ONLY) */}
               <div className="sm:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Business Category <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <BriefcaseBusiness size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10" />
-                  <select
-                    name="category"
+                  <BriefcaseBusiness size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
                     value={formData.category}
-                    onChange={handleChange}
-                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-10 outline-none cursor-pointer focus:border-gray-900 text-sm font-semibold transition-all text-gray-900"
-                  >
-                    <option value="" disabled>
-                      Select Category
-                    </option>
-                    {BUSINESS_CATEGORIES.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
+                    readOnly
+                    tabIndex={-1}
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white text-gray-700 pl-11 pr-4 outline-none cursor-not-allowed font-semibold text-sm capitalize"
+                  />
                 </div>
+                <p className="text-[11px] text-gray-500 mt-1.5 ml-1 font-medium">
+                  * Selected during registration.
+                </p>
               </div>
 
               {/* NAME */}
@@ -379,7 +360,7 @@ const mobile =
                 </div>
               </div>
 
-              {/* FIRM NAME */}
+              {/* FIRM NAME (READ-ONLY) */}
               <div className="sm:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Firm / Company Name <span className="text-red-500">*</span>
@@ -388,13 +369,15 @@ const mobile =
                   <Building2 size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    name="firmName"
                     value={formData.firmName}
-                    onChange={handleChange}
-                    placeholder="e.g. Balaji Roadlines"
-                    className="w-full h-12 rounded-xl border border-gray-300 bg-white pl-11 pr-4 outline-none focus:border-gray-900 text-sm font-semibold transition-all text-gray-900 placeholder:text-gray-400"
+                    readOnly
+                    tabIndex={-1}
+                    className="w-full h-12 rounded-xl border border-gray-300 bg-white text-gray-700 pl-11 pr-4 outline-none cursor-not-allowed font-semibold text-sm"
                   />
                 </div>
+                <p className="text-[11px] text-gray-500 mt-1.5 ml-1 font-medium">
+                  * Auto-populated from your registration details.
+                </p>
               </div>
 
               {/* BUSINESS ADDRESS */}

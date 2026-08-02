@@ -57,6 +57,8 @@ import FinanceAgent from "./Dashboard/DashboardPage/FinanceAgent";
 import CarCarrier from "./Dashboard/DashboardPage/CarCarrier";
 import Insurancecompany from "./Dashboard/DashboardPage/Insurancecompany";
 import UpadateVehicle from "./components/UpadateVehicle";
+import ImageGalleryManager from "./Dashboard/ImageGalleryManager";
+import Referral from "../payment/Referral";
 
 // Dummy Pages
 
@@ -108,6 +110,7 @@ function App() {
           <Route path="addroute" element={<AddRoute />} />
           <Route path="myroutes" element={<MyRoutes />} />
           <Route path="addservices" element={<AddServices />} />
+          <Route path="imagegallerymanager" element={<ImageGalleryManager />} />
 
           {/* Transporter */}
 
@@ -131,6 +134,7 @@ function App() {
           <Route path="financeAgent" element={<FinanceAgent />} />
           <Route path="carcarrier" element={<CarCarrier />} />
           <Route path="insurancecompany" element={<Insurancecompany />} />
+          <Route path="referral" element={<Referral/>} />
         
 
 
@@ -161,6 +165,7 @@ function App() {
           <Route path="/contectus" element={<ContectUs />} />
           <Route path="/privaceypolicy" element={<PrivaceyPolicy />} />
           <Route path="/directory" element={<Directory />} />
+          <Route path="/dashboard/leads" element={<Leads />} />
         </Route>
       </Routes>
     </BrowserRouter>

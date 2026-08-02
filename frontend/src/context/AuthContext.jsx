@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
         logout,
         setUser,
         setToken,
-        isLoggedIn: !!user,
+        isLoggedIn: !!(user && token),
       }}
     >
       {children}

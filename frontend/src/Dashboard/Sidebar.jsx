@@ -19,6 +19,8 @@ import {
   MapPin,
   Upload,
   Sparkles,
+  Images,
+   HandCoins,
 } from "lucide-react";
 import LogoutButton from "../utils/LogoutButton";
 
@@ -30,55 +32,88 @@ export default function Sidebar({ open, setOpen }) {
   // CHECK CURRENT BUSINESS / SUBSCRIPTION STATUS
   // ======================================================
 
-  useEffect(() => {
-    const fetchBusinessStatus = async () => {
-      try {
-        setCheckingSubscription(true);
+ useEffect(() => {
+  const fetchBusinessStatus = async () => {
+    try {
+      setCheckingSubscription(true);
 
-        const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-        if (!token) {
-          setSubscriptionActive(false);
-          return;
-        }
-
-        const { data } = await API.get("/business/me");
-
-        console.log("SIDEBAR BUSINESS RESPONSE:", data);
-
-        const business = data?.data;
-
-        if (!business) {
-          setSubscriptionActive(false);
-          return;
-        }
-
-        console.log("Subscription Status:", business.subscriptionStatus);
-        console.log("Profile Unlocked:", business.profileUnlocked);
-        console.log("Registration Status:", business.registrationStatus);
-
-        // ==================================================
-        // PLAN ACTIVE = SIDEBAR UNLOCK
-        // ==================================================
-
-        const isActive =
-          business.subscriptionStatus?.toLowerCase() === "active";
-
-        setSubscriptionActive(isActive);
-      } catch (error) {
-        console.error(
-          "SIDEBAR BUSINESS STATUS ERROR:",
-          error?.response?.data || error
-        );
-
+      if (!token) {
         setSubscriptionActive(false);
-      } finally {
-        setCheckingSubscription(false);
+        return;
       }
-    };
 
-    fetchBusinessStatus();
-  }, []);
+      // Read current user from localStorage
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+      if (
+        user?.isSubscriptionActive === true ||
+        user?.subscription?.status === "active"
+      ) {
+        setSubscriptionActive(true);
+      }
+
+      // Get latest status from backend
+      const { data } = await API.get("/business/me");
+
+      const business = data?.data;
+
+      if (!business) {
+        setSubscriptionActive(false);
+        return;
+      }
+
+      const isActive =
+        business.subscriptionStatus?.toLowerCase() === "active" &&
+        business.profileUnlocked === true;
+
+      setSubscriptionActive(isActive);
+
+      // Keep localStorage updated
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          isSubscriptionActive: isActive,
+          subscription: {
+            ...(user.subscription || {}),
+            status: isActive ? "active" : "inactive",
+          },
+        })
+      );
+    } catch (err) {
+      console.error(err);
+      setSubscriptionActive(false);
+    } finally {
+      setCheckingSubscription(false);
+    }
+  };
+
+  fetchBusinessStatus();
+
+ const handleSubscriptionUpdate = () => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const isActive =
+    user?.isSubscriptionActive === true ||
+    user?.subscription?.status === "active";
+
+  setSubscriptionActive(isActive);
+};
+
+  window.addEventListener(
+    "subscriptionUpdated",
+    handleSubscriptionUpdate
+  );
+
+  return () => {
+    window.removeEventListener(
+      "subscriptionUpdated",
+      handleSubscriptionUpdate
+    );
+  };
+}, []);
 
   const handleClose = () => {
     if (window.innerWidth < 1024) {
@@ -86,15 +121,15 @@ export default function Sidebar({ open, setOpen }) {
     }
   };
 
-  const role = localStorage.getItem("role"); 
+  const role = localStorage.getItem("role");
   const transportRoles = [
-  "transporter",
-  "fleet_owner",
-  "cha_agent",
-  "travel_taxi",
-  "courier",
-  "car_carrier",
-];
+    "transporter",
+    "fleet_owner",
+    "cha_agent",
+    "travel_taxi",
+    "courier",
+    "car_carrier",
+  ];
 
   // Dynamic Class for NavLinks with White-Themed Styling
   const linkClass = ({ isActive }) =>
@@ -158,7 +193,6 @@ export default function Sidebar({ open, setOpen }) {
 
         {/* Menu Navigation */}
         <nav className="flex-1 overflow-y-auto p-4 space-y-1.5 scrollbar-thin scrollbar-thumb-slate-300">
-          
           {/* Main Dashboard Link (Always Free/Unlocked) */}
           <NavLink
             end
@@ -176,7 +210,11 @@ export default function Sidebar({ open, setOpen }) {
           {role === "user" && (
             <>
               {/* Navigate to Directory page */}
-              <NavLink to="/dashboard/directory" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/directory"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <BookOpen size={20} />
                   <span>Directory</span>
@@ -184,7 +222,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Search Transport page */}
-              <NavLink to="/dashboard/transportsearch" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/transportsearch"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <Search size={20} />
                   <span>Search Transport</span>
@@ -192,7 +234,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Add Load Enquiry form */}
-              <NavLink to="/dashboard/userform" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/userform"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <PlusCircle size={20} />
                   <span>Add Load Enquiry</span>
@@ -200,7 +246,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Enquiry Status view */}
-              <NavLink to="/dashboard/showenquiery" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/showenquiery"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <ClipboardList size={20} />
                   <span>Enquiry Status</span>
@@ -208,7 +258,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Update Profile settings */}
-              <NavLink to="/dashboard/settings" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/settings"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <Settings size={20} />
                   <span>Update Profile</span>
@@ -221,7 +275,11 @@ export default function Sidebar({ open, setOpen }) {
           {transportRoles.includes(role) && (
             <>
               {/* Navigate to Add Load Enquiry form */}
-              <NavLink to="/dashboard/userform" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/userform"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <PlusCircle size={20} />
                   <span>Add Load Enquiry</span>
@@ -229,7 +287,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Enquiry Status view */}
-              <NavLink to="/dashboard/showenquiery" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/showenquiery"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <ClipboardList size={20} />
                   <span>Enquiry Status</span>
@@ -237,7 +299,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Accepted Bids list */}
-              <NavLink to="/dashboard/acceptedbid" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/acceptedbid"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <CheckCircle size={20} />
                   <span>Accepted Bids</span>
@@ -245,7 +311,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Search Transport page */}
-              <NavLink to="/dashboard/transportsearch" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/transportsearch"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <Search size={20} />
                   <span>Search Transport</span>
@@ -253,7 +323,11 @@ export default function Sidebar({ open, setOpen }) {
               </NavLink>
 
               {/* Navigate to Directory page */}
-              <NavLink to="/dashboard/directory" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/directory"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <BookOpen size={20} />
                   <span>Directory</span>
@@ -277,26 +351,81 @@ export default function Sidebar({ open, setOpen }) {
                   <FileText size={20} />
                   <span>Leads</span>
                 </div>
-                {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
               </NavLink>
               <NavLink
-  to={subscriptionActive ? "/dashboard/MyVehicles" : "/dashboard"}
-  className={linkClass}
-  onClick={(e) => {
-    if (!subscriptionActive) {
-      e.preventDefault();
-      toast.error("Please complete payment to unlock My Vehicles.");
-    } else {
-      handleClose();
-    }
-  }}
->
-  <div className="flex items-center gap-3.5">
-    <Truck size={20} />
-    <span>My Vehicles</span>
-  </div>
-  {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-</NavLink>
+                to={subscriptionActive ? "/dashboard/MyVehicles" : "/dashboard"}
+                className={linkClass}
+                onClick={(e) => {
+                  if (!subscriptionActive) {
+                    e.preventDefault();
+                    toast.error(
+                      "Please complete payment to unlock My Vehicles.",
+                    );
+                  } else {
+                    handleClose();
+                  }
+                }}
+              >
+                <div className="flex items-center gap-3.5">
+                  <Truck size={20} />
+                  <span>My Vehicles</span>
+                </div>
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
+              </NavLink>
+              <NavLink
+                to={subscriptionActive ? "/dashboard/referral" : "/dashboard"}
+                className={linkClass}
+                onClick={(e) => {
+                  if (!subscriptionActive) {
+                    e.preventDefault();
+                    toast.error(
+                      "Please complete payment to unlock Referral Earning.",
+                    );
+                  } else {
+                    handleClose();
+                  }
+                }}
+              >
+                <div className="flex items-center gap-3.5">
+                  <HandCoins size={20} />
+                  <span>Referral Earning</span>
+                </div>
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
+              </NavLink>
+              <NavLink
+                to={
+                  subscriptionActive
+                    ? "/dashboard/imagegallerymanager"
+                    : "/dashboard"
+                }
+                className={linkClass}
+                onClick={(e) => {
+                  if (!subscriptionActive) {
+                    e.preventDefault();
+                    toast.error(
+                      "Please complete payment to unlock Vehicle Image Gallery.",
+                    );
+                  } else {
+                    handleClose();
+                  }
+                }}
+              >
+                <div className="flex items-center gap-3.5">
+  <Images size={20} />
+  <span>My gallery</span>
+</div>
+
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
+              </NavLink>
 
               {/* Navigate to Add Vehicles (Subscription Restricted) */}
               <NavLink
@@ -305,7 +434,9 @@ export default function Sidebar({ open, setOpen }) {
                 onClick={(e) => {
                   if (!subscriptionActive) {
                     e.preventDefault();
-                    toast.error("Please complete payment to unlock Add Vehicles.");
+                    toast.error(
+                      "Please complete payment to unlock Add Vehicles.",
+                    );
                   } else {
                     handleClose();
                   }
@@ -315,7 +446,9 @@ export default function Sidebar({ open, setOpen }) {
                   <Truck size={20} />
                   <span>Add Vehicles</span>
                 </div>
-                {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
               </NavLink>
 
               {/* Navigate to My Document (Subscription Restricted) */}
@@ -325,7 +458,9 @@ export default function Sidebar({ open, setOpen }) {
                 onClick={(e) => {
                   if (!subscriptionActive) {
                     e.preventDefault();
-                    toast.error("Please complete payment to unlock Add Routes.");
+                    toast.error(
+                      "Please complete payment to unlock Add Routes.",
+                    );
                   } else {
                     handleClose();
                   }
@@ -335,17 +470,23 @@ export default function Sidebar({ open, setOpen }) {
                   <Route size={20} />
                   <span>My Document</span>
                 </div>
-                {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
               </NavLink>
 
               {/* Navigate to Working Areas (Subscription Restricted) */}
               <NavLink
-                to={subscriptionActive ? "/dashboard/workingareas" : "/dashboard"}
+                to={
+                  subscriptionActive ? "/dashboard/workingareas" : "/dashboard"
+                }
                 className={linkClass}
                 onClick={(e) => {
                   if (!subscriptionActive) {
                     e.preventDefault();
-                    toast.error("Please complete payment to unlock Working Areas.");
+                    toast.error(
+                      "Please complete payment to unlock Working Areas.",
+                    );
                   } else {
                     handleClose();
                   }
@@ -355,17 +496,25 @@ export default function Sidebar({ open, setOpen }) {
                   <MapPin size={20} />
                   <span>Working Areas</span>
                 </div>
-                {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
               </NavLink>
 
               {/* Navigate to Upload Documents (Subscription Restricted) */}
               <NavLink
-                to={subscriptionActive ? "/dashboard/uploaddocuments" : "/dashboard"}
+                to={
+                  subscriptionActive
+                    ? "/dashboard/uploaddocuments"
+                    : "/dashboard"
+                }
                 className={linkClass}
                 onClick={(e) => {
                   if (!subscriptionActive) {
                     e.preventDefault();
-                    toast.error("Please complete payment to unlock Upload Documents.");
+                    toast.error(
+                      "Please complete payment to unlock Upload Documents.",
+                    );
                   } else {
                     handleClose();
                   }
@@ -375,11 +524,17 @@ export default function Sidebar({ open, setOpen }) {
                   <Upload size={20} />
                   <span>Upload Documents</span>
                 </div>
-                {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
+                {!subscriptionActive && (
+                  <Lock size={16} className="text-slate-400" />
+                )}
               </NavLink>
 
               {/* Navigate to Update Profile settings */}
-              <NavLink to="/dashboard/settings" className={linkClass} onClick={handleClose}>
+              <NavLink
+                to="/dashboard/settings"
+                className={linkClass}
+                onClick={handleClose}
+              >
                 <div className="flex items-center gap-3.5">
                   <Settings size={20} />
                   <span>Update Profile</span>
@@ -389,17 +544,14 @@ export default function Sidebar({ open, setOpen }) {
           )}
 
           {/* ================= OTHER ROLES (COMING SOON MESSAGE) ================= */}
-          {role &&
-  role !== "user" &&
-  !transportRoles.includes(role) && (
+          {role && role !== "user" && !transportRoles.includes(role) && (
             <div className="p-4 my-2 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-2">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider">
                 <Sparkles size={12} />
                 Coming Soon
               </div>
               <p className="text-xs font-medium text-slate-500">
-                Your dashboard is under development.
-We'll launch it very soon.
+                Your dashboard is under development. We'll launch it very soon.
               </p>
             </div>
           )}
@@ -407,7 +559,11 @@ We'll launch it very soon.
 
         {/* Footer Actions (Password & Logout) */}
         <div className="border-t border-slate-200 p-4 space-y-2 bg-white">
-          <NavLink to="/dashboard/changepassword" className={linkClass} onClick={handleClose}>
+          <NavLink
+            to="/dashboard/changepassword"
+            className={linkClass}
+            onClick={handleClose}
+          >
             <div className="flex items-center gap-3.5">
               <KeyRound size={20} />
               <span>Change Password</span>
@@ -418,7 +574,6 @@ We'll launch it very soon.
             <LogoutButton />
           </div>
         </div>
-
       </aside>
     </>
   );

@@ -1,5 +1,5 @@
 import TransportSearch from "./TransportSearch";
-import Directory from "./Directory";
+import Leads from "../Dashboard/transporter/Leads";
 
 export default function DaynamicHomeComponent({ activeTab }) {
   return (
@@ -7,7 +7,7 @@ export default function DaynamicHomeComponent({ activeTab }) {
       {activeTab === "search" ? (
         <TransportSearch />
       ) : (
-        <Directory />
+        <Leads />
       )}
     </>
   );

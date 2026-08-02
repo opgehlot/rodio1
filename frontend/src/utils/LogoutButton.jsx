@@ -3,21 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-export  function LogoutButton() {
+export default function LogoutButton() {
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    // Clear Local Storage
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
+    // Clear AuthContext
+    logout();
 
-    // Clear Context
-    setUser(null);
+    // Clear remaining app data
+    localStorage.clear();
+    sessionStorage.clear();
 
     // Redirect
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -30,4 +29,3 @@ export  function LogoutButton() {
     </button>
   );
 }
-export default LogoutButton;
