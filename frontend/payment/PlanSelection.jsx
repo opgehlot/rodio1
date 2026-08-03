@@ -135,7 +135,9 @@ export function PlanSelection() {
         const businessData = response.data?.data;
 
         if (!businessData) {
-          toast.error("Business details not found.");
+          toast.error("Business details not found.", {
+            id: "error-toast",
+          });
           navigate("/dashboard/addservices", { replace: true });
           return;
         }
@@ -145,13 +147,17 @@ export function PlanSelection() {
           businessData.subscriptionStatus === "active" &&
           businessData.profileUnlocked === true
         ) {
-          toast.success("Your business is already active.");
+          toast.success("Your business is already active.", {
+            id: "success-toast",
+          });
           navigate("/dashboard", { replace: true });
           return;
         }
 
         if (businessData.registrationStatus !== "draft") {
-          toast.error("Complete your business details first.");
+          toast.error("Complete your business details first.", {
+            id: "error-toast",
+          });
           navigate("/dashboard/addservices", { replace: true });
           return;
         }
@@ -161,13 +167,18 @@ export function PlanSelection() {
         console.error("CHECK BUSINESS ERROR:", error);
 
         if (error?.response?.status === 404) {
-          toast.error("Please register your business first.");
+          toast.error("Please register your business first.", {
+            id: "error-toast",
+          });
           navigate("/dashboard/addservices", { replace: true });
           return;
         }
 
         toast.error(
-          error?.response?.data?.message || "Unable to load business details."
+          error?.response?.data?.message || "Unable to load business details.",
+          {
+            id: "error-toast",
+          }
         );
       } finally {
         setPageLoading(false);
@@ -186,12 +197,16 @@ export function PlanSelection() {
       if (paymentLoading) return;
 
       if (!business?._id) {
-        toast.error("Business draft not found.");
+        toast.error("Business draft not found.", {
+          id: "error-toast",
+        });
         return;
       }
 
       if (!window.Razorpay) {
-        toast.error("Payment service is loading. Please try again.");
+        toast.error("Payment service is loading. Please try again.", {
+          id: "error-toast",
+        });
         return;
       }
 
@@ -206,7 +221,10 @@ export function PlanSelection() {
 
       if (!createOrderRes?.success || !createOrderRes?.order) {
         toast.error(
-          createOrderRes?.message || "Unable to create payment order."
+          createOrderRes?.message || "Unable to create payment order.",
+          {
+            id: "error-toast",
+          }
         );
         setPaymentLoading(false);
         return;
@@ -216,7 +234,9 @@ export function PlanSelection() {
       const finalPayableAmount = createOrderRes.planDetails?.amount ?? activePlan.price;
 
       if (createOrderRes.isFree || finalPayableAmount === 0) {
-        toast.success("Free subscription activated successfully!");
+        toast.success("Free subscription activated successfully!", {
+          id: "success-toast",
+        });
         setPaymentLoading(false);
         navigate("/dashboard", { replace: true });
         return;
@@ -250,7 +270,10 @@ export function PlanSelection() {
             if (!verifyRes.data?.success) {
               setIsGeneratingReceipt(false);
               toast.error(
-                verifyRes.data?.message || "Payment verification failed."
+                verifyRes.data?.message || "Payment verification failed.",
+                {
+                  id: "error-toast",
+                }
               );
               return;
             }
@@ -265,7 +288,9 @@ export function PlanSelection() {
             localStorage.setItem("user", JSON.stringify(user));
             window.dispatchEvent(new Event("subscriptionUpdated"));
 
-            toast.success("Payment successful! Business activated.");
+            toast.success("Payment successful! Business activated.", {
+              id: "success-toast",
+            });
             setReferralCode("");
 
             const paymentMongoId =
@@ -281,7 +306,10 @@ export function PlanSelection() {
             console.error("PAYMENT VERIFY ERROR:", error);
             setIsGeneratingReceipt(false);
             toast.error(
-              error?.response?.data?.message || "Payment verification failed."
+              error?.response?.data?.message || "Payment verification failed.",
+              {
+                id: "error-toast",
+              }
             );
           } finally {
             setPaymentLoading(false);
@@ -290,7 +318,9 @@ export function PlanSelection() {
         modal: {
           ondismiss: () => {
             setPaymentLoading(false);
-            toast("Payment cancelled. Your business details are still saved.");
+            toast("Payment cancelled. Your business details are still saved.", {
+              id: "info-toast",
+            });
           },
         },
       };
@@ -301,7 +331,10 @@ export function PlanSelection() {
         console.error("RAZORPAY PAYMENT FAILED:", response.error);
         setPaymentLoading(false);
         toast.error(
-          response.error?.description || "Payment failed. Please try again."
+          response.error?.description || "Payment failed. Please try again.",
+          {
+            id: "error-toast",
+          }
         );
       });
 
@@ -309,7 +342,10 @@ export function PlanSelection() {
     } catch (error) {
       console.error("CREATE PAYMENT ORDER ERROR:", error);
       toast.error(
-        error?.response?.data?.message || "Unable to initiate payment."
+        error?.response?.data?.message || "Unable to initiate payment.",
+        {
+          id: "error-toast",
+        }
       );
       setPaymentLoading(false);
     }
@@ -492,7 +528,7 @@ export function PlanSelection() {
               Have a Referral Code?
             </h2>
             <p className="text-sm text-slate-500 text-center mt-2 mb-6">
-              Enter your referral code or coupon to get discounts, or skip to proceed.
+              Enter your referral code  or skip to proceed.
             </p>
 
             <input
