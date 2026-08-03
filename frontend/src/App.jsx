@@ -59,6 +59,7 @@ import Insurancecompany from "./Dashboard/DashboardPage/Insurancecompany";
 import UpadateVehicle from "./components/UpadateVehicle";
 import ImageGalleryManager from "./Dashboard/ImageGalleryManager";
 import Referral from "../payment/Referral";
+import UpdateBisProfile from "./components/UpdateBisProfile";
 
 // Dummy Pages
 
@@ -135,6 +136,7 @@ function App() {
           <Route path="carcarrier" element={<CarCarrier />} />
           <Route path="insurancecompany" element={<Insurancecompany />} />
           <Route path="referral" element={<Referral/>} />
+          <Route path="updatebisprofile" element={<UpdateBisProfile/>} />
         
 
 
