@@ -1,8 +1,13 @@
 import React from 'react'
+import Profile from '../Profile'
+import Dashboard from '../../pages/dashboardpage/Dashboard'
 
 function Fleetowenr() {
   return (
-    <div>Fleetowenr</div>
+    <div>
+      <Profile/>
+      <Dashboard/>
+    </div>
   )
 }
 

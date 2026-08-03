@@ -1,8 +1,13 @@
 import React from 'react'
+import Profile from '../Profile'
+import Dashboard from '../../pages/dashboardpage/Dashboard'
 
 function CarCarrier() {
   return (
-    <div>CarCarrier</div>
+    <div>
+      <Profile/>
+      <Dashboard/>
+    </div>
   )
 }
 

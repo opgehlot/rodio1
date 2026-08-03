@@ -152,7 +152,7 @@ export function PlanSelection() {
 
         if (businessData.registrationStatus !== "draft") {
           toast.error("Complete your business details first.");
-          navigate("/dashboard/add-services", { replace: true });
+          navigate("/dashboard/addservices", { replace: true });
           return;
         }
 
@@ -162,7 +162,7 @@ export function PlanSelection() {
 
         if (error?.response?.status === 404) {
           toast.error("Please register your business first.");
-          navigate("/dashboard/add-services", { replace: true });
+          navigate("/dashboard/addservices", { replace: true });
           return;
         }
 
@@ -344,7 +344,7 @@ export function PlanSelection() {
         {/* BACK BUTTON */}
         <button
           type="button"
-          onClick={() => navigate("/dashboard/add-services")}
+          onClick={() => navigate("/dashboard/addservices")}
           className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6 transition font-medium"
         >
           <ArrowLeft size={18} />

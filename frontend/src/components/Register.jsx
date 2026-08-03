@@ -150,7 +150,9 @@ const { login, setUser, setRegisterData } = useContext(AuthContext);
       console.log("Full API Response Data:", data);
 
       if (!data.success) {
-        toast.error(data.message || "Registration Failed");
+        toast.error(data.message || "Registration Failed", {
+  id: "resitration field",
+});
         return;
       }
 
@@ -199,13 +201,17 @@ if (normalizedUser.role) {
 }
       }
 
-      toast.success(data.message || "Registration Successful");
+      toast.success(data.message || "Registration Successful", {
+  id: "registration scuccessful",
+});
       reset();
       navigate(data.redirectTo || "/", { replace: true });
     } catch (error) {
       console.error("Registration Error:", error);
       toast.error(
-        error.response?.data?.message || error.message || "Registration Failed",
+        error.response?.data?.message || error.message || "Registration Failed", {
+  id: "registration failed",
+}
       );
     } finally {
       setLoading(false);

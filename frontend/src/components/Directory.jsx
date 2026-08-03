@@ -11,6 +11,7 @@ import {
   Phone,
   CheckCircle2,
   Globe,
+  RotateCcw,
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -193,8 +194,23 @@ const Directory = () => {
     { label: "Others", value: "Others" },
   ];
 
-  // FETCH DIRECTORY USING `/api/v1/businesses/search` WITH LIMIT 1000
-  const fetchDirectoryData = async (filters = {}) => {
+  // FETCH INITIAL DIRECTORY DATA USING `/api/v1/directory`
+  const fetchAllDirectoryData = async () => {
+    try {
+      setLoading(true);
+      const response = await API.get("/directory");
+      if (response.data) {
+        setDirectoryData(response.data.data || response.data || []);
+      }
+    } catch (error) {
+      console.log("Directory Fetch Error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // FETCH FILTERED DIRECTORY USING `/api/v1/businesses/search`
+  const fetchFilteredDirectoryData = async (filters = {}) => {
     try {
       setLoading(true);
 
@@ -202,7 +218,7 @@ const Directory = () => {
         state: filters.state !== undefined ? filters.state : selectedState,
         city: filters.city !== undefined ? filters.city : selectedCity,
         category: filters.category !== undefined ? filters.category : category,
-        limit: 1000, // Fetches all matching business records
+        limit: 1000,
       };
 
       const response = await API.get("/businesses/search", {
@@ -219,20 +235,33 @@ const Directory = () => {
     }
   };
 
-  // LOAD DATA FIRST TIME
+  // LOAD ALL DATA FIRST TIME ON MOUNT
   useEffect(() => {
-    fetchDirectoryData();
+    fetchAllDirectoryData();
   }, []);
 
-  // SEARCH BUTTON
+  // SEARCH BUTTON SUBMIT (USES SEARCH API)
   const handleSearchSubmit = (e) => {
     e.preventDefault();
 
-    fetchDirectoryData({
+    if (!selectedState && !selectedCity && !category) {
+      fetchAllDirectoryData();
+      return;
+    }
+
+    fetchFilteredDirectoryData({
       state: selectedState,
       city: selectedCity,
       category: category,
     });
+  };
+
+  // RESET FILTERS
+  const handleResetFilters = () => {
+    setSelectedState("");
+    setSelectedCity("");
+    setCategory("");
+    fetchAllDirectoryData();
   };
 
   // MASK PHONE
@@ -251,14 +280,27 @@ const Directory = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 md:p-6">
+    // pt-24 lagane se ye navbar ke under nahi jayega, thoda neeche shift ho jayega
+    <div className="w-full  mt-5 max-w-7xl mx-auto p-4 md:p-6 pt-24 md:pt-28">
       {/* SEARCH BOX */}
       <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 mb-8">
-        <div className="flex items-center gap-2 mb-6">
-          <Filter className="text-blue-600" size={22} />
-          <h2 className="text-xl font-bold text-gray-800">
-            Find Transport Directory
-          </h2>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Filter className="text-blue-600" size={22} />
+            <h2 className="text-xl font-bold text-gray-800">
+              Find Transport Directory
+            </h2>
+          </div>
+
+          {/* RESET BUTTON */}
+          <button
+            type="button"
+            onClick={handleResetFilters}
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 px-3 py-2 rounded-xl transition border border-gray-200"
+          >
+            <RotateCcw size={14} />
+            Reset Filters
+          </button>
         </div>
 
         <form
@@ -316,7 +358,7 @@ const Directory = () => {
           {/* SEARCH BUTTON */}
           <button
             type="submit"
-            className="h-[46px] bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2"
+            className="h-[46px] bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-95 transition"
           >
             <Search size={18} />
             Search Directory
@@ -330,9 +372,9 @@ const Directory = () => {
       </h3>
 
       {loading ? (
-        <div className="text-center py-20">Loading...</div>
+        <div className="text-center py-20 font-medium text-gray-500">Loading...</div>
       ) : directoryData.length === 0 ? (
-        <div className="bg-white rounded-xl p-10 text-center">
+        <div className="bg-white rounded-xl p-10 text-center text-gray-500 font-medium shadow-sm border border-gray-100">
           No Transport Found
         </div>
       ) : (
@@ -367,7 +409,7 @@ const Directory = () => {
                           <h4 className="font-bold text-lg">{item.firmName}</h4>
                         </div>
                         <p className="text-blue-100 text-xs capitalize">
-                          {item.category || "Transporter"}
+                          {item.role || "Transporter"}
                         </p>
                       </div>
                     </div>
@@ -379,7 +421,7 @@ const Directory = () => {
                     <div className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-2xl">
                       <MapPin size={18} className="text-red-500 shrink-0" />
                       <span className="font-medium">
-                        {item.currentCity}, {item.currentState}
+                        {item.city}, {item.state}
                       </span>
                     </div>
 

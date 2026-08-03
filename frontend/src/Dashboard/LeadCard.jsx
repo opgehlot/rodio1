@@ -55,7 +55,9 @@ const LeadCard = ({ lead }) => {
 
   const handleProtectedAction = (type) => {
     if (!isLoggedIn) {
-      toast.error("Please login first.");
+      toast.error("Please login first.", {
+  id: "login first",
+});
       navigate("/login", {
         state: { redirectTo: "/dashboard/leads" },
       });
@@ -63,7 +65,9 @@ const LeadCard = ({ lead }) => {
     }
 
     if (!isSubscribed) {
-      toast.error("Premium subscription required.");
+      toast.error("Premium subscription required.", {
+  id: "premium subscription required",
+});
       navigate("/dashboard/addservices");
       return;
     }
@@ -86,13 +90,17 @@ const LeadCard = ({ lead }) => {
         message,
       });
 
-      toast.success("Bid submitted successfully.");
+      toast.success("Bid submitted successfully.", {
+  id: "bid submitted successfully",
+});
       setBidAmount("");
       setMessage("");
       setOpenBid(false);
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to submit bid."
+        error.response?.data?.message || "Failed to submit bid.", {
+  id: "faild to submit bid",
+}
       );
     } finally {
       setLoading(false);

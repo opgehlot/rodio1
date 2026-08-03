@@ -322,18 +322,27 @@
 //       </div>
 //     </>
 //   );
-// }  
+// }
 import { useContext, useState } from "react";
 import API from "../api/api";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Loader2, Truck, Sparkles, ArrowRight, Eye, EyeOff } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  Loader2,
+  Truck,
+  Sparkles,
+  ArrowRight,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import Navbar from "./Navbar";
 
 // Auth Context
 import { AuthContext } from "../context/AuthContext";
 
-export  function Login() {
+export function Login() {
   const navigate = useNavigate();
 
   // ==========================================
@@ -384,12 +393,17 @@ export  function Login() {
     e.preventDefault();
 
     if (!formData.emailOrMobile.trim()) {
-      toast.error("Please enter Email or Mobile");
+      toast.error("Please enter Email or Mobile.", {
+        id: "login-required",
+      });
       return;
     }
 
     if (!formData.password.trim()) {
-      toast.error("Please enter Password");
+      toast.error("Please enter Password",{
+        id: "please enter password",
+      });
+      
       return;
     }
 
@@ -405,25 +419,27 @@ export  function Login() {
       console.log("FULL LOGIN RESPONSE:", resData);
 
       // Extract properties safely supporting both flat and nested backend layouts
-   
-     const token = resData.token || resData.data?.token;
 
-const user = {
-  ...(resData.user || resData.data?.user),
-  isSubscriptionActive: resData.isSubscriptionActive,
-  subscription: resData.subscription,
-};
+      const token = resData.token || resData.data?.token;
 
-const businessId = resData.businessId || resData.data?.businessId;
-const redirectTo = resData.redirectTo || resData.data?.redirectTo;
+      const user = {
+        ...(resData.user || resData.data?.user),
+        isSubscriptionActive: resData.isSubscriptionActive,
+        subscription: resData.subscription,
+      };
 
-localStorage.setItem("token", token);
-localStorage.setItem("user", JSON.stringify(user));
+      const businessId = resData.businessId || resData.data?.businessId;
+      const redirectTo = resData.redirectTo || resData.data?.redirectTo;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
       // Debugging check to see what failed if it doesn't run
       if (!token || !user) {
         console.error("Missing token or user object:", { token, user });
-        toast.error(resData.message || "Invalid server response structure");
+        toast.error(resData.message || "Invalid server response structure",{
+             id: "Invalid server response structure"
+        });
         return;
       }
 
@@ -432,7 +448,7 @@ localStorage.setItem("user", JSON.stringify(user));
       // ======================================
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
-      
+
       if (user?.role) {
         localStorage.setItem("role", user.role);
       }
@@ -455,7 +471,6 @@ localStorage.setItem("user", JSON.stringify(user));
       // ======================================
       toast.success(resData.message || "Login Successful");
       navigate(redirectTo || "/", { replace: true });
-
     } catch (error) {
       console.error("LOGIN ERROR CATCH:", error);
 
@@ -464,7 +479,9 @@ localStorage.setItem("user", JSON.stringify(user));
       } else if (error.request) {
         toast.error("Server not responding");
       } else {
-        toast.error("Something went wrong during login");
+        toast.error("Something went wrong during login", {
+  id: "during login",
+});
       }
     } finally {
       setLoading(false);
