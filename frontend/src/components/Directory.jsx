@@ -18,7 +18,6 @@ import { AuthContext } from "../context/AuthContext";
 // ==========================================
 // 1. LOCATION SEARCH INPUT COMPONENT
 // ==========================================
-
 const LocationSearchInput = ({
   placeholder,
   selectedValue,
@@ -36,7 +35,7 @@ const LocationSearchInput = ({
     setSearchTerm(selectedValue || "");
   }, [selectedValue]);
 
-  // outside click close
+  // Outside click close
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -50,15 +49,15 @@ const LocationSearchInput = ({
     };
   }, []);
 
-  // location search api
+  // Location search API
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm.trim().length >= 2) {
         setLoading(true);
         API.get(`/location/search?query=${searchTerm}`)
           .then((res) => {
-            if (res.data.success) {
-              setSuggestions(res.data.data);
+            if (res.data && res.data.success) {
+              setSuggestions(res.data.data || []);
               setIsOpen(true);
             }
           })
@@ -158,7 +157,7 @@ const LocationSearchInput = ({
 };
 
 // ==========================================
-// 2. MAIN DIRECTORY FILTER & RESULTS COMPONENT
+// 2. MAIN DIRECTORY COMPONENT
 // ==========================================
 const Directory = () => {
   const navigate = useNavigate();
@@ -177,39 +176,44 @@ const Directory = () => {
   const [directoryData, setDirectoryData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // UPDATED CATEGORY LIST
+  // CATEGORY LIST MATCHING BACKEND VALUES
   const transportCategories = [
     { label: "All Categories", value: "" },
-    { label: "Transporter", value: "Transporter" },
-    { label: "Broker", value: "Broker" },
-    { label: "Fleet Owner", value: "Fleet Owner" },
-    { label: "Truck Owner", value: "Truck Owner" },
-    { label: "Logistics Company", value: "Logistics Company" },
-    { label: "Warehouse", value: "Warehouse" },
-    { label: "Courier", value: "Courier" },
-    { label: "Packers & Movers", value: "Packers & Movers" },
-    { label: "Commission Agent", value: "Commission Agent" },
-    { label: "RTO Agent", value: "RTO Agent" },
-    { label: "Finance Agent", value: "Finance Agent" },
-    { label: "Others", value: "Others" },
+    { label: "Transporter", value: "transporter" },
+    { label: "Broker", value: "broker" },
+    { label: "Fleet Owner", value: "fleet_owner" },
+    { label: "Truck Owner", value: "truck_owner" },
+    { label: "Logistics Company", value: "logistics_company" },
+    { label: "Warehouse", value: "warehouse" },
+    { label: "Courier", value: "courier" },
+    { label: "Packers & Movers", value: "packers_and_movers" },
+    { label: "Commission Agent", value: "commission_agent" },
+    { label: "RTO Agent", value: "rto_agent" },
+    { label: "Finance Agent", value: "finance_company" },
+    { label: "Others", value: "others" },
   ];
 
-  // FETCH INITIAL DIRECTORY DATA USING `/api/v1/directory`
+  // SAFE DIRECTORY FETCH
   const fetchAllDirectoryData = async () => {
     try {
       setLoading(true);
       const response = await API.get("/directory");
       if (response.data) {
-        setDirectoryData(response.data.data || response.data || []);
+        // Safe extraction for { success: true, data: [...] }
+        const list = Array.isArray(response.data)
+          ? response.data
+          : response.data.data || [];
+        setDirectoryData(list);
       }
     } catch (error) {
       console.log("Directory Fetch Error", error);
+      setDirectoryData([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // FETCH FILTERED DIRECTORY USING `/api/v1/businesses/search`
+  // SEARCH DIRECTORY DATA
   const fetchFilteredDirectoryData = async (filters = {}) => {
     try {
       setLoading(true);
@@ -230,17 +234,18 @@ const Directory = () => {
       }
     } catch (error) {
       console.log("Directory Search Error", error);
+      setDirectoryData([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // LOAD ALL DATA FIRST TIME ON MOUNT
+  // INITIAL MOUNT LOAD
   useEffect(() => {
     fetchAllDirectoryData();
   }, []);
 
-  // SEARCH BUTTON SUBMIT (USES SEARCH API)
+  // SEARCH SUBMIT
   const handleSearchSubmit = (e) => {
     e.preventDefault();
 
@@ -264,24 +269,18 @@ const Directory = () => {
     fetchAllDirectoryData();
   };
 
-  // MASK PHONE
+  // SAFE MASK PHONE
   const maskPhoneNumber = (number) => {
-    if (!number) {
-      return "Not Provided";
-    }
-
+    if (!number) return "Not Provided";
     const strNumber = String(number);
-
     if (strNumber.length >= 10) {
       return "XXXXXX" + strNumber.slice(-4);
     }
-
     return "XXXXXXXXXX";
   };
 
   return (
-    // pt-24 lagane se ye navbar ke under nahi jayega, thoda neeche shift ho jayega
-    <div className="w-full  mt-5 max-w-7xl mx-auto p-4 md:p-6 pt-24 md:pt-28">
+    <div className="w-full mt-5 max-w-7xl mx-auto p-4 md:p-6 pt-24 md:pt-28">
       {/* SEARCH BOX */}
       <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
@@ -292,7 +291,6 @@ const Directory = () => {
             </h2>
           </div>
 
-          {/* RESET BUTTON */}
           <button
             type="button"
             onClick={handleResetFilters}
@@ -372,19 +370,25 @@ const Directory = () => {
       </h3>
 
       {loading ? (
-        <div className="text-center py-20 font-medium text-gray-500">Loading...</div>
+        <div className="text-center py-20 font-medium text-gray-500">
+          Loading...
+        </div>
       ) : directoryData.length === 0 ? (
         <div className="bg-white rounded-xl p-10 text-center text-gray-500 font-medium shadow-sm border border-gray-100">
           No Transport Found
         </div>
       ) : (
-        /* CARDS CONTAINER WITH SCROLLBAR & FIXED MAX HEIGHT */
         <div className="max-h-[800px] overflow-y-auto pr-2 custom-scrollbar space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {directoryData.map((item, index) => {
               const displayPhone = isLoggedIn
                 ? item.phoneNumber
                 : maskPhoneNumber(item.phoneNumber);
+
+              // Role formatting (e.g. 'rto_agent' -> 'Rto agent')
+              const formattedRole = item.role
+                ? item.role.replace(/_/g, " ")
+                : "Transporter";
 
               return (
                 <div
@@ -393,7 +397,6 @@ const Directory = () => {
                 >
                   {/* TOP HEADER SECTION */}
                   <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white relative">
-                    {/* Verified Badge on Top-Right Corner */}
                     <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md border border-white/30 text-white px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1 shadow-sm">
                       <CheckCircle2
                         size={13}
@@ -406,10 +409,12 @@ const Directory = () => {
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <Truck size={20} className="text-white" />
-                          <h4 className="font-bold text-lg">{item.firmName}</h4>
+                          <h4 className="font-bold text-lg capitalize">
+                            {item.firmName || "Unnamed Firm"}
+                          </h4>
                         </div>
                         <p className="text-blue-100 text-xs capitalize">
-                          {item.role || "Transporter"}
+                          {formattedRole}
                         </p>
                       </div>
                     </div>
@@ -420,8 +425,9 @@ const Directory = () => {
                     {/* Location Info */}
                     <div className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-2xl">
                       <MapPin size={18} className="text-red-500 shrink-0" />
-                      <span className="font-medium">
-                        {item.city}, {item.state}
+                      <span className="font-medium capitalize">
+                        {item.city || "Not Specified"},{" "}
+                        {item.state || "Not Specified"}
                       </span>
                     </div>
 
@@ -453,25 +459,29 @@ const Directory = () => {
                       </div>
                     </div>
 
-                    {/* Working Areas */}
-                    {item.workingAreas && item.workingAreas.length > 0 && (
-                      <div className="bg-blue-50/50 border border-blue-100 p-3 rounded-2xl">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-blue-700 mb-2">
-                          <Globe size={14} />
-                          <span>Working Areas:</span>
+                    {/* Working Areas (SAFE ARRAY RENDER) */}
+                    {Array.isArray(item.workingAreas) &&
+                      item.workingAreas.length > 0 && (
+                        <div className="bg-blue-50/50 border border-blue-100 p-3 rounded-2xl">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-blue-700 mb-2">
+                            <Globe size={14} />
+                            <span>Working Areas:</span>
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            {item.workingAreas.map((area, i) => (
+                              <span
+                                key={area._id || i}
+                                className="bg-white border border-blue-200 text-blue-800 px-2 py-1 rounded-lg text-xs font-medium"
+                              >
+                                {Array.isArray(area?.cities)
+                                  ? area.cities.join(", ")
+                                  : ""}{" "}
+                                ({area.state || ""})
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                        <div className="flex flex-wrap gap-1">
-                          {item.workingAreas.map((area, i) => (
-                            <span
-                              key={area._id || i}
-                              className="bg-white border border-blue-200 text-blue-800 px-2 py-1 rounded-lg text-xs font-medium"
-                            >
-                              {area.cities.join(", ")} ({area.state})
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                      )}
                   </div>
 
                   {/* FOOTER ACTIONS */}
@@ -482,9 +492,7 @@ const Directory = () => {
                         if (!isLoggedIn) {
                           e.preventDefault();
                           navigate("/login", {
-                            state: {
-                              from: location,
-                            },
+                            state: { from: location },
                           });
                         }
                       }}
@@ -498,9 +506,7 @@ const Directory = () => {
                       onClick={() => {
                         if (!isLoggedIn) {
                           navigate("/login", {
-                            state: {
-                              from: location,
-                            },
+                            state: { from: location },
                           });
                           return;
                         }
