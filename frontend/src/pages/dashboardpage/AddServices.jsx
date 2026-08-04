@@ -646,17 +646,17 @@ export function AddServices() {
       toast.error("Registered mobile number not found. Please login again.");
       return false;
     }
-    if (
-      formData.email.trim() &&
-      !/^\S+@\S+\.\S+$/.test(formData.email.trim())
-    ) {
-      toast.error("Enter a valid email address");
-      return false;
-    }
-    if (formData.pincode.trim() && !/^[1-9][0-9]{5}$/.test(formData.pincode)) {
-      toast.error("Enter valid 6 digit pincode");
-      return false;
-    }
+    // if (
+    //   formData.email.trim() &&
+    //   !/^\S+@\S+\.\S+$/.test(formData.email.trim())
+    // ) {
+    //   toast.error("Enter a valid email address");
+    //   return false;
+    // }
+    // if (formData.pincode.trim() && !/^[1-9][0-9]{5}$/.test(formData.pincode)) {
+    //   toast.error("Enter valid 6 digit pincode");
+    //   return false;
+    // }
     return true;
   };
 

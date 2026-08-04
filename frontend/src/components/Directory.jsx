@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api/api";
@@ -35,21 +36,16 @@ const LocationSearchInput = ({
     setSearchTerm(selectedValue || "");
   }, [selectedValue]);
 
-  // Outside click close
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Location search API
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm.trim().length >= 2) {
@@ -61,12 +57,8 @@ const LocationSearchInput = ({
               setIsOpen(true);
             }
           })
-          .catch((err) => {
-            console.log("Location Error", err);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
+          .catch((err) => console.log("Location Error", err))
+          .finally(() => setLoading(false));
       } else {
         setSuggestions([]);
         setIsOpen(false);
@@ -163,7 +155,6 @@ const Directory = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // AUTH CONTEXT
   const { user } = useContext(AuthContext);
   const isLoggedIn = !!user;
 
@@ -176,7 +167,6 @@ const Directory = () => {
   const [directoryData, setDirectoryData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // CATEGORY LIST MATCHING BACKEND VALUES
   const transportCategories = [
     { label: "All Categories", value: "" },
     { label: "Transporter", value: "transporter" },
@@ -193,17 +183,28 @@ const Directory = () => {
     { label: "Others", value: "others" },
   ];
 
-  // SAFE DIRECTORY FETCH
-  const fetchAllDirectoryData = async () => {
+  // UNIFIED FETCH FUNCTION FOR DIRECTORY & SEARCH
+  const fetchDirectoryData = async (filters = {}) => {
     try {
       setLoading(true);
-      const response = await API.get("/directory");
-      if (response.data) {
-        // Safe extraction for { success: true, data: [...] }
-        const list = Array.isArray(response.data)
-          ? response.data
-          : response.data.data || [];
-        setDirectoryData(list);
+
+      const params = {};
+      const stateVal = filters.state !== undefined ? filters.state : selectedState;
+      const cityVal = filters.city !== undefined ? filters.city : selectedCity;
+      const catVal = filters.category !== undefined ? filters.category : category;
+
+      if (stateVal) params.state = stateVal;
+      if (cityVal) params.city = cityVal;
+      if (catVal) params.category = catVal;
+
+      const response = await API.get("/directory", { params });
+
+      if (response.data && response.data.success) {
+        setDirectoryData(response.data.data || []);
+      } else if (Array.isArray(response.data)) {
+        setDirectoryData(response.data);
+      } else {
+        setDirectoryData([]);
       }
     } catch (error) {
       console.log("Directory Fetch Error", error);
@@ -213,63 +214,26 @@ const Directory = () => {
     }
   };
 
-  // SEARCH DIRECTORY DATA
-  const fetchFilteredDirectoryData = async (filters = {}) => {
-    try {
-      setLoading(true);
-
-      const queryParams = {
-        state: filters.state !== undefined ? filters.state : selectedState,
-        city: filters.city !== undefined ? filters.city : selectedCity,
-        category: filters.category !== undefined ? filters.category : category,
-        limit: 1000,
-      };
-
-      const response = await API.get("/businesses/search", {
-        params: queryParams,
-      });
-
-      if (response.data) {
-        setDirectoryData(response.data.data || []);
-      }
-    } catch (error) {
-      console.log("Directory Search Error", error);
-      setDirectoryData([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // INITIAL MOUNT LOAD
   useEffect(() => {
-    fetchAllDirectoryData();
+    fetchDirectoryData();
   }, []);
 
-  // SEARCH SUBMIT
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-
-    if (!selectedState && !selectedCity && !category) {
-      fetchAllDirectoryData();
-      return;
-    }
-
-    fetchFilteredDirectoryData({
+    fetchDirectoryData({
       state: selectedState,
       city: selectedCity,
       category: category,
     });
   };
 
-  // RESET FILTERS
   const handleResetFilters = () => {
     setSelectedState("");
     setSelectedCity("");
     setCategory("");
-    fetchAllDirectoryData();
+    fetchDirectoryData({ state: "", city: "", category: "" });
   };
 
-  // SAFE MASK PHONE
   const maskPhoneNumber = (number) => {
     if (!number) return "Not Provided";
     const strNumber = String(number);
@@ -385,7 +349,6 @@ const Directory = () => {
                 ? item.phoneNumber
                 : maskPhoneNumber(item.phoneNumber);
 
-              // Role formatting (e.g. 'rto_agent' -> 'Rto agent')
               const formattedRole = item.role
                 ? item.role.replace(/_/g, " ")
                 : "Transporter";
@@ -444,7 +407,7 @@ const Directory = () => {
                           </span>
                         </div>
                       </div>
-
+ 
                       <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
                         <span className="text-xs text-gray-400 block mb-1">
                           Phone Number
@@ -459,7 +422,7 @@ const Directory = () => {
                       </div>
                     </div>
 
-                    {/* Working Areas (SAFE ARRAY RENDER) */}
+                    {/* Working Areas */}
                     {Array.isArray(item.workingAreas) &&
                       item.workingAreas.length > 0 && (
                         <div className="bg-blue-50/50 border border-blue-100 p-3 rounded-2xl">

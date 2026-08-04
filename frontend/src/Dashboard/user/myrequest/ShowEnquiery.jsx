@@ -108,7 +108,7 @@ function ShowEnquiry() {
                     </td>
 
                     <td className="px-4 py-4">
-                      {booking.weight} Kg
+                      {booking.weight} 
                     </td>
 
                     <td className="px-4 py-4">

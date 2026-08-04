@@ -5,7 +5,20 @@ import truckImage from "../assets/pexels-shantumsingh-29057947.jpg";
 import truckImagee from "../assets/pexels-m-javad-nemati-116278374-30037629.jpg";
 
 export function HeroCarousel({ setActiveTab }) {
+  const handleScroll = (tab) => {
+  setActiveTab(tab);
+
+  setTimeout(() => {
+    document
+      .getElementById("dynamic-home")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  }, 100);
+};
   return (
+
     <section className="w-full overflow-hidden">
       <div className="h-[520px] sm:h-[500px] lg:h-[600px]">
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
@@ -44,7 +57,7 @@ export function HeroCarousel({ setActiveTab }) {
 
                     {/* Search Transport */}
                     <button
-                      onClick={() => setActiveTab && setActiveTab("search")}
+                    onClick={() => handleScroll("search")}
                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
                     >
                       🚛 Search Transport
@@ -52,7 +65,7 @@ export function HeroCarousel({ setActiveTab }) {
 
                     {/* Post Lead */}
                     <button
-                      onClick={() => setActiveTab && setActiveTab("leads")}
+                      onClick={() => handleScroll("leads")}
                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-green-600 hover:bg-green-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
                     >
                       📦 Available Leads
@@ -118,7 +131,7 @@ export function HeroCarousel({ setActiveTab }) {
 
                     {/* Search Transport */}
                     <button
-                      onClick={() => setActiveTab && setActiveTab("search")}
+                     onClick={() => handleScroll("search")}
                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
                     >
                       🚛 Search Transport
@@ -126,7 +139,7 @@ export function HeroCarousel({ setActiveTab }) {
 
                     {/* Post Lead */}
                     <button
-                      onClick={() => setActiveTab && setActiveTab("leads")}
+                      onClick={() => handleScroll("leads")}
                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-green-600 hover:bg-green-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
                     >
                       📦 Available Leads

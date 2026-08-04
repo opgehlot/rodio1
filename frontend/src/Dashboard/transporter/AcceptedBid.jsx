@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/api";
-import { 
-  Truck, 
-  Package, 
-  Scale, 
-  User, 
-  Phone, 
-  CheckCircle2, 
-  XCircle, 
+import {
+  Truck,
+  Package,
+  Scale,
+  User,
+  Phone,
+  CheckCircle2,
+  XCircle,
   Clock,
   ArrowRight,
-  MapPin
+  MapPin,
 } from "lucide-react";
 
 function AcceptedBid() {
@@ -42,7 +42,6 @@ function AcceptedBid() {
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
-      
       {/* Page Title Header */}
       <div className="flex items-center justify-between border-b border-slate-200 pb-4">
         <div>
@@ -74,16 +73,18 @@ function AcceptedBid() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {bids.map((bid) => {
             // Customer ki requested pickup and drop location extraction
-            const pickupAddr = 
-              bid.booking?.pickupLocation || 
-              bid.booking?.loadingPoint || 
-              bid.booking?.fromAddress || 
+            const pickupAddr =
+              bid.booking?.pickupLocation ||
+              bid.booking?.loadingPoint ||
+              bid.booking?.fromAddress ||
               bid.booking?.from;
 
-            const dropAddr = 
-              bid.booking?.dropLocation || 
-              bid.booking?.unloadingPoint || 
-              bid.booking?.toAddress || 
+            const dropAddr =
+              bid.booking?.dropLocation ||
+              bid.booking?.unloadingPoint ||
+              bid.booking?.loading_point || // add this
+              bid.booking?.loadingPoint ||
+              bid.booking?.toAddress ||
               bid.booking?.to;
 
             return (
@@ -95,9 +96,15 @@ function AcceptedBid() {
                   {/* Route & Status Badge */}
                   <div className="flex items-start justify-between gap-3 pb-3 border-b border-slate-100">
                     <div className="flex items-center gap-2 text-slate-900 font-extrabold text-base sm:text-lg">
-                      <span>{bid.booking?.from || "Source"}</span>
-                      <ArrowRight size={16} className="text-orange-500 shrink-0" />
-                      <span>{bid.booking?.to || "Destination"}</span>
+                      <span>{bid.booking?.pickupLocation || "Source"}</span>
+
+                      <ArrowRight size={16} />
+
+                      <span>
+                        {bid.booking?.loading_point ||
+                          bid.booking?.loadingPoint ||
+                          "Destination"}
+                      </span>
                     </div>
 
                     <span
@@ -105,8 +112,8 @@ function AcceptedBid() {
                         bid.status === "Accepted"
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                           : bid.status === "Rejected"
-                          ? "bg-rose-50 text-rose-700 border border-rose-200"
-                          : "bg-amber-50 text-amber-700 border border-amber-200"
+                            ? "bg-rose-50 text-rose-700 border border-rose-200"
+                            : "bg-amber-50 text-amber-700 border border-amber-200"
                       }`}
                     >
                       {bid.status === "Accepted" && <CheckCircle2 size={13} />}
@@ -119,10 +126,13 @@ function AcceptedBid() {
                   {/* Customer Requested Exact Pickup & Drop Location */}
                   <div className="my-3 p-3 bg-orange-50/50 rounded-xl border border-orange-100/80 space-y-2">
                     <div className="flex items-start gap-2">
-                      <MapPin size={15} className="text-orange-600 mt-0.5 shrink-0" />
+                      <MapPin
+                        size={15}
+                        className="text-orange-600 mt-0.5 shrink-0"
+                      />
                       <div className="text-xs">
                         <span className="font-bold text-slate-500 block text-[10px] uppercase">
-                          Kahan Se (Pickup Location):
+                        (Pickup Location):
                         </span>
                         <span className="font-semibold text-slate-800">
                           {pickupAddr || "Not Specified"}
@@ -131,10 +141,13 @@ function AcceptedBid() {
                     </div>
 
                     <div className="flex items-start gap-2 pt-1 border-t border-orange-100/60">
-                      <MapPin size={15} className="text-emerald-600 mt-0.5 shrink-0" />
+                      <MapPin
+                        size={15}
+                        className="text-emerald-600 mt-0.5 shrink-0"
+                      />
                       <div className="text-xs">
                         <span className="font-bold text-slate-500 block text-[10px] uppercase">
-                          Kahan Tak (Delivery Location):
+                           (Unloading/Destination Location):
                         </span>
                         <span className="font-semibold text-slate-800">
                           {dropAddr || "Not Specified"}
@@ -155,7 +168,9 @@ function AcceptedBid() {
                           Goods Type
                         </span>
                         <span className="text-xs font-bold text-slate-800 capitalize truncate block">
-                          {bid.booking?.goodsType || bid.booking?.materialType || "Standard Load"}
+                          {bid.booking?.goodsType ||
+                            bid.booking?.materialType ||
+                            "Standard Load"}
                         </span>
                       </div>
                     </div>
@@ -170,8 +185,8 @@ function AcceptedBid() {
                           Total Load
                         </span>
                         <span className="text-xs font-bold text-slate-800 capitalize truncate block">
-                          {bid.booking?.weight 
-                            ? `${bid.booking.weight} Tons` 
+                          {bid.booking?.weight
+                            ? `${bid.booking.weight||"N/A"} `
                             : bid.booking?.loadType || "N/A"}
                         </span>
                       </div>
@@ -185,7 +200,10 @@ function AcceptedBid() {
                         Your Offered Bid
                       </span>
                       <h2 className="text-2xl font-black text-emerald-600 mt-0.5">
-                        ₹ {bid.amount ? Number(bid.amount).toLocaleString("en-IN") : "0"}
+                        ₹{" "}
+                        {bid.amount
+                          ? Number(bid.amount).toLocaleString("en-IN")
+                          : "0"}
                       </h2>
                     </div>
                   </div>
@@ -204,17 +222,21 @@ function AcceptedBid() {
                   <div className="pt-3 border-t border-slate-100 text-xs space-y-1.5 text-slate-600">
                     <div className="flex items-center gap-2">
                       <User size={14} className="text-slate-400" />
-                      <span className="font-medium text-slate-500">Customer:</span>
+                      <span className="font-medium text-slate-500">
+                        Customer:
+                      </span>
                       <span className="font-bold text-slate-800">
-                        {bid.booking?.createdBy?.name || "N/A"}
+                        {bid.booking?.contactPerson || "N/A"}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <Phone size={14} className="text-slate-400" />
-                      <span className="font-medium text-slate-500">Mobile:</span>
+                      <span className="font-medium text-slate-500">
+                        Mobile:
+                      </span>
                       <span className="font-bold text-slate-800">
-                        {bid.booking?.createdBy?.mobile || "N/A"}
+                        {bid.booking?.contactNumber || "N/A"}
                       </span>
                     </div>
                   </div>
@@ -224,9 +246,13 @@ function AcceptedBid() {
                 <div className="mt-4 pt-2">
                   {bid.status === "Accepted" && (
                     <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center gap-2">
-                      <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                      <CheckCircle2
+                        size={16}
+                        className="text-emerald-600 shrink-0"
+                      />
                       <p className="text-xs font-bold text-emerald-800">
-                        Congratulations! Customer has accepted your bid proposal.
+                        Congratulations! Customer has accepted your bid
+                        proposal.
                       </p>
                     </div>
                   )}
@@ -249,13 +275,11 @@ function AcceptedBid() {
                     </div>
                   )}
                 </div>
-
               </div>
             );
           })}
         </div>
       )}
-
     </div>
   );
 }

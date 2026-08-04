@@ -212,10 +212,10 @@ export default function UserForm() {
 
                   {/* Weight */}
                   <div>
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 block">Weight (Ton / Kg)</label>
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 block">Weight </label>
                     <div className="relative">
                       <input
-                        type="number"
+                        type="string"
                         placeholder="e.g. 15"
                         {...register("weight", { required: "Weight Required" })}
                         className="w-full h-11 bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 text-sm text-slate-800 outline-none focus:bg-white focus:border-orange-500 transition-all"
@@ -455,7 +455,7 @@ export default function UserForm() {
                 <div className="flex justify-between items-center py-1 border-b border-slate-800/60">
                   <span className="text-slate-400 font-medium">Goods & Weight</span>
                   <span className="font-bold text-slate-200">
-                    {formData.goodsType || "—"} {formData.weight ? `(${formData.weight} Ton/Kg)` : ""}
+                    {formData.goodsType || " "} {formData.weight ? `(${formData.weight} )` : ""}
                   </span>
                 </div>
 
