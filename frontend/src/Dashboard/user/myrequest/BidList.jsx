@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Phone, Mail, Calendar, Eye, CheckCircle, XCircle, User } from "lucide-react";
+import { Phone, Mail, Calendar, Eye, CheckCircle, XCircle, User, MapPin, Briefcase, Lock } from "lucide-react";
 import toast from "react-hot-toast";
 import API from "../../../api/api";
 
@@ -93,16 +93,23 @@ function BidList() {
       ) : (
         <div className="grid md:grid-cols-2 gap-6">
           {displayBids.map((bid) => {
-            // bid.transporter backend se populated object hai
             const transporterObj = bid.transporter || {};
             
-            // Dynamic data extraction from actual database object
             const transporterId = transporterObj._id || transporterObj.id;
-            const firmName = transporterObj.firmName || transporterObj.name || "Transport Firm";
-            const ownerName = transporterObj.ownerName || transporterObj.contactPerson || transporterObj.name || "Owner";
-            const mobile = transporterObj.mobile || transporterObj.phoneNumber || "N/A";
+            const firmName = transporterObj.firmName || "Transport Firm";
+            const ownerName = transporterObj.ownerName || transporterObj.name || "Owner";
+            const mobile = transporterObj.phoneNumber || transporterObj.mobile || "N/A";
             const email = transporterObj.email || "N/A";
-            const rating = transporterObj.averageRating || transporterObj.rating || "0.0";
+            const city = transporterObj.currentCity || "";
+            const state = transporterObj.currentState || "";
+            const address = transporterObj.address || "";
+            const category = transporterObj.category || "Service Provider";
+            const rating = transporterObj.averageRating || "0.0";
+
+            const locationText = [city, state].filter(Boolean).join(", ") || (address !== "Not Provided" ? address : "");
+
+            // Check if this specific bid is accepted
+            const isAccepted = bid.status === "Accepted";
 
             return (
               <div
@@ -135,7 +142,7 @@ function BidList() {
                       </span>
                       <span
                         className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${
-                          bid.status === "Accepted"
+                          isAccepted
                             ? "bg-emerald-500 text-white"
                             : bid.status === "Rejected"
                             ? "bg-red-500 text-white"
@@ -150,13 +157,38 @@ function BidList() {
 
                 {/* Body Details Section */}
                 <div className="p-5 space-y-4 flex-1 text-xs">
-                  <div className="space-y-1.5 pb-3 border-b border-slate-100">
-                    <p className="font-bold text-slate-600 flex items-center gap-2">
-                      <Mail size={14} className="text-blue-600" /> {email}
-                    </p>
-                    <p className="font-bold text-slate-600 flex items-center gap-2">
-                      <Phone size={14} className="text-emerald-600" /> {mobile}
-                    </p>
+                  <div className="space-y-2 pb-3 border-b border-slate-100">
+                    
+                    {/* Mobile Number Logic with Blur Effect */}
+                    <div className="flex items-center justify-between">
+                      <p className="font-bold text-slate-600 flex items-center gap-2">
+                        <Phone size={14} className="text-emerald-600" /> 
+                        <span className={!isAccepted ? "filter blur-[5px] select-none text-slate-400" : "text-slate-800"}>
+                          {mobile}
+                        </span>
+                      </p>
+                      {!isAccepted && (
+                        <span className="text-[10px] font-bold text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                          <Lock size={10} /> Unlock after accept
+                        </span>
+                      )}
+                    </div>
+
+                    {email && email !== "N/A" && (
+                      <p className="font-bold text-slate-600 flex items-center gap-2">
+                        <Mail size={14} className="text-blue-600" /> {email}
+                      </p>
+                    )}
+                    {locationText && (
+                      <p className="font-bold text-slate-500 flex items-center gap-2">
+                        <MapPin size={14} className="text-rose-500" /> {locationText}
+                      </p>
+                    )}
+                    {category && (
+                      <p className="font-bold text-slate-500 flex items-center gap-2">
+                        <Briefcase size={14} className="text-amber-500" /> {category.replace("_", " ")}
+                      </p>
+                    )}
                   </div>
 
                   {/* Remarks / Message Box */}
@@ -187,7 +219,7 @@ function BidList() {
 
                 {/* Footer Action Buttons */}
                 <div className="p-5 pt-0 space-y-3">
-                  {bid.status === "Accepted" && (
+                  {isAccepted && (
                     <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center">
                       <p className="text-emerald-700 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5">
                         <CheckCircle size={16} /> Transporter Selected Successfully
@@ -237,7 +269,7 @@ function BidList() {
                     ) : (
                       <div
                         className={`py-2.5 px-4 rounded-xl text-center font-bold text-xs flex items-center justify-center ${
-                          bid.status === "Accepted"
+                          isAccepted
                             ? "bg-emerald-100 text-emerald-800"
                             : "bg-red-100 text-red-800"
                         }`}
