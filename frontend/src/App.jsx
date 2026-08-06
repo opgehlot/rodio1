@@ -1,3 +1,7 @@
+import { useEffect, useState } from "react";
+import SplashScreen from "./uiloading/loading";
+
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import MainLayout from "./layout/MainLayout";
@@ -61,9 +65,26 @@ import ImageGalleryManager from "./Dashboard/ImageGalleryManager";
 import Referral from "../payment/Referral";
 import UpdateBisProfile from "./components/UpdateBisProfile";
 
+
 // Dummy Pages
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <SplashScreen />;
+  }
+
+
+
   return (
     <BrowserRouter>
       <Toaster

@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import LanguageSwitcher from "../languages/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/nav.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -75,11 +76,15 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto h-[70px] px-5 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex-shrink-0">
-          <NavLink to="/" className="text-2xl font-bold text-blue-600">
-            {t("navbar.brandName", "RODIO Tradelink")}
-          </NavLink>
-        </div>
+       <div className="flex-shrink-0">
+  <NavLink to="/" className="flex items-center">
+    <img
+      src={logo}
+      alt="RODIO Tradelink"
+      className="h-30 w-auto"
+    />
+  </NavLink>
+</div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center justify-center flex-1 mx-8 gap-8">

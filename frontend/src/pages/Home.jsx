@@ -35,6 +35,7 @@ import Overvision from "../components/Overvision";
 import Feedback from "../components/Feedback";
 import QueryForm from "../components/QueryForm";
 
+
 function Home() {
   const [activeTab, setActiveTab] = useState("search");
 
@@ -50,6 +51,7 @@ function Home() {
 
       {/* Other Sections */}
       <Features />
+     
       <Overvision />
       <Feedback />
       <QueryForm />
