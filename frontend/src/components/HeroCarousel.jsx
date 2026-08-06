@@ -188,9 +188,9 @@ export function HeroCarousel({ setActiveTab }) {
   };
 
   return (
-    <section className="w-full h-screen sm:h-auto overflow-hidden flex flex-col justify-between">
-      {/* Carousel Container - flex-1 lagane se beech ki space khatam ho jayegi */}
-      <div className="w-full flex-1 sm:h-[450px] lg:h-[600px]">
+    <section className="w-full h-[85vh] sm:h-auto overflow-hidden flex flex-col justify-between">
+      {/* Carousel Container */}
+      <div className="w-full flex-1 sm:h-[500px] lg:h-[600px]">
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
           {/* ====================== Slide 1 ====================== */}
           <div className="relative h-full">
@@ -201,10 +201,10 @@ export function HeroCarousel({ setActiveTab }) {
             />
 
             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
-              <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
+              <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-2 sm:pt-0">
                 <div className="max-w-3xl">
                   {/* Heading */}
-                  <h1 className="font-inter mt-3 sm:mt-5 text-3xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+                  <h1 className="font-inter text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
                     India's Trusted Transport Network
                   </h1>
 
@@ -265,10 +265,10 @@ export function HeroCarousel({ setActiveTab }) {
             />
 
             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
-              <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
+              <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-2 sm:pt-0">
                 <div className="max-w-3xl">
                   {/* Heading */}
-                  <h1 className="mt-3 sm:mt-5 text-3xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+                  <h1 className="text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
                     Fast, Secure & Reliable Transport Solutions
                   </h1>
 
@@ -319,43 +319,43 @@ export function HeroCarousel({ setActiveTab }) {
       </div>
 
       {/* ====================== Mobile Footer Action Area (Only for Mobile) ====================== */}
-      <div className="sm:hidden w-full bg-[#0d1b2a] text-white px-4 py-3 flex flex-col justify-between shadow-2xl border-t border-gray-800 shrink-0">
+      <div className="sm:hidden w-full bg-[#0d1b2a] text-white px-3 py-2 flex flex-col justify-between shadow-2xl border-t border-gray-800 shrink-0">
         {/* Buttons */}
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col gap-1.5 w-full">
           <Link to="/directory" className="w-full">
-            <button className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm font-semibold shadow-md text-center">
+            <button className="w-full py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-xs font-semibold shadow-md text-center">
               📂 Directory
             </button>
           </Link>
 
           <button
             onClick={() => handleScroll("search")}
-            className="w-full py-2 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm font-semibold shadow-md text-center"
+            className="w-full py-1.5 rounded-lg bg-white text-gray-900 hover:bg-gray-100 text-xs font-semibold shadow-md text-center"
           >
             🚛 Search Transport
           </button>
 
           <button
             onClick={() => handleScroll("leads")}
-            className="w-full py-2 rounded-xl bg-green-600 hover:bg-green-700 text-sm font-semibold shadow-md text-center"
+            className="w-full py-1.5 rounded-lg bg-green-600 hover:bg-green-700 text-xs font-semibold shadow-md text-center"
           >
             📦 Available Leads
           </button>
         </div>
 
         {/* Stats Below Buttons */}
-        <div className="mt-2 grid grid-cols-3 gap-2 text-center pt-2 border-t border-gray-800">
+        <div className="mt-1 grid grid-cols-3 gap-1 text-center pt-1 border-t border-gray-800">
           <div>
-            <h3 className="text-base font-bold">500+</h3>
-            <p className="text-[10px] text-gray-300">Verified Businesses</p>
+            <h3 className="text-sm font-bold">500+</h3>
+            <p className="text-[9px] text-gray-300">Verified Businesses</p>
           </div>
           <div>
-            <h3 className="text-base font-bold">28+</h3>
-            <p className="text-[10px] text-gray-300">States Covered</p>
+            <h3 className="text-sm font-bold">28+</h3>
+            <p className="text-[9px] text-gray-300">States Covered</p>
           </div>
           <div>
-            <h3 className="text-base font-bold">24/7</h3>
-            <p className="text-[10px] text-gray-300">Support</p>
+            <h3 className="text-sm font-bold">24/7</h3>
+            <p className="text-[9px] text-gray-300">Support</p>
           </div>
         </div>
       </div>
