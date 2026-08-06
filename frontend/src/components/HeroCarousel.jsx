@@ -188,7 +188,7 @@ export function HeroCarousel({ setActiveTab }) {
   };
 
   return (
-    <section className="w-full h-[92vh] sm:h-auto overflow-hidden flex flex-col justify-between">
+    <section className="w-full h-[90vh] sm:h-auto overflow-hidden flex flex-col justify-between">
       {/* Carousel Container */}
       <div className="w-full flex-1 sm:h-[500px] lg:h-[600px]">
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
@@ -216,7 +216,7 @@ export function HeroCarousel({ setActiveTab }) {
                   </p>
 
                   {/* Buttons: Desktop only */}
-                  <div className="hidden sm:mt-8 sm:flex flex-wrap gap-4">
+                  <div className="hidden sm:mt-10 sm:flex flex-wrap gap-4">
                     <Link to="/directory">
                       <button className="px-7 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105">
                         📂 Directory
