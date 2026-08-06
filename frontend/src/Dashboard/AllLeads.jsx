@@ -128,14 +128,14 @@ const AllLeads = () => {
         </div>
       </div>
 
-      {/* Cards - Strict 2-Row Horizontal Scroll Container */}
+      {/* Cards */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         {loading ? (
-          <div className="flex flex-col flex-wrap h-[520px] gap-6 overflow-x-auto pb-4 custom-scrollbar">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
             {[...Array(6)].map((_, index) => (
               <div
                 key={index}
-                className="w-[350px] bg-white rounded-3xl p-6 shadow animate-pulse flex-shrink-0"
+                className="bg-white rounded-3xl p-6 shadow animate-pulse"
               >
                 <div className="h-10 bg-gray-200 rounded mb-6"></div>
                 <div className="space-y-4">
@@ -168,13 +168,18 @@ const AllLeads = () => {
             </button>
           </div>
         ) : (
-          <div className="overflow-x-auto pb-6 custom-scrollbar">
-            {/* flex-col aur flex-wrap ke sath fixed container height dene par cards exactly 2 rows me column-wise aage badhenge aur side me scroll honge */}
-            <div className="flex flex-col flex-wrap h-[560px] gap-6 w-max">
+         <div className="h-[620px] overflow-y-auto pr-2 custom-scrollbar">
+            {/* Desktop */}
+            <div className="hidden md:grid grid-cols-2 xl:grid-cols-3 gap-7 pb-4">
               {filteredLeads.map((lead) => (
-                <div key={lead._id} className="w-[350px] flex-shrink-0">
-                  <LeadCard lead={lead} />
-                </div>
+                <LeadCard key={lead._id} lead={lead} />
+              ))}
+            </div>
+
+            {/* Mobile */}
+            <div className="grid md:hidden gap-5 pb-4">
+              {filteredLeads.map((lead) => (
+                <LeadCard key={lead._id} lead={lead} />
               ))}
             </div>
           </div>
@@ -185,4 +190,4 @@ const AllLeads = () => {
   );
 };
 
-export default AllLetads; // Make sure to export AllLeads properly
+export default AllLeads;
