@@ -1,3 +1,174 @@
+// import { Carousel as FlowbiteCarousel } from "flowbite-react";
+// import { Link } from "react-router-dom";
+
+// import truckImage from "../assets/pexels-shantumsingh-29057947.jpg";
+// import truckImagee from "../assets/pexels-m-javad-nemati-116278374-30037629.jpg";
+
+// export function HeroCarousel({ setActiveTab }) {
+//   const handleScroll = (tab) => {
+//     setActiveTab(tab);
+
+//     setTimeout(() => {
+//       document.getElementById("dynamic-home")?.scrollIntoView({
+//         behavior: "smooth",
+//         block: "start",
+//       });
+//     }, 100);
+//   };
+//   return (
+//     <section className="w-full overflow-hidden">
+//       <div className="h-[520px] sm:h-[500px] lg:h-[600px]">
+//         <FlowbiteCarousel slideInterval={5000} indicators={false}>
+//           {/* ====================== Slide 1 ====================== */}
+//           <div className="relative h-full">
+//             <img
+//               src={truckImage}
+//               alt="Truck"
+//               className="w-full h-full object-cover"
+//             />
+
+//             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
+//               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
+//                 <div className="max-w-3xl">
+//                   {/* <span className="inline-block bg-blue-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
+//                     🇮🇳 Trusted Across India
+//                   </span> */}
+
+//                   <h1 className="font-inter mt-3 sm:mt-5 text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+//                     India's Trusted Transport Network
+//                   </h1>
+//                   <p className="font-inter mt-4 text-base md:text-lg lg:text-xl text-gray-200 max-w-3xl leading-8">
+//                     Find verified transporters, brokers, contractors and
+//                     logistics partners across India. Connect faster and grow
+//                     your business.
+//                   </p>
+
+//                   <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-4">
+//                     {/* Directory */}
+//                     <Link to="/directory" className="w-full sm:w-auto">
+//                       <button className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center">
+//                         📂 Directory
+//                       </button>
+//                     </Link>
+
+//                     {/* Search Transport */}
+//                     <button
+//                       onClick={() => handleScroll("search")}
+//                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+//                     >
+//                       🚛 Search Transport
+//                     </button>
+
+//                     {/* Post Lead */}
+//                     <button
+//                       onClick={() => handleScroll("leads")}
+//                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-green-600 hover:bg-green-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+//                     >
+//                       📦 Available Leads
+//                     </button>
+//                   </div>
+
+//                   <div className="mt-6 sm:mt-10 grid grid-cols-3 gap-3 sm:gap-5 max-w-md">
+//                     <div>
+//                       <h3 className="text-xl sm:text-2xl font-bold">500+</h3>
+//                       <p className="text-[11px] sm:text-sm text-gray-300">
+//                         Verified Businesses
+//                       </p>
+//                     </div>
+
+//                     <div>
+//                       <h3 className="text-xl sm:text-2xl font-bold">28+</h3>
+//                       <p className="text-[11px] sm:text-sm text-gray-300">
+//                         States Covered
+//                       </p>
+//                     </div>
+
+//                     <div>
+//                       <h3 className="text-xl sm:text-2xl font-bold">24/7</h3>
+//                       <p className="text-[11px] sm:text-sm text-gray-300">
+//                         Support
+//                       </p>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* ====================== Slide 2 ====================== */}
+//           <div className="relative h-full">
+//             <img
+//               src={truckImagee}
+//               alt="Logistics"
+//               className="w-full h-full object-cover"
+//             />
+
+//             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
+//               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
+//                 <div className="max-w-3xl">
+//                   {/* <span className="inline-block bg-green-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
+//                     🚚 Smart Logistics Platform
+//                   </span> */}
+
+//                   <h1 className="mt-3 sm:mt-5 text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+//                     Fast, Secure & Reliable Transport Solutions
+//                   </h1>
+
+//                   <p className="mt-3 sm:mt-5 text-xs sm:text-lg text-gray-200 max-w-2xl leading-relaxed line-clamp-3 sm:line-clamp-none">
+//                     Discover trusted transport companies, freight brokers and
+//                     logistics experts for every route across India.
+//                   </p>
+
+//                   <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-4">
+//                     {/* Directory */}
+//                     <Link to="/directory" className="w-full sm:w-auto">
+//                       <button className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center">
+//                         📂 Directory
+//                       </button>
+//                     </Link>
+
+//                     {/* Search Transport */}
+//                     <button
+//                       onClick={() => handleScroll("search")}
+//                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+//                     >
+//                       🚛 Search Transport
+//                     </button>
+
+//                     {/* Post Lead */}
+//                     <button
+//                       onClick={() => handleScroll("leads")}
+//                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-green-600 hover:bg-green-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+//                     >
+//                       📦 Available Leads
+//                     </button>
+//                   </div>
+
+//                   <div className="mt-6 sm:mt-10 flex flex-wrap gap-2 sm:gap-3">
+//                     <span className="bg-white/10 backdrop-blur px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm">
+//                       ✔ Verified Companies
+//                     </span>
+
+//                     <span className="bg-white/10 backdrop-blur px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm">
+//                       ✔ Trusted Brokers
+//                     </span>
+
+//                     <span className="bg-white/10 backdrop-blur px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm">
+//                       ✔ PAN India Network
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </FlowbiteCarousel>
+//       </div>
+//     </section>
+//   );
+// }
+
+// export default HeroCarousel;
+
 import { Carousel as FlowbiteCarousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 
@@ -15,9 +186,11 @@ export function HeroCarousel({ setActiveTab }) {
       });
     }, 100);
   };
+
   return (
-    <section className="w-full overflow-hidden">
-      <div className="h-[520px] sm:h-[500px] lg:h-[600px]">
+    <section className="w-full h-screen sm:h-auto overflow-hidden flex flex-col justify-between">
+      {/* Carousel Container - flex-1 lagane se beech ki space khatam ho jayegi */}
+      <div className="w-full flex-1 sm:h-[500px] lg:h-[600px]">
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
           {/* ====================== Slide 1 ====================== */}
           <div className="relative h-full">
@@ -30,64 +203,52 @@ export function HeroCarousel({ setActiveTab }) {
             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
                 <div className="max-w-3xl">
-                  {/* <span className="inline-block bg-blue-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
-                    🇮🇳 Trusted Across India
-                  </span> */}
-
-                  <h1 className="font-inter mt-3 sm:mt-5 text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+                  {/* Heading */}
+                  <h1 className="font-inter mt-3 sm:mt-5 text-3xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
                     India's Trusted Transport Network
                   </h1>
-                  <p className="font-inter mt-4 text-base md:text-lg lg:text-xl text-gray-200 max-w-3xl leading-8">
+
+                  {/* Paragraph: Desktop only */}
+                  <p className="font-inter hidden sm:block mt-4 text-base md:text-lg lg:text-xl text-gray-200 max-w-3xl leading-8">
                     Find verified transporters, brokers, contractors and
                     logistics partners across India. Connect faster and grow
                     your business.
                   </p>
 
-                  <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-4">
-                    {/* Directory */}
-                    <Link to="/directory" className="w-full sm:w-auto">
-                      <button className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center">
+                  {/* Buttons: Desktop only */}
+                  <div className="hidden sm:mt-8 sm:flex flex-wrap gap-4">
+                    <Link to="/directory">
+                      <button className="px-7 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105">
                         📂 Directory
                       </button>
                     </Link>
-
-                    {/* Search Transport */}
                     <button
                       onClick={() => handleScroll("search")}
-                      className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+                      className="px-7 py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       🚛 Search Transport
                     </button>
-
-                    {/* Post Lead */}
                     <button
                       onClick={() => handleScroll("leads")}
-                      className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-green-600 hover:bg-green-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+                      className="px-7 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       📦 Available Leads
                     </button>
                   </div>
 
-                  <div className="mt-6 sm:mt-10 grid grid-cols-3 gap-3 sm:gap-5 max-w-md">
+                  {/* Stats: Desktop only */}
+                  <div className="hidden sm:mt-10 sm:grid grid-cols-3 gap-5 max-w-md">
                     <div>
-                      <h3 className="text-xl sm:text-2xl font-bold">500+</h3>
-                      <p className="text-[11px] sm:text-sm text-gray-300">
-                        Verified Businesses
-                      </p>
+                      <h3 className="text-2xl font-bold">500+</h3>
+                      <p className="text-sm text-gray-300">Verified Businesses</p>
                     </div>
-
                     <div>
-                      <h3 className="text-xl sm:text-2xl font-bold">28+</h3>
-                      <p className="text-[11px] sm:text-sm text-gray-300">
-                        States Covered
-                      </p>
+                      <h3 className="text-2xl font-bold">28+</h3>
+                      <p className="text-sm text-gray-300">States Covered</p>
                     </div>
-
                     <div>
-                      <h3 className="text-xl sm:text-2xl font-bold">24/7</h3>
-                      <p className="text-[11px] sm:text-sm text-gray-300">
-                        Support
-                      </p>
+                      <h3 className="text-2xl font-bold">24/7</h3>
+                      <p className="text-sm text-gray-300">Support</p>
                     </div>
                   </div>
                 </div>
@@ -106,54 +267,47 @@ export function HeroCarousel({ setActiveTab }) {
             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
                 <div className="max-w-3xl">
-                  {/* <span className="inline-block bg-green-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
-                    🚚 Smart Logistics Platform
-                  </span> */}
-
-                  <h1 className="mt-3 sm:mt-5 text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+                  {/* Heading */}
+                  <h1 className="mt-3 sm:mt-5 text-3xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
                     Fast, Secure & Reliable Transport Solutions
                   </h1>
 
-                  <p className="mt-3 sm:mt-5 text-xs sm:text-lg text-gray-200 max-w-2xl leading-relaxed line-clamp-3 sm:line-clamp-none">
+                  {/* Paragraph: Desktop only */}
+                  <p className="hidden sm:block mt-5 text-lg text-gray-200 max-w-2xl leading-relaxed">
                     Discover trusted transport companies, freight brokers and
                     logistics experts for every route across India.
                   </p>
 
-                  <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-4">
-                    {/* Directory */}
-                    <Link to="/directory" className="w-full sm:w-auto">
-                      <button className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center">
+                  {/* Buttons: Desktop only */}
+                  <div className="hidden sm:mt-8 sm:flex flex-wrap gap-4">
+                    <Link to="/directory">
+                      <button className="px-7 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105">
                         📂 Directory
                       </button>
                     </Link>
-
-                    {/* Search Transport */}
                     <button
                       onClick={() => handleScroll("search")}
-                      className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+                      className="px-7 py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       🚛 Search Transport
                     </button>
-
-                    {/* Post Lead */}
                     <button
                       onClick={() => handleScroll("leads")}
-                      className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-green-600 hover:bg-green-700 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
+                      className="px-7 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       📦 Available Leads
                     </button>
                   </div>
 
-                  <div className="mt-6 sm:mt-10 flex flex-wrap gap-2 sm:gap-3">
-                    <span className="bg-white/10 backdrop-blur px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm">
+                  {/* Badges: Desktop only */}
+                  <div className="hidden sm:mt-10 sm:flex flex-wrap gap-3">
+                    <span className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
                       ✔ Verified Companies
                     </span>
-
-                    <span className="bg-white/10 backdrop-blur px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm">
+                    <span className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
                       ✔ Trusted Brokers
                     </span>
-
-                    <span className="bg-white/10 backdrop-blur px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm">
+                    <span className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
                       ✔ PAN India Network
                     </span>
                   </div>
@@ -162,6 +316,48 @@ export function HeroCarousel({ setActiveTab }) {
             </div>
           </div>
         </FlowbiteCarousel>
+      </div>
+
+      {/* ====================== Mobile Footer Action Area (Only for Mobile) ====================== */}
+      <div className="sm:hidden w-full bg-[#0d1b2a] text-white px-4 py-3 flex flex-col justify-between shadow-2xl border-t border-gray-800 shrink-0">
+        {/* Buttons */}
+        <div className="flex flex-col gap-2 w-full">
+          <Link to="/directory" className="w-full">
+            <button className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm font-semibold shadow-md text-center">
+              📂 Directory
+            </button>
+          </Link>
+
+          <button
+            onClick={() => handleScroll("search")}
+            className="w-full py-2 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm font-semibold shadow-md text-center"
+          >
+            🚛 Search Transport
+          </button>
+
+          <button
+            onClick={() => handleScroll("leads")}
+            className="w-full py-2 rounded-xl bg-green-600 hover:bg-green-700 text-sm font-semibold shadow-md text-center"
+          >
+            📦 Available Leads
+          </button>
+        </div>
+
+        {/* Stats Below Buttons */}
+        <div className="mt-2 grid grid-cols-3 gap-2 text-center pt-2 border-t border-gray-800">
+          <div>
+            <h3 className="text-base font-bold">500+</h3>
+            <p className="text-[10px] text-gray-300">Verified Businesses</p>
+          </div>
+          <div>
+            <h3 className="text-base font-bold">28+</h3>
+            <p className="text-[10px] text-gray-300">States Covered</p>
+          </div>
+          <div>
+            <h3 className="text-base font-bold">24/7</h3>
+            <p className="text-[10px] text-gray-300">Support</p>
+          </div>
+        </div>
       </div>
     </section>
   );
