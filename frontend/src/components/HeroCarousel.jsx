@@ -190,7 +190,7 @@ export function HeroCarousel({ setActiveTab }) {
   return (
     <section className="w-full h-screen sm:h-auto overflow-hidden flex flex-col justify-between">
       {/* Carousel Container - flex-1 lagane se beech ki space khatam ho jayegi */}
-      <div className="w-full flex-1 sm:h-[500px] lg:h-[600px]">
+      <div className="w-full flex-1 sm:h-[450px] lg:h-[600px]">
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
           {/* ====================== Slide 1 ====================== */}
           <div className="relative h-full">
