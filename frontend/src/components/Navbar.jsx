@@ -22,25 +22,25 @@ export default function Navbar() {
   };
 
   const links = [
-    { name: t("navbar.home", "Home"), path: "/" },
-    { name: t("navbar.directory", "Directory"), path: "/directory" },
-    { name: t("navbar.aboutUs", "About Us"), path: "/about" },
-    { name: t("navbar.services", "Services"), path: "/services" },
+    { name: t("navbar.home", "HOME"), path: "/" },
+    { name: t("navbar.directory", "DIRECTORY"), path: "/directory" },
+    { name: t("navbar.aboutUs", "ABOUT US"), path: "/about" },
+    { name: t("navbar.services", "SERVICES"), path: "/services" },
 
     ...(isLoggedIn
       ? [
           {
-            name: t("navbar.dashboard", "My Dashboard"),
+            name: t("navbar.dashboard", "MY DESHBOARD"),
             path: "/dashboard",
           },
         ]
       : [
           {
-            name: t("navbar.login", "Login"),
+            name: t("navbar.login", "LOGIN"),
             path: "/login",
           },
           {
-            name: t("navbar.register", "Register"),
+            name: t("navbar.register", "REGISTER"),
             path: "/register",
           },
         ]),
@@ -88,10 +88,10 @@ export default function Navbar() {
               key={index}
               to={link.path}
               className={({ isActive }) =>
-                isActive
-                  ? "text-blue-600 font-semibold transition-colors duration-300"
-                  : "text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300"
-              }
+  isActive
+    ? "uppercase tracking-wide text-blue-600 font-semibold transition-colors duration-300"
+    : "uppercase tracking-wide text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300"
+}
             >
               {link.name}
             </NavLink>

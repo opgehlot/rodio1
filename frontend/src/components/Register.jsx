@@ -476,16 +476,16 @@ if (normalizedUser.role) {
 
             {/* LOGIN LINK */}
             <div className="text-center pt-3">
-              <p className="text-sm text-slate-600">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="text-blue-600 font-semibold hover:underline"
-                >
-                  Login
-                </Link>
-              </p>
-            </div>
+  <p className="text-lg text-slate-700 font-medium">
+    Already have an account?{" "}
+    <Link
+      to="/login"
+      className="register-blink text-2xl font-extrabold hover:underline"
+    >
+      Login
+    </Link>
+  </p>
+</div>
           </form>
         </div>
       </div>

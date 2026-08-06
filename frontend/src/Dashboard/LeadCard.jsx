@@ -300,6 +300,8 @@
 // };
 
 // export default LeadCard;
+// 
+
 import {
   FaTruck,
   FaMapMarkerAlt,
@@ -335,6 +337,9 @@ const LeadCard = ({ lead }) => {
     user?.isSubscriptionActive === true ||
     user?.subscription?.status === "active";
 
+  // Check if lead is available for bidding
+  const isAvailable = lead?.isAvailable !== false;
+
   const formatDate = (date) => {
     if (!date) return "N/A";
     return new Date(date).toLocaleDateString("en-IN", {
@@ -346,20 +351,19 @@ const LeadCard = ({ lead }) => {
 
   const handleProtectedAction = (type) => {
     if (!isLoggedIn) {
-      toast.error("Please login first.", {
-        id: "login first",
-      });
-      navigate("/login", {
-        state: { redirectTo: "/dashboard/leads" },
-      });
+      toast.error("Please login first.", { id: "login first" });
+      navigate("/login", { state: { redirectTo: "/dashboard/leads" } });
       return;
     }
 
     if (!isSubscribed) {
-      toast.error("Premium subscription required.", {
-        id: "premium subscription required",
-      });
+      toast.error("Premium subscription required.", { id: "premium subscription required" });
       navigate("/dashboard/addservices");
+      return;
+    }
+
+    if (!isAvailable) {
+      toast.error("This lead is closed or sold out.", { id: "lead closed" });
       return;
     }
 
@@ -377,17 +381,13 @@ const LeadCard = ({ lead }) => {
         message,
       });
 
-      toast.success("Bid submitted successfully.", {
-        id: "bid submitted successfully",
-      });
+      toast.success("Bid submitted successfully.", { id: "bid submitted successfully" });
       setBidAmount("");
       setMessage("");
       setOpenBid(false);
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to submit bid.", {
-          id: "faild to submit bid",
-        }
+        error.response?.data?.message || "Failed to submit bid.", { id: "faild to submit bid" }
       );
     } finally {
       setLoading(false);
@@ -395,9 +395,21 @@ const LeadCard = ({ lead }) => {
   };
 
   return (
-    <div className="group bg-white rounded-3xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden border border-gray-100 flex flex-col justify-between">
+    <div
+      className={`group rounded-3xl shadow-md transition duration-300 overflow-hidden border flex flex-col justify-between ${
+        isAvailable
+          ? "bg-white hover:shadow-2xl border-gray-100"
+          : "bg-gray-100 opacity-75 grayscale-[20%] border-gray-200"
+      }`}
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-700 to-indigo-700 text-white p-5">
+      <div
+        className={`p-5 text-white ${
+          isAvailable
+            ? "bg-gradient-to-r from-blue-700 to-indigo-700"
+            : "bg-gradient-to-r from-gray-500 to-gray-600"
+        }`}
+      >
         <div className="flex justify-between items-start">
           <div>
             <h2 className="flex items-center gap-2 text-xl font-bold">
@@ -408,9 +420,16 @@ const LeadCard = ({ lead }) => {
               {lead?.service || "Standard Delivery"}
             </p>
           </div>
-          <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-            #{lead?._id ? lead._id.slice(-5) : "-----"}
-          </span>
+          <div className="flex flex-col items-end gap-1">
+            <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
+              #{lead?._id ? lead._id.slice(-5) : "-----"}
+            </span>
+            {!isAvailable && (
+              <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold uppercase">
+                {lead?.availabilityReason || "Sold Out"}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -434,14 +453,14 @@ const LeadCard = ({ lead }) => {
 
         {/* Goods */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-50 rounded-xl p-3">
+          <div className="bg-white/60 rounded-xl p-3 border border-gray-100">
             <div className="flex items-center gap-2 text-blue-600 text-sm">
               <FaBoxOpen />
               <span>Goods</span>
             </div>
             <p className="font-semibold mt-2">{lead?.goodsType || "N/A"}</p>
           </div>
-          <div className="bg-gray-50 rounded-xl p-3">
+          <div className="bg-white/60 rounded-xl p-3 border border-gray-100">
             <div className="flex items-center gap-2 text-orange-600 text-sm">
               <FaWeightHanging />
               <span>Weight</span>
@@ -460,7 +479,7 @@ const LeadCard = ({ lead }) => {
         </div>
 
         {/* Budget */}
-        <div className="bg-green-50 rounded-2xl p-4 flex justify-between items-center">
+        <div className="bg-green-50 rounded-2xl p-4 flex justify-between items-center border border-green-100">
           <div>
             <p className="text-sm text-gray-500">Expected Budget</p>
             <h2 className="text-2xl font-bold text-green-700">
@@ -470,7 +489,7 @@ const LeadCard = ({ lead }) => {
           <FaMoneyBillWave size={35} className="text-green-600" />
         </div>
 
-        {!isSubscribed && (
+        {!isSubscribed && isAvailable && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
             <p className="text-xs font-semibold text-yellow-700">
               🔒 Bidding options are restricted to active subscribers.
@@ -480,7 +499,7 @@ const LeadCard = ({ lead }) => {
 
         {/* Remarks */}
         {lead?.remarks && (
-          <div className="bg-yellow-50 rounded-xl p-3">
+          <div className="bg-yellow-50/50 rounded-xl p-3 border border-yellow-100">
             <p className="text-sm font-semibold mb-1">Remarks</p>
             <p className="text-gray-600 text-sm">{lead.remarks}</p>
           </div>
@@ -488,12 +507,19 @@ const LeadCard = ({ lead }) => {
       </div>
 
       {/* Footer - Full Width Bid Button */}
-      <div className="border-t p-5">
+      <div className="border-t p-5 bg-white/40">
         <button
           onClick={() => handleProtectedAction("bid")}
-          className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-xl font-semibold transition text-sm shadow-md active:scale-95"
+          disabled={!isAvailable}
+          className={`w-full py-3 rounded-xl font-semibold transition text-sm shadow-md ${
+            !isAvailable
+              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+              : "bg-blue-700 hover:bg-blue-800 text-white active:scale-95"
+          }`}
         >
-          {!isLoggedIn
+          {!isAvailable
+            ? "Closed / Sold Out"
+            : !isLoggedIn
             ? "Login to Bid"
             : !isSubscribed
             ? "Upgrade to Bid"

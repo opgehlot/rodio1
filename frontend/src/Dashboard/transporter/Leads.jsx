@@ -24,7 +24,7 @@ const Leads = () => {
       const res = await API.get("/booking/all");
       setLeads(res.data.data || []);
     } catch (error) {
-      console.log(error);
+     
     } finally {
       setLoading(false);
     }

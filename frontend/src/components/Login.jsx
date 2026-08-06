@@ -623,16 +623,16 @@ export function Login() {
 
             {/* REGISTER LINK */}
             <div className="text-center pt-8">
-              <p className="text-sm text-slate-600">
-                Don't have an account?{" "}
-                <Link
-                  to="/register"
-                  className="text-blue-600 font-semibold hover:underline"
-                >
-                  Register
-                </Link>
-              </p>
-            </div>
+  <p className="text-lg text-slate-600">
+    Don't have an account?{" "}
+    <Link
+      to="/register"
+      className="text-blue-600 text-xl font-bold hover:underline animate-pulse transition-all duration-700"
+    >
+      Register
+    </Link>
+  </p>
+</div>
           </div>
         </div>
       </div>

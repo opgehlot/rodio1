@@ -6,19 +6,16 @@ import truckImagee from "../assets/pexels-m-javad-nemati-116278374-30037629.jpg"
 
 export function HeroCarousel({ setActiveTab }) {
   const handleScroll = (tab) => {
-  setActiveTab(tab);
+    setActiveTab(tab);
 
-  setTimeout(() => {
-    document
-      .getElementById("dynamic-home")
-      ?.scrollIntoView({
+    setTimeout(() => {
+      document.getElementById("dynamic-home")?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
-  }, 100);
-};
+    }, 100);
+  };
   return (
-
     <section className="w-full overflow-hidden">
       <div className="h-[520px] sm:h-[500px] lg:h-[600px]">
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
@@ -33,15 +30,14 @@ export function HeroCarousel({ setActiveTab }) {
             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
                 <div className="max-w-3xl">
-                  <span className="inline-block bg-blue-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
+                  {/* <span className="inline-block bg-blue-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
                     🇮🇳 Trusted Across India
-                  </span>
+                  </span> */}
 
-                  <h1 className="mt-3 sm:mt-5 text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+                  <h1 className="font-inter mt-3 sm:mt-5 text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
                     India's Trusted Transport Network
                   </h1>
-
-                  <p className="mt-3 sm:mt-5 text-xs sm:text-lg text-gray-200 max-w-2xl leading-relaxed line-clamp-3 sm:line-clamp-none">
+                  <p className="font-inter mt-4 text-base md:text-lg lg:text-xl text-gray-200 max-w-3xl leading-8">
                     Find verified transporters, brokers, contractors and
                     logistics partners across India. Connect faster and grow
                     your business.
@@ -57,7 +53,7 @@ export function HeroCarousel({ setActiveTab }) {
 
                     {/* Search Transport */}
                     <button
-                    onClick={() => handleScroll("search")}
+                      onClick={() => handleScroll("search")}
                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
                     >
                       🚛 Search Transport
@@ -89,7 +85,9 @@ export function HeroCarousel({ setActiveTab }) {
 
                     <div>
                       <h3 className="text-xl sm:text-2xl font-bold">24/7</h3>
-                      <p className="text-[11px] sm:text-sm text-gray-300">Support</p>
+                      <p className="text-[11px] sm:text-sm text-gray-300">
+                        Support
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -108,9 +106,9 @@ export function HeroCarousel({ setActiveTab }) {
             <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30 flex items-center">
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white pt-6 sm:pt-0">
                 <div className="max-w-3xl">
-                  <span className="inline-block bg-green-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
+                  {/* <span className="inline-block bg-green-600/90 px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
                     🚚 Smart Logistics Platform
-                  </span>
+                  </span> */}
 
                   <h1 className="mt-3 sm:mt-5 text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
                     Fast, Secure & Reliable Transport Solutions
@@ -131,7 +129,7 @@ export function HeroCarousel({ setActiveTab }) {
 
                     {/* Search Transport */}
                     <button
-                     onClick={() => handleScroll("search")}
+                      onClick={() => handleScroll("search")}
                       className="w-full sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:scale-105 text-center"
                     >
                       🚛 Search Transport
