@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import API from "../../api/api";
-import { Plus, Trash2, MapPin, Map, Loader2 } from "lucide-react";
+import { Plus, Trash2, MapPin, Map, Loader2, ShieldCheck, CheckCircle2, Globe2, ArrowRight } from "lucide-react";
 
 // ===============================
 // List of Indian States for Autocomplete
@@ -61,8 +62,8 @@ const StateSearchInput = ({ placeholder, onSelectState, zIndex, value }) => {
 
   return (
     <div ref={dropdownRef} style={{ position: "relative", width: "100%", zIndex: isFocused ? zIndex : 1 }}>
-      <div className="relative">
-        <Map size={18} className="absolute left-3 top-3.5 text-gray-400" />
+      <div className="relative flex items-center">
+        <Map size={18} className="absolute left-3.5 text-slate-400" />
         <input
           type="text"
           value={searchTerm}
@@ -77,19 +78,19 @@ const StateSearchInput = ({ placeholder, onSelectState, zIndex, value }) => {
             onSelectState(e.target.value);
             setIsOpen(true);
           }}
-          className="w-full border border-gray-300 pl-10 pr-4 py-2.5 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none bg-white text-sm"
+          className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all placeholder:font-normal placeholder:text-slate-400"
           required
         />
       </div>
 
       {isOpen && suggestions.length > 0 && (
-        <ul className="suggestions-list absolute top-full left-0 right-0 bg-white border border-gray-300 shadow-md max-h-60 overflow-y-auto z-50 list-none m-0 p-0">
+        <ul className="suggestions-list absolute top-full left-0 right-0 bg-white border border-slate-200 shadow-lg rounded-xl mt-1.5 max-h-60 overflow-y-auto z-50 list-none m-0 p-0">
           {suggestions.map((state, i) => (
             <li
               key={i}
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => handleSelect(state)}
-              className="px-4 py-2.5 cursor-pointer hover:bg-gray-100 text-sm transition font-normal border-b border-gray-100 last:border-b-0"
+              className="px-4 py-3 cursor-pointer hover:bg-orange-50/50 text-sm transition font-medium text-slate-700 border-b border-slate-100 last:border-b-0"
             >
               {state}
             </li>
@@ -157,8 +158,8 @@ const LocationSearchInput = ({ placeholder, onSelectLocation, zIndex, value }) =
 
   return (
     <div ref={dropdownRef} style={{ position: "relative", width: "100%", zIndex: isFocused ? zIndex : 1 }}>
-      <div className="relative">
-        <MapPin size={18} className="absolute left-3 top-3.5 text-gray-400" />
+      <div className="relative flex items-center">
+        <MapPin size={18} className="absolute left-3.5 text-slate-400" />
         <input
           type="text"
           value={searchTerm}
@@ -169,36 +170,36 @@ const LocationSearchInput = ({ placeholder, onSelectLocation, zIndex, value }) =
             setSearchTerm(e.target.value);
             if (!isOpen) setIsOpen(true);
           }}
-          className="w-full border border-gray-300 pl-10 pr-10 py-2.5 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none bg-white text-sm"
+          className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-10 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all placeholder:font-normal placeholder:text-slate-400"
           required
         />
       </div>
 
       {loading && (
-        <div className="absolute right-3 top-3.5 text-gray-400 text-xs">
+        <div className="absolute right-3.5 top-3.5 text-slate-400 text-xs">
           Loading...
         </div>
       )}
 
       {isOpen && (suggestions.length > 0 || !loading) && (
-        <ul className="suggestions-list absolute top-full left-0 right-0 bg-white border border-gray-300 shadow-md max-h-60 overflow-y-auto z-50 list-none m-0 p-0">
+        <ul className="suggestions-list absolute top-full left-0 right-0 bg-white border border-slate-200 shadow-lg rounded-xl mt-1.5 max-h-60 overflow-y-auto z-50 list-none m-0 p-0">
           {suggestions.length > 0 ? (
             suggestions.map((item, i) => (
               <li
                 key={item._id || i}
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleSelect(item)}
-                className="px-4 py-2.5 cursor-pointer hover:bg-gray-100 text-sm flex justify-between items-center transition border-b border-gray-100 last:border-b-0"
+                className="px-4 py-3 cursor-pointer hover:bg-orange-50/50 text-sm flex justify-between items-center transition border-b border-slate-100 last:border-b-0"
               >
                 <div>
-                  <span className="font-medium text-gray-800">{item.name}</span>, <small className="text-gray-500">{item.state}</small>
+                  <span className="font-semibold text-slate-800">{item.name}</span>, <small className="text-slate-500 font-medium">{item.state}</small>
                 </div>
-                <span className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5">Select</span>
+                <span className="text-[11px] font-semibold bg-orange-50 text-orange-600 px-2.5 py-1 rounded-lg border border-orange-100">Select</span>
               </li>
             ))
           ) : (
-            <li className="px-4 py-3 text-gray-500 text-center text-sm">
-              No results found
+            <li className="px-4 py-4 text-slate-500 text-center text-xs font-medium">
+              No matching cities found in registry
             </li>
           )}
         </ul>
@@ -299,140 +300,224 @@ const WorkingArea = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-4xl mx-auto bg-white border border-gray-200 p-8"
-      >
-        {/* Header */}
-        <div className="border-b border-gray-200 pb-5 mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Working Areas</h1>
-          <p className="mt-1 text-sm text-gray-600">
-            Specify the operational states and cities where your transport services are available.
-          </p>
-        </div>
-
-        {/* Status Message Display */}
-        {message.text && (
-          <div
-            className={`p-3 mb-6 text-sm font-medium border ${
-              message.type === "success"
-                ? "bg-green-50 text-green-800 border-green-200"
-                : "bg-red-50 text-red-800 border-red-200"
-            }`}
-          >
-            {message.text}
+    <div className="min-h-screen bg-slate-50/50 pb-20">
+      
+      {/* Enterprise Header Banner */}
+      <div className="bg-white border-b border-slate-200 px-6 lg:px-12 py-6 mb-8">
+        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-orange-600 mb-1">
+              <span className="w-2 h-2 rounded-full bg-orange-600 inline-block"></span>
+              Rodio Tradelink Logistics Enterprise
+            </div>
+            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900">
+              Operational Working Areas
+            </h1>
+            <p className="text-slate-500 text-sm mt-0.5">
+              Specify the commercial states and service hubs where your transport fleet operates.
+            </p>
           </div>
-        )}
 
-        <div className="space-y-6">
-          {formData.workingAreas.map((area, areaIndex) => (
-            <div
-              key={areaIndex}
-              className="border border-gray-300 p-5 bg-gray-50/50 relative"
-            >
-              {/* Row Header */}
-              <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
-                <span className="font-semibold text-gray-800 text-sm">
-                  Entry #{areaIndex + 1}
-                </span>
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-700 flex items-center gap-2">
+              <ShieldCheck className="text-orange-600 w-4 h-4" />
+              <span>Coverage Registry: <strong className="text-slate-900">Active</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                {formData.workingAreas.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeWorkingArea(areaIndex)}
-                    className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 text-xs font-medium transition cursor-pointer"
-                  >
-                    <Trash2 size={14} />
-                    Remove Block
-                  </button>
-                )}
-              </div>
-
-              {/* State */}
-              <div className="mb-4">
-                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
-                  State Name
-                </label>
-                <StateSearchInput
-                  placeholder="Type or select state..."
-                  value={area.state}
-                  zIndex={200 - areaIndex}
-                  onSelectState={(stateName) => handleStateChange(areaIndex, stateName)}
-                />
-              </div>
-
-              {/* Cities */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Cities Covered
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => addCity(areaIndex)}
-                    className="bg-gray-800 hover:bg-gray-900 text-white px-3 py-1 text-xs font-medium flex items-center gap-1 cursor-pointer"
-                  >
-                    <Plus size={14} />
-                    Add City
-                  </button>
+      {/* Main Fluid Container (Fully spanning layout with grid integration) */}
+      <div className="w-full px-6 lg:px-12">
+        
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Form Section (Spans 8 columns on large screens) */}
+          <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 lg:p-8">
+            
+            <div className="flex items-center justify-between pb-6 mb-6 border-b border-slate-100">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-xl bg-orange-600 text-white flex items-center justify-center shadow-sm">
+                  <Globe2 size={22} />
                 </div>
-
-                <div className="grid md:grid-cols-2 gap-3">
-                  {area.cities.map((city, cityIndex) => (
-                    <div
-                      key={cityIndex}
-                      className="flex gap-2 items-center relative"
-                    >
-                      <div className="flex-1">
-                        <LocationSearchInput
-                          placeholder="Search city..."
-                          value={city}
-                          zIndex={100 - cityIndex}
-                          onSelectLocation={(locationItem) =>
-                            handleCitySelect(areaIndex, cityIndex, locationItem)
-                          }
-                        />
-                      </div>
-
-                      {area.cities.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeCity(areaIndex, cityIndex)}
-                          className="bg-gray-200 hover:bg-red-100 hover:text-red-600 p-2.5 text-gray-600 transition cursor-pointer"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">
+                    Territory Mapping Configuration
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Add state sectors and specific city nodes for freight distribution.
+                  </p>
                 </div>
+              </div>
+              <div className="hidden sm:flex items-center gap-1.5 text-xs text-orange-600 font-semibold bg-orange-50 px-3 py-1.5 rounded-lg border border-orange-100">
+                <CheckCircle2 size={14} /> Multi-State Network
               </div>
             </div>
-          ))}
 
-          {/* Action buttons */}
-          <div className="flex flex-col sm:flex-row justify-between items-center pt-4 border-t border-gray-200 gap-3">
-            <button
-              type="button"
-              onClick={addWorkingArea}
-              className="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2.5 text-sm font-medium border border-gray-300 flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <Plus size={16} />
-              Add Another State Entry
-            </button>
+            {/* Status Message Display */}
+            {message.text && (
+              <div
+                className={`p-4 mb-6 rounded-xl text-sm font-semibold border flex items-center gap-2 ${
+                  message.type === "success"
+                    ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                    : "bg-rose-50 text-rose-800 border-rose-200"
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
-            >
-              {loading && <Loader2 size={16} className="animate-spin" />}
-              {loading ? "Saving Data..." : "Save Working Areas"}
-            </button>
+            <div className="space-y-6">
+              {formData.workingAreas.map((area, areaIndex) => (
+                <div
+                  key={areaIndex}
+                  className="border border-slate-200 rounded-2xl p-6 bg-slate-50/40 relative space-y-5"
+                >
+                  {/* Row Header */}
+                  <div className="flex justify-between items-center pb-3 border-b border-slate-200/80">
+                    <span className="font-bold text-slate-800 text-sm tracking-wide uppercase">
+                      Territory Zone #{areaIndex + 1}
+                    </span>
+
+                    {formData.workingAreas.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeWorkingArea(areaIndex)}
+                        className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl text-xs font-semibold border border-rose-200 transition cursor-pointer"
+                      >
+                        <Trash2 size={14} />
+                        Remove Zone
+                      </button>
+                    )}
+                  </div>
+
+                  {/* State */}
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                      State Territory <span className="text-rose-500">*</span>
+                    </label>
+                    <StateSearchInput
+                      placeholder="Type or select state..."
+                      value={area.state}
+                      zIndex={200 - areaIndex}
+                      onSelectState={(stateName) => handleStateChange(areaIndex, stateName)}
+                    />
+                  </div>
+
+                  {/* Cities */}
+                  <div>
+                    <div className="flex justify-between items-center mb-3">
+                      <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                        Operating City Nodes
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => addCity(areaIndex)}
+                        className="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-sm"
+                      >
+                        <Plus size={14} />
+                        Add City Hub
+                      </button>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {area.cities.map((city, cityIndex) => (
+                        <div
+                          key={cityIndex}
+                          className="flex gap-2 items-center relative"
+                        >
+                          <div className="flex-1">
+                            <LocationSearchInput
+                              placeholder="Search city hub..."
+                              value={city}
+                              zIndex={100 - cityIndex}
+                              onSelectLocation={(locationItem) =>
+                                handleCitySelect(areaIndex, cityIndex, locationItem)
+                              }
+                            />
+                          </div>
+
+                          {area.cities.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeCity(areaIndex, cityIndex)}
+                              className="bg-white hover:bg-rose-50 hover:text-rose-600 border border-slate-200 p-3 rounded-xl text-slate-500 transition cursor-pointer"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Action buttons */}
+              <div className="flex flex-col sm:flex-row justify-between items-center pt-6 border-t border-slate-100 gap-4">
+                <button
+                  type="button"
+                  onClick={addWorkingArea}
+                  className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-3 rounded-xl text-xs font-semibold border border-slate-200 flex items-center justify-center gap-2 transition cursor-pointer"
+                >
+                  <Plus size={16} />
+                  Add Another State Zone
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 disabled:bg-slate-300 text-white px-8 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition shadow-sm cursor-pointer"
+                >
+                  {loading && <Loader2 size={16} className="animate-spin" />}
+                  {loading ? "Synchronizing..." : "Save Working Areas"}
+                  {!loading && <ArrowRight size={16} />}
+                </button>
+              </div>
+            </div>
+
           </div>
-        </div>
-      </form>
+
+          {/* Right Information Column (Spans 4 columns for dashboard symmetry) */}
+          <div className="lg:col-span-4 space-y-6">
+            
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <h4 className="font-bold text-slate-900 text-base mb-3 flex items-center gap-2">
+                <CheckCircle2 className="text-orange-600" size={18} />
+                Network Coverage Rules
+              </h4>
+              <ul className="space-y-3 text-xs text-slate-600 leading-relaxed">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-600 mt-1.5 shrink-0"></span>
+                  Accurate territory selection improves matching precision with high-intent enterprise shippers.
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-600 mt-1.5 shrink-0"></span>
+                  List all major logistics centers and transit hubs where active vehicle positioning occurs.
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-600 mt-1.5 shrink-0"></span>
+                  Modifications update instantly across our national carrier dispatch registry.
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl text-white p-6 shadow-sm">
+              <h4 className="font-bold text-base mb-1">Territory Desk Support</h4>
+              <p className="text-slate-300 text-xs mb-4">
+                Need assistance adding multi-state networks or updating operational regions?
+              </p>
+              <div className="text-xs font-mono bg-white/10 px-3 py-2 rounded-xl inline-block border border-white/10">
+                Network Ops: coverage@rodiotradelink.com
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
     </div>
   );
 };

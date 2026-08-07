@@ -151,7 +151,7 @@ export function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-[50vh] w-full flex items-center justify-center bg-white">
+      <div className="min-h-[50vh] w-full flex items-center justify-center bg-amber-100">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="animate-spin text-slate-900" size={32} />
           <p className="text-xs font-black text-slate-500 uppercase tracking-widest">
