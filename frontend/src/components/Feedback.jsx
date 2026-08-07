@@ -1,27 +1,30 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
+import rajeshImg from "../assets/rajesh.jpg";
+import priyaImg from "../assets/priya.jpg";
+import amitImg from "../assets/amit.jpg";
 
 export function Feedback() {
-  const testimonials = [
-    {
-      name: "Rajesh Kumar",
-      role: "Manufacturing Company",
-      image: "https://i.pravatar.cc/100?img=11",
-      text: "Rodio reduced our logistics costs by 30%. The bidding system is fantastic and delivery is always on time.",
-    },
-    {
-      name: "Priya Sharma",
-      role: "Transporter",
-      image: "https://i.pravatar.cc/100?img=5",
-      text: "Best platform for finding loads. My fleet utilization improved significantly and payments are always secure.",
-    },
-    {
-      name: "Amit Patel",
-      role: "Broker",
-      image: "https://i.pravatar.cc/100?img=14",
-      text: "Managing multiple clients and shipments has never been easier. Highly recommended for logistics businesses.",
-    },
-  ];
+ const testimonials = [
+  {
+    name: "Rajesh Kumar",
+    role: "Manufacturing Company",
+    image: rajeshImg, // Yahan import kiya hua variable de dein
+    text: "Rodio reduced our logistics costs by 30%. The bidding system is fantastic and delivery is always on time.",
+  },
+  {
+    name: "Priya Sharma",
+    role: "Transporter",
+    image: priyaImg,
+    text: "Best platform for finding loads. My fleet utilization improved significantly and payments are always secure.",
+  },
+  {
+    name: "Amit Patel",
+    role: "Broker",
+    image: amitImg,
+    text: "Managing multiple clients and shipments has never been easier. Highly recommended for logistics businesses.",
+  },
+];
 
   return (
     <section className="py-24 bg-white" >

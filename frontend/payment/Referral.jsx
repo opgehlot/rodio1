@@ -270,6 +270,12 @@ const Referral = () => {
               <p className="text-xs text-gray-500 mt-0.5">
                 Track every user who registered using your code
               </p>
+              <p className="text-sm text-blue-700">
+                Settlement amount will be credited to your registered bank
+                account within
+                <span className="font-semibold"> 7–10 working days </span>
+                after successful payment.
+              </p>
             </div>
           </div>
 
@@ -285,16 +291,16 @@ const Referral = () => {
                     <th className="py-4 px-6">Status</th>
                     <th className="py-4 px-6">Date</th> */}
 
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>Mobile</th>
-                    <th>Reward</th>
-                    <th>Referral</th>
-                    <th>Payment</th>
-                    <th>Settlement</th>
-                    <th>Refund</th>
-                    <th>Settled At</th>
-                    <th>Date</th>
+                    <th className="py-4 px-6">User Name</th>
+                    <th className="py-4 px-6">Email</th>
+                    <th className="py-4 px-6">Mobile</th>
+                    <th className="py-4 px-6">Reward</th>
+                    <th className="py-4 px-6">Referral</th>
+                    <th className="py-4 px-6">Payment</th>
+                    <th className="py-4 px-6">Settlement</th>
+                    <th className="py-4 px-6">Refund</th>
+                    <th className="py-4 px-6">Settled At</th>
+                    <th className="py-4 px-6">Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-sm">
@@ -317,6 +323,62 @@ const Referral = () => {
                       </td>
                       <td className="py-4 px-6">
                         <span
+                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-bold ${
+                            item.status === "completed"
+                              ? "bg-green-100 text-green-700"
+                              : item.status === "revoked"
+                                ? "bg-red-100 text-red-700"
+                                : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+
+                      <td className="py-4 px-6">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs ${
+                            item.paymentStatus === "success"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {item.paymentStatus || "Pending"}
+                        </span>
+                      </td>
+
+                      <td className="py-4 px-6">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                            item.settlementStatus === "settled"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {item.settlementStatus === "settled"
+                            ? "Completed"
+                            : "Pending"}
+                        </span>
+                      </td>
+
+                      <td className="py-4 px-6">
+                        {item.refundStatus || "-"}
+                      </td>
+
+                      <td className="py-4 px-6">
+                        {item.settledAt
+                          ? new Date(item.settledAt).toLocaleString()
+                          : "panding"}
+                      </td>
+
+                      <td className="py-4 px-6 text-gray-500">
+                        {new Date(item.createdAt).toLocaleDateString("en-IN")}
+                      </td>
+
+                      {/* 
+
+                      <td className="py-4 px-6">
+                        <span
                           className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
                             item.status === "completed"
                               ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
@@ -325,16 +387,52 @@ const Referral = () => {
                                 : "bg-amber-50 text-amber-700 border border-amber-200/60"
                           }`}
                         >
-                          {item.status}
+                          <td>{item.status}</td>
+
+                          <td>
+                            <span
+                              className={`px-2 py-1 rounded ${
+                                item.paymentStatus === "success"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-yellow-100 text-yellow-700"
+                              }`}
+                            >
+                              {item.paymentStatus || "Pending"}
+                            </span>
+                          </td>
+
+                          <td>
+                            <span
+                              className={`px-2 py-1 rounded ${
+                                item.settlementStatus === "settled"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-yellow-100 text-yellow-700"
+                              }`}
+                            >
+                              {item.settlementStatus || "Pending"}
+                            </span>
+                          </td>
+
+                          <td>
+                            <span>{item.refundStatus || "No Refund"}</span>
+                          </td>
+
+                          <td>
+                            {item.settledAt
+                              ? new Date(item.settledAt).toLocaleString()
+                              : "-"}
+                          </td>
                         </span>
-                      </td>
+                      </td> */}
+
+                      {/* 
                       <td className="py-4 px-6 text-gray-500 whitespace-nowrap text-xs">
                         {new Date(item.createdAt).toLocaleDateString("en-IN", {
                           day: "2-digit",
                           month: "short",
                           year: "numeric",
                         })}
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
