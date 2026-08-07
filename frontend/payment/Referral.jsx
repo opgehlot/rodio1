@@ -8,7 +8,7 @@ const Referral = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
-  const payment = stats?.payment;
+
   useEffect(() => {
     loadReferralData();
   }, []);
@@ -83,91 +83,90 @@ const Referral = () => {
 
           {/* Quick Share Code Banner Box */}
           <div className="w-full bg-indigo-50/80 border border-indigo-100 rounded-2xl p-5 shadow-sm">
-  {/* Top Section: Referral Code & Copy Button */}
-  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-indigo-100">
-    <div>
-      <span className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
-        Your Referral Code
-      </span>
-      <div className="text-xl font-bold text-indigo-900 tracking-wide mt-0.5">
-        {stats?.referralCode || 'N/A'}
-      </div>
-    </div>
+            {/* Top Section: Referral Code & Copy Button */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-indigo-100">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
+                  Your Referral Code
+                </span>
+                <div className="text-xl font-bold text-indigo-900 tracking-wide mt-0.5">
+                  {stats?.referralCode || "N/A"}
+                </div>
+              </div>
 
-    <button
-      onClick={() => copyToClipboard(stats?.referralCode)}
-      className={`px-4 py-2.5 rounded-xl text-xs font-semibold shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5 ${
-        copied
-          ? 'bg-emerald-600 text-white'
-          : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-      }`}
-    >
-      {copied ? (
-        <>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          Copied!
-        </>
-      ) : (
-        <>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-          </svg>
-          Copy Code
-        </>
-      )}
-    </button>
-  </div>
+              <button
+                onClick={() => copyToClipboard(stats?.referralCode)}
+                className={`px-4 py-2.5 rounded-xl text-xs font-semibold shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5 ${
+                  copied
+                    ? "bg-emerald-600 text-white"
+                    : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                }`}
+              >
+                {copied ? (
+                  <>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                      ></path>
+                    </svg>
+                    Copy Code
+                  </>
+                )}
+              </button>
+            </div>
 
-  {/* Bottom Section: Referral Rewards (Static Values) */}
-  <div className="pt-4">
-    <h3 className="font-semibold text-gray-800 text-sm mb-3">
-      Referral Rewards
-    </h3>
-    <div className="space-y-2 text-sm text-gray-600">
-      <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
-        <span>3 Month (₹599)</span>
-        <span className="font-semibold text-green-600">₹84</span>
-      </div>
+            {/* Bottom Section: Referral Rewards (Static Values) */}
+            <div className="pt-4">
+              <h3 className="font-semibold text-gray-800 text-sm mb-3">
+                Referral Rewards
+              </h3>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
+                  <span>3 Month (₹599)</span>
+                  <span className="font-semibold text-green-600">₹84</span>
+                </div>
 
-      <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
-        <span>6 Months (₹999)</span>
-        <span className="font-semibold text-green-600">₹139</span>
-      </div>
+                <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
+                  <span>6 Months (₹999)</span>
+                  <span className="font-semibold text-green-600">₹139</span>
+                </div>
 
-      <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
-        <span>1 Year (₹1599)</span>
-        <span className="font-semibold text-green-600">₹224</span>
-      </div>
-    </div>
-  </div>
-</div>
+                <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
+                  <span>1 Year (₹1599)</span>
+                  <span className="font-semibold text-green-600">₹224</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Analytics Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <div className="bg-white rounded-xl shadow p-5">
-            <p className="text-gray-500 text-sm">Payment Status</p>
-            <h2 className="text-xl font-bold">
-              {payment?.status || "Pending"}
-            </h2>
-          </div>
 
-          <div className="bg-white rounded-xl shadow p-5">
-            <p className="text-gray-500 text-sm">Settlement Status</p>
-            <h2 className="text-xl font-bold">
-              {payment?.settlementStatus || "Pending"}
-            </h2>
-          </div>
-
-          <div className="bg-white rounded-xl shadow p-5">
-            <p className="text-gray-500 text-sm">Refund Status</p>
-            <h2 className="text-xl font-bold">
-              {payment?.refundStatus || "No Refund"}
-            </h2>
-          </div>
-        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card 1 */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4 transition hover:shadow-md">
@@ -216,7 +215,7 @@ const Referral = () => {
         </div>
 
         {/* Detailed History Table Section */}
-        <div className="bg-white rounded-xl shadow p-6 mb-6">
+        {/* <div className="bg-white rounded-xl shadow p-6 mb-6">
           <h2 className="text-lg font-bold mb-4">Payment Timeline</h2>
 
           <div className="space-y-2">
@@ -260,7 +259,7 @@ const Referral = () => {
               </strong>
             </p>
           </div>
-        </div>
+        </div> */}
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 sm:p-8 border-b border-gray-100 flex justify-between items-center">
@@ -279,12 +278,23 @@ const Referral = () => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50/70 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    <th className="py-4 px-6">User Name</th>
+                    {/* <th className="py-4 px-6">User Name</th>
                     <th className="py-4 px-6">Email Address</th>
                     <th className="py-4 px-6">Mobile</th>
                     <th className="py-4 px-6">Reward Earned</th>
                     <th className="py-4 px-6">Status</th>
-                    <th className="py-4 px-6">Date</th>
+                    <th className="py-4 px-6">Date</th> */}
+
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Reward</th>
+                    <th>Referral</th>
+                    <th>Payment</th>
+                    <th>Settlement</th>
+                    <th>Refund</th>
+                    <th>Settled At</th>
+                    <th>Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-sm">
