@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-import rajeshImg from "../assets/rajesh.jpg";
-import priyaImg from "../assets/priya.jpg";
-import amitImg from "../assets/amit.jpg";
+import rajeshImg from "../assets/360_F_596236101_KkPgJ3EWtFfHpTMR2bTPUy96EIyAE7aO.jpg";
+import priyaImg from "../assets/images.jpg";
+import amitImg from "../assets/feedback.avif";
 
 export function Feedback() {
  const testimonials = [
@@ -13,7 +13,7 @@ export function Feedback() {
     text: "Rodio reduced our logistics costs by 30%. The bidding system is fantastic and delivery is always on time.",
   },
   {
-    name: "Priya Sharma",
+    name: "shubham kumar",
     role: "Transporter",
     image: priyaImg,
     text: "Best platform for finding loads. My fleet utilization improved significantly and payments are always secure.",
