@@ -43,12 +43,14 @@ const AllLeads = () => {
       const keyword = search.toLowerCase();
 
       const matchSearch =
-        lead.pickupLocation?.toLowerCase().includes(keyword) ||
-        lead.loading_point?.toLowerCase().includes(keyword) ||
-        lead.goodsType?.toLowerCase().includes(keyword) ||
-        lead.vehicleType?.toLowerCase().includes(keyword) ||
-        lead.service?.toLowerCase().includes(keyword);
+  lead.pickupLocation?.toLowerCase().includes(keyword) ||
+  lead.dropLocation?.toLowerCase().includes(keyword) ||
+  lead.loading_point?.toLowerCase().includes(keyword) ||
+  lead.goodsType?.toLowerCase().includes(keyword) ||
+  lead.vehicleType?.toLowerCase().includes(keyword) ||
+  lead.service?.toLowerCase().includes(keyword);
 
+  
       const matchVehicle =
         vehicleFilter === "All" ||
         lead.vehicleType === vehicleFilter;
@@ -58,23 +60,23 @@ const AllLeads = () => {
   }, [leads, search, vehicleFilter]);
 
   return (
-    <div className="h-screen bg-gray-100 flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
 
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-700 to-indigo-700 flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-10">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
             <div>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-4xl font-bold text-white">
                 Transport Leads
               </h1>
-              <p className="text-blue-100 text-sm mt-1">
+              <p className="text-blue-100 mt-2">
                 Browse available transport requirements
               </p>
             </div>
             <button
               onClick={getAllLeads}
-              className="bg-white text-blue-700 px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-50 transition flex items-center gap-2 shadow text-sm"
+              className="bg-white text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition flex items-center gap-2 shadow"
             >
               <FaSyncAlt />
               Refresh
@@ -83,26 +85,27 @@ const AllLeads = () => {
         </div>
       </div>
 
-      {/* Search & Count Fixed Area */}
-      <div className="max-w-7xl mx-auto px-4 w-full flex-shrink-0 mt-4">
-        {/* Search */}
-        <div className="bg-white rounded-2xl shadow-md p-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      {/* Search */}
+      <div className="max-w-7xl mx-auto px-4 -mt-8 flex-shrink-0 w-full">
+        <div className="bg-white rounded-3xl shadow-lg p-5">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {/* Search */}
             <div className="relative lg:col-span-2">
-              <FaSearch className="absolute top-3.5 left-4 text-gray-400" />
+              <FaSearch className="absolute top-4 left-4 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search Pickup, Destination, Goods..."
-                className="w-full border rounded-xl pl-12 pr-4 py-2.5 focus:ring-2 focus:ring-blue-600 outline-none text-sm"
+                className="w-full border rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
+            {/* Vehicle */}
             <div>
               <select
                 value={vehicleFilter}
                 onChange={(e) => setVehicleFilter(e.target.value)}
-                className="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-600 outline-none bg-white text-sm"
+                className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none bg-white"
               >
                 {vehicleTypes.map((vehicle) => (
                   <option key={vehicle} value={vehicle}>
@@ -113,23 +116,25 @@ const AllLeads = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Count */}
-        <div className="flex items-center justify-between my-4">
-          <h2 className="text-xl font-bold text-gray-800">
+      {/* Count */}
+      <div className="max-w-7xl mx-auto px-4 mt-8 flex-shrink-0 w-full">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-800">
             Available Leads
           </h2>
-          <div className="bg-blue-700 text-white px-4 py-1.5 rounded-full flex items-center gap-2 shadow text-sm">
+          <div className="bg-blue-700 text-white px-5 py-2 rounded-full flex items-center gap-2 shadow">
             <FaTruckMoving />
             {filteredLeads.length} Leads
           </div>
         </div>
       </div>
 
-      {/* Scrollable Cards Container */}
-      <div className="max-w-7xl mx-auto px-4 w-full flex-1 overflow-y-auto pb-6 custom-scrollbar">
+      {/* Cards Scrollable Section */}
+      <div className="max-w-7xl mx-auto px-4 py-6 w-full flex-grow">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
             {[...Array(6)].map((_, index) => (
               <div
                 key={index}
@@ -147,12 +152,12 @@ const AllLeads = () => {
             ))}
           </div>
         ) : filteredLeads.length === 0 ? (
-          <div className="bg-white rounded-3xl shadow-lg py-16 px-8 text-center my-auto">
-            <div className="text-6xl mb-4">🚚</div>
-            <h2 className="text-2xl font-bold text-gray-700">
+          <div className="bg-white rounded-3xl shadow-lg py-20 px-8 text-center">
+            <div className="text-7xl mb-6">🚚</div>
+            <h2 className="text-3xl font-bold text-gray-700">
               No Leads Found
             </h2>
-            <p className="text-gray-500 mt-2 text-sm">
+            <p className="text-gray-500 mt-4">
               No transport leads match your search.
             </p>
             <button
@@ -160,27 +165,27 @@ const AllLeads = () => {
                 setSearch("");
                 setVehicleFilter("All");
               }}
-              className="mt-6 bg-blue-700 hover:bg-blue-800 text-white px-6 py-2.5 rounded-xl font-semibold transition text-sm"
+              className="mt-8 bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-xl font-semibold transition"
             >
               Reset Filters
             </button>
           </div>
         ) : (
-          <>
+          <div className="max-h-[580px] overflow-y-auto pr-2 custom-scrollbar">
             {/* Desktop */}
-            <div className="hidden md:grid grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="hidden md:grid grid-cols-2 xl:grid-cols-3 gap-7 pb-4">
               {filteredLeads.map((lead) => (
                 <LeadCard key={lead._id} lead={lead} />
               ))}
             </div>
 
             {/* Mobile */}
-            <div className="grid md:hidden gap-4">
+            <div className="grid md:hidden gap-5 pb-4">
               {filteredLeads.map((lead) => (
                 <LeadCard key={lead._id} lead={lead} />
               ))}
             </div>
-          </>
+          </div>
         )}
       </div>
 

@@ -32,7 +32,7 @@ import ChangePassword from "./Dashboard/Changepassword";
 import Leads from "./Dashboard/transporter/Leads";
 import TransportServices from "./Dashboard/transporter/TransportServices";
 import AcceptedBid from "./Dashboard/transporter/AcceptedBid";
-import Clients from "./Dashboard/broker/Clients";
+
 import PlanSelection from "../payment/PlanSelection";
 import Receipt from "../payment/Receipt";
 import AddVehicle from "./pages/dashboardpage/AddVehicle";
@@ -63,6 +63,7 @@ import UpadateVehicle from "./components/UpadateVehicle";
 import ImageGalleryManager from "./Dashboard/ImageGalleryManager";
 import Referral from "../payment/Referral";
 import UpdateBisProfile from "./components/UpdateBisProfile";
+import ReviewSection from "./Dashboard/ReviewSection";
 
 
 // Dummy Pages
@@ -124,7 +125,7 @@ function App() {
           <Route path="transportservices" element={<TransportServices />} />
           <Route path="acceptedbid" element={<AcceptedBid />} />
           {/* Broker */}
-          <Route path="clients" element={<Clients />} />
+          
          {/* Payment */}
           <Route path="planselection" element={<PlanSelection />} />
           <Route path="receipt/:paymentId" element={<Receipt />} />
@@ -142,6 +143,7 @@ function App() {
           <Route path="insurancecompany" element={<Insurancecompany />} />
           <Route path="referral" element={<Referral/>} />
           <Route path="updatebisprofile" element={<UpdateBisProfile/>} />
+          <Route path="reviewsection" element={<ReviewSection/>} />
         
 
 

@@ -119,15 +119,25 @@ const LeadCard = ({ lead }) => {
             </p>
           </div>
           <div className="flex flex-col items-end gap-1">
-            <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-              #{lead?._id ? lead._id.slice(-5) : "-----"}
-            </span>
-            {!isAvailable && (
-              <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold uppercase">
-                {lead?.availabilityReason || "Sold Out"}
-              </span>
-            )}
-          </div>
+  <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
+    #{lead?._id ? lead._id.slice(-5) : "-----"}
+  </span>
+
+  {/* Backend status badges */}
+  {isAvailable ? (
+    <span className="bg-green-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide">
+      ACTIVE ({lead?.bidCount || 0}/10 BIDS)
+    </span>
+  ) : (
+    <span className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide">
+      {lead?.displayStatus === "ACCEPTED" || lead?.status === "Assigned" || lead?.status === "Accepted"
+        ? "ACCEPTED"
+        : lead?.displayStatus === "LIMIT_REACHED" || lead?.bidCount >= 10
+        ? "LIMIT REACHED"
+        : lead?.availabilityReason || "INACTIVE"}
+    </span>
+  )}
+</div>
         </div>
       </div>
 
@@ -144,9 +154,9 @@ const LeadCard = ({ lead }) => {
           </div>
           <FaArrowRight className="text-blue-600" />
           <div className="text-right">
-            <p className="text-xs text-gray-500">Destination</p>
-            <p className="font-semibold">{lead?.loading_point || "N/A"}</p>
-          </div>
+  <p className="text-xs text-gray-500">Destination</p>
+  <p className="font-semibold">{lead?.dropLocation || lead?.loading_point || "N/A"}</p>
+</div>
         </div>
 
         {/* Goods */}
@@ -206,23 +216,27 @@ const LeadCard = ({ lead }) => {
 
       {/* Footer - Full Width Bid Button */}
       <div className="border-t p-5 bg-white/40">
-        <button
-          onClick={() => handleProtectedAction("bid")}
-          disabled={!isAvailable}
-          className={`w-full py-3 rounded-xl font-semibold transition text-sm shadow-md ${
-            !isAvailable
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-              : "bg-blue-700 hover:bg-blue-800 text-white active:scale-95"
-          }`}
-        >
-          {!isAvailable
-            ? "Closed / Sold Out"
-            : !isLoggedIn
-            ? "Login to Bid"
-            : !isSubscribed
-            ? "Upgrade to Bid"
-            : "Add Your Bid"}
-        </button>
+       <button
+  onClick={() => handleProtectedAction("bid")}
+  disabled={!isAvailable}
+  className={`w-full py-3 rounded-xl font-semibold transition text-sm shadow-md ${
+    !isAvailable
+      ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+      : "bg-blue-700 hover:bg-blue-800 text-white active:scale-95"
+  }`}
+>
+  {!isAvailable
+    ? (lead?.displayStatus === "ACCEPTED" || lead?.status === "Assigned" || lead?.status === "Accepted"
+        ? "ACCEPTED"
+        : lead?.displayStatus === "LIMIT_REACHED" || lead?.bidCount >= 10
+        ? "BID LIMIT REACHED (10/10)"
+        : "NO LONGER AVAILABLE")
+    : !isLoggedIn
+    ? "Login to Bid"
+    : !isSubscribed
+    ? "Upgrade to Bid"
+    : "Add Your Bid"}
+</button>
       </div>
 
       {/* Bid Modal */}
