@@ -2,8 +2,7 @@ import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import rajeshImg from "../assets/360_F_596236101_KkPgJ3EWtFfHpTMR2bTPUy96EIyAE7aO.jpg";
 import priyaImg from "../assets/images.jpg";
-import amitImg from "../assets/feedback.avif";
-
+import amitImg from "../assets/123.avif";
 export function Feedback() {
  const testimonials = [
   {

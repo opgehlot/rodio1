@@ -122,7 +122,7 @@ const TransportSearch = () => {
             India's Trusted Transport Network
           </span>
           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight">
-            Find Verified Transport Services 
+            Find Verified Transport Services
           </h1>
           <p className="text-blue-100 text-xs md:text-sm font-bold uppercase tracking-wider max-w-xl mx-auto">
             Search trucks, commercial vehicles, and reliable transport services
@@ -269,7 +269,9 @@ const TransportSearch = () => {
                   const role =
                     vehicle.business?.role || vehicle.role || "Transporter";
                   const rawPhoneNumber =
-                    vehicle.business?.phoneNumber || vehicle.phoneNumber || "N/A";
+                    vehicle.business?.phoneNumber ||
+                    vehicle.phoneNumber ||
+                    "N/A";
 
                   const firmName = isLoggedIn
                     ? vehicle.business?.firmName || "Transport Firm"
@@ -279,11 +281,27 @@ const TransportSearch = () => {
                     ? vehicle.business?.ownerName || "Owner"
                     : "🔒 Hidden Owner";
 
-                  const phoneNumber = isLoggedIn ? rawPhoneNumber : "XXXXXXXXXX";
+                  const phoneNumber = isLoggedIn
+                    ? rawPhoneNumber
+                    : "XXXXXXXXXX";
 
                   // Extract transporter ID safely from business or user reference
                   const transporterId =
                     vehicle.business?._id || vehicle.business || vehicle.user;
+
+                  // 👇 Iske niche paste karo
+
+                  const whatsappMessage = ` Rodio Tradelink
+Hello ${firmName},
+Your transport profile is listed on Rodio.
+Available Vehicle:
+${vehicle.vehicleType}
+Connect with verified transporters across India.
+🌐 https://rodiotradelink.com`;
+
+                  const whatsappUrl = `https://wa.me/91${rawPhoneNumber}?text=${encodeURIComponent(
+                    whatsappMessage,
+                  )}`;
 
                   return (
                     <div
@@ -372,7 +390,8 @@ const TransportSearch = () => {
                           <div>
                             <p className="font-black uppercase text-slate-800">
                               {isLoggedIn
-                                ? vehicle.business?.currentCity || "Location Not Set"
+                                ? vehicle.business?.currentCity ||
+                                  "Location Not Set"
                                 : "🔒 Login to view location"}
                             </p>
                             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
@@ -390,9 +409,13 @@ const TransportSearch = () => {
                             <button
                               onClick={() => {
                                 if (transporterId) {
-                                  navigate(`/dashboard/transporters/${transporterId}`);
+                                  navigate(
+                                    `/dashboard/transporters/${transporterId}`,
+                                  );
                                 } else {
-                                  toast.error("Transporter profile ID not found");
+                                  toast.error(
+                                    "Transporter profile ID not found",
+                                  );
                                 }
                               }}
                               className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
@@ -403,8 +426,12 @@ const TransportSearch = () => {
                           ) : (
                             <button
                               onClick={() => {
-                                toast.error("Please login or register to view profile!");
-                                navigate("/login", { state: { from: location } });
+                                toast.error(
+                                  "Please login or register to view profile!",
+                                );
+                                navigate("/login", {
+                                  state: { from: location },
+                                });
                               }}
                               className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
                             >
@@ -427,7 +454,7 @@ const TransportSearch = () => {
                               </a>
 
                               <a
-                                href={`https://wa.me/91${rawPhoneNumber}`}
+                                href={whatsappUrl}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
@@ -439,8 +466,12 @@ const TransportSearch = () => {
                             <>
                               <button
                                 onClick={() => {
-                                  toast.error("Please login or register to call transporter!");
-                                  navigate("/login", { state: { from: location } });
+                                  toast.error(
+                                    "Please login or register to call transporter!",
+                                  );
+                                  navigate("/login", {
+                                    state: { from: location },
+                                  });
                                 }}
                                 className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95"
                               >
@@ -450,8 +481,12 @@ const TransportSearch = () => {
 
                               <button
                                 onClick={() => {
-                                  toast.error("Please login or register to message transporter!");
-                                  navigate("/login", { state: { from: location } });
+                                  toast.error(
+                                    "Please login or register to message transporter!",
+                                  );
+                                  navigate("/login", {
+                                    state: { from: location },
+                                  });
                                 }}
                                 className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
                               >
@@ -472,14 +507,18 @@ const TransportSearch = () => {
             {!isLoggedIn && vehicles.length > 6 && (
               <div className="mt-12 bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-3xl p-8 text-center space-y-4 shadow-xl">
                 <h3 className="text-xl md:text-2xl font-black uppercase">
-                  Want to view all {vehicles.length} vehicles and get direct phone numbers?
+                  Want to view all {vehicles.length} vehicles and get direct
+                  phone numbers?
                 </h3>
                 <p className="text-xs font-bold text-slate-300 uppercase tracking-wider max-w-lg mx-auto">
-                  Login or create an account to unlock complete transporter contacts, search routes freely, and book vehicles instantly.
+                  Login or create an account to unlock complete transporter
+                  contacts, search routes freely, and book vehicles instantly.
                 </p>
                 <div>
                   <button
-                    onClick={() => navigate("/login", { state: { from: location } })}
+                    onClick={() =>
+                      navigate("/login", { state: { from: location } })
+                    }
                     className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition active:scale-95 shadow-lg"
                   >
                     Login / Register Now
