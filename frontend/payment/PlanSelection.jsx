@@ -84,17 +84,17 @@ export function PlanSelection() {
         "Complete Business Profile",
       ],
     },
-    {
-      key: "testing",
-      name: "Testing Plan",
-      price: 1,
-      duration: "1 day",
-      features: [
-        "Instant Feature Test",
-        "Valid for 24 Hours",
-        "All Premium Features Included",
-      ],
-    },
+    // {
+    //   key: "testing",
+    //   name: "Testing Plan",
+    //   price: 1,
+    //   duration: "1 day",
+    //   features: [
+    //     "Instant Feature Test",
+    //     "Valid for 24 Hours",
+    //     "All Premium Features Included",
+    //   ],
+    // },
   ];
 
   // =====================================================

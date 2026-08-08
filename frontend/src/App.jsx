@@ -66,6 +66,7 @@ import UpdateBisProfile from "./components/UpdateBisProfile";
 import ReviewSection from "./Dashboard/ReviewSection";
 
 
+
 // Dummy Pages
 
 function App() {
@@ -144,6 +145,7 @@ function App() {
           <Route path="referral" element={<Referral/>} />
           <Route path="updatebisprofile" element={<UpdateBisProfile/>} />
           <Route path="reviewsection" element={<ReviewSection/>} />
+         
         
 
 
