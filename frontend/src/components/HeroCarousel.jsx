@@ -2,7 +2,7 @@
 import { Carousel as FlowbiteCarousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 
-import truckImage from "../assets/frontpageee.avif";
+import truckImage from "../assets/cohralphoto.png";
 import truckImagee from "../assets/pexels-m-javad-nemati-116278374-30037629.jpg";
 
 export function HeroCarousel({ setActiveTab }) {
@@ -34,9 +34,9 @@ export function HeroCarousel({ setActiveTab }) {
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white">
                 <div className="max-w-3xl">
                   {/* Heading */}
-                  <h1 className="font-inter text-2xl sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
-                    India's Trusted Transport Network
-                  </h1>
+                  <h1 className="font-inter mt-10 sm:mt-0 text-2xl sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
+  India's Trusted Transport Network
+</h1>
 
                   {/* Paragraph: Desktop only */}
                   <p className="font-inter hidden sm:block mt-3 text-sm md:text-base lg:text-lg text-gray-200 max-w-3xl leading-relaxed">
