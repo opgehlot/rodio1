@@ -34,7 +34,7 @@ export function HeroCarousel({ setActiveTab }) {
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white">
                 <div className="max-w-3xl">
                   {/* Heading */}
-                  <h1 className="font-inter mt-15 sm:mt-0 text-2xl sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
+                  <h1 className="font-inter mt-18 sm:mt-0 text-2xl sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
   India's Trusted Transport Network
 </h1>
 
@@ -98,7 +98,7 @@ export function HeroCarousel({ setActiveTab }) {
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white">
                 <div className="max-w-3xl">
                   {/* Heading */}
-                  <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
+                  <h1 className="text-2xl mt-18 sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
                     Fast, Secure & Reliable Transport Solutions
                   </h1>
 
