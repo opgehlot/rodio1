@@ -1505,6 +1505,6 @@ Connect with verified transporters across India.
       </div>
     </div>
   );
-};
+}
 
 export default TransportSearch;
