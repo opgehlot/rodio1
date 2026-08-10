@@ -1,5 +1,4 @@
 
-
 import { Carousel as FlowbiteCarousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 
@@ -19,9 +18,9 @@ export function HeroCarousel({ setActiveTab }) {
   };
 
   return (
-    <section className="w-full h-[90vh] sm:h-auto overflow-hidden flex flex-col justify-between">
+    <section className="w-full h-[90vh] sm:h-auto overflow-hidden flex flex-col justify-between pt-0 sm:pt-16">
       {/* Carousel Container */}
-      <div className="w-full flex-1 sm:h-[500px] lg:h-[600px]">
+      <div className="w-full flex-1 sm:h-[420px] lg:h-[500px]">
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
           {/* ====================== Slide 1 ====================== */}
           <div className="relative h-full">
@@ -35,51 +34,51 @@ export function HeroCarousel({ setActiveTab }) {
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white">
                 <div className="max-w-3xl">
                   {/* Heading */}
-                  <h1 className="font-inter text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+                  <h1 className="font-inter text-2xl sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
                     India's Trusted Transport Network
                   </h1>
 
                   {/* Paragraph: Desktop only */}
-                  <p className="font-inter hidden sm:block mt-4 text-base md:text-lg lg:text-xl text-gray-200 max-w-3xl leading-8">
+                  <p className="font-inter hidden sm:block mt-3 text-sm md:text-base lg:text-lg text-gray-200 max-w-3xl leading-relaxed">
                     Find verified transporters, brokers, contractors and
                     logistics partners across India. Connect faster and grow
                     your business.
                   </p>
 
                   {/* Buttons: Desktop only */}
-                  <div className="hidden sm:mt-10 sm:flex flex-wrap gap-4">
+                  <div className="hidden sm:mt-6 sm:flex flex-wrap gap-3">
                     <Link to="/directory">
-                      <button className="px-7 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105">
+                      <button className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105">
                         📂 Directory
                       </button>
                     </Link>
                     <button
                       onClick={() => handleScroll("search")}
-                      className="px-7 py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
+                      className="px-5 py-2.5 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       🚛 Search Transport
                     </button>
                     <button
                       onClick={() => handleScroll("leads")}
-                      className="px-7 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
+                      className="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       📦 Available Leads
                     </button>
                   </div>
 
                   {/* Stats: Desktop only */}
-                  <div className="hidden sm:mt-10 sm:grid grid-cols-3 gap-5 max-w-md">
+                  <div className="hidden sm:mt-6 sm:grid grid-cols-3 gap-4 max-w-sm">
                     <div>
-                      <h3 className="text-2xl font-bold">500+</h3>
-                      <p className="text-sm text-gray-300">Verified Businesses</p>
+                      <h3 className="text-xl font-bold">500+</h3>
+                      <p className="text-xs text-gray-300">Verified Businesses</p>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold">28+</h3>
-                      <p className="text-sm text-gray-300">States Covered</p>
+                      <h3 className="text-xl font-bold">28+</h3>
+                      <p className="text-xs text-gray-300">States Covered</p>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold">24/7</h3>
-                      <p className="text-sm text-gray-300">Support</p>
+                      <h3 className="text-xl font-bold">24/7</h3>
+                      <p className="text-xs text-gray-300">Support</p>
                     </div>
                   </div>
                 </div>
@@ -99,46 +98,46 @@ export function HeroCarousel({ setActiveTab }) {
               <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 text-white">
                 <div className="max-w-3xl">
                   {/* Heading */}
-                  <h1 className="text-2xl sm:text-4xl lg:text-6xl font-bold leading-snug sm:leading-tight">
+                  <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold leading-snug sm:leading-tight">
                     Fast, Secure & Reliable Transport Solutions
                   </h1>
 
                   {/* Paragraph: Desktop only */}
-                  <p className="hidden sm:block mt-5 text-lg text-gray-200 max-w-2xl leading-relaxed">
+                  <p className="hidden sm:block mt-3 text-sm md:text-base lg:text-lg text-gray-200 max-w-2xl leading-relaxed">
                     Discover trusted transport companies, freight brokers and
                     logistics experts for every route across India.
                   </p>
 
                   {/* Buttons: Desktop only */}
-                  <div className="hidden sm:mt-8 sm:flex flex-wrap gap-4">
+                  <div className="hidden sm:mt-6 sm:flex flex-wrap gap-3">
                     <Link to="/directory">
-                      <button className="px-7 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105">
+                      <button className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105">
                         📂 Directory
                       </button>
                     </Link>
                     <button
                       onClick={() => handleScroll("search")}
-                      className="px-7 py-3 rounded-xl bg-white text-gray-900 hover:bg-gray-100 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
+                      className="px-5 py-2.5 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       🚛 Search Transport
                     </button>
                     <button
                       onClick={() => handleScroll("leads")}
-                      className="px-7 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold shadow-lg transition-all duration-300 hover:scale-105"
+                      className="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105"
                     >
                       📦 Available Leads
                     </button>
                   </div>
 
                   {/* Badges: Desktop only */}
-                  <div className="hidden sm:mt-10 sm:flex flex-wrap gap-3">
-                    <span className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
+                  <div className="hidden sm:mt-6 sm:flex flex-wrap gap-2.5">
+                    <span className="bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-xs">
                       ✔ Verified Companies
                     </span>
-                    <span className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
+                    <span className="bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-xs">
                       ✔ Trusted Brokers
                     </span>
-                    <span className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
+                    <span className="bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-xs">
                       ✔ PAN India Network
                     </span>
                   </div>
