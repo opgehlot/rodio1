@@ -36,7 +36,8 @@ const LeadCard = ({ lead }) => {
     user?.subscription?.status === "active";
 
   // Check if lead is available for bidding
-  const isAvailable = lead?.isAvailable !== false;
+  // Yeh check karein ki lead available hai ya nahi, fallback ke sath
+const isAvailable = lead?.isAvailable === true || lead?.isAvailable === undefined;
 
   const formatDate = (date) => {
     if (!date) return "N/A";
