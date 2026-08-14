@@ -4,11 +4,8 @@ import {
   ArrowRight,
   Building2,
   LockKeyhole,
-  Route,
-  Truck,
   Calendar,
   Zap,
-  Sparkles,
   ShieldAlert,
   Copy,
   Download,
@@ -41,9 +38,11 @@ export function Dashboard() {
       const response = await API.get("/dashboard");
       setDashboard(response.data?.data || null);
     } catch (error) {
-      console.log("Dashboard Error:", error);
+      // Agar backend 404 bhejta hai, toh isko normal state maano (Business not created yet)
       if (error.response?.status === 404) {
         setDashboard(null);
+      } else {
+        console.log("Dashboard Error:", error);
       }
     } finally {
       setLoading(false);
@@ -59,6 +58,10 @@ export function Dashboard() {
   const business = dashboard; 
   const subscription = dashboard?.subscription;
   const referralObj = dashboard?.referral;
+
+  // Clean Boolean Checks
+  const hasBusiness = !!business?.firmName;
+  const hasActiveSubscription = subscription?.status === "active";
 
   const handleViewReceipt = async () => {
     try {
@@ -77,20 +80,19 @@ export function Dashboard() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-[50vh] w-full flex items-center justify-center bg-white">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs font-black text-slate-900 uppercase tracking-widest">
-            LOADING DASHBOARD...
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-[50vh] w-full flex items-center justify-center bg-white">
+  //       <div className="flex flex-col items-center gap-4">
+  //         <div className="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
+  //         <p className="text-xs font-black text-slate-900 uppercase tracking-widest">
+  //           LOADING DASHBOARD...
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  const isUnlocked = subscription?.status === "active";
   const referralCode = referralObj?.referralCode || "RODIO2026";
 
   return (
@@ -98,7 +100,7 @@ export function Dashboard() {
       <div className="w-full space-y-6">
         
         {/* STATE 1: USER HAS NOT REGISTERED BUSINESS */}
-        {!business || !business?.firmName ? (
+        {!hasBusiness && (
           <div className="bg-slate-50 border border-slate-200 rounded-3xl shadow-sm overflow-hidden p-8 md:p-12">
             <div className="max-w-2xl space-y-5">
               <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-900 border border-slate-200 shadow-sm">
@@ -114,7 +116,7 @@ export function Dashboard() {
               </p>
 
               <button
-                onClick={() => navigate("/dashboard/addservices")}
+                onClick={() => navigate("/dashboard/planselection")}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-7 py-4 rounded-2xl font-black text-xs tracking-widest uppercase flex items-center gap-3 transition-all shadow-sm active:scale-[0.99]"
               >
                 <span>ADD YOUR SERVICES & REGISTER</span>
@@ -122,10 +124,10 @@ export function Dashboard() {
               </button>
             </div>
           </div>
-        ) : null}
+        )}
 
         {/* STATE 2: BUSINESS EXISTS BUT PAYMENT PENDING */}
-        {business && business?.firmName && !isUnlocked && (
+        {hasBusiness && !hasActiveSubscription && (
           <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-10 shadow-sm">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
               <div className="flex items-start gap-5">
@@ -147,10 +149,10 @@ export function Dashboard() {
               </div>
 
               <button
-                onClick={() => navigate("/dashboard/addservices")}
+                onClick={() => navigate("/dashboard/planselection")}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-black text-xs tracking-widest uppercase whitespace-nowrap flex items-center justify-center gap-3 transition-all shadow-sm active:scale-[0.99]"
               >
-                <span>CONTINUE TO ADD SERVICES</span>
+                <span>CONTINUE TO PLAN SELECTION</span>
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -158,102 +160,65 @@ export function Dashboard() {
         )}
 
         {/* STATE 3: ACTIVE BUSINESS & SUBSCRIPTION */}
-        {business && business?.firmName && isUnlocked && (
+        {hasBusiness && hasActiveSubscription && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             {/* LEFT CARD: PERFORMANCE & REFERRAL */}
-           <div className="lg:col-span-4 bg-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8 flex flex-col justify-between shadow-xl space-y-6">
+            <div className="lg:col-span-4 bg-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8 flex flex-col justify-between shadow-xl space-y-6">
+              <div>
+                <div className="flex items-center justify-between pb-4 border-b border-slate-700">
+                  <h3 className="text-sm font-black text-white tracking-wider uppercase">
+                    Subscription Card
+                  </h3>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
 
-  {/* Header */}
-  <div>
-    <div className="flex items-center justify-between pb-4 border-b border-slate-700">
-      <h3 className="text-sm font-black text-white tracking-wider uppercase">
-        Subscription Card
-      </h3>
+                <div className="py-6 border-b border-slate-700">
+                  <span className="text-3xl font-black text-emerald-400 uppercase">
+                    {subscription?.status || "ACTIVE"}
+                  </span>
+                  <p className="mt-2 text-xs uppercase tracking-[0.25em] text-slate-400">
+                    Subscription Status
+                  </p>
+                </div>
 
-      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-    </div>
+                <div className="space-y-4 pt-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">✓</div>
+                    <span className="text-sm font-semibold text-white">Subscription Active & Verified</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">✓</div>
+                    <span className="text-sm font-semibold text-white">Unlimited Directory Access</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">✓</div>
+                    <span className="text-sm font-semibold text-white">View Phone Numbers & Email Addresses</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">✓</div>
+                    <span className="text-sm font-semibold text-white">Connect Directly with Verified Businesses</span>
+                  </div>
+                </div>
+              </div>
 
-    {/* Status */}
-    <div className="py-6 border-b border-slate-700">
-      <span className="text-3xl font-black text-emerald-400 uppercase">
-        {subscription?.status || "ACTIVE"}
-      </span>
-
-      <p className="mt-2 text-xs uppercase tracking-[0.25em] text-slate-400">
-        Subscription Status
-      </p>
-    </div>
-
-    {/* Features */}
-    <div className="space-y-4 pt-6">
-
-      <div className="flex items-center gap-3">
-        <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-          ✓
-        </div>
-
-        <span className="text-sm font-semibold text-white">
-          Subscription Active & Verified
-        </span>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-          ✓
-        </div>
-
-        <span className="text-sm font-semibold text-white">
-          Unlimited Directory Access
-        </span>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-          ✓
-        </div>
-
-        <span className="text-sm font-semibold text-white">
-          View Phone Numbers & Email Addresses
-        </span>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-          ✓
-        </div>
-
-        <span className="text-sm font-semibold text-white">
-          Connect Directly with Verified Businesses
-        </span>
-      </div>
-
-    </div>
-  </div>
-
-  {/* Referral Code */}
-  <div className="border-t border-slate-700 pt-5">
-    <div className="flex items-center justify-between">
-
-      <span className="text-sm font-bold uppercase tracking-wider text-white">
-        Referral Code
-      </span>
-
-      <button
-        onClick={() => handleCopyReferral(referralCode)}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 hover:border-blue-500 transition-all duration-200 shadow-md"
-      >
-        <span className="font-mono text-lg font-bold tracking-[0.2em] text-white">
-          {referralCode}
-        </span>
-
-        <Copy size={18} className="text-slate-300" />
-      </button>
-
-    </div>
-  </div>
-
-</div>
+              <div className="border-t border-slate-700 pt-5">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold uppercase tracking-wider text-white">
+                    Referral Code
+                  </span>
+                  <button
+                    onClick={() => handleCopyReferral(referralCode)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 hover:border-blue-500 transition-all duration-200 shadow-md"
+                  >
+                    <span className="font-mono text-lg font-bold tracking-[0.2em] text-white">
+                      {referralCode}
+                    </span>
+                    <Copy size={18} className="text-slate-300" />
+                  </button>
+                </div>
+              </div>
+            </div>
 
             {/* RIGHT CARD: BUSINESS PROFILE */}
             <div className="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 text-white shadow-sm flex flex-col justify-between">

@@ -34,6 +34,8 @@ import Features from "../components/Features";
 import Overvision from "../components/Overvision";
 import Feedback from "../components/Feedback";
 import QueryForm from "../components/QueryForm";
+// import AdminReferralPayouts from "../components/AdminReferralPayout";
+// import Indialogo from "../components/India";
 
 
 function Home() {
@@ -51,9 +53,11 @@ function Home() {
 
       {/* Other Sections */}
       <Features />
+      {/* <Indialogo/> */}
      
       <Overvision />
       <Feedback />
+      {/* <AdminReferralPayouts/> */}
       <QueryForm />
     </div>
   );

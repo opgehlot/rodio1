@@ -1,63 +1,63 @@
 import {
   Truck,
-  MapPinned,
-  Wallet,
-  LayoutDashboard,
-  Bell,
-  FileText,
+  Search,
+  Route,
+  BadgeIndianRupee,
+  PhoneCall,
+  Eye,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function Features() {
   const features = [
     {
-      title: "Real-time Bidding",
+      title: "Free Transport Directory",
       icon: Truck,
-      color: "bg-orange-100 text-orange-600",
+      color: "from-blue-600 to-blue-800",
     },
     {
-      title: "Live GPS Tracking",
-      icon: MapPinned,
-      color: "bg-blue-100 text-blue-600",
+      title: "Easy Transport Search",
+      icon: Search,
+      color: "from-blue-500 to-indigo-700",
     },
     {
-      title: "Secure Payments",
-      icon: Wallet,
-      color: "bg-green-100 text-green-600",
+      title: "Vehicle Search by Specific Route",
+      icon: Route,
+      color: "from-indigo-600 to-blue-800",
     },
     {
-      title: "Multi-role Dashboard",
-      icon: LayoutDashboard,
-      color: "bg-purple-100 text-purple-600",
+      title: "No Brokerage Charges",
+      icon: BadgeIndianRupee,
+      color: "from-blue-600 to-indigo-800",
     },
     {
-      title: "Instant Notifications",
-      icon: Bell,
-      color: "bg-yellow-100 text-yellow-600",
+      title: "Direct Communication with Customers",
+      icon: PhoneCall,
+      color: "from-indigo-600 to-blue-800",
     },
     {
-      title: "Document Management",
-      icon: FileText,
-      color: "bg-pink-100 text-pink-600",
+      title: "Transparent Lead Ecosystem",
+      icon: Eye,
+      color: "from-blue-600 to-cyan-700",
     },
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-orange-50">
+    <section className="py-24 bg-gradient-to-b from-white to-blue-50">
       <div className="max-w-7xl mx-auto px-6">
 
+        {/* Heading */}
         <div className="text-center mb-16">
-          <span className="bg-orange-100 text-orange-600 px-4 py-2 rounded-full font-semibold">
+          <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold">
             WHY CHOOSE RODIO
           </span>
 
-          
-
           <p className="text-gray-500 mt-4">
-            Everything you need to manage transport efficiently.
+            Everything you need to connect and manage transport efficiently.
           </p>
         </div>
 
+        {/* Cards */}
         <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-8">
 
           {features.map((feature, index) => (
@@ -67,22 +67,60 @@ export function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="bg-white rounded-3xl shadow-md hover:shadow-2xl p-8 border border-gray-100 transition-all"
+              whileHover={{
+                y: -8,
+                scale: 1.02,
+              }}
+              className={`
+                relative
+                overflow-hidden
+                rounded-3xl
+                p-8
+                min-h-[280px]
+                bg-gradient-to-br ${feature.color}
+                shadow-lg
+                hover:shadow-2xl
+                transition-all
+                duration-300
+              `}
             >
-              <div
-                className={`w-16 h-16 rounded-2xl flex items-center justify-center ${feature.color}`}
-              >
-                <feature.icon size={30} />
+
+              {/* Decorative Circle */}
+              <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10" />
+
+              <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/5" />
+
+              {/* Icon */}
+              <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-white backdrop-blur-sm shadow-lg">
+                <feature.icon size={30} strokeWidth={2} />
               </div>
 
-              <h3 className="text-xl font-bold mt-6">
+              {/* Title */}
+              <h3 className="relative z-10 mt-6 text-xl font-bold leading-snug text-white">
                 {feature.title}
               </h3>
 
-              <p className="text-gray-500 mt-3">
-                Manage your transport operations faster, smarter and securely.
+              {/* Description */}
+              <p className="relative z-10 mt-3 text-sm leading-6 text-blue-100">
+                Connect directly, find the right transport and manage your
+                requirements with greater transparency.
               </p>
+
+              {/* Bottom Line */}
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-white/20">
+                <motion.div
+                  className="h-full w-1/3 bg-white/50"
+                  animate={{
+                    x: ["0%", "220%"],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                />
+              </div>
+
             </motion.div>
           ))}
 
@@ -91,4 +129,5 @@ export function Features() {
     </section>
   );
 }
+
 export default Features;

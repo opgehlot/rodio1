@@ -5,7 +5,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import LanguageSwitcher from "../languages/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
-import logo from "../assets/nav.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -77,16 +76,13 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto h-[70px] px-5 flex items-center justify-between">
         {/* Logo - Yahan બદલાવ kiya gya hai */}
-        <div className="flex-shrink-0">
-          <NavLink to="/" className="flex items-center">
-            <img
-              src={logo}
-              alt="RODIO Tradelink"
-              // Mobile ke liye h-12, laptop ke liye h-20
-              className="h-12 md:h-20 w-auto object-contain" 
-            />
-          </NavLink>
-        </div>
+       <div className="flex-shrink-0">
+  <NavLink to="/" className="flex items-center">
+    <span className="text-2xl md:text-3xl font-bold">
+      RODIO <span className="text-orange-500">Tradelink</span>
+    </span>
+  </NavLink>
+</div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center justify-center flex-1 mx-8 gap-8">

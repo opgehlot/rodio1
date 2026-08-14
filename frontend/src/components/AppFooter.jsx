@@ -165,12 +165,12 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link
+                  {/* <Link
                     to="/register" 
                     className="hover:text-blue-600 transition-colors"
                   >
                     Become Broker
-                  </Link>
+                  </Link> */}
                 </li>
                 <li>
                   <Link

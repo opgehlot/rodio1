@@ -3,7 +3,7 @@ import { Carousel as FlowbiteCarousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 import truckImage from "../assets/cohralphoto.png";
-import truckImagee from "../assets/pexels-m-javad-nemati-116278374-30037629.jpg";
+import truckImagee from "../assets/indpadance.jpeg";
 
 export function HeroCarousel({ setActiveTab }) {
   const handleScroll = (tab) => {
@@ -21,6 +21,7 @@ export function HeroCarousel({ setActiveTab }) {
     <section className="w-full h-[90vh] sm:h-auto overflow-hidden flex flex-col justify-between pt-0 sm:pt-16">
       {/* Carousel Container */}
       <div className="w-full flex-1 sm:h-[420px] lg:h-[500px]">
+        
         <FlowbiteCarousel slideInterval={5000} indicators={false}>
           {/* ====================== Slide 1 ====================== */}
           <div className="relative h-full">

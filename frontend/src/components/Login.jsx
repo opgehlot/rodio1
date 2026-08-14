@@ -495,14 +495,14 @@ export function Login() {
       <div className="pt-[70px] w-full bg-white flex flex-col lg:flex-row">
         {/* LEFT SIDE */}
         <div className="hidden lg:flex lg:w-1/2 bg-white p-16 flex-col justify-between items-center text-center border-r border-slate-100">
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
               <Truck size={32} />
             </div>
             <span className="text-2xl font-semibold tracking-widest text-slate-800">
               RODIO
             </span>
-          </div>
+          </div> */}
 
           <div className="my-auto py-12 max-w-lg space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-wider uppercase">

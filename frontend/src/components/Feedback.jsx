@@ -1,108 +1,195 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-import rajeshImg from "../assets/360_F_596236101_KkPgJ3EWtFfHpTMR2bTPUy96EIyAE7aO.jpg";
-import priyaImg from "../assets/images.jpg";
+
+import rajeshImg from "../assets/o1.jpeg";
+import priyaImg from "../assets/02.jpeg";
 import amitImg from "../assets/123.avif";
+
 export function Feedback() {
- const testimonials = [
-  {
-    name: "Rajesh Kumar",
-    role: "Manufacturing Company",
-    image: rajeshImg, // Yahan import kiya hua variable de dein
-    text: "Rodio reduced our logistics costs by 30%. The bidding system is fantastic and delivery is always on time.",
-  },
-  {
-    name: "shubham kumar",
-    role: "Transporter",
-    image: priyaImg,
-    text: "Best platform for finding loads. My fleet utilization improved significantly and payments are always secure.",
-  },
-  {
-    name: "Amit Patel",
-    role: "Broker",
-    image: amitImg,
-    text: "Managing multiple clients and shipments has never been easier. Highly recommended for logistics businesses.",
-  },
-];
+  const testimonials = [
+    {
+      name: "Manjoor Ansari",
+      role: "Indore Barhi RoadLines",
+      image: rajeshImg,
+      text: "Rodio reduced our logistics costs by 30%. The bidding system is fantastic and delivery is always on time.",
+    },
+    {
+      name: "Narendra Bhale",
+      role: "Shivam Automovers",
+      image: priyaImg,
+      text: "Best platform for finding loads. My fleet utilization improved significantly and payments are always secure.",
+    },
+    {
+      name: "Amit Patel",
+      role: "Broker",
+      image: amitImg,
+      text: "Managing multiple clients and shipments has never been easier. Highly recommended for logistics businesses.",
+    },
+  ];
 
   return (
-    <section className="py-24 bg-white" >
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="relative overflow-hidden bg-gradient-to-b from-white via-blue-50/40 to-purple-50/50 py-24">
+      
+      {/* Background Glow */}
+      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-blue-300/20 blur-3xl" />
 
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold">
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-72 w-72 rounded-full bg-purple-300/20 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-6">
+
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16 text-center"
+        >
+          <span className="inline-block rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">
+            USER FEEDBACK
+          </span>
+
+          <h2 className="mt-5 text-4xl font-bold tracking-tight text-gray-900">
             What Our Users Say
           </h2>
 
-          <p className="text-gray-500 mt-3">
+          <p className="mx-auto mt-3 max-w-2xl text-gray-500">
             Trusted by customers, transporters and brokers across India.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Testimonials */}
+        <div className="grid gap-8 md:grid-cols-3">
 
           {testimonials.map((item, index) => (
-
             <motion.div
               key={item.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -10 }}
-              className="bg-blue-900/90 rounded-3xl shadow-lg border border-orange-100 p-8 hover:shadow-2xl transition-all duration-300"
-              className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300"
+              initial={{
+                opacity: 0,
+                y: 50,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                margin: "-80px",
+              }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.15,
+                ease: "easeOut",
+              }}
+              whileHover={{
+                y: -12,
+                scale: 1.02,
+              }}
+              className="group relative overflow-hidden rounded-3xl border border-blue-200/50 bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 p-8 shadow-lg transition-shadow duration-300 hover:shadow-2xl"
             >
 
-              <Quote className="text-white w-10 h-10 mb-5" />
+              {/* Decorative Glow */}
+              <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-purple-400/20 blur-2xl transition-transform duration-700 group-hover:scale-150" />
 
-              <div className="flex mb-5">
+              <div className="absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-blue-400/20 blur-2xl transition-transform duration-700 group-hover:scale-125" />
 
+              {/* Quote */}
+              <motion.div
+                animate={{
+                  y: [0, -4, 0],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: index * 0.3,
+                }}
+                className="relative z-10"
+              >
+                <Quote className="h-10 w-10 text-blue-200" />
+              </motion.div>
+
+              {/* Stars */}
+              <div className="relative z-10 mt-5 flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
+                  <motion.div
                     key={star}
-                    size={20}
-                    fill="#facc15" // yellow-400
-                    color="#facc15" // yellow-400
-                  />
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: index * 0.15 + star * 0.08,
+                      duration: 0.25,
+                    }}
+                  >
+                    <Star
+                      size={18}
+                      fill="#facc15"
+                      color="#facc15"
+                    />
+                  </motion.div>
                 ))}
-
               </div>
 
-              <p className="text-gray-700 italic leading-7">
+              {/* Text */}
+              <p className="relative z-10 mt-6 min-h-[120px] text-[15px] italic leading-7 text-blue-50">
                 "{item.text}"
               </p>
 
-              <div className="flex items-center gap-4 mt-8">
+              {/* Divider */}
+              <div className="relative z-10 my-6 h-px bg-white/10" />
 
-                <img
+              {/* User */}
+              <div className="relative z-10 flex items-center gap-4">
+
+                <motion.img
                   src={item.image}
                   alt={item.name}
-                  className="w-14 h-14 rounded-full border-2 border-blue-500"
+                  whileHover={{
+                    scale: 1.1,
+                    rotate: 3,
+                  }}
+                  transition={{
+                    duration: 0.3,
+                  }}
+                  className="h-14 w-14 rounded-full border-2 border-white/70 object-cover shadow-lg"
                 />
 
                 <div>
-
-                  <h3 className="font-bold text-lg">
+                  <h3 className="text-lg font-bold text-white">
                     {item.name}
                   </h3>
 
-                  <p className="text-gray-500 text-sm">
+                  <p className="mt-1 text-sm text-blue-200">
                     {item.role}
                   </p>
-
                 </div>
 
               </div>
 
-            </motion.div>
+              {/* Bottom Animated Line */}
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-white/10">
+                <motion.div
+                  className="h-full w-1/3 bg-gradient-to-r from-blue-300 to-purple-300"
+                  animate={{
+                    x: ["0%", "220%"],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "linear",
+                    delay: index * 0.4,
+                  }}
+                />
+              </div>
 
+            </motion.div>
           ))}
 
         </div>
-
       </div>
     </section>
   );
 }
+
 export default Feedback;
