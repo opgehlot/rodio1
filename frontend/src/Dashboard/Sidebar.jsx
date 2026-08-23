@@ -758,11 +758,11 @@ export default function Sidebar({ open, setOpen }) {
 
             <div id="sidebar-brand-info">
               <h2
-                id="sidebar-brand-title"
-                className="text-xl font-black tracking-wide text-slate-900 group-hover:text-blue-600 transition-colors duration-300"
-              >
-                Rodio Tradelink
-              </h2>
+  id="sidebar-brand-title"
+  className="text-2xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-300"
+>
+  Rodio <span className="text-orange-500">Tradelink</span>
+</h2>
 
               <p
                 id="sidebar-brand-role"

@@ -47,7 +47,7 @@ function Home() {
       <HeroCarousel setActiveTab={setActiveTab} />
 
       {/* Dynamic Component */}
-      <div id="dynamic-home" className="scroll-mt-24">
+      <div id="dynamic-home" className="scroll-mt-0">
         <DaynamicHomeComponent activeTab={activeTab} />
       </div>
 

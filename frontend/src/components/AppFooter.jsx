@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   Truck,
   MapPin,
@@ -40,12 +41,12 @@ export default function Footer() {
       url: "https://www.linkedin.com/company/rodio-tradelink/",
       color: "text-blue-700",
     },
-    {
-      name: "WhatsApp Group",
-      icon: MessageCircle,
-      url: "https://chat.whatsapp.com/F2j64qVFR3L90s52vUv3cR",
-      color: "text-green-500",
-    },
+   {
+  name: "WhatsApp Group",
+  icon: FaWhatsapp,
+  url: "https://chat.whatsapp.com/DoIcWaIOFPz7qGTssjOm9g?s=sh&p=a&ilr=1",
+  color: "text-green-500",
+},
   ];
 
   return (
@@ -59,7 +60,9 @@ export default function Footer() {
                 <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center">
                   <Truck className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-4xl font-bold text-gray-800">Rodio</h2>
+               <h2 className="text-2xl font-bold text-gray-800">
+  Rodio <span className="text-orange-500">Tradelink</span>
+</h2>
               </div>
               <p className="mt-2 text-gray-600 leading-7 text-sm">
                 India's Smart Transport Platform connecting transporters,

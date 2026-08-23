@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -99,6 +99,7 @@ const roleOptions = [
 
 export function Register() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -106,7 +107,7 @@ export function Register() {
   // ==========================
   // AUTH CONTEXT
   // ==========================
-const { login, setUser, setRegisterData } = useContext(AuthContext);
+  const { login, setUser, setRegisterData } = useContext(AuthContext);
 
   const {
     register,
@@ -118,7 +119,7 @@ const { login, setUser, setRegisterData } = useContext(AuthContext);
     defaultValues: {
       role: "",
       firmName: "",
-      mobile: "",  
+      mobile: "",
       password: "",
       confirmPassword: "",
     },
@@ -151,8 +152,8 @@ const { login, setUser, setRegisterData } = useContext(AuthContext);
 
       if (!data.success) {
         toast.error(data.message || "Registration Failed", {
-  id: "resitration field",
-});
+          id: "resitration field",
+        });
         return;
       }
 
@@ -190,28 +191,32 @@ const { login, setUser, setRegisterData } = useContext(AuthContext);
         };
 
         setUser(normalizedUser);
-       login(normalizedUser, data.token);
+        login(normalizedUser, data.token);
 
-if (typeof setRegisterData === "function") {
-  setRegisterData(normalizedUser);
-}
+        if (typeof setRegisterData === "function") {
+          setRegisterData(normalizedUser);
+        }
 
-if (normalizedUser.role) {
-  localStorage.setItem("role", normalizedUser.role);
-}
+        if (normalizedUser.role) {
+          localStorage.setItem("role", normalizedUser.role);
+        }
       }
 
       toast.success(data.message || "Registration Successful", {
-  id: "registration scuccessful",
-});
+        id: "registration scuccessful",
+      });
       reset();
-      navigate(data.redirectTo || "/", { replace: true });
+      const returnTo = location.state?.returnTo || location.state?.redirectTo;
+      navigate(returnTo || data.redirectTo || "/", {
+        replace: true,
+      });
     } catch (error) {
       console.error("Registration Error:", error);
       toast.error(
-        error.response?.data?.message || error.message || "Registration Failed", {
-  id: "registration failed",
-}
+        error.response?.data?.message || error.message || "Registration Failed",
+        {
+          id: "registration failed",
+        },
       );
     } finally {
       setLoading(false);
@@ -377,7 +382,6 @@ if (normalizedUser.role) {
                 </p>
               )}
             </div>
-            
 
             {/* PASSWORD */}
             <div>
@@ -476,16 +480,16 @@ if (normalizedUser.role) {
 
             {/* LOGIN LINK */}
             <div className="text-center pt-3">
-  <p className="text-lg text-slate-700 font-medium">
-    Already have an account?{" "}
-    <Link
-      to="/login"
-      className="register-blink text-2xl font-extrabold hover:underline"
-    >
-      Login
-    </Link>
-  </p>
-</div>
+              <p className="text-lg text-slate-700 font-medium">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="text-red-500 text-xl font-bold hover:underline animate-pulse transition-all duration-700"
+                >
+                  Login
+                </Link>
+              </p>
+            </div>
           </form>
         </div>
       </div>

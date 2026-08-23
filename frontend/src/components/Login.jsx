@@ -325,7 +325,7 @@
 // }
 import { useContext, useState } from "react";
 import API from "../api/api";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Mail,
   Lock,
@@ -344,6 +344,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // ==========================================
   // AUTH CONTEXT
@@ -400,10 +401,10 @@ export function Login() {
     }
 
     if (!formData.password.trim()) {
-      toast.error("Please enter Password",{
+      toast.error("Please enter Password", {
         id: "please enter password",
       });
-      
+
       return;
     }
 
@@ -437,8 +438,8 @@ export function Login() {
       // Debugging check to see what failed if it doesn't run
       if (!token || !user) {
         console.error("Missing token or user object:", { token, user });
-        toast.error(resData.message || "Invalid server response structure",{
-             id: "Invalid server response structure"
+        toast.error(resData.message || "Invalid server response structure", {
+          id: "Invalid server response structure",
         });
         return;
       }
@@ -470,7 +471,12 @@ export function Login() {
       // SUCCESS & REDIRECT
       // ======================================
       toast.success(resData.message || "Login Successful");
-      navigate(redirectTo || "/", { replace: true });
+
+      const returnTo = location.state?.returnTo || location.state?.redirectTo;
+
+      navigate(returnTo || redirectTo || "/", {
+        replace: true,
+      });
     } catch (error) {
       console.error("LOGIN ERROR CATCH:", error);
 
@@ -480,8 +486,8 @@ export function Login() {
         toast.error("Server not responding");
       } else {
         toast.error("Something went wrong during login", {
-  id: "during login",
-});
+          id: "during login",
+        });
       }
     } finally {
       setLoading(false);
@@ -623,16 +629,16 @@ export function Login() {
 
             {/* REGISTER LINK */}
             <div className="text-center pt-8">
-  <p className="text-lg text-slate-600">
-    Don't have an account?{" "}
-    <Link
-      to="/register"
-      className="text-blue-600 text-xl font-bold hover:underline animate-pulse transition-all duration-700"
-    >
-      Register
-    </Link>
-  </p>
-</div>
+              <p className="text-1xl text-slate-600">
+                Don't have an account?{" "}
+                <Link
+                  to="/register"
+                  className="text-red-500 text-xl font-bold hover:underline animate-pulse transition-all duration-700"
+                >
+                  NEW REGISTER
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

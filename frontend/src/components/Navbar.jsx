@@ -78,7 +78,7 @@ export default function Navbar() {
         {/* Logo - Yahan બદલાવ kiya gya hai */}
        <div className="flex-shrink-0">
   <NavLink to="/" className="flex items-center">
-    <span className="text-2xl md:text-3xl font-bold">
+    <span className="text-2xl md:text-2xl font-bold">
       RODIO <span className="text-orange-500">Tradelink</span>
     </span>
   </NavLink>
@@ -124,9 +124,9 @@ export default function Navbar() {
         setMenuOpen(false);
         navigate("/dashboard");
       }}
-      className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold shadow-sm hover:bg-blue-700 transition-colors whitespace-nowrap"
+      className="px-0.5 py-1.5 rounded-lg bg-green-500 text-white text-xs font-semibold shadow-sm hover:bg-blue-700 transition-colors whitespace-nowrap"
     >
-      MY DASHBOARD
+      MY Account
     </button>
   )}
 

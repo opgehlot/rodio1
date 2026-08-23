@@ -9,12 +9,14 @@ export function DashboardLayout() {
   return (
     <div className="bg-gray-100 min-h-screen">
       <header className="lg:hidden sticky top-0 z-40 bg-white shadow flex items-center justify-between px-5 py-4">
-        <button onClick={() => setOpen(true)}>
-          <Menu size={28} />
-        </button>
+  <button onClick={() => setOpen(true)}>
+    <Menu size={28} />
+  </button>
 
-        <h1 className="text-xl font-bold">Rodio TradLink</h1>
-      </header>
+  <h1 className="text-2xl font-bold">
+    Rodio <span className="text-orange-500">Tradelink</span>
+  </h1>
+</header>
 
       <Sidebar open={open} setOpen={setOpen} />
 

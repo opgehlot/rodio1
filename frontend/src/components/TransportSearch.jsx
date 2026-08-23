@@ -237,7 +237,7 @@ const TransportSearch = () => {
         </div>
 
         {/* Section Heading */}
-        <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">
+        {/* <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">
           <h2 className="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight">
             Available Vehicles / Search Results
           </h2>
@@ -247,7 +247,7 @@ const TransportSearch = () => {
               : `${displayedVehicles.length} of ${vehicles.length}`}{" "}
             Vehicles Shown
           </span>
-        </div>
+        </div> */}
 
         {/* Initial or Search Loading State */}
         {(initialLoading || loading) && (
