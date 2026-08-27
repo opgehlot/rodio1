@@ -585,14 +585,20 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
     if (profileData) {
       setFormData({
         name: profileData.name || "",
-        phoneNumber: (profileData.phoneNumber || profileData.mobile || "").replace(/\D/g, "").slice(0, 10),
+        phoneNumber: (profileData.phoneNumber || profileData.mobile || "")
+          .replace(/\D/g, "")
+          .slice(0, 10),
         alternatePhoneNumbers:
           Array.isArray(profileData.alternatePhoneNumbers) &&
           profileData.alternatePhoneNumbers.length > 0
-            ? profileData.alternatePhoneNumbers.map((num) => String(num).replace(/\D/g, "").slice(0, 10))
+            ? profileData.alternatePhoneNumbers.map((num) =>
+                String(num).replace(/\D/g, "").slice(0, 10),
+              )
             : [""],
         email: profileData.email || "",
-        whatsappNumber: (profileData.whatsappNumber || "").replace(/\D/g, "").slice(0, 10),
+        whatsappNumber: (profileData.whatsappNumber || "")
+          .replace(/\D/g, "")
+          .slice(0, 10),
         role: profileData.role || "",
       });
     }
@@ -612,15 +618,15 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
     }
   };
   const handleEdit = () => {
-  setIsEditing(true);
+    setIsEditing(true);
 
-  setTimeout(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
-  }, 100);
-};
+    setTimeout(() => {
+      window.scrollTo({
+        top: 400,
+        behavior: "smooth",
+      });
+    }, 100);
+  };
 
   // Dynamic Alternate Number Handlers
   const handleAltNumberChange = (index, value) => {
@@ -637,7 +643,9 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
   };
 
   const removeAlternateNumber = (index) => {
-    const updated = formData.alternatePhoneNumbers.filter((_, i) => i !== index);
+    const updated = formData.alternatePhoneNumbers.filter(
+      (_, i) => i !== index,
+    );
     setFormData({
       ...formData,
       alternatePhoneNumbers: updated.length > 0 ? updated : [""],
@@ -653,19 +661,25 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
     }
 
     if (formData.phoneNumber && formData.phoneNumber.length !== 10) {
-      toast.error("Primary mobile number must be exactly 10 digits", { id: "phone-error" });
+      toast.error("Primary mobile number must be exactly 10 digits", {
+        id: "phone-error",
+      });
       return;
     }
 
     if (formData.whatsappNumber && formData.whatsappNumber.length !== 10) {
-      toast.error("WhatsApp number must be exactly 10 digits", { id: "whatsapp-error" });
+      toast.error("WhatsApp number must be exactly 10 digits", {
+        id: "whatsapp-error",
+      });
       return;
     }
 
     for (let i = 0; i < formData.alternatePhoneNumbers.length; i++) {
       const altNum = formData.alternatePhoneNumbers[i];
       if (altNum && altNum.length !== 10) {
-        toast.error(`Alternate number ${i + 1} must be exactly 10 digits`, { id: "alt-phone-error" });
+        toast.error(`Alternate number ${i + 1} must be exactly 10 digits`, {
+          id: "alt-phone-error",
+        });
         return;
       }
     }
@@ -682,17 +696,19 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
         alternatePhoneNumbers: formData.alternatePhoneNumbers
           .map((n) => String(n).trim())
           .filter(Boolean),
-          role: formData.role,
+        role: formData.role,
       };
 
       const res = await axios.put(
         "https://rodio-tradelink.onrender.com/api/profile",
         payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (res.data.success) {
-        toast.success("Profile updated successfully!", { id: "profile-update-success" });
+        toast.success("Profile updated successfully!", {
+          id: "profile-update-success",
+        });
         setIsEditing(false);
         if (onUpdateSuccess) onUpdateSuccess(res.data.profile);
       }
@@ -709,14 +725,20 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
     if (profileData) {
       setFormData({
         name: profileData.name || "",
-        phoneNumber: (profileData.phoneNumber || profileData.mobile || "").replace(/\D/g, "").slice(0, 10),
+        phoneNumber: (profileData.phoneNumber || profileData.mobile || "")
+          .replace(/\D/g, "")
+          .slice(0, 10),
         alternatePhoneNumbers:
           Array.isArray(profileData.alternatePhoneNumbers) &&
           profileData.alternatePhoneNumbers.length > 0
-            ? profileData.alternatePhoneNumbers.map((num) => String(num).replace(/\D/g, "").slice(0, 10))
+            ? profileData.alternatePhoneNumbers.map((num) =>
+                String(num).replace(/\D/g, "").slice(0, 10),
+              )
             : [""],
         email: profileData.email || "",
-        whatsappNumber: (profileData.whatsappNumber || "").replace(/\D/g, "").slice(0, 10),
+        whatsappNumber: (profileData.whatsappNumber || "")
+          .replace(/\D/g, "")
+          .slice(0, 10),
         role: profileData.role || "",
       });
     }
@@ -734,8 +756,8 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
       >
         <div className="flex items-center gap-[12px]">
           <div className="w-[40px] h-[40px] rounded-[10px] bg-[#4f46e5] text-white flex items-center justify-center">
-  <FaUserTie size={20} />
-</div>
+            <FaUserTie size={20} />
+          </div>
           <div>
             <h3 className="m-0 text-[16px] font-bold text-[#1e293b]">
               Owner Details
@@ -750,7 +772,9 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
           <span className="text-[12px] font-semibold text-[#2563eb] bg-[#eff6ff] px-[10px] py-[4px] rounded-[20px]">
             {isOpen ? "Collapse" : "Open"}
           </span>
-          <span className="text-[14px] text-[#64748b]">{isOpen ? "▲" : "▼"}</span>
+          <span className="text-[14px] text-[#64748b]">
+            {isOpen ? "▲" : "▼"}
+          </span>
         </div>
       </div>
 
@@ -767,7 +791,9 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                     Owner Name
                   </span>
                   <span className="text-[14px] font-semibold text-[#0f172a]">
-                    {formData.name || <span className="text-[#94a3b8]">Not Added</span>}
+                    {formData.name || (
+                      <span className="text-[#94a3b8]">Not Added</span>
+                    )}
                   </span>
                 </div>
 
@@ -787,7 +813,9 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                     Primary Mobile
                   </span>
                   <span className="text-[14px] font-semibold text-[#0f172a]">
-                    {formData.phoneNumber || <span className="text-[#94a3b8]">Not Added</span>}
+                    {formData.phoneNumber || (
+                      <span className="text-[#94a3b8]">Not Added</span>
+                    )}
                   </span>
                 </div>
                 <div className="bg-[#f8fafc] p-[14px] rounded-[8px] border border-[#e2e8f0] col-span-full">
@@ -795,7 +823,8 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                     Alternate Mobile Numbers
                   </span>
                   <div className="flex flex-wrap gap-[8px]">
-                    {formData.alternatePhoneNumbers.filter(Boolean).length > 0 ? (
+                    {formData.alternatePhoneNumbers.filter(Boolean).length >
+                    0 ? (
                       formData.alternatePhoneNumbers
                         .filter(Boolean)
                         .map((num, idx) => (
@@ -807,7 +836,9 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                           </span>
                         ))
                     ) : (
-                      <span className="text-[#94a3b8] text-[13px]">No Alternate Numbers Added</span>
+                      <span className="text-[#94a3b8] text-[13px]">
+                        No Alternate Numbers Added
+                      </span>
                     )}
                   </div>
                 </div>
@@ -818,7 +849,9 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                     WhatsApp Number
                   </span>
                   <span className="text-[14px] font-semibold text-[#16a34a]">
-                    {formData.whatsappNumber || <span className="text-[#94a3b8]">Not Added</span>}
+                    {formData.whatsappNumber || (
+                      <span className="text-[#94a3b8]">Not Added</span>
+                    )}
                   </span>
                 </div>
 
@@ -828,19 +861,20 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                     Email ID
                   </span>
                   <span className="text-[14px] font-semibold text-[#0f172a]">
-                    {formData.email || <span className="text-[#94a3b8]">Not Added</span>}
+                    {formData.email || (
+                      <span className="text-[#94a3b8]">Not Added</span>
+                    )}
                   </span>
                 </div>
 
                 {/* Alternate Numbers */}
-                
               </div>
 
               {/* Edit Trigger Button */}
               <div className="flex justify-end">
                 <button
                   type="button"
-                onClick={handleEdit}
+                  onClick={handleEdit}
                   className="flex items-center gap-[6px] bg-[#2563eb] text-white px-[20px] py-[10px] rounded-[8px] border-none font-semibold text-[14px] cursor-pointer"
                 >
                   ✏️ Edit Details
@@ -864,52 +898,50 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                   />
                 </div>
 
-               <div className="bg-[#f8fafc] p-[14px] rounded-[8px] border border-[#e2e8f0]">
-  <span className="block text-[11px] font-bold text-[#64748b] uppercase mb-1">
-    Role
-  </span>
+                <div className="bg-[#f8fafc] p-[14px] rounded-[8px] border border-[#e2e8f0]">
+                  <span className="block text-[11px] font-bold text-[#64748b] uppercase mb-1">
+                    Role
+                  </span>
 
-  <select
-    value={formData.role || "user"}
-    onChange={(e) =>
-      setFormData((prev) => ({
-        ...prev,
-        role: e.target.value,
-      }))
-    }
-    className="w-full text-[12px] font-bold text-[#1d4ed8] bg-[#dbeafe] px-[8px] py-[6px] rounded-[4px] uppercase outline-none cursor-pointer border-none"
-  >
-    <option value="user">User</option>
-    <option value="transporter">Transporter</option>
-    <option value="fleet_owner">Fleet Owner</option>
-    <option value="cha_agent">CHA Agent</option>
-    <option value="courier">Courier</option>
-    <option value="bus_service">Bus Service</option>
-    <option value="travel_taxi">Travel / Taxi</option>
-    <option value="truck_body_builder">Truck Body Builder</option>
-    <option value="rto_agent">RTO Agent</option>
-    <option value="finance_company">Finance Company</option>
-    <option value="finance_agent">Finance Agent</option>
-    <option value="packers_movers">Packers & Movers</option>
-    <option value="insurance_company">Insurance Company</option>
-    <option value="car_carrier">Car Carrier</option>
-    <option value="miningvehicle_supplier">
-      Mining Vehicle Supplier
-    </option>
-    <option value="partstypesbettry_supplier">
-      Parts / Tyres / Battery Supplier
-    </option>
-    <option value="mechanic and service center">
-      Mechanic & Service Center
-    </option>
-    <option value="biketexiauto">
-      Bike / Taxi / Auto
-    </option>
-    <option value="candfagent">
-      C&F Agent
-    </option>
-  </select>
-</div>
+                  <select
+                    value={formData.role || "user"}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        role: e.target.value,
+                      }))
+                    }
+                    className="w-full text-[12px] font-bold text-[#1d4ed8] bg-[#dbeafe] px-[8px] py-[6px] rounded-[4px] uppercase outline-none cursor-pointer border-none"
+                  >
+                    <option value="user">User</option>
+                    <option value="transporter">Transporter</option>
+                    <option value="fleet_owner">Fleet Owner</option>
+                    <option value="cha_agent">CHA Agent</option>
+                    <option value="courier">Courier</option>
+                    <option value="bus_service">Bus Service</option>
+                    <option value="travel_taxi">Travel / Taxi</option>
+                    <option value="truck_body_builder">
+                      Truck Body Builder
+                    </option>
+                    <option value="rto_agent">RTO Agent</option>
+                    <option value="finance_company">Finance Company</option>
+                    <option value="finance_agent">Finance Agent</option>
+                    <option value="packers_movers">Packers & Movers</option>
+                    <option value="insurance_company">Insurance Company</option>
+                    <option value="car_carrier">Car Carrier</option>
+                    <option value="miningvehicle_supplier">
+                      Mining Vehicle Supplier
+                    </option>
+                    <option value="partstypesbettry_supplier">
+                      Parts / Tyres / Battery Supplier
+                    </option>
+                    <option value="mechanic and service center">
+                      Mechanic & Service Center
+                    </option>
+                    <option value="biketexiauto">Bike / Taxi / Auto</option>
+                    <option value="candfagent">C&F Agent</option>
+                  </select>
+                </div>
 
                 <div>
                   <label className="block text-[12px] font-bold text-[#334155] mb-[6px]">
@@ -964,7 +996,9 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                       maxLength="10"
                       placeholder={`Alternate 10 digit number ${idx + 1}`}
                       value={number}
-                      onChange={(e) => handleAltNumberChange(idx, e.target.value)}
+                      onChange={(e) =>
+                        handleAltNumberChange(idx, e.target.value)
+                      }
                       className="flex-1 px-[12px] py-[8px] rounded-[6px] border border-[#cbd5e1] text-[14px] outline-none bg-white"
                     />
                     {formData.alternatePhoneNumbers.length > 1 && (
@@ -978,6 +1012,20 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                     )}
                   </div>
                 ))}
+              </div>
+              <div>
+                <label className="block text-[12px] font-bold text-[#334155] mb-[6px]">
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter email address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-[12px] py-[10px] rounded-[6px] border border-[#cbd5e1] text-[14px] outline-none box-border"
+                />
               </div>
 
               {/* Actions */}

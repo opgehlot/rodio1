@@ -316,15 +316,21 @@ Connect with verified transporters across India.
                           <h3 className="text-base font-black uppercase truncate max-w-[200px]">
                             {firmName}
                           </h3>
-                          <span className="bg-blue-600/30 border border-blue-400/30 text-blue-300 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
-                            <Building2 size={12} />
-                            {role}
-                          </span>
+                         <span className="inline-flex items-center gap-1.5 text-white whitespace-nowrap">
+  <Building2
+    size={13}
+    strokeWidth={2.5}
+    className="text-white shrink-0"
+  />
+  <span className="text-[8px] font-bold uppercase tracking-wide leading-none">
+    {role}
+  </span>
+</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-white text-xs font-bold uppercase tracking-wider mt-1.5">
+                        {/* <div className="flex items-center gap-1.5 text-white text-xs font-bold uppercase tracking-wider mt-1.5">
                           <User size={14} className="text-white" />
                           <span>{ownerName}</span>
-                        </div>
+                        </div> */}
                       </div>
 
                       {/* Card Specs Body */}
