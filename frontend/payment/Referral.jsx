@@ -609,10 +609,10 @@ const Referral = () => {
                 Referral Rewards
               </h3>
               <div className="space-y-2 text-sm text-gray-600">
-                <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
+                {/* <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
                   <span>3 Month (₹599)</span>
                   <span className="font-semibold text-green-600">₹84</span>
-                </div>
+                </div> */}
                 <div className="flex justify-between items-center bg-white/60 px-3 py-1.5 rounded-lg">
                   <span>6 Months (₹999)</span>
                   <span className="font-semibold text-green-600">₹139</span>

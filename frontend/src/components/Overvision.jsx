@@ -52,12 +52,12 @@ export function Overvision() {
             Our Vision & Mission
           </span>
 
-          <h2 className="mt-5 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Building the Future of{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Transport
-            </span>
-          </h2>
+         <h2 className="mt-4 text-3xl leading-tight font-bold tracking-tight text-gray-900 sm:text-5xl">
+  Building the Future of{" "}
+  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+    Transport
+  </span>
+</h2>
 
           <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-gray-600 sm:text-lg">
             Rodio is creating a smart platform where transporters and

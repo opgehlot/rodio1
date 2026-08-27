@@ -49,15 +49,34 @@ export function Dashboard() {
     }
   };
 
-  const handleCopyReferral = (code) => {
-    if (!code || code === "N/A") return;
-    navigator.clipboard.writeText(code);
-    toast.success("Referral code copied!");
-  };
+  const handleCopyReferral = async (code) => {
+  try {
+    await navigator.clipboard.writeText(code);
+
+   toast.success("Referral code copied!", {
+  id: "referral-copy-success",
+});
+  } catch (error) {
+    console.error("Copy Error:", error);
+
+    // Fallback
+    const textArea = document.createElement("textarea");
+    textArea.value = code;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+
+    toast.success("Referral code copied!", {
+  id: "referral-copy-succes",
+});
+  }
+};
 
   const business = dashboard; 
   const subscription = dashboard?.subscription;
   const referralObj = dashboard?.referral;
+  const showExpiryWarning = subscription?.expiresSoon === true;
 
   // Clean Boolean Checks
   const hasBusiness = !!business?.firmName;
@@ -80,24 +99,62 @@ export function Dashboard() {
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-[50vh] w-full flex items-center justify-center bg-white">
-  //       <div className="flex flex-col items-center gap-4">
-  //         <div className="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
-  //         <p className="text-xs font-black text-slate-900 uppercase tracking-widest">
-  //           LOADING DASHBOARD...
-  //         </p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] w-full flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs font-black text-slate-900 uppercase tracking-widest">
+            LOADING DASHBOARD...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const referralCode = referralObj?.referralCode || "RODIO2026";
 
   return (
     <div className="w-full bg-white text-slate-900 px-4 md:px-10 py-8 my-0 relative">
       <div className="w-full space-y-6">
+        {/* SUBSCRIPTION EXPIRY WARNING */}
+{showExpiryWarning && (
+  <div className="rounded-3xl border border-amber-200 bg-amber-50 p-5 md:p-6 shadow-sm">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+      <div>
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-700">
+          SUBSCRIPTION EXPIRES SOON
+        </p>
+
+        <h3 className="mt-1 text-xl font-black uppercase tracking-tight text-slate-900">
+          Your subscription expires soon
+        </h3>
+
+        <p className="mt-2 text-xs font-bold uppercase tracking-wider text-slate-600">
+          Your subscription expires on{" "}
+          <span className="font-black text-slate-900">
+            {subscription?.endDate
+              ? new Date(
+                  subscription.endDate
+                ).toLocaleDateString()
+              : "N/A"}
+          </span>
+        </p>
+      </div>
+
+      {/* <button
+        onClick={() =>
+          navigate("/dashboard/planselection")
+        }
+        className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition"
+      >
+        RENEW SUBSCRIPTION
+      </button> */}
+
+    </div>
+  </div>
+)}
         
         {/* STATE 1: USER HAS NOT REGISTERED BUSINESS */}
         {!hasBusiness && (
@@ -137,14 +194,31 @@ export function Dashboard() {
 
                 <div className="space-y-2">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-black tracking-widest uppercase">
-                    <ShieldAlert size={12} /> PAYMENT PENDING
+                    <ShieldAlert size={12} />
+
+{subscription?.status === "expired"
+  ? "SUBSCRIPTION EXPIRED"
+  : "PAYMENT PENDING"}
                   </div>
                   <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
-                    COMPLETE YOUR SUBSCRIPTION
-                  </h2>
-                  <p className="text-slate-500 text-xs font-bold uppercase tracking-wider leading-relaxed max-w-xl">
+  {subscription?.status === "expired"
+    ? "RENEW YOUR SUBSCRIPTION"
+    : "COMPLETE YOUR SUBSCRIPTION"}
+</h2>
+                  {/* <p className="text-slate-500 text-xs font-bold uppercase tracking-wider leading-relaxed max-w-xl">
                     YOUR BUSINESS DETAILS ARE SAVED SECURELY. COMPLETE THE PAYMENT TO UNLOCK VEHICLES, ROUTES, AND FULL DASHBOARD SERVICES.
-                  </p>
+                  </p> */}
+                  <p className="text-slate-500 text-xs font-bold uppercase tracking-wider leading-relaxed max-w-xl">
+  {subscription?.status === "expired"
+    ? `Your subscription expired on ${
+        subscription?.endDate
+          ? new Date(
+              subscription.endDate
+            ).toLocaleDateString()
+          : "N/A"
+      }. Renew now to unlock vehicles, routes, profile editing, and other dashboard services.`
+    : "YOUR BUSINESS DETAILS ARE SAVED SECURELY. COMPLETE THE PAYMENT TO UNLOCK VEHICLES, ROUTES, AND FULL DASHBOARD SERVICES."}
+</p>
                 </div>
               </div>
 
@@ -152,7 +226,11 @@ export function Dashboard() {
                 onClick={() => navigate("/dashboard/planselection")}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-black text-xs tracking-widest uppercase whitespace-nowrap flex items-center justify-center gap-3 transition-all shadow-sm active:scale-[0.99]"
               >
-                <span>CONTINUE TO PLAN SELECTION</span>
+                <span>
+  {subscription?.status === "expired"
+    ? "RENEW SUBSCRIPTION"
+    : "CONTINUE TO PLAN SELECTION"}
+</span>
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -203,21 +281,24 @@ export function Dashboard() {
               </div>
 
               <div className="border-t border-slate-700 pt-5">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold uppercase tracking-wider text-white">
-                    Referral Code
-                  </span>
-                  <button
-                    onClick={() => handleCopyReferral(referralCode)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 hover:border-blue-500 transition-all duration-200 shadow-md"
-                  >
-                    <span className="font-mono text-lg font-bold tracking-[0.2em] text-white">
-                      {referralCode}
-                    </span>
-                    <Copy size={18} className="text-slate-300" />
-                  </button>
-                </div>
-              </div>
+  <div className="flex items-center justify-between">
+    <span className="text-sm font-bold uppercase tracking-wider text-white">
+      Referral Code
+    </span>
+
+    <button
+      type="button"
+      onClick={() => handleCopyReferral(referralCode)}
+      className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 hover:border-blue-500 transition-all duration-200 shadow-md"
+    >
+      <span className="font-mono text-lg font-bold tracking-[0.2em] text-white">
+        {referralCode}
+      </span>
+
+      <Copy size={18} className="text-slate-300" />
+    </button>
+  </div>
+</div>
             </div>
 
             {/* RIGHT CARD: BUSINESS PROFILE */}

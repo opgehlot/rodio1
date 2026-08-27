@@ -19,6 +19,8 @@ import {
   Globe,
   TrendingUp,
 } from "lucide-react";
+// import LanguageSwitcher from "../languages/LanguageSwitcher";
+// import LanguageTranslator from "../languages/locales/LanguageTranslator";
 
 const Services = () => {
   const navigate = useNavigate();
@@ -86,9 +88,10 @@ const Services = () => {
 
   return (
     <div className="bg-gray-50 text-gray-800 pt-[70px]">
+    
       {/* Hero Section */}
       <motion.section
-        className="bg-white py-24 px-6"
+        className="bg-white py-20 px-6"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}

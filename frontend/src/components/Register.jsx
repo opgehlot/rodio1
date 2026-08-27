@@ -145,10 +145,9 @@ export function Register() {
       const response = await API.post("/auth/register", payload);
 
       const data = response.data || response;
-      console.log("SERVER SE KYA AA RAHA HAI:", data);
-      console.log("TOKEN KI VALUE:", data.token);
+      
 
-      console.log("Full API Response Data:", data);
+      
 
       if (!data.success) {
         toast.error(data.message || "Registration Failed", {
@@ -277,14 +276,14 @@ export function Register() {
       {/* RIGHT SIDE FORM */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:py-16 lg:px-20 bg-white">
         <div className="w-full max-w-md">
-          <div className="flex lg:hidden items-center gap-2.5 mb-6 text-slate-900">
+          {/* <div className="flex lg:hidden items-center gap-2.5 mb-6 text-slate-900">
             <div className="p-2.5 bg-blue-600 rounded-xl text-white">
               <Truck size={24} />
             </div>
             <span className="text-2xl font-semibold tracking-widest">
               RODIO
             </span>
-          </div>
+          </div> */}
 
           <div className="mb-8">
             <h2 className="text-4xl font-bold text-slate-900 tracking-tight">

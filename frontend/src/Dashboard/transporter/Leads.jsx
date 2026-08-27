@@ -39,7 +39,9 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
     user?.isSubscriptionActive === true ||
     user?.subscription?.status === "active";
 
-  const isAvailable = lead?.isAvailable === true || lead?.isAvailable === undefined;
+  const isAvailable =
+  (lead?.isAvailable === true || lead?.isAvailable === undefined) &&
+  (lead?.bidCount || 0) < 10;
 
   const formatDate = (date) => {
     if (!date) return "N/A";
@@ -54,17 +56,19 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
     if (!isLoggedIn) {
       toast.error("Please login first.", { id: "login first" });
       navigate("/register", {
-  state: {
-    redirectTo: "/dashboard/leads",
-    leadId: lead._id,
-    action: "bid",
-  },
-});
+        state: {
+          redirectTo: "/dashboard/leads",
+          leadId: lead._id,
+          action: "bid",
+        },
+      });
       return;
     }
 
     if (!isSubscribed) {
-      toast.error("Premium subscription required.", { id: "premium subscription required" });
+      toast.error("Premium subscription required.", {
+        id: "premium subscription required",
+      });
       navigate("/dashboard/addservices");
       return;
     }
@@ -88,16 +92,17 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
         message,
       });
 
-      toast.success("Bid submitted successfully.", { id: "bid submitted successfully" });
+      toast.success("Bid submitted successfully.", {
+        id: "bid submitted successfully",
+      });
       setBidAmount("");
       setMessage("");
       setOpenBid(false);
       if (onBidSuccess) onBidSuccess();
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to submit bid.",
-        { id: "faild to submit bid" }
-      );
+      toast.error(error.response?.data?.message || "Failed to submit bid.", {
+        id: "faild to submit bid",
+      });
     } finally {
       setLoading(false);
     }
@@ -105,7 +110,7 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
 
   return (
     <div
-      className={`group rounded-3xl shadow-md transition duration-300 overflow-hidden border flex flex-col justify-between ${
+      className={`group rounded-2xl shadow-md transition duration-300 overflow-hidden border flex flex-col justify-between ${
         isAvailable
           ? "bg-white hover:shadow-2xl border-gray-100"
           : "bg-gray-100 opacity-75 grayscale-[20%] border-gray-200"
@@ -121,31 +126,44 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
       >
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="flex items-center gap-2 text-xl font-bold">
-              <FaTruck />
-              {lead?.vehicleType || "Transport Lead"}
+            <span className="text-[10px] uppercase tracking-widest text-blue-200 font-semibold mr-2">
+                  Required
+                </span>
+            <h2 className="flex items-center gap-2 text-xl font-bold text-white">
+              
+              <FaTruck className="text-blue-200" />
+
+              <span>
+                
+
+                {lead?.vehicleType || "Transport Lead"}
+              </span>
             </h2>
+
             <p className="text-blue-100 mt-2 text-sm">
               {lead?.service || "Standard Delivery"}
             </p>
           </div>
           <div className="flex flex-col items-end gap-1">
-            <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
+            {/* <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
               #{lead?._id ? lead._id.slice(-5) : "-----"}
-            </span>
+            </span> */}
 
             {/* Backend status badges */}
             {isAvailable ? (
-              <span className="bg-green-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide">
-                ACTIVE ({lead?.bidCount || 0}/10 BIDS)
-              </span>
+              <span className="bg-green-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide whitespace-nowrap shrink-0">
+  ACTIVE ({lead?.bidCount || 0}/10 BIDS)
+</span>
             ) : (
               <span className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide">
-                {lead?.displayStatus === "ACCEPTED" || lead?.status === "Assigned" || lead?.status === "Accepted"
+                {lead?.displayStatus === "ACCEPTED" ||
+                lead?.status === "Assigned" ||
+                lead?.status === "Accepted"
                   ? "ACCEPTED"
-                  : lead?.displayStatus === "LIMIT_REACHED" || (lead?.bidCount || 0) >= 10
-                  ? "LIMIT REACHED"
-                  : lead?.availabilityReason || "INACTIVE"}
+                  : lead?.displayStatus === "LIMIT_REACHED" ||
+                      (lead?.bidCount || 0) >= 10
+                    ? "LIMIT REACHED"
+                    : lead?.availabilityReason || "INACTIVE"}
               </span>
             )}
           </div>
@@ -166,7 +184,9 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
           <FaArrowRight className="text-blue-600" />
           <div className="text-right">
             <p className="text-xs text-gray-500">Destination</p>
-            <p className="font-semibold">{lead?.dropLocation || lead?.loading_point || "N/A"}</p>
+            <p className="font-semibold">
+              {lead?.dropLocation || lead?.loading_point || "N/A"}
+            </p>
           </div>
         </div>
 
@@ -184,7 +204,7 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
               <FaWeightHanging />
               <span>Weight</span>
             </div>
-            <p className="font-semibold mt-2">{lead?.weight || 0} Ton</p>
+            <p className="font-semibold mt-2">{lead?.weight || 0}</p>
           </div>
         </div>
 
@@ -237,16 +257,19 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
           }`}
         >
           {!isAvailable
-            ? (lead?.displayStatus === "ACCEPTED" || lead?.status === "Assigned" || lead?.status === "Accepted"
-                ? "ACCEPTED"
-                : lead?.displayStatus === "LIMIT_REACHED" || (lead?.bidCount || 0) >= 10
+            ? lead?.displayStatus === "ACCEPTED" ||
+              lead?.status === "Assigned" ||
+              lead?.status === "Accepted"
+              ? "ACCEPTED"
+              : lead?.displayStatus === "LIMIT_REACHED" ||
+                  (lead?.bidCount || 0) >= 10
                 ? "BID LIMIT REACHED (10/10)"
-                : "NO LONGER AVAILABLE")
+                : "NO LONGER AVAILABLE"
             : !isLoggedIn
-            ? "Login to Bid"
-            : !isSubscribed
-            ? "Upgrade to Bid"
-            : "Add Your Bid"}
+              ? "Login to Bid"
+              : !isSubscribed
+                ? "Upgrade to Bid"
+                : "Add Your Bid"}
         </button>
       </div>
 
@@ -349,8 +372,7 @@ const Leads = () => {
         lead.service?.toLowerCase().includes(keyword);
 
       const matchVehicle =
-        vehicleFilter === "All" ||
-        lead.vehicleType === vehicleFilter;
+        vehicleFilter === "All" || lead.vehicleType === vehicleFilter;
 
       return matchSearch && matchVehicle;
     });
@@ -359,13 +381,11 @@ const Leads = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-700 to-indigo-700">
+      <div className="bg-gradient-to-r  from-blue-700 to-indigo-700">
         <div className="max-w-7xl mx-auto px-4 py-10">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
             <div>
-              <h1 className="text-4xl font-bold text-white">
-                Transport Leads
-              </h1>
+              <h1 className="text-4xl font-bold text-white">Transport Leads</h1>
               <p className="text-blue-100 mt-2">
                 Browse available transport requirements
               </p>
@@ -375,7 +395,7 @@ const Leads = () => {
               className="bg-white text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition flex items-center gap-2 cursor-pointer active:scale-95"
             >
               <FaSyncAlt className={loading ? "animate-spin" : ""} />
-              Refresh
+              Refresh new leads
             </button>
           </div>
         </div>
@@ -415,9 +435,7 @@ const Leads = () => {
       {/* Count */}
       <div className="max-w-7xl mx-auto px-4 mt-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Available Leads
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800">Available Leads</h2>
           <div className="bg-blue-700 text-white px-5 py-2 rounded-full flex items-center gap-2 text-sm font-semibold">
             <FaTruckMoving />
             {filteredLeads.length} Leads
@@ -426,7 +444,7 @@ const Leads = () => {
       </div>
 
       {/* Cards Grid with Internal Scrollbar */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-0 sm:px-4 py-8">
         <div className="max-h-[750px] overflow-y-auto pr-2 rounded-3xl">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
@@ -483,3 +501,4 @@ const Leads = () => {
 };
 
 export default Leads;
+  

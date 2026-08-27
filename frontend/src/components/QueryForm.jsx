@@ -61,7 +61,7 @@ export  function QueryForm() {
       <div className="w-full max-w-6xl bg-transparent grid lg:grid-cols-2 gap-20 items-center">
         
         {/* Left Side: Information */}
-        <div className="flex flex-col justify-center text-center lg:text-left p-6">
+        <div className="flex flex-col justify-center text-center lg:text-left ">
           <h2 className="text-4xl font-bold text-gray-800 leading-tight">
             We'd Love to Hear From You
           </h2>
@@ -69,7 +69,7 @@ export  function QueryForm() {
             Whether you have a question about features, trials, pricing, or anything else, our team is ready to answer all your questions.
           </p>
           <p className="mt-6 text-gray-500">
-            Fill out the form and we'll be in touch as soon as possible.
+            Fill out the form and we'll be in touch
           </p>
         </div>
 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Search,
@@ -137,7 +136,7 @@ const TransportSearch = () => {
       {/* Hero Header Section */}
       <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white py-12 px-4 shadow-md mb-8">
         <div className="max-w-6xl mx-auto text-center space-y-3">
-          <span className="bg-blue-400 text-blue-100 border border-white/20 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest inline-block backdrop-blur-md">
+          <span className="bg-blue-600 text-white border border-white/20 px-4 py-1.5 rounded-full text-xs font-light uppercase tracking-widest inline-block backdrop-blur-md">
             India's Trusted Transport Network
           </span>
           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight">
@@ -189,28 +188,14 @@ const TransportSearch = () => {
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
             >
               <option value="">All Vehicles</option>
-              <option value="Mini Truck">Mini Truck</option>
-              <option value="Pickup">Pickup</option>
-              <option value="Tata Ace">Tata Ace</option>
-              <option value="Bolero Pickup">Bolero Pickup</option>
-              <option value="Mahindra Jeeto">Mahindra Jeeto</option>
-              <option value="Ashok Leyland Dost">Ashok Leyland Dost</option>
-              <option value="Tempo">Tempo</option>
-              <option value="Canter">Canter</option>
-              <option value="Eicher">Eicher</option>
-              <option value="Truck">Truck</option>
-              <option value="LCV">LCV</option>
-              <option value="HCV">HCV</option>
-              <option value="14 Feet Truck">14 Feet Truck</option>
-              <option value="17 Feet Truck">17 Feet Truck</option>
-              <option value="Open Body">Open Body</option>
-              <option value="20 Feet Container">20 Feet Container</option>
-              <option value="32 Feet Container">32 Feet Container</option>
+              <option value="Pickup / Auto">Pickup / Auto</option>
+              <option value="LCV">LCV / MINITRUCK / EICHER</option>
+              <option value="HCV">HCV / TRUCK</option>
+              <option value="Container">Container</option>
               <option value="Trailer">Trailer</option>
-              <option value="Flat Bed Trailer">Flat Bed Trailer</option>
-              <option value="Low Bed Trailer">Low Bed Trailer</option>
-              <option value="Semi Trailer">Semi Trailer</option>
-              <option value="Tipper">Tipper</option>
+              <option value="Refrigerated Van">Refrigerated Van</option>
+              <option value="Hydra">Hydra / JCB / CRANES</option>
+              <option value="Mining Vehicle">Mining Vehicle</option>
             </select>
           </div>
 
@@ -292,7 +277,8 @@ const TransportSearch = () => {
                     vehicle.phoneNumber ||
                     "N/A";
 
-                  const firmName = vehicle.business?.firmName || "Transport Firm";
+                  const firmName =
+                    vehicle.business?.firmName || "Transport Firm";
                   const ownerName = vehicle.business?.ownerName || "Owner";
                   const phoneNumber = isLoggedIn
                     ? rawPhoneNumber
@@ -300,7 +286,8 @@ const TransportSearch = () => {
                   const vehicleNumber = isLoggedIn
                     ? vehicle.vehicleNumber
                     : maskVehicleNumber(vehicle.vehicleNumber);
-                  const currentCity = vehicle.business?.currentCity || "Location Not Set";
+                  const currentCity =
+                    vehicle.business?.currentCity || "Location Not Set";
 
                   // Extract transporter ID safely from business or user reference
                   const transporterId =
@@ -351,14 +338,14 @@ Connect with verified transporters across India.
                           </span>
                         </div>
 
-                        <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
+                        {/* <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
                           <span className="font-bold uppercase tracking-widest text-slate-400">
                             Vehicle Number
                           </span>
                           <span className="font-black uppercase text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">
                             {vehicleNumber}
                           </span>
-                        </div>
+                        </div> */}
 
                         <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
                           <span className="font-bold uppercase tracking-widest text-slate-400">
@@ -398,7 +385,7 @@ Connect with verified transporters across India.
                         </div>
 
                         {/* Current Location Info */}
-                        <div className="flex items-start gap-2.5 pt-2">
+                        {/* <div className="flex items-start gap-2.5 pt-2">
                           <div className="bg-blue-50 text-blue-600 p-2 rounded-xl mt-0.5 border border-blue-100">
                             <MapPinned size={16} />
                           </div>
@@ -410,7 +397,7 @@ Connect with verified transporters across India.
                               {vehicle.business?.currentState || "India"}
                             </p>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
 
                       {/* Actions */}
@@ -419,17 +406,13 @@ Connect with verified transporters across India.
                         <div>
                           {isLoggedIn ? (
                             <button
-                              onClick={() => {
-                                if (transporterId) {
-                                  navigate(
-                                    `/dashboard/transporters/${transporterId}`,
-                                  );
-                                } else {
-                                  toast.error(
-                                    "Transporter profile ID not found",
-                                  );
-                                }
-                              }}
+    onClick={() => {
+      if (transporterId) {
+        navigate(`/dashboard/transporters/${transporterId}`);
+      } else {
+        toast.error("Transporter profile ID not found");
+      }
+    }}
                               className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
                             >
                               <Eye size={14} />
@@ -441,9 +424,11 @@ Connect with verified transporters across India.
                                 toast.error(
                                   "Please login or register to view profile!",
                                 );
-                                navigate("/login", {
-                                  state: { from: location },
-                                });
+                               navigate("/login", {
+  state: {
+    returnTo: `/dashboard/transporters/${transporterId}`,
+  },
+});
                               }}
                               className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
                             >
@@ -481,7 +466,9 @@ Connect with verified transporters across India.
                                     "Please login or register to call transporter!",
                                   );
                                   navigate("/login", {
-                                    state: { from: location },
+                                    state: {
+                                     returnTo: "/dashboard/transportsearch",
+                                    },
                                   });
                                 }}
                                 className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95"
@@ -495,7 +482,9 @@ Connect with verified transporters across India.
                                     "Please login or register to message transporter!",
                                   );
                                   navigate("/login", {
-                                    state: { from: location },
+                                    state: {
+                                     returnTo: "/dashboard/transportsearch",
+                                    },
                                   });
                                 }}
                                 className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
@@ -512,7 +501,7 @@ Connect with verified transporters across India.
               </div>
             </div>
 
-            {/* Login Prompt Banner for Logged Out Users */}
+            {/* Login Prompt Banner for Logged Out Users
             {!isLoggedIn && vehicles.length > 6 && (
               <div className="mt-12 bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-3xl p-8 text-center space-y-4 shadow-xl">
                 <h3 className="text-xl md:text-2xl font-black uppercase">
@@ -526,7 +515,11 @@ Connect with verified transporters across India.
                 <div>
                   <button
                     onClick={() =>
-                      navigate("/login", { state: { from: location } })
+                      navigate("/login", {
+                        state: {
+                          returnTo: location.pathname + location.search,
+                        },
+                      })
                     }
                     className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition active:scale-95 shadow-lg"
                   >
@@ -534,7 +527,7 @@ Connect with verified transporters across India.
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
           </>
         )}
       </div>

@@ -1,10 +1,8 @@
-
-
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import MainLayout from "./layout/MainLayout";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
+
 
 // Main Pages
 import Home from "./pages/Home";
@@ -64,19 +62,20 @@ import ImageGalleryManager from "./Dashboard/ImageGalleryManager";
 import Referral from "../payment/Referral";
 import UpdateBisProfile from "./components/UpdateBisProfile";
 import ReviewSection from "./Dashboard/ReviewSection";
-
-
+import OwnerDetails from "./pages/dashboardpage/Profiledas/OwnerDetails";
+import FirmDetails from "./pages/dashboardpage/Profiledas/FirmDetails";
+import VehicleServices from "./pages/dashboardpage/Profiledas/VehicleServices";
+import MyDocumentss from "./pages/dashboardpage/Profiledas/MyDocumentss";
 
 // Dummy Pages
 
 function App() {
-
   return (
     <BrowserRouter>
       <Toaster
         position="top-center"
         toastOptions={{
-          duration: 3000,
+          duration: 5000,
           style: {
             borderRadius: "12px",
             background: "#1f2937",
@@ -95,10 +94,15 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           {/* Dashboard Home */}
           <Route index element={<MyDashboard />} />
-            <Route path="updatevehicle" element={<UpadateVehicle />} />
+          <Route path="updatevehicle" element={<UpadateVehicle />} />
 
           {/* Common */}
           <Route path="profile" element={<Profile />} />
+          <Route path="ownerdetails" element={<OwnerDetails />} />
+          <Route path="firmdetails" element={<FirmDetails />} />
+          <Route path="vehicleservices" element={<VehicleServices />} />
+          <Route path="mydocumentss" element={<MyDocumentss />} />
+
           <Route path="settings" element={<Settings />} />
           <Route path="changepassword" element={<ChangePassword />} />
           <Route path="directory" element={<Directory />} />
@@ -126,14 +130,14 @@ function App() {
           <Route path="transportservices" element={<TransportServices />} />
           <Route path="acceptedbid" element={<AcceptedBid />} />
           {/* Broker */}
-          
-         {/* Payment */}
+
+          {/* Payment */}
           <Route path="planselection" element={<PlanSelection />} />
           <Route path="receipt/:paymentId" element={<Receipt />} />
 
           <Route path="busServices" element={<BusServices />} />
           <Route path="chaAgent" element={<ChaAgent />} />
-          <Route path="courier" element={<Courier/>} />
+          <Route path="courier" element={<Courier />} />
           <Route path="financeCompany" element={<FinanceCompany />} />
           <Route path="fleetowner" element={<Fleetowenr />} />
           <Route path="rtoAgent" element={<RtoAgent />} />
@@ -142,20 +146,11 @@ function App() {
           <Route path="financeAgent" element={<FinanceAgent />} />
           <Route path="carcarrier" element={<CarCarrier />} />
           <Route path="insurancecompany" element={<Insurancecompany />} />
-          <Route path="referral" element={<Referral/>} />
-          <Route path="updatebisprofile" element={<UpdateBisProfile/>} />
-          <Route path="reviewsection" element={<ReviewSection/>} />
-         
-        
-
-
-          
-          
-          
+          <Route path="referral" element={<Referral />} />
+          <Route path="updatebisprofile" element={<UpdateBisProfile />} />
+          <Route path="reviewsection" element={<ReviewSection />} />
         </Route>
 
-
-        
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -165,9 +160,9 @@ function App() {
             path="/daynamichomecomponent"
             element={<DaynamicHomeComponent />}
           />
-         <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-         <Route path="/queryform" element={<QueryForm />} />
+          <Route path="/queryform" element={<QueryForm />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           {/* Terms */}

@@ -1310,18 +1310,38 @@ export function PlanSelection() {
         }
 
         // Already active
-        if (
-          businessData.registrationStatus === "completed" &&
-          businessData.subscriptionStatus === "active" &&
-          businessData.profileUnlocked === true
-        ) {
-          toast.success("Your business is already active.", {
-            id: "business-active",
-          });
+        // if (
+        //   businessData.registrationStatus === "completed" &&
+        //   businessData.subscriptionStatus === "active" &&
+        //   businessData.profileUnlocked === true
+        // ) {
+        //   toast.success("Your business is already active.", {
+        //     id: "business-active",
+        //   });
 
-          navigate("/dashboard", { replace: true });
-          return;
-        }
+        //   navigate("/dashboard", { replace: true });
+        //   return;
+        // }
+        const endDate = businessData?.user?.subscription?.endDate
+  ? new Date(businessData.user.subscription.endDate)
+  : null;
+
+const now = new Date();
+
+const isSubscriptionCurrentlyActive =
+  businessData.subscriptionStatus === "active" &&
+  businessData.profileUnlocked === true &&
+  endDate &&
+  now < endDate;
+
+if (isSubscriptionCurrentlyActive) {
+  toast.success("Your business is already active.", {
+    id: "business-active",
+  });
+
+  navigate("/dashboard", { replace: true });
+  return;
+}
 
         /*
          * IMPORTANT:

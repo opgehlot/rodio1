@@ -789,12 +789,23 @@ export default function Sidebar({ open, setOpen }) {
           >
             <div className="flex items-center gap-3.5">
               <LayoutDashboard size={20} />
-              <span>PROFILE</span>
+              <span>PROFILE (Edit/View)</span>
             </div>
           </NavLink>
 
           {/* ================= UNIFIED DASHBOARD FOR ALL ROLES ================= */}
           <>
+           <div
+              onClick={(e) => handleRestrictedClick(e, "Leads", "/dashboard/leads")}
+              className={`cursor-pointer ${linkClass({ isActive: window.location.pathname === "/dashboard/leads" })}`}
+            >
+              <div className="flex items-center gap-3.5">
+                <FileText size={20} />
+                <span>Leads</span>
+              </div>
+              {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
+            </div>
+
             <NavLink
               id="nav-add-load-enquiry"
               to="/dashboard/userform"
@@ -856,7 +867,7 @@ export default function Sidebar({ open, setOpen }) {
             </NavLink>
 
             {/* Leads */}
-            <div
+            {/* <div
               onClick={(e) => handleRestrictedClick(e, "Leads", "/dashboard/leads")}
               className={`cursor-pointer ${linkClass({ isActive: window.location.pathname === "/dashboard/leads" })}`}
             >
@@ -865,10 +876,10 @@ export default function Sidebar({ open, setOpen }) {
                 <span>Leads</span>
               </div>
               {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-            </div>
+            </div> */}
 
             {/* My Vehicles */}
-            <div
+            {/* <div
               onClick={(e) => handleRestrictedClick(e, "My Vehicles", "/dashboard/MyVehicles")}
               className={`cursor-pointer ${linkClass({ isActive: window.location.pathname === "/dashboard/MyVehicles" })}`}
             >
@@ -877,7 +888,7 @@ export default function Sidebar({ open, setOpen }) {
                 <span>My Vehicles</span>
               </div>
               {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-            </div>
+            </div> */}
 
             {/* Referral Earning */}
             <div
@@ -904,7 +915,7 @@ export default function Sidebar({ open, setOpen }) {
             </div>
 
             {/* Add Vehicles */}
-            <div
+            {/* <div
               onClick={(e) => handleRestrictedClick(e, "Add Vehicles", "/dashboard/addvehicle")}
               className={`cursor-pointer ${linkClass({ isActive: window.location.pathname === "/dashboard/addvehicle" })}`}
             >
@@ -913,10 +924,10 @@ export default function Sidebar({ open, setOpen }) {
                 <span>Add Vehicles</span>
               </div>
               {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-            </div>
+            </div> */}
 
             {/* My Document */}
-            <div
+            {/* <div
               onClick={(e) => handleRestrictedClick(e, "Add Routes", "/dashboard/mydocument")}
               className={`cursor-pointer ${linkClass({ isActive: window.location.pathname === "/dashboard/mydocument" })}`}
             >
@@ -925,10 +936,10 @@ export default function Sidebar({ open, setOpen }) {
                 <span>My Document</span>
               </div>
               {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-            </div>
+            </div> */}
 
             {/* Working Areas */}
-            <div
+            {/* <div
               onClick={(e) => handleRestrictedClick(e, "Working Areas", "/dashboard/workingareas")}
               className={`cursor-pointer ${linkClass({ isActive: window.location.pathname === "/dashboard/workingareas" })}`}
             >
@@ -937,10 +948,10 @@ export default function Sidebar({ open, setOpen }) {
                 <span>Working Areas</span>
               </div>
               {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-            </div>
+            </div> */}
 
             {/* Upload Documents */}
-            <div
+            {/* <div
               onClick={(e) => handleRestrictedClick(e, "Upload Documents", "/dashboard/uploaddocuments")}
               className={`cursor-pointer ${linkClass({ isActive: window.location.pathname === "/dashboard/uploaddocuments" })}`}
             >
@@ -949,8 +960,8 @@ export default function Sidebar({ open, setOpen }) {
                 <span>Upload Documents</span>
               </div>
               {!subscriptionActive && <Lock size={16} className="text-slate-400" />}
-            </div>
-
+            </div> */}
+{/* 
             <NavLink
               id="nav-update-profile"
               to="/dashboard/settings"
@@ -961,7 +972,7 @@ export default function Sidebar({ open, setOpen }) {
                 <Settings size={20} />
                 <span>Update Profile</span>
               </div>
-            </NavLink>
+            </NavLink> */}
           </>
         </nav>
 

@@ -392,6 +392,7 @@ export function Login() {
   // ==========================================
   const handleLogin = async (e) => {
     e.preventDefault();
+     
 
     if (!formData.emailOrMobile.trim()) {
       toast.error("Please enter Email or Mobile.", {
@@ -417,7 +418,7 @@ export function Login() {
       });
 
       const resData = response.data;
-      console.log("FULL LOGIN RESPONSE:", resData);
+      
 
       // Extract properties safely supporting both flat and nested backend layouts
 
@@ -437,7 +438,7 @@ export function Login() {
 
       // Debugging check to see what failed if it doesn't run
       if (!token || !user) {
-        console.error("Missing token or user object:", { token, user });
+        
         toast.error(resData.message || "Invalid server response structure", {
           id: "Invalid server response structure",
         });
@@ -472,13 +473,22 @@ export function Login() {
       // ======================================
       toast.success(resData.message || "Login Successful");
 
-      const returnTo = location.state?.returnTo || location.state?.redirectTo;
+const returnTo =
+  location.state?.returnTo ||
+  location.state?.redirectTo ||
+  location.state?.from?.pathname ||
+  sessionStorage.getItem("loginReturnTo");
 
-      navigate(returnTo || redirectTo || "/", {
-        replace: true,
-      });
+
+
+sessionStorage.removeItem("loginReturnTo");
+
+
+navigate(returnTo || redirectTo || "/", {
+  replace: true,
+});
     } catch (error) {
-      console.error("LOGIN ERROR CATCH:", error);
+  
 
       if (error.response?.data?.message) {
         toast.error(error.response.data.message);
@@ -533,14 +543,14 @@ export function Login() {
         {/* RIGHT SIDE */}
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:py-16 lg:px-20 bg-white">
           <div className="w-full max-w-md">
-            <div className="flex lg:hidden items-center gap-2.5 mb-6 text-slate-900">
+            {/* <div className="flex lg:hidden items-center gap-2.5 mb-6 text-slate-900">
               <div className="p-2.5 bg-blue-600 rounded-xl text-white">
                 <Truck size={24} />
               </div>
               <span className="text-xl font-semibold tracking-widest text-slate-800">
                 RODIO
               </span>
-            </div>
+            </div> */}
 
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
@@ -632,11 +642,12 @@ export function Login() {
               <p className="text-1xl text-slate-600">
                 Don't have an account?{" "}
                 <Link
-                  to="/register"
-                  className="text-red-500 text-xl font-bold hover:underline animate-pulse transition-all duration-700"
-                >
-                  NEW REGISTER
-                </Link>
+  to="/register"
+  state={location.state}
+  className="text-red-500 text-xl font-bold hover:underline animate-pulse transition-all duration-700"
+>
+  NEW REGISTER
+</Link>
               </p>
             </div>
           </div>

@@ -1,13 +1,13 @@
-
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import LanguageSwitcher from "../languages/LanguageSwitcher";
+import LanguageSwitcher from "../languages/locales/LanguageTranslator";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -19,14 +19,26 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     setMenuOpen(false);
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   const links = [
-    { name: t("navbar.home", "HOME"), path: "/" },
-    { name: t("navbar.directory", "DIRECTORY"), path: "/directory" },
-    { name: t("navbar.aboutUs", "ABOUT US"), path: "/about" },
-    { name: t("navbar.services", "SERVICES"), path: "/services" },
+    {
+      name: t("navbar.home", "HOME"),
+      path: "/",
+    },
+    {
+      name: t("navbar.directory", "DIRECTORY"),
+      path: "/directory",
+    },
+    {
+      name: t("navbar.aboutUs", "ABOUT US"),
+      path: "/about",
+    },
+    {
+      name: t("navbar.services", "SERVICES"),
+      path: "/services",
+    },
 
     ...(isLoggedIn
       ? [
@@ -51,7 +63,10 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > lastScrollY.current && currentScrollY > 70) {
+      if (
+        currentScrollY > lastScrollY.current &&
+        currentScrollY > 70
+      ) {
         setIsVisible(false);
       } else if (
         currentScrollY < lastScrollY.current ||
@@ -65,7 +80,8 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -75,14 +91,18 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto h-[70px] px-5 flex items-center justify-between">
-        {/* Logo - Yahan બદલાવ kiya gya hai */}
-       <div className="flex-shrink-0">
-  <NavLink to="/" className="flex items-center">
-    <span className="text-2xl md:text-2xl font-bold">
-      RODIO <span className="text-orange-500">Tradelink</span>
-    </span>
-  </NavLink>
-</div>
+
+        {/* Logo */}
+        <div className="flex-shrink-0">
+          <NavLink to="/" className="flex items-center">
+            <span className="text-2xl md:text-2xl font-bold">
+              RODIO{" "}
+              <span className="text-orange-500">
+                Tradelink
+              </span>
+            </span>
+          </NavLink>
+        </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center justify-center flex-1 mx-8 gap-8">
@@ -116,28 +136,35 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Controls */}
-        {/* Mobile Controls */}
-<div className="flex items-center gap-2 md:hidden">
-  {isLoggedIn && (
-    <button
-      onClick={() => {
-        setMenuOpen(false);
-        navigate("/dashboard");
-      }}
-      className="px-0.5 py-1.5 rounded-lg bg-green-500 text-white text-xs font-semibold shadow-sm hover:bg-blue-700 transition-colors whitespace-nowrap"
-    >
-      MY Account
-    </button>
-  )}
+        <div className="flex items-center gap-2 md:hidden">
 
-  <button
-    onClick={() => setMenuOpen(!menuOpen)}
-    aria-label={t("navbar.toggleMenu", "Toggle Menu")}
-    className="p-1 focus:outline-none"
-  >
-    {menuOpen ? <X size={28} /> : <Menu size={28} />}
-  </button>
-</div>
+          {isLoggedIn && (
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/dashboard");
+              }}
+              className="px-0.5 py-1.5 rounded-lg bg-green-500 text-white text-xs font-semibold shadow-sm hover:bg-blue-700 transition-colors whitespace-nowrap"
+            >
+              MY Account
+            </button>
+          )}
+
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={t(
+              "navbar.toggleMenu",
+              "Toggle Menu"
+            )}
+            className="p-1 focus:outline-none"
+          >
+            {menuOpen ? (
+              <X size={28} />
+            ) : (
+              <Menu size={28} />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
@@ -149,6 +176,7 @@ export default function Navbar() {
         }`}
       >
         <div className="pt-2 pb-4">
+
           {links.map((link, index) => (
             <NavLink
               key={index}
@@ -172,14 +200,16 @@ export default function Navbar() {
               {t("navbar.logout", "Logout")}
             </button>
           )}
-          {/* Mobile Language Switcher - Always Visible */}
-<div className="px-6 pt-3 pb-4 border-t border-gray-200">
-  <p className="text-xs font-semibold text-gray-500 mb-2">
-    LANGUAGE
-  </p>
 
-  <LanguageSwitcher />
-</div>
+          {/* Mobile Language Switcher */}
+          <div className="px-6 pt-3 pb-4 border-t border-gray-200">
+            <p className="text-xs font-semibold text-gray-500 mb-2">
+              LANGUAGE
+            </p>
+
+            <LanguageSwitcher />
+          </div>
+
         </div>
       </div>
     </nav>

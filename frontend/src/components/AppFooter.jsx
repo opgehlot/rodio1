@@ -57,17 +57,18 @@ export default function Footer() {
             {/* Logo */}
             <div>
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center">
+                {/* <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center">
                   <Truck className="w-6 h-6 text-white" />
-                </div>
-               <h2 className="text-2xl font-bold text-gray-800">
-  Rodio <span className="text-orange-500">Tradelink</span>
+                </div> */}
+               <h2 className="text-2xl font-bold text-gray-800"><i>
+   Welcome To Rodio <span className="text-orange-500">Tradelink</span></i>
 </h2>
               </div>
               <p className="mt-2 text-gray-600 leading-7 text-sm">
-                India's Smart Transport Platform connecting transporters,
+                <i>
+                "India's Smart Transport Platform connecting transporters,
                 brokers and customers across India with trusted logistics
-                solutions.
+                solutions."</i>
               </p>
             </div>
 
