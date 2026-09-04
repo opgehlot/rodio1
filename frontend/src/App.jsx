@@ -66,6 +66,7 @@ import OwnerDetails from "./pages/dashboardpage/Profiledas/OwnerDetails";
 import FirmDetails from "./pages/dashboardpage/Profiledas/FirmDetails";
 import VehicleServices from "./pages/dashboardpage/Profiledas/VehicleServices";
 import MyDocumentss from "./pages/dashboardpage/Profiledas/MyDocumentss";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 // Dummy Pages
 
@@ -174,6 +175,7 @@ function App() {
           <Route path="/dashboard/leads" element={<Leads />} />
         </Route>
       </Routes>
+      <WhatsAppButton/>
     </BrowserRouter>
   );
 }

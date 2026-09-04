@@ -1100,7 +1100,7 @@ const Directory = () => {
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 leading-tight">
                 Find Transport Directory
               </h2>
-              <p className="hidden sm:block text-xs text-gray-500">
+              <p className="hidden sm:block text-[15px] text-gray-500">
                 Filter verified transporters, brokers & routes across India
               </p>
             </div>
@@ -1111,7 +1111,7 @@ const Directory = () => {
             onClick={handleResetFilters}
             className="flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition border border-gray-200 cursor-pointer shrink-0 active:scale-95"
           >
-            <RotateCcw size={14} />
+            <RotateCcw size={15} />
             <span className="hidden sm:inline">Reset All</span>
             <span className="sm:hidden">Reset</span>
           </button>
@@ -1189,7 +1189,7 @@ const Directory = () => {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 items-end"
             >
               <div>
-                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5 mb-1.5">
+                <label className="text-[15px] font-bold text-gray-700 flex items-center gap-1.5 mb-1.5">
                   <MapPin size={14} className="text-blue-600" />
                   State
                 </label>
@@ -1203,7 +1203,7 @@ const Directory = () => {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5 mb-1.5">
+                <label className="text-[15px] font-bold text-gray-700 flex items-center gap-1.5 mb-1.5">
                   <MapPin size={14} className="text-green-600" />
                   City
                 </label>
@@ -1217,7 +1217,7 @@ const Directory = () => {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5 mb-1.5">
+                <label className="text-[15px] font-bold text-gray-700 flex items-center gap-1.5 mb-1.5">
                   <Briefcase size={14} className="text-orange-500" />
                   Category
                 </label>

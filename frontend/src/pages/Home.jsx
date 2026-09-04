@@ -34,6 +34,10 @@ import Features from "../components/Features";
 import Overvision from "../components/Overvision";
 import Feedback from "../components/Feedback";
 import QueryForm from "../components/QueryForm";
+import ReviewChatSection from "../components/ReviewChatSection";
+import AdminHeroSlideManager from "../components/AdminHeroSlideManager";
+import MediaGallery from "../components/MediaGallery";
+
 // import AdminReferralPayouts from "../components/AdminReferralPayout";
 // import Indialogo from "../components/India";
 
@@ -50,11 +54,14 @@ function Home() {
       <div id="dynamic-home" className="scroll-mt-0">
         <DaynamicHomeComponent activeTab={activeTab} />
       </div>
+      <MediaGallery/>
 
       {/* Other Sections */}
       <Features />
-      {/* <Indialogo/> */}
-     
+      <ReviewChatSection/>
+      
+    
+    
       <Overvision />
       <Feedback />
       {/* <AdminReferralPayouts/> */}

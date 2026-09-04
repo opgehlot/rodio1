@@ -59,7 +59,7 @@ export function Overvision() {
   </span>
 </h2>
 
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-gray-600 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-3xl text-[20px] leading-7 text-gray-600 sm:text-lg">
             Rodio is creating a smart platform where transporters and
             customers connect quickly, transparently, and without unnecessary
             brokerage. Our goal is to simplify transportation across India.
@@ -101,7 +101,7 @@ export function Overvision() {
                   Our Vision
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-[16px] text-gray-500">
                   Transforming India's transport ecosystem.
                 </p>
               </div>
@@ -131,7 +131,7 @@ export function Overvision() {
                       {item.title}
                     </h3>
 
-                    <p className="mt-2 text-sm leading-6 text-gray-600">
+                    <p className="mt-2 text-[17px] leading-6 text-gray-600">
                       {item.text}
                     </p>
                   </div>
@@ -172,7 +172,7 @@ export function Overvision() {
                   Our Mission
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-[16px] text-gray-500">
                   Making transport faster, smarter and transparent.
                 </p>
               </div>
@@ -209,7 +209,7 @@ export function Overvision() {
                       {item.title}
                     </h3>
 
-                    <p className="mt-2 text-sm leading-6 text-gray-600">
+                    <p className="mt-2 text-[16px] leading-6 text-gray-600">
                       {item.text}
                     </p>
                   </div>

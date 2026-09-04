@@ -64,7 +64,7 @@ export default function Footer() {
    Welcome To Rodio <span className="text-orange-500">Tradelink</span></i>
 </h2>
               </div>
-              <p className="mt-2 text-gray-600 leading-7 text-sm">
+              <p className="mt-2 text-gray-600 leading-7 text-[15px">
                 <i>
                 "India's Smart Transport Platform connecting transporters,
                 brokers and customers across India with trusted logistics

@@ -308,9 +308,13 @@ export function Features() {
 
         {/* Heading */}
         <div className="text-center mb-16">
-          <span className="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold text-sm">
-            WHY CHOOSE RODIO
-          </span>
+          
+           <h2 className="mt-4 text-3xl leading-tight font-bold tracking-tight text-gray-900 sm:text-5xl">
+  Why Choose{" "}
+  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+    Rodio
+  </span>
+</h2>
 
           <p className="text-gray-500 mt-4 text-base">
             Everything you need to connect and manage transport efficiently.
@@ -454,7 +458,7 @@ export function Features() {
                     relative
                     z-10
                     mt-3
-                    text-sm
+                    text-[16px]
                     leading-6
                     text-blue-100
                   "

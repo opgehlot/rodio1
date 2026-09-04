@@ -47,7 +47,7 @@ export  function QueryForm() {
   };
 
   return (
-    <section className="w-full bg-[#f4f7f9] py-16 px-4 md:px-10 flex flex-col items-center justify-center min-h-screen">
+    <section className="w-full bg-[#f4f7f9] py-16 mt-2 px-4 md:px-10 flex flex-col items-center justify-center min-h-screen">
       
       {/* Top Heading Section */}
       <div className="text-center mb-12">

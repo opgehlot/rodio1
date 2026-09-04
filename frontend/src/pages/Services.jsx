@@ -113,7 +113,7 @@ const Services = () => {
               logistics companies through one trusted digital platform.
             </p>
 
-            <div className="flex flex-wrap gap-4 mt-10">
+            {/* <div className="flex flex-wrap gap-4 mt-10">
               <button
                 onClick={() => handleNavigate("/register")}
                 className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105"
@@ -127,7 +127,7 @@ const Services = () => {
               >
                 Join Rodio
               </button>
-            </div>
+            </div> */}
           </div>
 
           <div>
@@ -628,18 +628,18 @@ const Services = () => {
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <button
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/queryform")}
               className="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition-transform transform hover:scale-105"
             >
-              Register Now
+              Contect Us
             </button>
 
-            <button
+            {/* <button
               onClick={() => navigate("/queryform")}
               className="border border-gray-300 px-10 py-3 rounded-xl hover:bg-gray-200 transition"
             >
               Contact Us
-            </button>
+            </button> */}
           </div>
         </div>
       </motion.section>
