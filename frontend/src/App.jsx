@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,useLocation, } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import MainLayout from "./layout/MainLayout";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
+import { useEffect } from "react";
+import { trackEvent } from "./websiteAnalytics";
 
 
 // Main Pages
@@ -69,10 +71,26 @@ import MyDocumentss from "./pages/dashboardpage/Profiledas/MyDocumentss";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 // Dummy Pages
+function AnalyticsTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackEvent("page_view", {
+      page: location.pathname,
+    });
+  }, [location.pathname]);
+
+  return null;
+}
 
 function App() {
+  useEffect(() => {
+    trackEvent("session_start");
+    trackEvent("page_view");
+  }, []);
   return (
     <BrowserRouter>
+    <AnalyticsTracker/>
       <Toaster
         position="top-center"
         toastOptions={{
