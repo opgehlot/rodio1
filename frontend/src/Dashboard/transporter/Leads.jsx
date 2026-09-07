@@ -576,7 +576,7 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
       toast.error("Premium subscription required.", {
         id: "premium subscription required",
       });
-      navigate("/dashboard/addservices");
+      navigate("/dashboard/planselection");
       return;
     }
 
