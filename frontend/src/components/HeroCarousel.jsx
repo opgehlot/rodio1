@@ -1973,7 +1973,7 @@ export default function HeroCarousel({ setActiveTab }) {
             65vh
         ================================================== */}
 
-        <div className="w-full h-[65vh] relative z-0 overflow-hidden">
+        <div className="w-full h-[60vh] relative z-0 overflow-hidden">
 
           <FlowbiteCarousel
             theme={carouselTheme}
@@ -2001,12 +2001,11 @@ export default function HeroCarousel({ setActiveTab }) {
                       MOBILE IMAGE
                   ========================================== */}
 
-                  <img
-                    src={slide.mobileImage}
-                    alt={slide.title || "Slide"}
-                    className="block w-full h-full object-contain !rounded-none border-0 outline-none"
-                  />
-
+         <img
+  src={slide.mobileImage}
+  alt={slide.title || "Slide"}
+  className="block w-full h-full object-fill !rounded-none border-0 outline-none"
+/>
                   {/* ==========================================
                       MOBILE TITLE
                       ONLY FIRST IMAGE
