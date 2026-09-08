@@ -30,7 +30,8 @@ function WhatsAppButton() {
       className="
         fixed
         right-4
-        bottom-4
+        top-[80%]
+        -translate-y-1/2
         z-[99999]
         flex
         h-[56px]
@@ -45,20 +46,15 @@ function WhatsAppButton() {
         duration-300
         hover:shadow-[0_10px_40px_rgba(37,211,102,0.55)]
         sm:right-6
-        sm:bottom-6
         sm:h-[64px]
         sm:w-auto
         sm:px-4
       "
     >
-      {/* WhatsApp Icon */}
       <div className="flex flex-shrink-0 items-center justify-center">
-        <FaWhatsapp
-          className="text-white text-[32px] sm:text-[36px]"
-        />
+        <FaWhatsapp className="text-white text-[32px] sm:text-[36px]" />
       </div>
 
-      {/* Desktop Text */}
       <span
         className="
           hidden
