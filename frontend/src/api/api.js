@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   // https://rodio-tradelink.onrender.com
-  baseURL: "/api",
+  baseURL: "https://rodio-tradelink.onrender.com/api",
 });
 
 API.interceptors.request.use((config) => {
@@ -15,4 +15,4 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-export default API;
+export default API;   

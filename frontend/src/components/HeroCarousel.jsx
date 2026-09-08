@@ -1606,13 +1606,13 @@ import defaultMobileSlide from "../assets/MO.png";
 
 const carouselTheme = {
   root: {
-   base: "relative h-full w-full !rounded-none overflow-hidden border-0",
+    base: "relative h-full w-full !rounded-none overflow-hidden border-0",
 
-leftControl:
-  "absolute top-1/2 left-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
+    leftControl:
+      "absolute top-1/2 left-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
 
-rightControl:
-  "absolute top-1/2 right-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
+    rightControl:
+      "absolute top-1/2 right-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
   },
 
   item: {
@@ -1982,31 +1982,37 @@ export default function HeroCarousel({ setActiveTab }) {
             className="h-full w-full !rounded-none border-0"
           >
 
-            {slides.map((slide) => (
+            {slides.map((slide, index) => {
 
-              <div
-                key={slide._id}
-                className="relative w-full h-full !rounded-none"
-              >
+              const isFirstMobileSlide = index === 0;
 
-                {/* ==========================================
-                    MOBILE IMAGE
-                ========================================== */}
+              const hasTitle =
+                isFirstMobileSlide &&
+                slide.title &&
+                slide.title.trim() !== "";
 
-                <img
-                  src={slide.mobileImage}
-                  alt={slide.title || "Slide"}
-                  className="block w-full h-full object-cover !rounded-none border-0 outline-none"
-                />
+              return (
+                <div
+                  key={slide._id}
+                  className="relative w-full h-full !rounded-none"
+                >
 
-                {/* ==========================================
-                    MOBILE TITLE
-                    ONLY BACKEND TITLE
-                ========================================== */}
+                  {/* ==========================================
+                      MOBILE IMAGE
+                  ========================================== */}
 
-                {slide.title &&
-                  slide.title.trim() !== "" && (
+                  <img
+                    src={slide.mobileImage}
+                    alt={slide.title || "Slide"}
+                    className="block w-full h-full object-contain !rounded-none border-0 outline-none"
+                  />
 
+                  {/* ==========================================
+                      MOBILE TITLE
+                      ONLY FIRST IMAGE
+                  ========================================== */}
+
+                  {hasTitle && (
                     <div className="absolute inset-0 px-4 pt-4 flex flex-col justify-between text-white pointer-events-none">
 
                       <h1 className="mt-8 text-2xl font-bold leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
@@ -2016,8 +2022,9 @@ export default function HeroCarousel({ setActiveTab }) {
                     </div>
                   )}
 
-              </div>
-            ))}
+                </div>
+              );
+            })}
 
           </FlowbiteCarousel>
 
