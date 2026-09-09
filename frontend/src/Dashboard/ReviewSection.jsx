@@ -54,7 +54,7 @@ const ReviewSection = ({ transporterId }) => {
 
                   <div className="min-w-0">
                     <h3 className="font-semibold text-base break-words">
-                      {review.user?.name || "Anonymous"}
+                      {review.user?.name || "Guest User"}
                     </h3>
 
                     <p className="text-xs text-gray-500">
