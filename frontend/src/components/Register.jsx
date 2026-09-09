@@ -808,7 +808,7 @@ export function Register() {
             {/* FIRM NAME */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Firm Name
+                Business Name
               </label>
 
               <div className="flex items-center bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-4 focus-within:border-blue-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-600/10 transition-all">

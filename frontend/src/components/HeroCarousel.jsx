@@ -1591,92 +1591,603 @@
 
 // export default HeroCarousel;
 
+// import { motion } from "framer-motion";
+// import { useEffect, useState } from "react";
+// import { Carousel as FlowbiteCarousel } from "flowbite-react";
+// import { Link, useLocation, useNavigate } from "react-router-dom";
+// import api from "../api/api";
+
+// import defaultDesktopSlide from "../assets/ChatGPT Image Sep 3, 2026, 12_32_31 PM.png";
+// import defaultMobileSlide from "../assets/MO.png";
+
+// // ======================================================
+// // CAROUSEL THEME
+// // ======================================================
+
+// const carouselTheme = {
+//   root: {
+//     base: "relative h-full w-full !rounded-none overflow-hidden border-0",
+
+//     leftControl:
+//       "absolute top-1/2 left-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
+
+//     rightControl:
+//       "absolute top-1/2 right-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
+//   },
+
+//   item: {
+//     base: "absolute top-1/2 left-1/2 block w-full -translate-x-1/2 -translate-y-1/2 !rounded-none",
+
+//     wrapper: {
+//       off: "w-full h-full flex-shrink-0 transform cursor-default snap-center !rounded-none",
+//       on: "w-full h-full flex-shrink-0 transform cursor-grab snap-center !rounded-none",
+//     },
+//   },
+
+//   scrollContainer: {
+//     base: "flex h-full snap-mandatory overflow-y-hidden overflow-x-scroll scroll-smooth !rounded-none border-0",
+//     snap: "snap-x",
+//   },
+// };
+
+// // ======================================================
+// // REGISTER BUTTON
+// // ======================================================
+
+// const RegisterButton = ({ mobile = false }) => (
+//   <div
+//     className={
+//       mobile
+//         ? "absolute bottom-4 left-0 w-full flex justify-center z-20"
+//         : "shrink-0"
+//     }
+//   >
+//     <Link to="/register">
+//       <motion.button
+//         animate={{ scale: [1, 1.05, 1] }}
+//         transition={{
+//           duration: 1.2,
+//           repeat: Infinity,
+//           ease: "easeInOut",
+//         }}
+//         className={`bg-[#3dc13c] hover:bg-[#65a30d] text-gray-900 font-bold rounded-full shadow-[0_0_15px_rgba(61,193,60,0.6)] border border-[#bef264] flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+//           mobile
+//             ? "text-xs py-2 px-4"
+//             : "text-xs 2xl:text-sm py-2 px-5"
+//         }`}
+//       >
+//         ⚡ Register For FREE / फ्री रजिस्टर करें
+//       </motion.button>
+//     </Link>
+//   </div>
+// );
+
+// // ======================================================
+// // HERO CAROUSEL
+// // ======================================================
+
+// export default function HeroCarousel({ setActiveTab }) {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+//   const [slides, setSlides] = useState([]);
+
+//   // ======================================================
+//   // FETCH SLIDES
+//   // ======================================================
+
+//   useEffect(() => {
+//     const fetchSlides = async () => {
+//       try {
+//         const res = await api.get("/hero-slides/active");
+
+//         if (res.data?.success && res.data.data?.length > 0) {
+//           setSlides(res.data.data);
+//           return;
+//         }
+//       } catch (err) {
+//         console.error("Slide fetch error:", err);
+//       }
+
+//       // ==================================================
+//       // FALLBACK IMAGE ONLY
+//       // NO DEFAULT TITLE / SUBTITLE
+//       // ==================================================
+
+//       setSlides([
+//         {
+//           _id: "default-1",
+//           desktopImage: defaultDesktopSlide,
+//           mobileImage: defaultMobileSlide,
+//         },
+//       ]);
+//     };
+
+//     fetchSlides();
+//   }, []);
+
+//   // ======================================================
+//   // AUTH CHECK
+//   // ======================================================
+
+//   useEffect(() => {
+//     const checkAuth = () => {
+//       const token =
+//         localStorage.getItem("token") ||
+//         localStorage.getItem("user") ||
+//         localStorage.getItem("authToken");
+
+//       setIsLoggedIn(Boolean(token));
+//     };
+
+//     checkAuth();
+
+//     window.addEventListener("storage", checkAuth);
+//     window.addEventListener("authChange", checkAuth);
+
+//     return () => {
+//       window.removeEventListener("storage", checkAuth);
+//       window.removeEventListener("authChange", checkAuth);
+//     };
+//   }, [location]);
+
+//   // ======================================================
+//   // SCROLL
+//   // ======================================================
+
+//   const handleScroll = (tab) => {
+//     setActiveTab(tab);
+
+//     setTimeout(() => {
+//       document
+//         .getElementById("dynamic-home")
+//         ?.scrollIntoView({
+//           behavior: "smooth",
+//           block: "start",
+//         });
+//     }, 100);
+//   };
+
+//   // ======================================================
+//   // ADD LOAD
+//   // ======================================================
+
+//   const handlePostLoad = () => {
+//     const token =
+//       localStorage.getItem("token") ||
+//       localStorage.getItem("user") ||
+//       localStorage.getItem("authToken");
+
+//     navigate(token ? "/dashboard/userform" : "/register", {
+//       state: !token
+//         ? { returnTo: "/dashboard/userform" }
+//         : undefined,
+//     });
+//   };
+
+//   // ======================================================
+//   // RETURN
+//   // ======================================================
+
+//   return (
+//     <section className="w-full pt-[70px] overflow-hidden">
+
+//       {/* ================================================== */}
+//       {/* DESKTOP VIEW */}
+//       {/* ================================================== */}
+
+//       <div className="hidden sm:flex flex-col w-full">
+
+//         {/* ==================================================
+//             DESKTOP IMAGE
+//             75vh normal
+//             79vh XL
+//             80vh 2XL
+//         ================================================== */}
+
+//         <div className="w-full h-[75vh] xl:h-[79vh] 2xl:h-[80vh] relative z-0 overflow-hidden">
+
+//           <FlowbiteCarousel
+//             theme={carouselTheme}
+//             slideInterval={5000}
+//             indicators={false}
+//             className="h-full w-full !rounded-none border-0"
+//           >
+
+//             {slides.map((slide, index) => {
+
+//               // ==================================================
+//               // DESKTOP ONLY:
+//               // TEXT SIRF FIRST IMAGE PAR
+//               // BAAD KI SABHI IMAGES PAR SIRF IMAGE
+//               // ==================================================
+
+//               const isFirstDesktopSlide = index === 0;
+
+//               const hasTitle =
+//                 isFirstDesktopSlide &&
+//                 slide.title &&
+//                 slide.title.trim() !== "";
+
+//               const hasSubtitle =
+//                 isFirstDesktopSlide &&
+//                 slide.subtitle &&
+//                 slide.subtitle.trim() !== "";
+
+//               const hasText = hasTitle || hasSubtitle;
+
+//               return (
+//                 <div
+//                   key={slide._id}
+//                   className="relative w-full h-full !rounded-none"
+//                 >
+
+//                   {/* ==========================================
+//                       DESKTOP IMAGE
+//                   ========================================== */}
+
+//                   <img
+//                     src={slide.desktopImage}
+//                     alt={slide.title || "Slide"}
+//                     className="block w-full h-full object-contain !rounded-none border-0 outline-none"
+//                   />
+
+//                   {/* ==========================================
+//                       DESKTOP TEXT
+//                       ONLY FIRST IMAGE
+//                   ========================================== */}
+
+//                   {hasText && (
+//                     <div className="absolute inset-0 max-w-7xl mx-auto px-6 py-8 pointer-events-none">
+
+//                       <div className="max-w-2xl mt-4 pointer-events-auto">
+
+//                         {/* TITLE */}
+
+//                         {hasTitle && (
+//                           <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold leading-tight text-[#0F172A] drop-shadow-sm">
+//                             {slide.title}
+//                           </h1>
+//                         )}
+
+//                         {/* SUBTITLE */}
+
+//                         {hasSubtitle && (
+//                           <p className="mt-3 text-sm md:text-base xl:text-lg text-[#334155] leading-relaxed drop-shadow-sm">
+//                             {slide.subtitle}
+//                           </p>
+//                         )}
+
+//                       </div>
+//                     </div>
+//                   )}
+
+//                 </div>
+//               );
+//             })}
+
+//           </FlowbiteCarousel>
+//         </div>
+
+//         {/* ==================================================
+//             DESKTOP BOTTOM BAR
+//         ================================================== */}
+
+//         <div className="w-full bg-[#0d1b2a] text-white px-4 sm:px-6 py-3 shadow-lg border-t border-gray-800">
+
+//           <div className="max-w-7xl mx-auto flex flex-col gap-2.5">
+
+//             {/* TOP ROW */}
+
+//             <div className="flex items-center justify-between gap-4 w-full flex-wrap xl:flex-nowrap">
+
+//               {/* LEFT BUTTONS */}
+
+//               <div className="flex items-center flex-wrap gap-2.5">
+
+//                 <Link to="/directory">
+//                   <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap">
+//                     📂 Directory
+//                   </button>
+//                 </Link>
+
+//                 <button
+//                   onClick={() => handleScroll("search")}
+//                   className="px-4 py-2 rounded-lg bg-white text-gray-900 hover:bg-gray-100 text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap"
+//                 >
+//                   🚛 Search Transport
+//                 </button>
+
+//                 <button
+//                   onClick={() => handleScroll("leads")}
+//                   className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap"
+//                 >
+//                   📦 Available Leads
+//                 </button>
+
+//                 <button
+//                   onClick={handlePostLoad}
+//                   className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap"
+//                 >
+//                   ➕ Add Load
+//                 </button>
+
+//               </div>
+
+//               {/* REGISTER */}
+
+//               {!isLoggedIn && <RegisterButton />}
+
+//             </div>
+
+//             {/* STATS */}
+
+//             <div className="flex items-center gap-6 sm:gap-10 pt-1.5 border-t border-gray-800/80 w-full overflow-x-auto">
+
+//               <div className="flex items-baseline gap-1.5 shrink-0">
+//                 <span className="text-sm 2xl:text-base font-bold text-white">
+//                   5000+
+//                 </span>
+
+//                 <span className="text-[11px] 2xl:text-xs text-gray-300 font-medium">
+//                   Verified Businesses
+//                 </span>
+//               </div>
+
+//               <div className="flex items-baseline gap-1.5 shrink-0">
+//                 <span className="text-sm 2xl:text-base font-bold text-white">
+//                   28+
+//                 </span>
+
+//                 <span className="text-[11px] 2xl:text-xs text-gray-300 font-medium">
+//                   States Covered
+//                 </span>
+//               </div>
+
+//               <div className="flex items-baseline gap-1.5 shrink-0">
+//                 <span className="text-sm 2xl:text-base font-bold text-white">
+//                   24/7
+//                 </span>
+
+//                 <span className="text-[11px] 2xl:text-xs text-gray-300 font-medium">
+//                   Support
+//                 </span>
+//               </div>
+
+//             </div>
+
+//           </div>
+//         </div>
+
+//       </div>
+
+//       {/* ================================================== */}
+//       {/* MOBILE VIEW */}
+//       {/* ================================================== */}
+
+//       <div className="sm:hidden w-full flex flex-col">
+
+//         {/* ==================================================
+//             MOBILE IMAGE
+//             65vh
+//         ================================================== */}
+
+//         <div className="w-full h-[60vh] relative z-0 overflow-hidden">
+
+//           <FlowbiteCarousel
+//             theme={carouselTheme}
+//             slideInterval={5000}
+//             indicators={false}
+//             className="h-full w-full !rounded-none border-0"
+//           >
+
+//             {slides.map((slide, index) => {
+
+//               const isFirstMobileSlide = index === 0;
+
+//               const hasTitle =
+//                 isFirstMobileSlide &&
+//                 slide.title &&
+//                 slide.title.trim() !== "";
+
+//               return (
+//                 <div
+//                   key={slide._id}
+//                   className="relative w-full h-full !rounded-none"
+//                 >
+
+//                   {/* ==========================================
+//                       MOBILE IMAGE
+//                   ========================================== */}
+
+//          <img
+//   src={slide.mobileImage}
+//   alt={slide.title || "Slide"}
+//   className="block w-full h-full object-fill !rounded-none border-0 outline-none"
+// />
+//                   {/* ==========================================
+//                       MOBILE TITLE
+//                       ONLY FIRST IMAGE
+//                   ========================================== */}
+
+//                   {hasTitle && (
+//                     <div className="absolute inset-0 px-4 pt-4 flex flex-col justify-between text-white pointer-events-none">
+
+//                       <h1 className="mt-8 text-2xl font-bold leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+//                         {slide.title}
+//                       </h1>
+
+//                     </div>
+//                   )}
+
+//                 </div>
+//               );
+//             })}
+
+//           </FlowbiteCarousel>
+
+//           {/* MOBILE REGISTER */}
+
+//           {!isLoggedIn && <RegisterButton mobile />}
+
+//         </div>
+
+//         {/* ==================================================
+//             MOBILE BUTTONS
+//         ================================================== */}
+
+//         <div className="w-full bg-[#0d1b2a] text-white px-3 py-2.5 flex flex-col justify-between shadow-2xl border-t border-gray-800 shrink-0">
+
+//           <div className="grid grid-cols-2 gap-2 w-full">
+
+//             <Link to="/directory" className="w-full">
+//               <button className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-bold shadow-md text-center">
+//                 📂 Directory
+//               </button>
+//             </Link>
+
+//             <button
+//               onClick={() => handleScroll("search")}
+//               className="w-full py-2.5 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-xs font-bold shadow-md text-center"
+//             >
+//               🚛 Search Transport
+//             </button>
+
+//             <button
+//               onClick={() => handleScroll("leads")}
+//               className="w-full py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-xs font-bold shadow-md text-center"
+//             >
+//               📦 Leads
+//             </button>
+
+//             <button
+//               onClick={handlePostLoad}
+//               className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-md text-center"
+//             >
+//               ➕ Add Load
+//             </button>
+
+//           </div>
+
+//           {/* MOBILE STATS */}
+
+//           <div className="mt-2.5 grid grid-cols-3 gap-1 text-center pt-2 border-t border-gray-800">
+
+//             <div>
+//               <h3 className="text-xs font-bold">
+//                 5000+
+//               </h3>
+
+//               <p className="text-[9px] text-gray-300">
+//                 Verified Businesses
+//               </p>
+//             </div>
+
+//             <div>
+//               <h3 className="text-xs font-bold">
+//                 28+
+//               </h3>
+
+//               <p className="text-[9px] text-gray-300">
+//                 States Covered
+//               </p>
+//             </div>
+
+//             <div>
+//               <h3 className="text-xs font-bold">
+//                 24/7
+//               </h3>
+
+//               <p className="text-[9px] text-gray-300">
+//                 Support
+//               </p>
+//             </div>
+
+//           </div>
+
+//         </div>
+
+//       </div>
+
+//     </section>
+//   );
+// }
+
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Carousel as FlowbiteCarousel } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "../api/api";
 
+// Fallback images only
 import defaultDesktopSlide from "../assets/ChatGPT Image Sep 3, 2026, 12_32_31 PM.png";
 import defaultMobileSlide from "../assets/MO.png";
 
-// ======================================================
-// CAROUSEL THEME
-// ======================================================
-
-const carouselTheme = {
+const customCarouselTheme = {
   root: {
-    base: "relative h-full w-full !rounded-none overflow-hidden border-0",
-
+    base: "relative h-full w-full rounded-none overflow-hidden",
     leftControl:
-      "absolute top-1/2 left-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
-
+      "absolute top-0 left-0 flex h-full items-center justify-center px-4 focus:outline-none z-20",
     rightControl:
-      "absolute top-1/2 right-3 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus:outline-none z-20 transition-all duration-200",
+      "absolute top-0 right-0 flex h-full items-center justify-center px-4 focus:outline-none z-20",
   },
 
   item: {
-    base: "absolute top-1/2 left-1/2 block w-full -translate-x-1/2 -translate-y-1/2 !rounded-none",
+    base: "absolute top-1/2 left-1/2 block w-full -translate-x-1/2 -translate-y-1/2 rounded-none",
 
     wrapper: {
-      off: "w-full h-full flex-shrink-0 transform cursor-default snap-center !rounded-none",
-      on: "w-full h-full flex-shrink-0 transform cursor-grab snap-center !rounded-none",
+      off: "w-full flex-shrink-0 transform cursor-default snap-center rounded-none",
+      on: "w-full flex-shrink-0 transform cursor-grab snap-center rounded-none",
     },
   },
 
   scrollContainer: {
-    base: "flex h-full snap-mandatory overflow-y-hidden overflow-x-scroll scroll-smooth !rounded-none border-0",
+    base: "flex h-full snap-mandatory overflow-y-hidden overflow-x-scroll scroll-smooth rounded-none",
     snap: "snap-x",
   },
 };
 
-// ======================================================
-// REGISTER BUTTON
-// ======================================================
+const RegisterButton = ({ mobile = false }) => {
+  return (
+    <div
+      className={
+        mobile
+          ? "absolute bottom-4 left-0 w-full flex justify-center z-20 pointer-events-auto"
+          : "absolute bottom-30 right-8 z-20 pointer-events-auto"
+      }
+    >
+      <Link to="/register">
+        <motion.button
+          animate={{ scale: [1, 1.06, 1] }}
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className={
+            mobile
+              ? "bg-[#3dc13c] text-gray-900 text-xs font-bold py-2 px-4 rounded-full shadow-[0_0_15px_rgba(61,193,60,0.6)] border border-[#bef264] flex items-center gap-2"
+              : "bg-[#3dc13c] hover:bg-[#65a30d] text-gray-900 text-sm font-bold py-3 px-6 rounded-full shadow-[0_0_18px_rgba(61,193,60,0.7)] border border-[#bef264] flex items-center gap-2 cursor-pointer"
+          }
+        >
+          ⚡ Register For FREE / फ्री रजिस्टर करें
+        </motion.button>
+      </Link>
+    </div>
+  );
+};
 
-const RegisterButton = ({ mobile = false }) => (
-  <div
-    className={
-      mobile
-        ? "absolute bottom-4 left-0 w-full flex justify-center z-20"
-        : "shrink-0"
-    }
-  >
-    <Link to="/register">
-      <motion.button
-        animate={{ scale: [1, 1.05, 1] }}
-        transition={{
-          duration: 1.2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className={`bg-[#3dc13c] hover:bg-[#65a30d] text-gray-900 font-bold rounded-full shadow-[0_0_15px_rgba(61,193,60,0.6)] border border-[#bef264] flex items-center gap-2 whitespace-nowrap cursor-pointer ${
-          mobile
-            ? "text-xs py-2 px-4"
-            : "text-xs 2xl:text-sm py-2 px-5"
-        }`}
-      >
-        ⚡ Register For FREE / फ्री रजिस्टर करें
-      </motion.button>
-    </Link>
-  </div>
-);
-
-// ======================================================
-// HERO CAROUSEL
-// ======================================================
-
-export default function HeroCarousel({ setActiveTab }) {
+export function HeroCarousel({ setActiveTab }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [slides, setSlides] = useState([]);
 
-  // ======================================================
-  // FETCH SLIDES
-  // ======================================================
-
+  // ==========================================
+  // FETCH SLIDES FROM BACKEND
+  // ==========================================
   useEffect(() => {
     const fetchSlides = async () => {
       try {
@@ -1684,74 +2195,65 @@ export default function HeroCarousel({ setActiveTab }) {
 
         if (res.data?.success && res.data.data?.length > 0) {
           setSlides(res.data.data);
-          return;
+        } else {
+          // Only fallback image
+          setSlides([
+            {
+              _id: "default-1",
+              desktopImage: defaultDesktopSlide,
+              mobileImage: defaultMobileSlide,
+            },
+          ]);
         }
       } catch (err) {
         console.error("Slide fetch error:", err);
+
+        // Only fallback image
+        setSlides([
+          {
+            _id: "default-1",
+            desktopImage: defaultDesktopSlide,
+            mobileImage: defaultMobileSlide,
+          },
+        ]);
       }
-
-      // ==================================================
-      // FALLBACK IMAGE ONLY
-      // NO DEFAULT TITLE / SUBTITLE
-      // ==================================================
-
-      setSlides([
-        {
-          _id: "default-1",
-          desktopImage: defaultDesktopSlide,
-          mobileImage: defaultMobileSlide,
-        },
-      ]);
     };
 
     fetchSlides();
   }, []);
 
-  // ======================================================
-  // AUTH CHECK
-  // ======================================================
-
+  // Auth Status check
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuthStatus = () => {
       const token =
         localStorage.getItem("token") ||
         localStorage.getItem("user") ||
         localStorage.getItem("authToken");
 
-      setIsLoggedIn(Boolean(token));
+      setIsLoggedIn(!!token);
     };
 
-    checkAuth();
+    checkAuthStatus();
 
-    window.addEventListener("storage", checkAuth);
-    window.addEventListener("authChange", checkAuth);
+    window.addEventListener("storage", checkAuthStatus);
+    window.addEventListener("authChange", checkAuthStatus);
 
     return () => {
-      window.removeEventListener("storage", checkAuth);
-      window.removeEventListener("authChange", checkAuth);
+      window.removeEventListener("storage", checkAuthStatus);
+      window.removeEventListener("authChange", checkAuthStatus);
     };
   }, [location]);
-
-  // ======================================================
-  // SCROLL
-  // ======================================================
 
   const handleScroll = (tab) => {
     setActiveTab(tab);
 
     setTimeout(() => {
-      document
-        .getElementById("dynamic-home")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      document.getElementById("dynamic-home")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }, 100);
   };
-
-  // ======================================================
-  // ADD LOAD
-  // ======================================================
 
   const handlePostLoad = () => {
     const token =
@@ -1759,264 +2261,207 @@ export default function HeroCarousel({ setActiveTab }) {
       localStorage.getItem("user") ||
       localStorage.getItem("authToken");
 
-    navigate(token ? "/dashboard/userform" : "/register", {
-      state: !token
-        ? { returnTo: "/dashboard/userform" }
-        : undefined,
-    });
+    if (token) {
+      navigate("/dashboard/userform");
+    } else {
+      navigate("/register", {
+        state: { returnTo: "/dashboard/userform" },
+      });
+    }
   };
 
-  // ======================================================
-  // RETURN
-  // ======================================================
-
   return (
-    <section className="w-full pt-[70px] overflow-hidden">
+    <section className="w-full pt-18 sm:pt-18 overflow-hidden">
 
-      {/* ================================================== */}
-      {/* DESKTOP VIEW */}
-      {/* ================================================== */}
+      {/* ====================================================== */}
+      {/* 💻 DESKTOP HERO */}
+      {/* ====================================================== */}
 
-      <div className="hidden sm:flex flex-col w-full">
+      <div className="hidden sm:block w-full h-[calc(100vh-64px)] relative z-0">
 
-        {/* ==================================================
-            DESKTOP IMAGE
-            75vh normal
-            79vh XL
-            80vh 2XL
-        ================================================== */}
+        <FlowbiteCarousel
+          theme={customCarouselTheme}
+          slideInterval={5000}
+          indicators={false}
+          className="rounded-none h-full w-full"
+        >
 
-        <div className="w-full h-[75vh] xl:h-[79vh] 2xl:h-[80vh] relative z-0 overflow-hidden">
+          {slides.map((slide, index) => {
 
-          <FlowbiteCarousel
-            theme={carouselTheme}
-            slideInterval={5000}
-            indicators={false}
-            className="h-full w-full !rounded-none border-0"
-          >
+            // Backend title/subtitle
+            // // Sirf first slide par text
+            // const isFirstSlide = index === 0;
 
-            {slides.map((slide, index) => {
+            // const hasTitle =
+            //   isFirstSlide &&
+            //   slide.title &&
+            //   slide.title.trim() !== "";
 
-              // ==================================================
-              // DESKTOP ONLY:
-              // TEXT SIRF FIRST IMAGE PAR
-              // BAAD KI SABHI IMAGES PAR SIRF IMAGE
-              // ==================================================
+            // const hasSubtitle =
+            //   isFirstSlide &&
+            //   slide.subtitle &&
+            //   slide.subtitle.trim() !== "";
+const hasTitle = Boolean(slide.title && slide.title.trim() !== "");
+const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
+            return (
+              <div
+                key={slide._id}
+                className="relative w-full h-full"
+              >
 
-              const isFirstDesktopSlide = index === 0;
+                <img
+                  src={slide.desktopImage}
+                  alt={slide.title || "Slide"}
+                  className="w-full h-full object-cover rounded-none"
+                />
 
-              const hasTitle =
-                isFirstDesktopSlide &&
-                slide.title &&
-                slide.title.trim() !== "";
+                {/* Backend Text - FIRST SLIDE ONLY */}
+                {(hasTitle || hasSubtitle) && (
+                 <div className="absolute inset-0 max-w-7xl mx-auto px-4 py-8 pointer-events-none">
+  <div className="max-w-2xl mt-4 pointer-events-auto">
 
-              const hasSubtitle =
-                isFirstDesktopSlide &&
-                slide.subtitle &&
-                slide.subtitle.trim() !== "";
+    {hasTitle && (
+      <h1 className="font-inter text-4xl lg:text-5xl font-bold leading-tight text-black ">
+        {slide.title}
+      </h1>
+    )}
 
-              const hasText = hasTitle || hasSubtitle;
+    {hasSubtitle && (
+      <p className="font-inter mt-2 text-base lg:text-lg font-medium text-black ">
+        {slide.subtitle}
+      </p>
+    )}
 
-              return (
-                <div
-                  key={slide._id}
-                  className="relative w-full h-full !rounded-none"
-                >
-
-                  {/* ==========================================
-                      DESKTOP IMAGE
-                  ========================================== */}
-
-                  <img
-                    src={slide.desktopImage}
-                    alt={slide.title || "Slide"}
-                    className="block w-full h-full object-contain !rounded-none border-0 outline-none"
-                  />
-
-                  {/* ==========================================
-                      DESKTOP TEXT
-                      ONLY FIRST IMAGE
-                  ========================================== */}
-
-                  {hasText && (
-                    <div className="absolute inset-0 max-w-7xl mx-auto px-6 py-8 pointer-events-none">
-
-                      <div className="max-w-2xl mt-4 pointer-events-auto">
-
-                        {/* TITLE */}
-
-                        {hasTitle && (
-                          <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold leading-tight text-[#0F172A] drop-shadow-sm">
-                            {slide.title}
-                          </h1>
-                        )}
-
-                        {/* SUBTITLE */}
-
-                        {hasSubtitle && (
-                          <p className="mt-3 text-sm md:text-base xl:text-lg text-[#334155] leading-relaxed drop-shadow-sm">
-                            {slide.subtitle}
-                          </p>
-                        )}
-
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              );
-            })}
-
-          </FlowbiteCarousel>
-        </div>
-
-        {/* ==================================================
-            DESKTOP BOTTOM BAR
-        ================================================== */}
-
-        <div className="w-full bg-[#0d1b2a] text-white px-4 sm:px-6 py-3 shadow-lg border-t border-gray-800">
-
-          <div className="max-w-7xl mx-auto flex flex-col gap-2.5">
-
-            {/* TOP ROW */}
-
-            <div className="flex items-center justify-between gap-4 w-full flex-wrap xl:flex-nowrap">
-
-              {/* LEFT BUTTONS */}
-
-              <div className="flex items-center flex-wrap gap-2.5">
-
-                <Link to="/directory">
-                  <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap">
-                    📂 Directory
-                  </button>
-                </Link>
-
-                <button
-                  onClick={() => handleScroll("search")}
-                  className="px-4 py-2 rounded-lg bg-white text-gray-900 hover:bg-gray-100 text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap"
-                >
-                  🚛 Search Transport
-                </button>
-
-                <button
-                  onClick={() => handleScroll("leads")}
-                  className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap"
-                >
-                  📦 Available Leads
-                </button>
-
-                <button
-                  onClick={handlePostLoad}
-                  className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs 2xl:text-sm font-semibold shadow transition-transform hover:scale-105 cursor-pointer whitespace-nowrap"
-                >
-                  ➕ Add Load
-                </button>
+  </div>
+</div>
+                )}
 
               </div>
+            );
+          })}
 
-              {/* REGISTER */}
+        </FlowbiteCarousel>
 
-              {!isLoggedIn && <RegisterButton />}
+        {/* ====================================================== */}
+        {/* FIXED 4 BUTTONS & STATS */}
+        {/* ====================================================== */}
+
+        <div className="absolute bottom-8 left-0 right-0 max-w-7xl mx-auto px-4 pointer-events-none z-10">
+          <div className="flex flex-col gap-4 pointer-events-auto">
+
+            {/* 4 Fixed Buttons */}
+            <div className="flex flex-wrap gap-3">
+
+              <Link to="/directory">
+                <button className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer">
+                  📂 Directory
+                </button>
+              </Link>
+
+              <button
+                onClick={() => handleScroll("search")}
+                className="px-5 py-2.5 rounded-xl bg-white text-gray-900 hover:bg-gray-100 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                🚛 Search Transport
+              </button>
+
+              <button
+                onClick={() => handleScroll("leads")}
+                className="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                📦 Available Leads
+              </button>
+
+              <button
+                onClick={handlePostLoad}
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                ➕ Add Load
+              </button>
 
             </div>
 
-            {/* STATS */}
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 max-w-sm text-black">
 
-            <div className="flex items-center gap-6 sm:gap-10 pt-1.5 border-t border-gray-800/80 w-full overflow-x-auto">
-
-              <div className="flex items-baseline gap-1.5 shrink-0">
-                <span className="text-sm 2xl:text-base font-bold text-white">
-                  5000+
-                </span>
-
-                <span className="text-[11px] 2xl:text-xs text-gray-300 font-medium">
+              <div>
+                <h3 className="text-xl font-bold">5000+</h3>
+                <p className="text-xs text-black font-medium">
                   Verified Businesses
-                </span>
+                </p>
               </div>
 
-              <div className="flex items-baseline gap-1.5 shrink-0">
-                <span className="text-sm 2xl:text-base font-bold text-white">
-                  28+
-                </span>
-
-                <span className="text-[11px] 2xl:text-xs text-gray-300 font-medium">
+              <div>
+                <h3 className="text-xl font-bold">28+</h3>
+                <p className="text-xs text-black font-medium">
                   States Covered
-                </span>
+                </p>
               </div>
 
-              <div className="flex items-baseline gap-1.5 shrink-0">
-                <span className="text-sm 2xl:text-base font-bold text-white">
-                  24/7
-                </span>
-
-                <span className="text-[11px] 2xl:text-xs text-gray-300 font-medium">
+              <div>
+                <h3 className="text-xl font-bold">24/7</h3>
+                <p className="text-xs text-black font-medium">
                   Support
-                </span>
+                </p>
               </div>
 
             </div>
-
           </div>
         </div>
 
+        {/* Free Register Button */}
+        {!isLoggedIn && <RegisterButton />}
+
       </div>
 
-      {/* ================================================== */}
-      {/* MOBILE VIEW */}
-      {/* ================================================== */}
+      {/* ====================================================== */}
+      {/* 📱 MOBILE HERO */}
+      {/* ====================================================== */}
 
       <div className="sm:hidden w-full flex flex-col">
 
-        {/* ==================================================
-            MOBILE IMAGE
-            65vh
-        ================================================== */}
-
-        <div className="w-full h-[60vh] relative z-0 overflow-hidden">
+        <div className="w-full h-[60vh] relative z-0">
 
           <FlowbiteCarousel
-            theme={carouselTheme}
+            theme={customCarouselTheme}
             slideInterval={5000}
             indicators={false}
-            className="h-full w-full !rounded-none border-0"
+            className="rounded-none"
           >
 
             {slides.map((slide, index) => {
 
-              const isFirstMobileSlide = index === 0;
+              // Backend title
+              // Sirf first slide par
+              // const isFirstSlide = index === 0;
 
-              const hasTitle =
-                isFirstMobileSlide &&
-                slide.title &&
-                slide.title.trim() !== "";
+              // const hasTitle =
+              //   isFirstSlide &&
+              //   slide.title &&
+              //   slide.title.trim() !== "";
+              const hasTitle = Boolean(slide.title && slide.title.trim() !== "");
 
               return (
                 <div
                   key={slide._id}
-                  className="relative w-full h-full !rounded-none"
+                  className="relative w-full h-full"
                 >
 
-                  {/* ==========================================
-                      MOBILE IMAGE
-                  ========================================== */}
+                  <img
+                    src={slide.mobileImage}
+                    alt={slide.title || "Slide"}
+                    className="w-full h-full object-cover rounded-none"
+                  />
 
-         <img
-  src={slide.mobileImage}
-  alt={slide.title || "Slide"}
-  className="block w-full h-full object-fill !rounded-none border-0 outline-none"
-/>
-                  {/* ==========================================
-                      MOBILE TITLE
-                      ONLY FIRST IMAGE
-                  ========================================== */}
-
+                  {/* Backend Title - FIRST SLIDE ONLY */}
                   {hasTitle && (
-                    <div className="absolute inset-0 px-4 pt-4 flex flex-col justify-between text-white pointer-events-none">
+                    <div className="absolute inset-0 px-4 pt-4 flex flex-col justify-between text-black pointer-events-none">
 
-                      <h1 className="mt-8 text-2xl font-bold leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-                        {slide.title}
-                      </h1>
+                      <div className="mt-8">
+                        <h1 className="font-inter text-2xl font-bold leading-snug ">
+                          {slide.title}
+                        </h1>
+                      </div>
 
                     </div>
                   )}
@@ -2026,16 +2471,12 @@ export default function HeroCarousel({ setActiveTab }) {
             })}
 
           </FlowbiteCarousel>
-
-          {/* MOBILE REGISTER */}
 
           {!isLoggedIn && <RegisterButton mobile />}
 
         </div>
 
-        {/* ==================================================
-            MOBILE BUTTONS
-        ================================================== */}
+        {/* Mobile Action Buttons & Stats */}
 
         <div className="w-full bg-[#0d1b2a] text-white px-3 py-2.5 flex flex-col justify-between shadow-2xl border-t border-gray-800 shrink-0">
 
@@ -2070,35 +2511,24 @@ export default function HeroCarousel({ setActiveTab }) {
 
           </div>
 
-          {/* MOBILE STATS */}
-
           <div className="mt-2.5 grid grid-cols-3 gap-1 text-center pt-2 border-t border-gray-800">
 
             <div>
-              <h3 className="text-xs font-bold">
-                5000+
-              </h3>
-
+              <h3 className="text-xs font-bold">5000+</h3>
               <p className="text-[9px] text-gray-300">
                 Verified Businesses
               </p>
             </div>
 
             <div>
-              <h3 className="text-xs font-bold">
-                28+
-              </h3>
-
+              <h3 className="text-xs font-bold">28+</h3>
               <p className="text-[9px] text-gray-300">
                 States Covered
               </p>
             </div>
 
             <div>
-              <h3 className="text-xs font-bold">
-                24/7
-              </h3>
-
+              <h3 className="text-xs font-bold">24/7</h3>
               <p className="text-[9px] text-gray-300">
                 Support
               </p>
@@ -2113,3 +2543,6 @@ export default function HeroCarousel({ setActiveTab }) {
     </section>
   );
 }
+
+export default HeroCarousel;
+
