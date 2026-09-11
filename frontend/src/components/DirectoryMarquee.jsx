@@ -5,7 +5,7 @@ const DirectoryMarquee = () => {
   const message = (
     <div className="flex items-center gap-2 px-8 whitespace-nowrap">
       <span className="text-white text-sm font-medium">
-        🚚 डायरेक्टरी में फ्री में जुड़ने के लिए 
+        🚚 डायरेक्टरी में जुड़ने के लिए 
       </span>
 
       <Link

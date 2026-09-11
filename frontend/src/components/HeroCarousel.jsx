@@ -122,7 +122,7 @@
 // // //               {/* Bottom Row */}
 // // //               <div className="flex items-end justify-between w-full pb-2">
 // // //                 <div className="flex flex-col gap-4">
-                  
+
 // // //                   {/* Desktop Action Buttons (Rounded Corners Added) */}
 // // //                   <div className="flex flex-wrap gap-3">
 // // //                     <Link to="/directory">
@@ -273,12 +273,11 @@
 // // //         </FlowbiteCarousel>
 // // //       </div>
 
-
 // // //       {/* ######################################################################### */}
 // // //       {/* 📱 2. MOBILE HERO SECTION (Screen size < 640px)                           */}
 // // //       {/* ######################################################################### */}
 // // //       <div className="sm:hidden w-full flex flex-col">
-        
+
 // // //         {/* Mobile Carousel Area */}
 // // //         <div className="w-full h-[60vh] relative">
 // // //           <FlowbiteCarousel
@@ -355,7 +354,7 @@
 
 // // //         {/* Mobile Action Buttons & Stats Footer */}
 // // //         <div className="w-full bg-[#0d1b2a] text-white px-3 py-2.5 flex flex-col justify-between shadow-2xl border-t border-gray-800 shrink-0">
-          
+
 // // //           {/* Mobile Buttons with rounded-xl */}
 // // //           <div className="grid grid-cols-2 gap-2 w-full">
 // // //             <Link to="/directory" className="w-full">
@@ -731,7 +730,7 @@
 // //       {/* 📱 2. MOBILE HERO SECTION (Screen size < 640px)                           */}
 // //       {/* ######################################################################### */}
 // //       <div className="sm:hidden w-full flex flex-col">
-        
+
 // //         {/* Mobile Carousel Area */}
 // //         <div className="w-full h-[60vh] relative">
 // //           <FlowbiteCarousel
@@ -1004,7 +1003,7 @@
 //       {/* DESKTOP HERO */}
 //       {/* ====================================================== */}
 //       <div className="hidden sm:block w-full h-[calc(100vh-64px)] relative z-0">
-        
+
 //         {/* CAROUSEL (Text slide ke sath move hoga, clean image) */}
 //         <FlowbiteCarousel
 //           theme={customCarouselTheme}
@@ -1063,7 +1062,7 @@
 //               className="w-full h-full object-cover rounded-none"
 //             />
 //             <div className="absolute inset-0 max-w-7xl mx-auto px-4 py-8 pointer-events-none text-white">
-            
+
 //  <div className="max-w-2xl mt-4 pointer-events-auto">
 
 //     <h1 className="font-inter text-4xl lg:text-5xl font-bold leading-tight text-[#0F172A]">
@@ -1077,10 +1076,6 @@
 
 //   </div>
 
-
-
-
-
 //             </div>
 //           </div>
 //         </FlowbiteCarousel>
@@ -1090,7 +1085,7 @@
 //         {/* ====================================================== */}
 //         <div className="absolute bottom-8 left-0 right-0 max-w-7xl mx-auto px-4 pointer-events-none z-10">
 //           <div className="flex flex-col gap-4 pointer-events-auto">
-            
+
 //             {/* 4 Fixed Buttons */}
 //             <div className="flex flex-wrap gap-3">
 //               <Link to="/directory">
@@ -2171,7 +2166,7 @@ const RegisterButton = ({ mobile = false }) => {
               : "bg-[#3dc13c] hover:bg-[#65a30d] text-gray-900 text-sm font-bold py-3 px-6 rounded-full shadow-[0_0_18px_rgba(61,193,60,0.7)] border border-[#bef264] flex items-center gap-2 cursor-pointer"
           }
         >
-          ⚡ Register For FREE / फ्री रजिस्टर करें
+          ⚡ Register NOW
         </motion.button>
       </Link>
     </div>
@@ -2272,22 +2267,18 @@ export function HeroCarousel({ setActiveTab }) {
 
   return (
     <section className="w-full pt-18 sm:pt-18 overflow-hidden">
-
       {/* ====================================================== */}
       {/* 💻 DESKTOP HERO */}
       {/* ====================================================== */}
 
       <div className="hidden sm:block w-full h-[calc(100vh-64px)] relative z-0">
-
         <FlowbiteCarousel
           theme={customCarouselTheme}
           slideInterval={5000}
           indicators={false}
           className="rounded-none h-full w-full"
         >
-
           {slides.map((slide, index) => {
-
             // Backend title/subtitle
             // // Sirf first slide par text
             // const isFirstSlide = index === 0;
@@ -2301,14 +2292,12 @@ export function HeroCarousel({ setActiveTab }) {
             //   isFirstSlide &&
             //   slide.subtitle &&
             //   slide.subtitle.trim() !== "";
-const hasTitle = Boolean(slide.title && slide.title.trim() !== "");
-const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
+            const hasTitle = Boolean(slide.title && slide.title.trim() !== "");
+            const hasSubtitle = Boolean(
+              slide.subtitle && slide.subtitle.trim() !== "",
+            );
             return (
-              <div
-                key={slide._id}
-                className="relative w-full h-full"
-              >
-
+              <div key={slide._id} className="relative w-full h-full">
                 <img
                   src={slide.desktopImage}
                   alt={slide.title || "Slide"}
@@ -2317,29 +2306,25 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
 
                 {/* Backend Text - FIRST SLIDE ONLY */}
                 {(hasTitle || hasSubtitle) && (
-                 <div className="absolute inset-0 max-w-7xl mx-auto px-4 py-8 pointer-events-none">
-  <div className="max-w-2xl mt-4 pointer-events-auto">
+                  <div className="absolute inset-0 max-w-7xl mx-auto px-4 py-8 pointer-events-none">
+                    <div className="max-w-2xl mt-4 pointer-events-auto">
+                      {hasTitle && (
+                        <h1 className="font-inter text-4xl lg:text-5xl font-bold leading-tight text-black ">
+                          {slide.title}
+                        </h1>
+                      )}
 
-    {hasTitle && (
-      <h1 className="font-inter text-4xl lg:text-5xl font-bold leading-tight text-black ">
-        {slide.title}
-      </h1>
-    )}
-
-    {hasSubtitle && (
-      <p className="font-inter mt-2 text-base lg:text-lg font-medium text-black ">
-        {slide.subtitle}
-      </p>
-    )}
-
-  </div>
-</div>
+                      {hasSubtitle && (
+                        <p className="font-inter mt-2 text-base lg:text-lg font-medium text-black ">
+                          {slide.subtitle}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 )}
-
               </div>
             );
           })}
-
         </FlowbiteCarousel>
 
         {/* ====================================================== */}
@@ -2348,10 +2333,8 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
 
         <div className="absolute bottom-8 left-0 right-0 max-w-7xl mx-auto px-4 pointer-events-none z-10">
           <div className="flex flex-col gap-4 pointer-events-auto">
-
             {/* 4 Fixed Buttons */}
             <div className="flex flex-wrap gap-3">
-
               <Link to="/directory">
                 <button className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer">
                   📂 Directory
@@ -2378,12 +2361,10 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
               >
                 ➕ Add Load
               </button>
-
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 max-w-sm text-black">
-
               <div>
                 <h3 className="text-xl font-bold">5000+</h3>
                 <p className="text-xs text-black font-medium">
@@ -2393,25 +2374,19 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
 
               <div>
                 <h3 className="text-xl font-bold">28+</h3>
-                <p className="text-xs text-black font-medium">
-                  States Covered
-                </p>
+                <p className="text-xs text-black font-medium">States Covered</p>
               </div>
 
               <div>
                 <h3 className="text-xl font-bold">24/7</h3>
-                <p className="text-xs text-black font-medium">
-                  Support
-                </p>
+                <p className="text-xs text-black font-medium">Support</p>
               </div>
-
             </div>
           </div>
         </div>
 
         {/* Free Register Button */}
         {!isLoggedIn && <RegisterButton />}
-
       </div>
 
       {/* ====================================================== */}
@@ -2419,18 +2394,14 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
       {/* ====================================================== */}
 
       <div className="sm:hidden w-full flex flex-col">
-
         <div className="w-full h-[60vh] relative z-0">
-
           <FlowbiteCarousel
             theme={customCarouselTheme}
             slideInterval={5000}
             indicators={false}
             className="rounded-none"
           >
-
             {slides.map((slide, index) => {
-
               // Backend title
               // Sirf first slide par
               // const isFirstSlide = index === 0;
@@ -2439,14 +2410,12 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
               //   isFirstSlide &&
               //   slide.title &&
               //   slide.title.trim() !== "";
-              const hasTitle = Boolean(slide.title && slide.title.trim() !== "");
+              const hasTitle = Boolean(
+                slide.title && slide.title.trim() !== "",
+              );
 
               return (
-                <div
-                  key={slide._id}
-                  className="relative w-full h-full"
-                >
-
+                <div key={slide._id} className="relative w-full h-full">
                   <img
                     src={slide.mobileImage}
                     alt={slide.title || "Slide"}
@@ -2456,32 +2425,25 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
                   {/* Backend Title - FIRST SLIDE ONLY */}
                   {hasTitle && (
                     <div className="absolute inset-0 px-4 pt-4 flex flex-col justify-between text-black pointer-events-none">
-
                       <div className="mt-8">
                         <h1 className="font-inter text-2xl font-bold leading-snug ">
                           {slide.title}
                         </h1>
                       </div>
-
                     </div>
                   )}
-
                 </div>
               );
             })}
-
           </FlowbiteCarousel>
 
           {!isLoggedIn && <RegisterButton mobile />}
-
         </div>
 
         {/* Mobile Action Buttons & Stats */}
 
         <div className="w-full bg-[#0d1b2a] text-white px-3 py-2.5 flex flex-col justify-between shadow-2xl border-t border-gray-800 shrink-0">
-
           <div className="grid grid-cols-2 gap-2 w-full">
-
             <Link to="/directory" className="w-full">
               <button className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-bold shadow-md text-center">
                 📂 Directory
@@ -2508,41 +2470,28 @@ const hasSubtitle = Boolean(slide.subtitle && slide.subtitle.trim() !== "");
             >
               ➕ Add Load
             </button>
-
           </div>
 
           <div className="mt-2.5 grid grid-cols-3 gap-1 text-center pt-2 border-t border-gray-800">
-
             <div>
               <h3 className="text-xs font-bold">5000+</h3>
-              <p className="text-[9px] text-gray-300">
-                Verified Businesses
-              </p>
+              <p className="text-[9px] text-gray-300">Verified Businesses</p>
             </div>
 
             <div>
               <h3 className="text-xs font-bold">28+</h3>
-              <p className="text-[9px] text-gray-300">
-                States Covered
-              </p>
+              <p className="text-[9px] text-gray-300">States Covered</p>
             </div>
 
             <div>
               <h3 className="text-xs font-bold">24/7</h3>
-              <p className="text-[9px] text-gray-300">
-                Support
-              </p>
+              <p className="text-[9px] text-gray-300">Support</p>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 }
 
 export default HeroCarousel;
-
