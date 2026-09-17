@@ -105,7 +105,7 @@ export  function BusinessPromotionPopup() {
 
       setShowPopup(true);
 
-    }, 20000);
+    }, 40000);
   };
 
   // =====================================================
