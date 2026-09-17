@@ -19,6 +19,7 @@ import {
   Globe,
   TrendingUp,
 } from "lucide-react";
+import SEODirectoryLinks from "../components/SEODirectoryLinks";
 // import LanguageSwitcher from "../languages/LanguageSwitcher";
 // import LanguageTranslator from "../languages/locales/LanguageTranslator";
 
@@ -606,6 +607,7 @@ const Services = () => {
           </div>
         </div>
       </motion.section>
+      <SEODirectoryLinks/>
 
       {/* Final CTA */}
       <motion.section

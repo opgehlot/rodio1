@@ -69,6 +69,8 @@ import FirmDetails from "./pages/dashboardpage/Profiledas/FirmDetails";
 import VehicleServices from "./pages/dashboardpage/Profiledas/VehicleServices";
 import MyDocumentss from "./pages/dashboardpage/Profiledas/MyDocumentss";
 import WhatsAppButton from "./components/WhatsAppButton";
+import ServiceReminderPopup from "./components/ServiceReminderPopup";
+import NotFound from "./pages/NotFound";
 
 // Dummy Pages
 
@@ -176,10 +178,15 @@ function App() {
           <Route path="/refundpolicy" element={<RefundPolicy />} />
           <Route path="/contectus" element={<ContectUs />} />
           <Route path="/privaceypolicy" element={<PrivaceyPolicy />} />
-          <Route path="/directory" element={<Directory />} />
+         <Route
+  path="/directory/:state?/:city?/:category?"
+  element={<Directory />}
+/>
           <Route path="/dashboard/leads" element={<Leads />} />
+          <Route path="*" element={<NotFound/>} />
         </Route>
       </Routes>
+      <ServiceReminderPopup/>
       <WhatsAppButton/>
     </BrowserRouter>
   );
