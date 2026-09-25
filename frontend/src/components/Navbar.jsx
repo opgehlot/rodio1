@@ -225,6 +225,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import LanguageSwitcher from "../languages/locales/LanguageTranslator";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
+  
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -240,6 +242,7 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     setMenuOpen(false);
+    toast.success("Logged out successfully!");
     navigate("/", { replace: true });
   };
 

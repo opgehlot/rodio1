@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   X,
   BriefcaseBusiness,
@@ -8,52 +9,54 @@ import {
   Truck,
 } from "lucide-react";
 
-export  function BusinessPromotionPopup() {
+export function BusinessPromotionPopup() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [showPopup, setShowPopup] = useState(false);
+  const [checkingSubscription, setCheckingSubscription] = useState(true);
 
   const timerRef = useRef(null);
 
   // =====================================================
-  // CHECK ACTIVE SUBSCRIPTION
+  // CHECK ACTIVE SUBSCRIPTION FROM BACKEND
   // =====================================================
 
-  const hasActiveSubscription = () => {
+  const hasActiveSubscription = async () => {
     try {
-      const userString = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
 
-      if (!userString) {
+      // User login nahi hai
+      if (!token) {
         return false;
       }
 
-      const user = JSON.parse(userString);
+      const response = await axios.get(
+        "https://rodio-tradelink.onrender.com/api/business/me",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      const subscription = user?.subscription;
+      const business = response.data?.data;
 
-      if (!subscription) {
-        return false;
-      }
+      /*
+       * Backend response:
+       *
+       * subscriptionStatus: "active"
+       * profileUnlocked: true
+       * isActive: true
+       */
 
-      const status = subscription?.status;
+      const isActive =
+        String(business?.subscriptionStatus || "").toLowerCase() ===
+          "active" &&
+        business?.profileUnlocked === true &&
+        business?.isActive === true;
 
-      const endDate = subscription?.endDate
-        ? new Date(subscription.endDate)
-        : null;
-
-      const now = new Date();
-
-      // Active subscription + valid expiry date
-      if (
-        status === "active" &&
-        endDate &&
-        now < endDate
-      ) {
-        return true;
-      }
-
-      return false;
+      return isActive;
     } catch (error) {
       console.error(
         "BUSINESS POPUP SUBSCRIPTION CHECK ERROR:",
@@ -72,39 +75,49 @@ export  function BusinessPromotionPopup() {
     location.pathname === "/dashboard/planselection";
 
   // =====================================================
-  // START 20 SECOND TIMER
+  // START POPUP TIMER
   // =====================================================
 
-  const startTimer = () => {
+  const startTimer = async () => {
     clearTimeout(timerRef.current);
 
     // Plan Selection page par popup nahi dikhana
-    if (isPlanSelectionPage) {
+    if (location.pathname === "/dashboard/planselection") {
       setShowPopup(false);
       return;
     }
 
-    // Active subscription hai to popup nahi dikhana
-    if (hasActiveSubscription()) {
+    // Backend se fresh subscription check
+    const active = await hasActiveSubscription();
+
+    if (active) {
       setShowPopup(false);
       return;
     }
 
-    timerRef.current = setTimeout(() => {
+    // Subscription check complete
+    setCheckingSubscription(false);
 
+    // 40 seconds ke baad popup
+    timerRef.current = setTimeout(async () => {
       // Timer complete hone ke baad
-      // dobara subscription check
-      if (hasActiveSubscription()) {
+      // dobara backend subscription check
+      const latestActive = await hasActiveSubscription();
+
+      if (latestActive) {
+        setShowPopup(false);
         return;
       }
 
       // Agar user Plan Selection par chala gaya
-      if (window.location.pathname === "/dashboard/planselection") {
+      if (
+        window.location.pathname ===
+        "/dashboard/planselection"
+      ) {
         return;
       }
 
       setShowPopup(true);
-
     }, 40000);
   };
 
@@ -113,26 +126,62 @@ export  function BusinessPromotionPopup() {
   // =====================================================
 
   useEffect(() => {
-    setShowPopup(false);
+    let cancelled = false;
 
-    clearTimeout(timerRef.current);
+    const initializePopup = async () => {
+      setShowPopup(false);
+      setCheckingSubscription(true);
 
-    // Plan Selection page par timer nahi
-    if (location.pathname === "/dashboard/planselection") {
-      return;
-    }
-
-    // Subscription active hai to timer nahi
-    if (hasActiveSubscription()) {
-      return;
-    }
-
-    startTimer();
-
-    return () => {
       clearTimeout(timerRef.current);
+
+      // Plan Selection page par timer nahi
+      if (location.pathname === "/dashboard/planselection") {
+        setCheckingSubscription(false);
+        return;
+      }
+
+      const active = await hasActiveSubscription();
+
+      // Component unmount ho gaya ho
+      if (cancelled) {
+        return;
+      }
+
+      // Active subscription hai
+      if (active) {
+        setShowPopup(false);
+        setCheckingSubscription(false);
+        return;
+      }
+
+      setCheckingSubscription(false);
+
+      // Subscription active nahi hai
+      timerRef.current = setTimeout(async () => {
+        const latestActive = await hasActiveSubscription();
+
+        if (latestActive) {
+          setShowPopup(false);
+          return;
+        }
+
+        if (
+          window.location.pathname ===
+          "/dashboard/planselection"
+        ) {
+          return;
+        }
+
+        setShowPopup(true);
+      }, 40000);
     };
 
+    initializePopup();
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timerRef.current);
+    };
   }, [location.pathname]);
 
   // =====================================================
@@ -142,8 +191,7 @@ export  function BusinessPromotionPopup() {
   const handleClose = () => {
     setShowPopup(false);
 
-    // Close karne ke baad
-    // 20 seconds baad dobara popup
+    // Close ke baad timer dobara start
     startTimer();
   };
 
@@ -164,7 +212,6 @@ export  function BusinessPromotionPopup() {
     // ================================================
 
     if (!token) {
-
       // Login ke baad Plan Selection par bhejna
       localStorage.setItem(
         "redirectAfterLogin",
@@ -187,7 +234,11 @@ export  function BusinessPromotionPopup() {
   // DON'T RENDER POPUP
   // =====================================================
 
-  if (!showPopup) {
+  if (
+    !showPopup ||
+    checkingSubscription ||
+    isPlanSelectionPage
+  ) {
     return null;
   }
 
@@ -374,9 +425,11 @@ export  function BusinessPromotionPopup() {
           </button>
 
         </div>
+
       </div>
     </div>
   );
 }
 
 export default BusinessPromotionPopup;
+

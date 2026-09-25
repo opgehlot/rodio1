@@ -685,10 +685,10 @@ const handleLocationSearch = (e) => {
         <div className="flex items-center justify-between mb-5 sm:mb-6">
           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
             Directory Results
-            {/* <span className="text-xs sm:text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+            <span className="text-xs sm:text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
               {directoryData.length}{" "}
               {directoryData.length === 1 ? "Partner" : "Partners"}
-            </span> */}
+            </span>
           </h3>
         </div>
 

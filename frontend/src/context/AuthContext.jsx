@@ -6,11 +6,15 @@ export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
   // User State
-  const [user, setUser] = useState(() => {
+ const [user, setUser] = useState(() => {
+  try {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
-  });
-
+  } catch {
+    localStorage.removeItem("user");
+    return null;
+  }
+});
   // Token State
   const [token, setToken] = useState(() => {
     return localStorage.getItem("token") || null;
@@ -32,6 +36,14 @@ export function AuthProvider({ children }) {
 
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+      localStorage.removeItem("role");
+  localStorage.removeItem("businessId");
+  localStorage.removeItem("subscription");
+  localStorage.removeItem("isSubscriptionActive");
+  localStorage.removeItem("redirectAfterLogin");
+
+  // Temporary navigation/card/session data
+  sessionStorage.clear();
   };
 
   // Sync State with LocalStorage

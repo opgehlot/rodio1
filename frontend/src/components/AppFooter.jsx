@@ -229,7 +229,7 @@ export default function Footer() {
                 <div>
                   <p className="text-sm text-gray-500">Address</p>
                   <p className="text-base font-medium text-gray-800">
-                    India
+                    EA-60, Scheme 94,Ring Road Indore 
                   </p>
                 </div>
               </div>

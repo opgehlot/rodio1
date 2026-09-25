@@ -705,13 +705,13 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
         </div>
 
         {/* Pickup Date */}
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <FaCalendarAlt className="text-indigo-600" />
           <div>
             <p className="text-xs text-gray-500">Pickup Date</p>
             <p className="font-medium">{formatDate(lead?.pickupDate)}</p>
           </div>
-        </div>
+        </div> */}
 
         {/* Budget */}
         <div className="bg-green-50 rounded-2xl p-4 flex justify-between items-center border border-green-100">
