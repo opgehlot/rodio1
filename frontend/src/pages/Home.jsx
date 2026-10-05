@@ -10,6 +10,7 @@ import QueryForm from "../components/QueryForm";
 import ReviewChatSection from "../components/ReviewChatSection";
 import AdminHeroSlideManager from "../components/AdminHeroSlideManager";
 import MediaGallery from "../components/MediaGallery";
+import DownloadApp from "../components/Downlodapp";
 // import PlanSelection from "../../payment/PlanSelection";
 
 // import AdminReferralPayouts from "../components/AdminReferralPayout";
@@ -28,6 +29,7 @@ function Home() {
       <div id="dynamic-home" className="scroll-mt-0">
         <DaynamicHomeComponent activeTab={activeTab} />
       </div>
+      <DownloadApp/>
       <MediaGallery/>
 
       {/* Other Sections */}
