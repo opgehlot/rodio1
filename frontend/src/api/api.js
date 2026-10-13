@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   // https://rodio-tradelink.onrender.com
-  baseURL: "/api",
+  baseURL: "https://www.rodiotradelink.com/api",
 });
 
 API.interceptors.request.use((config) => {
