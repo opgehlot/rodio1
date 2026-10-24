@@ -7,6 +7,7 @@ import {
   Calendar,
   Zap,
   ShieldAlert,
+  Star,
   Copy,
   Download,
   Mail,
@@ -35,7 +36,9 @@ export function Dashboard() {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await API.get("/dashboard");
+      const response = await API.get("/dashboard", {
+            headers: { "x-api-key":"ashu@rodio" },
+          });
       setDashboard(response.data?.data || null);
     } catch (error) {
       // Agar backend 404 bhejta hai, toh isko normal state maano (Business not created yet)
@@ -85,7 +88,10 @@ export function Dashboard() {
   const handleViewReceipt = async () => {
     try {
       setLoadingReceipt(true);
-      const { data } = await API.get("/receipt/latest");
+      const { data } = await API.get("/receipt/latest",
+   {
+            headers: { "x-api-key":"ashu@rodio" },
+          });
 
       if (data.success) {
         setReceipt(data.receipt);
@@ -238,6 +244,37 @@ export function Dashboard() {
         )}
 
         {/* STATE 3: ACTIVE BUSINESS & SUBSCRIPTION */}
+        {/* MY REVIEWS & RATINGS DROPDOWN */}
+        <details className="group rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-5 py-4 transition hover:bg-white [&::-webkit-details-marker]:hidden">
+            <div className="flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
+                <Star size={21} />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900">My Reviews &amp; Ratings</h3>
+                <p className="mt-0.5 text-xs text-slate-500">View customer feedback and your business rating</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Reviews</span>
+              <span className="text-slate-500 transition-transform group-open:rotate-180">▼</span>
+            </div>
+          </summary>
+          <div className="border-t border-slate-200 bg-white px-5 py-5 rounded-b-2xl">
+            <p className="text-sm leading-6 text-slate-600">
+              Customer reviews and ratings will appear here when available.
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate("/dashboard/reviews")}
+              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+            >
+              View My Reviews <ArrowRight size={16} />
+            </button>
+          </div>
+        </details>
+
         {hasBusiness && hasActiveSubscription && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             

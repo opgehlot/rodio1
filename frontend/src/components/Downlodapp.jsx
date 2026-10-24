@@ -36,10 +36,10 @@ const DownloadApp = () => {
 
               <div className="flex flex-col text-left">
                 <span className="text-[11px] font-medium uppercase tracking-wider text-blue-100">
-                  Get it on
+                   Click to
                 </span>
                 <span className="text-base font-bold leading-tight">
-                  Downlod Now
+                 Download Radio App
                 </span>
               </div>
             </a>

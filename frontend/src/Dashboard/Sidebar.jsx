@@ -612,7 +612,9 @@ export default function Sidebar({ open, setOpen }) {
         }
 
         // Get latest status from backend
-        const { data } = await API.get("/business/me");
+        const { data } = await API.get("/business/me",{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
 
         const business = data?.data;
 

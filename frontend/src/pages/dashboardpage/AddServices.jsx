@@ -64,7 +64,9 @@ export function AddServices() {
   useEffect(() => {
     const loadDraft = async () => {
       try {
-        const { data } = await API.get("/business/me");
+        const { data } = await API.get("/business/me",{
+            headers: { "x-api-key":"ashu@rodio" },
+          });
         const business = data?.data;
 
         if (business) {
@@ -187,7 +189,9 @@ export function AddServices() {
         phoneNumber: mobile,
       };
 
-      const { data } = await API.post("/business/create", payload);
+      const { data } = await API.post("/business/create", payload,{
+            headers: { "x-api-key":"ashu@rodio" },
+          });
 
       if (data?.data?.businessId) {
         localStorage.setItem("businessId", data.data.businessId);

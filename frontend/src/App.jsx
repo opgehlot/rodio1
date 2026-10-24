@@ -68,6 +68,7 @@ import OwnerDetails from "./pages/dashboardpage/Profiledas/OwnerDetails";
 import FirmDetails from "./pages/dashboardpage/Profiledas/FirmDetails";
 import VehicleServices from "./pages/dashboardpage/Profiledas/VehicleServices";
 import MyDocumentss from "./pages/dashboardpage/Profiledas/MyDocumentss";
+import MyReviews from "./pages/dashboardpage/MyReviews";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ServiceReminderPopup from "./components/ServiceReminderPopup";
 import NotFound from "./pages/NotFound";
@@ -157,6 +158,7 @@ function App() {
           <Route path="referral" element={<Referral />} />
           <Route path="updatebisprofile" element={<UpdateBisProfile />} />
           <Route path="reviewsection" element={<ReviewSection />} />
+          <Route path="reviews" element={<MyReviews />} />
         </Route>
 
         <Route element={<MainLayout />}>

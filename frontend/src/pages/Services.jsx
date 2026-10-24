@@ -8,7 +8,6 @@ import {
   FaBuilding,
   FaClipboardList,
   FaWarehouse,
-  FaArrowRight,
   FaCheckCircle,
   FaStar,
 } from "react-icons/fa";
@@ -28,14 +27,6 @@ const Services = () => {
 
   const isLoggedIn = !!localStorage.getItem("token");
 
-  const handleNavigate = (path) => {
-    if (!isLoggedIn) {
-      navigate("/register");
-    } else {
-      navigate(path);
-    }
-  };
-
   const services = [
     {
       title: "Vehicle Search",
@@ -43,7 +34,7 @@ const Services = () => {
       color: "from-blue-600 to-indigo-700",
       description:
         "Search verified trucks, pickups, trailers, tankers and commercial vehicles across India.",
-      path: "/register",
+      path: "/MyDashboard",
     },
     {
       title: "Transporter Search",
@@ -51,7 +42,7 @@ const Services = () => {
       color: "from-blue-600 to-indigo-700",
       description:
         "Find trusted transport companies with ratings, reviews and verified profiles.",
-      path: "/register",
+      path: "/MyDashboard",
     },
     {
       title: "Directory Search",
@@ -59,7 +50,7 @@ const Services = () => {
       color: "from-blue-600 to-indigo-700",
       description:
         "Explore India's transport business directory with thousands of verified businesses.",
-      path: "/register",
+      path: "/MyDashboard",
     },
     {
       title: "Lead Search",
@@ -67,7 +58,7 @@ const Services = () => {
       color: "from-blue-600 to-indigo-700",
       description:
         "Discover transport leads and business opportunities from different locations.",
-      path: "/register",
+      path: "/MyDashboard",
     },
     {
       title: "Broker Search",
@@ -75,7 +66,7 @@ const Services = () => {
       color: "from-blue-600 to-indigo-700",
       description:
         "Find trusted brokers and logistics partners to grow your business.",
-      path: "/register",
+      path: "/MyDashboard",
     },
     {
       title: "Warehouse Search",
@@ -83,7 +74,7 @@ const Services = () => {
       color: "from-blue-600 to-indigo-700",
       description:
         "Search warehouses, logistics parks and storage facilities near your city.",
-      path: "/register",
+      path: "/MyDashboard",
     },
   ];
 
@@ -192,42 +183,34 @@ const Services = () => {
           {services.map((service, index) => (
             <motion.div
               key={index}
-              className="bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+              className="group bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <div className={`bg-gradient-to-r ${service.color} p-8 text-white`}>
+              <div className={`bg-gradient-to-r ${service.color} p-7 text-white transition-all duration-300 group-hover:brightness-105`}>
                 {service.icon}
-                <h3 className="text-2xl font-bold mt-6">{service.title}</h3>
+                <h3 className="text-xl sm:text-2xl font-bold mt-5">{service.title}</h3>
               </div>
 
-              <div className="p-8">
-                <p className="text-gray-600 leading-7">{service.description}</p>
+              <div className="p-6 sm:p-7">
+                <p className="text-sm sm:text-base text-gray-600 leading-7">{service.description}</p>
 
-                <div className="mt-6 space-y-2">
-                  <div className="flex items-center gap-2">
+                <div className="mt-5 space-y-3 border-t border-gray-100 pt-5">
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
                     <FaCheckCircle className="text-green-500" />
                     Verified Listings
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
                     <FaCheckCircle className="text-green-500" />
                     Fast Search
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
                     <FaCheckCircle className="text-green-500" />
                     Trusted Network
                   </div>
                 </div>
-
-                <button
-                  onClick={() => handleNavigate(service.path)}
-                  className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl flex items-center justify-center gap-2"
-                >
-                  Explore Service
-                  <FaArrowRight />
-                </button>
               </div>
             </motion.div>
           ))}
@@ -369,18 +352,28 @@ const Services = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-16">
             {[
-              "Transporter",
+              "Bike Taxi Auto",
               "Broker",
+              "Bus / Truck Body Builder",
+              "Bus Service",
+              "C&F Agent",
+              "Car Carrier",
+              "CHA Agent (Custom House Agent)",
+              "Courier / Cargo Carrier",
+              "Finance Company",
               "Fleet Owner",
+              "Insurance Company",
+              "Logistics Company",
+              "Mechanic & Service Center",
+              "Mining Vehicle Supplier",
+              "Packers & Movers",
+              "Parts & Battery Supplier",
+              "RTO Agent",
+              "Transporter (Service Provider)",
+              "Travel & Taxi Service",
               "Truck Owner",
+              "User / Manufacturer / Trader / Shipper / Other",
               "Warehouse",
-              "Courier",
-              "Packing & Moving",
-              "Logistics",
-              "Trailer Owner",
-              "Container Service",
-              "Transport Company",
-              "Many More",
             ].map((item, index) => (
               <motion.div
                 key={index}
@@ -415,29 +408,30 @@ const Services = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-16">
             {[
-              "Pickup",
-              "Mini Truck",
-              "Truck",
-              "Trailer",
-              "Container",
-              "Tanker",
-              "LCV",
-              "HCV",
               "Canter",
-              "Open Body",
               "Closed Body",
-              "Many More",
+              "Container",
+              "HCV",
+              "LCV",
+              "Mini Truck",
+              "Open Body",
+              "Pickup",
+              "Tanker",
+              "Trailer",
+              "Truck",
             ].map((vehicle, index) => (
               <motion.div
                 key={index}
-                className="bg-white border border-gray-200 rounded-2xl p-8 text-center hover:shadow-lg hover:border-blue-300 transition-all duration-300"
+                className="group bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-lg hover:border-blue-300 hover:-translate-y-1 transition-all duration-300"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
-                <FaTruckMoving className="mx-auto mb-4" size={40} />
-                <h3 className="font-semibold text-gray-700">{vehicle}</h3>
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-700 shadow-sm transition duration-300 group-hover:scale-105 group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:text-white">
+                  <FaTruckMoving size={32} />
+                </div>
+                <h3 className="font-semibold text-gray-800">{vehicle}</h3>
               </motion.div>
             ))}
           </div>

@@ -41,7 +41,9 @@ function AcceptedBid() {
   const getMyBids = async () => {
     try {
       setLoading(true);
-      const res = await API.get("/bids/my-bids");
+      const res = await API.get("/bids/my-bids",{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       const list = res.data?.data || res.data?.bids || res.data || [];
       const formattedList = Array.isArray(list) ? list : [];
       setBids(formattedList);
@@ -173,7 +175,9 @@ function AcceptedBid() {
       const res = await API.put(`/bids/update/${targetBid._id}`, {
         amount: Number(editAmount),
         message: editMessage,
-      });
+      },{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
 
       const updatedBid = res.data?.data || {
         ...targetBid,
@@ -209,7 +213,9 @@ function AcceptedBid() {
 
     try {
       setActionLoading(true);
-      const res = await API.delete(`/bids/delete/${deleteConfirmBidId}`);
+      const res = await API.delete(`/bids/delete/${deleteConfirmBidId}`,{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
 
       setBids((prev) => prev.filter((item) => item._id !== deleteConfirmBidId));
 
@@ -492,7 +498,7 @@ function AcceptedBid() {
           {!selectedBid ? (
             <section className="mt-3">
               <div className="hidden lg:grid grid-cols-[minmax(340px,1.7fr)_minmax(170px,0.8fr)_150px_170px] gap-6 px-3 py-4 border-b border-slate-200 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                <span>Route (Pickup → Drop)</span>
+                <span>Route (Pickup Station → Delivery Station)</span>
                 <span>Load</span>
                 <span>Your Bid</span>
                 <span className="text-right pr-4">Status & Actions</span>
@@ -518,7 +524,7 @@ function AcceptedBid() {
                               <p className="text-[15px] font-bold text-slate-950 truncate" title={pickup}>
                                 {pickup}
                               </p>
-                              <p className="mt-1 text-xs text-slate-400">Pickup</p>
+                              <p className="mt-1 text-xs text-slate-400">Pickup Station</p>
                             </div>
 
                             <div className="flex-1 max-w-16 h-px bg-slate-300 relative shrink-0">
@@ -532,7 +538,7 @@ function AcceptedBid() {
                               <p className="text-[15px] font-bold text-slate-950 truncate" title={drop}>
                                 {drop}
                               </p>
-                              <p className="mt-1 text-xs text-slate-400">Destination</p>
+                              <p className="mt-1 text-xs text-slate-400">Delivery Station</p>
                             </div>
                           </div>
                         </div>
@@ -662,7 +668,7 @@ function AcceptedBid() {
             /* =================================
                 DETAIL VIEW
             ================================== */
-            <section className="mt-7 sm:mt-8">
+            <section className="mt-7 sm:mt-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
               {/* Route Summary */}
               <div className="pb-7 border-b border-slate-200">
                 <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -674,7 +680,7 @@ function AcceptedBid() {
                     <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                       <div>
                         <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">
-                          Pickup Location
+                          Pickup Station
                         </p>
                         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 break-words">
                           {getPickupLocation(selectedBid)}
@@ -739,7 +745,7 @@ function AcceptedBid() {
                           <span className="mt-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
                           <div>
                             <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-slate-400">
-                              Pickup Location
+                              Pickup Station
                             </p>
                             <p className="mt-2 text-sm sm:text-[15px] leading-6 font-semibold text-slate-800 break-words">
                               {getPickupLocation(selectedBid)}
@@ -908,7 +914,7 @@ function AcceptedBid() {
                     {selectedBid.status === "Accepted" && (
                       <div className="py-6">
                         <div className="flex items-start gap-3 text-emerald-700">
-                          <CheckCircle2 size={19} className="shrink-0 mt-0.5" />
+                          <CheckCircle2 size={200} className="shrink-0 mt-0.5" />
                           <div>
                             <p className="text-sm font-bold">Bid Accepted</p>
                             <p className="mt-1.5 text-xs leading-5 text-emerald-700/80">

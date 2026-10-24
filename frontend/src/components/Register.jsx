@@ -557,10 +557,7 @@ const roleOptions = [
     value: "finance_company",
     label: "Finance Company",
   },
-  {
-    value: "finance_agent",
-    label: "Finance Agent",
-  },
+  
   {
     value: "packers_movers",
     label: "Packers & Movers",

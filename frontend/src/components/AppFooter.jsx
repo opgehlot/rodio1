@@ -154,6 +154,9 @@ export default function Footer() {
               </ul>
             </div>
 
+
+
+
             {/* Company */}
             <div>
               <h3 className="font-semibold text-gray-800 text-xl mb-4">
@@ -161,12 +164,9 @@ export default function Footer() {
               </h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
-                  <Link
-                    to="/register" 
-                    className="hover:text-blue-600 transition-colors"
-                  >
+                  
                     Become Transporter
-                  </Link>
+           
                 </li>
                 <li>
                   {/* <Link
@@ -177,12 +177,9 @@ export default function Footer() {
                   </Link> */}
                 </li>
                 <li>
-                  <Link
-                    to="/register" 
-                    className="hover:text-blue-600 transition-colors"
-                  >
+                 
                     Ship with Rodio
-                  </Link>
+             
                 </li>
                 <li>
                   <Link
@@ -218,7 +215,7 @@ export default function Footer() {
                 <div>
                   <p className="text-sm text-gray-500">Phone</p>
                   <p className="text-base font-medium text-gray-800">
-                    +91 9993738255
+                    +91 9993738255,  +91 8319501708
                   </p>
                 </div>
               </div>

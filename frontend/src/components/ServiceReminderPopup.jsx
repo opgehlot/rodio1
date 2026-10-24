@@ -35,6 +35,7 @@ export function BusinessPromotionPopup() {
         "https://rodio-tradelink.onrender.com/api/business/me",
         {
           headers: {
+             "x-api-key": "ashu@rodio" ,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -262,7 +263,7 @@ export function BusinessPromotionPopup() {
           POPUP
       ================================================= */}
 
-      <div className="relative z-10 w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl">
+      <div className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl">
 
         {/* =================================================
             CLOSE BUTTON
@@ -271,17 +272,17 @@ export function BusinessPromotionPopup() {
         <button
           type="button"
           onClick={handleClose}
-          className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition hover:bg-gray-200 hover:text-gray-900"
+          className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition hover:bg-gray-200 hover:text-gray-900"
           aria-label="Close"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
         {/* =================================================
             TOP ICON AREA
         ================================================= */}
 
-        <div className="relative flex justify-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 px-6 pb-8 pt-10">
+        <div className="relative flex justify-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 px-5 pb-6 pt-7">
 
           {/* Decorative circles */}
 
@@ -291,20 +292,20 @@ export function BusinessPromotionPopup() {
 
           {/* Main Icon */}
 
-          <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl bg-white shadow-xl">
+          <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-xl">
 
             <div className="relative">
 
               <BriefcaseBusiness
-                size={48}
+                size={40}
                 strokeWidth={1.8}
                 className="text-indigo-600"
               />
 
               {/* Truck Badge */}
 
-              <div className="absolute -bottom-2 -right-3 flex h-7 w-7 items-center justify-center rounded-full bg-green-500 text-white shadow-md">
-                <Truck size={15} />
+              <div className="absolute -bottom-2 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-white shadow-md">
+                <Truck size={13} />
               </div>
 
             </div>
@@ -317,7 +318,7 @@ export function BusinessPromotionPopup() {
             CONTENT
         ================================================= */}
 
-        <div className="px-7 pb-7 pt-6 text-center">
+        <div className="px-5 pb-5 pt-4 text-center">
 
           {/* Badge */}
 
@@ -327,13 +328,13 @@ export function BusinessPromotionPopup() {
 
           {/* Heading */}
 
-          <h2 className="mt-3 text-2xl font-bold text-gray-900">
+          <h2 className="mt-2 text-xl font-bold text-gray-900">
             Add Your Business
           </h2>
 
           {/* Description */}
 
-          <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-gray-500">
+          <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-gray-500">
             Apna transport business Rodio par list karein aur
             naye customers aur business opportunities se
             connect karein.
@@ -343,17 +344,17 @@ export function BusinessPromotionPopup() {
               BENEFITS
           ================================================= */}
 
-          <div className="mt-5 space-y-3 text-left">
+          <div className="mt-4 space-y-2.5 text-left">
 
             {/* Benefit 1 */}
 
             <div className="flex items-center gap-3">
 
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-sm font-bold text-indigo-600">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-indigo-600">
                 ✓
               </div>
 
-              <span className="text-sm text-gray-700">
+              <span className="text-xs text-gray-700">
                 Apna business profile create karein
               </span>
 
@@ -363,11 +364,11 @@ export function BusinessPromotionPopup() {
 
             <div className="flex items-center gap-3">
 
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-sm font-bold text-indigo-600">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-indigo-600">
                 ✓
               </div>
 
-              <span className="text-sm text-gray-700">
+              <span className="text-xs text-gray-700">
                 Naye customers tak pahunch banayein
               </span>
 
@@ -377,11 +378,11 @@ export function BusinessPromotionPopup() {
 
             <div className="flex items-center gap-3">
 
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-sm font-bold text-indigo-600">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-indigo-600">
                 ✓
               </div>
 
-              <span className="text-sm text-gray-700">
+              <span className="text-xs text-gray-700">
                 Vehicles aur routes manage karein
               </span>
 
@@ -396,17 +397,17 @@ export function BusinessPromotionPopup() {
           <button
             type="button"
             onClick={handleAddBusiness}
-            className="group mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-indigo-200 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+            className="group mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl"
           >
 
-            <BriefcaseBusiness size={19} />
+            <BriefcaseBusiness size={17} />
 
             <span>
               Add Your Business
             </span>
 
             <ArrowRight
-              size={18}
+              size={16}
               className="transition-transform duration-300 group-hover:translate-x-1"
             />
 
@@ -419,7 +420,7 @@ export function BusinessPromotionPopup() {
           <button
             type="button"
             onClick={handleClose}
-            className="mt-4 text-sm font-medium text-gray-400 transition hover:text-gray-600"
+            className="mt-3 text-xs font-medium text-gray-400 transition hover:text-gray-600"
           >
             Maybe Later
           </button>

@@ -1301,15 +1301,12 @@ const VehicleServices = () => {
           return;
         }
 
-        const response = await axios.get(
-          "https://rodio-tradelink.onrender.com/api/business/me",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const response = await API.get("/business/me", {
+  headers: {
+    "x-api-key": "ashu@rodio",
+    Authorization: `Bearer ${token}`,
+  },
+});
         const business = response.data?.data;
         const isActive =
           business?.subscriptionStatus?.toLowerCase() === "active" &&
@@ -1330,7 +1327,9 @@ const VehicleServices = () => {
   const fetchVehicles = async () => {
     try {
       setLoading(true);
-      const res = await API.get("/vehicles/my");
+      const res = await API.get("/vehicles/my",{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       const list =
         res.data?.data ||
         res.data?.vehicles ||
@@ -1415,7 +1414,9 @@ const VehicleServices = () => {
 
     try {
       setAddLoading(true);
-      const response = await API.post("/vehicles", addForm);
+      const response = await API.post("/vehicles", addForm,{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       toast.success(response.data?.message || "Vehicle added successfully", {
         id: "vehicle-add-success",
       });
@@ -1440,7 +1441,9 @@ const VehicleServices = () => {
     if (!window.confirm("Are you sure you want to delete this vehicle entry?")) return;
 
     try {
-      await API.delete(`/vehicles/${id}`);
+      await API.delete(`/vehicles/${id}`,{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       toast.success("Vehicle deleted successfully", {
         id: "vehicle-delete-success",
       });
@@ -1479,7 +1482,9 @@ const VehicleServices = () => {
         vehicleType: editForm.vehicleType,
         capacity: editForm.capacity,
         bodyType: editForm.bodyType,
-      });
+      },{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
 
       toast.success("Vehicle details updated successfully", {
         id: "vehicle-update-success",

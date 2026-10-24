@@ -1,507 +1,4 @@
-// import React, { useState, useEffect, useMemo, useCallback } from "react";
-// import { useNavigate } from "react-router-dom";
-// import toast from "react-hot-toast";
-// import API from "../../api/api";
-// import {
-//   FaSearch,
-//   FaTruckMoving,
-//   FaSyncAlt,
-//   FaTruck,
-//   FaMapMarkerAlt,
-//   FaCalendarAlt,
-//   FaWeightHanging,
-//   FaMoneyBillWave,
-//   FaBoxOpen,
-//   FaArrowRight,
-// } from "react-icons/fa";
-
-// // =========================================================================
-// // 1. SINGLE LEAD CARD (Original Theme & Exact Styling)
-// // =========================================================================
-// const SingleLeadCard = ({ lead, onBidSuccess }) => {
-//   const navigate = useNavigate();
-
-//   const [openBid, setOpenBid] = useState(false);
-//   const [bidAmount, setBidAmount] = useState("");
-//   const [message, setMessage] = useState("");
-//   const [loading, setLoading] = useState(false);
-
-//   const token = localStorage.getItem("token");
-//   let user = {};
-//   try {
-//     user = JSON.parse(localStorage.getItem("user") || "{}");
-//   } catch (err) {
-//     user = {};
-//   }
-
-//   const isLoggedIn = !!token;
-//   const isSubscribed =
-//     user?.isSubscriptionActive === true ||
-//     user?.subscription?.status === "active";
-
-//   const isAvailable =
-//   (lead?.isAvailable === true || lead?.isAvailable === undefined) &&
-//   (lead?.bidCount || 0) < 10;
-
-//   const formatDate = (date) => {
-//     if (!date) return "N/A";
-//     return new Date(date).toLocaleDateString("en-IN", {
-//       day: "numeric",
-//       month: "short",
-//       year: "numeric",
-//     });
-//   };
-
-//   const handleProtectedAction = (type) => {
-//     if (!isLoggedIn) {
-//       toast.error("Please login first.", { id: "login first" });
-//       navigate("/register", {
-//         state: {
-//           redirectTo: "/dashboard/leads",
-//           leadId: lead._id,
-//           action: "bid",
-//         },
-//       });
-//       return;
-//     }
-
-//     if (!isSubscribed) {
-//       toast.error("Premium subscription required.", {
-//         id: "premium subscription required",
-//       });
-//       navigate("/dashboard/addservices");
-//       return;
-//     }
-
-//     if (!isAvailable) {
-//       toast.error("This lead is closed or sold out.", { id: "lead closed" });
-//       return;
-//     }
-
-//     if (type === "bid") {
-//       setOpenBid(true);
-//     }
-//   };
-
-//   const handleSubmitBid = async (e) => {
-//     e.preventDefault();
-//     try {
-//       setLoading(true);
-//       await API.post(`/bids/create/${lead._id}`, {
-//         amount: Number(bidAmount),
-//         message,
-//       });
-
-//       toast.success("Bid submitted successfully.", {
-//         id: "bid submitted successfully",
-//       });
-//       setBidAmount("");
-//       setMessage("");
-//       setOpenBid(false);
-//       if (onBidSuccess) onBidSuccess();
-//     } catch (error) {
-//       toast.error(error.response?.data?.message || "Failed to submit bid.", {
-//         id: "faild to submit bid",
-//       });
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div
-//       className={`group rounded-2xl shadow-md transition duration-300 overflow-hidden border flex flex-col justify-between ${
-//         isAvailable
-//           ? "bg-white hover:shadow-2xl border-gray-100"
-//           : "bg-gray-100 opacity-75 grayscale-[20%] border-gray-200"
-//       }`}
-//     >
-//       {/* Header */}
-//       <div
-//         className={`p-5 text-white ${
-//           isAvailable
-//             ? "bg-gradient-to-r from-blue-700 to-indigo-700"
-//             : "bg-gradient-to-r from-gray-500 to-gray-600"
-//         }`}
-//       >
-//         <div className="flex justify-between items-start">
-//           <div>
-//             <span className="text-[10px] uppercase tracking-widest text-blue-200 font-semibold mr-2">
-//                   Required
-//                 </span>
-//             <h2 className="flex items-center gap-2 text-xl font-bold text-white">
-              
-//               <FaTruck className="text-blue-200" />
-
-//               <span>
-                
-
-//                 {lead?.vehicleType || "Transport Lead"}
-//               </span>
-//             </h2>
-
-//             <p className="text-blue-100 mt-2 text-sm">
-//               {lead?.service || "Standard Delivery"}
-//             </p>
-//           </div>
-//           <div className="flex flex-col items-end gap-1">
-//             {/* <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-//               #{lead?._id ? lead._id.slice(-5) : "-----"}
-//             </span> */}
-
-//             {/* Backend status badges */}
-//             {isAvailable ? (
-//               <span className="bg-green-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide whitespace-nowrap shrink-0">
-//   ACTIVE ({lead?.bidCount || 0}/10 BIDS)
-// </span>
-//             ) : (
-//               <span className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide">
-//                 {lead?.displayStatus === "ACCEPTED" ||
-//                 lead?.status === "Assigned" ||
-//                 lead?.status === "Accepted"
-//                   ? "ACCEPTED"
-//                   : lead?.displayStatus === "LIMIT_REACHED" ||
-//                       (lead?.bidCount || 0) >= 10
-//                     ? "LIMIT REACHED"
-//                     : lead?.availabilityReason || "INACTIVE"}
-//               </span>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Body */}
-//       <div className="p-5 space-y-5 flex-1">
-//         {/* Route */}
-//         <div className="flex justify-between items-center">
-//           <div className="flex items-center gap-2">
-//             <FaMapMarkerAlt className="text-green-600" />
-//             <div>
-//               <p className="text-xs text-gray-500">Pickup</p>
-//               <p className="font-semibold">{lead?.pickupLocation || "N/A"}</p>
-//             </div>
-//           </div>
-//           <FaArrowRight className="text-blue-600" />
-//           <div className="text-right">
-//             <p className="text-xs text-gray-500">Destination</p>
-//             <p className="font-semibold">
-//               {lead?.dropLocation || lead?.loading_point || "N/A"}
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* Goods */}
-//         <div className="grid grid-cols-2 gap-4">
-//           <div className="bg-white/60 rounded-xl p-3 border border-gray-100">
-//             <div className="flex items-center gap-2 text-blue-600 text-sm">
-//               <FaBoxOpen />
-//               <span>Goods</span>
-//             </div>
-//             <p className="font-semibold mt-2">{lead?.goodsType || "N/A"}</p>
-//           </div>
-//           <div className="bg-white/60 rounded-xl p-3 border border-gray-100">
-//             <div className="flex items-center gap-2 text-orange-600 text-sm">
-//               <FaWeightHanging />
-//               <span>Weight</span>
-//             </div>
-//             <p className="font-semibold mt-2">{lead?.weight || 0}</p>
-//           </div>
-//         </div>
-
-//         {/* Pickup Date */}
-//         <div className="flex items-center gap-3">
-//           <FaCalendarAlt className="text-indigo-600" />
-//           <div>
-//             <p className="text-xs text-gray-500">Pickup Date</p>
-//             <p className="font-medium">{formatDate(lead?.pickupDate)}</p>
-//           </div>
-//         </div>
-
-//         {/* Budget */}
-//         <div className="bg-green-50 rounded-2xl p-4 flex justify-between items-center border border-green-100">
-//           <div>
-//             <p className="text-sm text-gray-500">Expected Budget</p>
-//             <h2 className="text-2xl font-bold text-green-700">
-//               ₹ {lead?.expectedBudget || 0}
-//             </h2>
-//           </div>
-//           <FaMoneyBillWave size={35} className="text-green-600" />
-//         </div>
-
-//         {!isSubscribed && isAvailable && (
-//           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
-//             <p className="text-xs font-semibold text-yellow-700">
-//               🔒 Bidding options are restricted to active subscribers.
-//             </p>
-//           </div>
-//         )}
-
-//         {/* Remarks */}
-//         {lead?.remarks && (
-//           <div className="bg-yellow-50/50 rounded-xl p-3 border border-yellow-100">
-//             <p className="text-sm font-semibold mb-1">Remarks</p>
-//             <p className="text-gray-600 text-sm">{lead.remarks}</p>
-//           </div>
-//         )}
-//       </div>
-
-//       {/* Footer - Full Width Bid Button */}
-//       <div className="border-t p-5 bg-white/40">
-//         <button
-//           onClick={() => handleProtectedAction("bid")}
-//           disabled={!isAvailable}
-//           className={`w-full py-3 rounded-xl font-semibold transition text-sm shadow-md cursor-pointer ${
-//             !isAvailable
-//               ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-//               : "bg-blue-700 hover:bg-blue-800 text-white active:scale-95"
-//           }`}
-//         >
-//           {!isAvailable
-//             ? lead?.displayStatus === "ACCEPTED" ||
-//               lead?.status === "Assigned" ||
-//               lead?.status === "Accepted"
-//               ? "ACCEPTED"
-//               : lead?.displayStatus === "LIMIT_REACHED" ||
-//                   (lead?.bidCount || 0) >= 10
-//                 ? "BID LIMIT REACHED (10/10)"
-//                 : "NO LONGER AVAILABLE"
-//             : !isLoggedIn
-//               ? "Login to Bid"
-//               : !isSubscribed
-//                 ? "Upgrade to Bid"
-//                 : "Add Your Bid"}
-//         </button>
-//       </div>
-
-//       {/* Bid Modal */}
-//       {openBid && (
-//         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-//           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
-//             <div className="flex justify-between items-center p-6 border-b">
-//               <h2 className="text-2xl font-bold">Place Your Bid</h2>
-//               <button
-//                 onClick={() => setOpenBid(false)}
-//                 className="text-3xl text-gray-500 hover:text-black cursor-pointer"
-//               >
-//                 ×
-//               </button>
-//             </div>
-//             <form onSubmit={handleSubmitBid} className="p-6">
-//               <div>
-//                 <label className="block text-sm font-semibold mb-2">
-//                   Bid Amount
-//                 </label>
-//                 <input
-//                   type="number"
-//                   required
-//                   value={bidAmount}
-//                   onChange={(e) => setBidAmount(e.target.value)}
-//                   placeholder="Enter your bid amount"
-//                   className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
-//                 />
-//               </div>
-//               <div className="mt-4">
-//                 <label className="block text-sm font-semibold mb-2">
-//                   Message
-//                 </label>
-//                 <textarea
-//                   rows={4}
-//                   value={message}
-//                   onChange={(e) => setMessage(e.target.value)}
-//                   placeholder="Write your message..."
-//                   className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
-//                 />
-//               </div>
-//               <button
-//                 type="submit"
-//                 disabled={loading}
-//                 className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl mt-6 font-bold transition disabled:opacity-60 cursor-pointer"
-//               >
-//                 {loading ? "Submitting..." : "Submit Bid"}
-//               </button>
-//             </form>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// // =========================================================================
-// // 2. MAIN LEADS COMPONENT (Exact Original Theme + Max-W-7xl + Scrollbar)
-// // =========================================================================
-// const Leads = () => {
-//   const [leads, setLeads] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   const [search, setSearch] = useState("");
-//   const [vehicleFilter, setVehicleFilter] = useState("All");
-
-//   const getAllLeads = useCallback(async () => {
-//     try {
-//       setLoading(true);
-//       const res = await API.get("/booking/all");
-//       setLeads(res.data?.data || []);
-//     } catch (error) {
-//       console.error("Failed to fetch leads", error);
-//       setLeads([]);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     getAllLeads();
-//   }, [getAllLeads]);
-
-//   const vehicleTypes = useMemo(() => {
-//     const list = leads.map((item) => item.vehicleType).filter(Boolean);
-//     return ["All", ...new Set(list)];
-//   }, [leads]);
-
-//   const filteredLeads = useMemo(() => {
-//     return leads.filter((lead) => {
-//       const keyword = search.toLowerCase();
-
-//       const matchSearch =
-//         lead.pickupLocation?.toLowerCase().includes(keyword) ||
-//         lead.loading_point?.toLowerCase().includes(keyword) ||
-//         lead.dropLocation?.toLowerCase().includes(keyword) ||
-//         lead.goodsType?.toLowerCase().includes(keyword) ||
-//         lead.vehicleType?.toLowerCase().includes(keyword) ||
-//         lead.service?.toLowerCase().includes(keyword);
-
-//       const matchVehicle =
-//         vehicleFilter === "All" || lead.vehicleType === vehicleFilter;
-
-//       return matchSearch && matchVehicle;
-//     });
-//   }, [leads, search, vehicleFilter]);
-
-//   return (
-//     <div className="min-h-screen bg-gray-100">
-//       {/* Header */}
-//       <div className="bg-gradient-to-r  from-blue-700 to-indigo-700">
-//         <div className="max-w-7xl mx-auto px-4 py-10">
-//           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
-//             <div>
-//               <h1 className="text-4xl font-bold text-white">Transport Leads</h1>
-//               <p className="text-blue-100 mt-2">
-//                 Browse available transport requirements
-//               </p>
-//             </div>
-//             <button
-//               onClick={getAllLeads}
-//               className="bg-white text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition flex items-center gap-2 cursor-pointer active:scale-95"
-//             >
-//               <FaSyncAlt className={loading ? "animate-spin" : ""} />
-//               Refresh new leads
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Search & Filters */}
-//       <div className="max-w-7xl mx-auto px-4 -mt-8">
-//         <div className="bg-white rounded-3xl shadow-lg p-5">
-//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-//             <div className="relative lg:col-span-2">
-//               <FaSearch className="absolute top-4 left-4 text-gray-400" />
-//               <input
-//                 type="text"
-//                 placeholder="Search Pickup, Destination, Goods..."
-//                 className="w-full border rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
-//                 value={search}
-//                 onChange={(e) => setSearch(e.target.value)}
-//               />
-//             </div>
-//             <div>
-//               <select
-//                 value={vehicleFilter}
-//                 onChange={(e) => setVehicleFilter(e.target.value)}
-//                 className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer"
-//               >
-//                 {vehicleTypes.map((vehicle) => (
-//                   <option key={vehicle} value={vehicle}>
-//                     {vehicle}
-//                   </option>
-//                 ))}
-//               </select>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Count */}
-//       <div className="max-w-7xl mx-auto px-4 mt-8">
-//         <div className="flex items-center justify-between">
-//           <h2 className="text-2xl font-bold text-gray-800">Available Leads</h2>
-//           <div className="bg-blue-700 text-white px-5 py-2 rounded-full flex items-center gap-2 text-sm font-semibold">
-//             <FaTruckMoving />
-//             {filteredLeads.length} Leads
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Cards Grid with Internal Scrollbar */}
-//       <div className="max-w-7xl mx-auto px-0 sm:px-4 py-8">
-//         <div className="max-h-[750px] overflow-y-auto pr-2 rounded-3xl">
-//           {loading ? (
-//             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
-//               {[...Array(6)].map((_, index) => (
-//                 <div
-//                   key={index}
-//                   className="bg-white rounded-3xl p-6 shadow animate-pulse"
-//                 >
-//                   <div className="h-10 bg-gray-200 rounded mb-6"></div>
-//                   <div className="space-y-4">
-//                     <div className="h-4 bg-gray-200 rounded"></div>
-//                     <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-//                     <div className="h-4 bg-gray-200 rounded"></div>
-//                     <div className="h-24 bg-gray-200 rounded-xl"></div>
-//                     <div className="h-12 bg-gray-200 rounded-xl"></div>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           ) : filteredLeads.length === 0 ? (
-//             <div className="bg-white rounded-3xl shadow-lg py-20 px-8 text-center">
-//               <div className="text-7xl mb-6">🚚</div>
-//               <h2 className="text-3xl font-bold text-gray-700">
-//                 No Leads Found
-//               </h2>
-//               <p className="text-gray-500 mt-4">
-//                 No transport leads match your search criteria.
-//               </p>
-//               <button
-//                 onClick={() => {
-//                   setSearch("");
-//                   setVehicleFilter("All");
-//                 }}
-//                 className="mt-8 bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-xl font-semibold transition cursor-pointer"
-//               >
-//                 Reset Filters
-//               </button>
-//             </div>
-//           ) : (
-//             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7 pb-4">
-//               {filteredLeads.map((lead) => (
-//                 <SingleLeadCard
-//                   key={lead._id}
-//                   lead={lead}
-//                   onBidSuccess={getAllLeads}
-//                 />
-//               ))}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Leads;
-  import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../../api/api";
@@ -516,12 +13,16 @@ import {
   FaMoneyBillWave,
   FaBoxOpen,
   FaArrowRight,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 
+const PAGE_SIZE = 10;
+
 // =========================================================================
-// 1. SINGLE LEAD CARD (Card ID & Storage Integrated)
+// 1. SINGLE LEAD CARD (Compact profile-card style; one Bid button)
 // =========================================================================
-const SingleLeadCard = ({ lead, onBidSuccess }) => {
+const SingleLeadCard = ({ lead, onBidSuccess, page }) => {
   const navigate = useNavigate();
 
   const [openBid, setOpenBid] = useState(false);
@@ -546,19 +47,10 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
     (lead?.isAvailable === true || lead?.isAvailable === undefined) &&
     (lead?.bidCount || 0) < 10;
 
-  const formatDate = (date) => {
-    if (!date) return "N/A";
-    return new Date(date).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  const handleProtectedAction = (type) => {
+  const handleProtectedAction = () => {
     if (!isLoggedIn) {
-      // 1. Card ID and destination storage for seamless return
       sessionStorage.setItem("lastViewedLeadId", `lead-card-${lead._id}`);
+      sessionStorage.setItem("lastViewedLeadPage", String(page || 1));
       sessionStorage.setItem("authRedirectUrl", "/dashboard/leads");
 
       toast.error("Please login first.", { id: "login first" });
@@ -585,9 +77,7 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
       return;
     }
 
-    if (type === "bid") {
-      setOpenBid(true);
-    }
+    setOpenBid(true);
   };
 
   const handleSubmitBid = async (e) => {
@@ -608,148 +98,158 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
       if (onBidSuccess) onBidSuccess();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to submit bid.", {
-        id: "faild to submit bid",
+        id: "failed to submit bid",
       });
     } finally {
       setLoading(false);
     }
   };
 
+  const formatDate = (date) => {
+    if (!date) return "N/A";
+    return new Date(date).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   return (
     <div
       id={`lead-card-${lead._id}`}
-      className={`group rounded-2xl shadow-md transition duration-300 overflow-hidden border flex flex-col justify-between ${
-        isAvailable
-          ? "bg-white hover:shadow-2xl border-gray-100"
-          : "bg-gray-100 opacity-75 grayscale-[20%] border-gray-200"
+      className={`group h-full min-w-0 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition duration-200 hover:shadow-lg flex flex-col ${
+        !isAvailable ? "opacity-80" : ""
       }`}
     >
-      {/* Header */}
+      {/* Compact blue-purple header */}
       <div
-        className={`p-5 text-white ${
+        className={`px-3 py-2.5 text-white ${
           isAvailable
-            ? "bg-gradient-to-r from-blue-700 to-indigo-700"
+            ? "bg-gradient-to-r from-blue-600 to-indigo-600"
             : "bg-gradient-to-r from-gray-500 to-gray-600"
         }`}
       >
-        <div className="flex justify-between items-start">
-          <div>
-            <span className="text-[10px] uppercase tracking-widest text-blue-200 font-semibold mr-2">
-              Required
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-blue-100">
+              Transport requirement
             </span>
-            <h2 className="flex items-center gap-2 text-xl font-bold text-white">
-              <FaTruck className="text-blue-200" />
-              <span>{lead?.vehicleType || "Transport Lead"}</span>
+            <h2 className="mt-0.5 flex items-center gap-2 text-base font-bold leading-tight">
+              <FaTruck className="shrink-0 text-blue-100" />
+              <span className="truncate">{lead?.vehicleType || "Transport Lead"}</span>
             </h2>
-            <p className="text-blue-100 mt-2 text-sm">
+            <p className="mt-0.5 truncate text-xs text-blue-100">
               {lead?.service || "Standard Delivery"}
             </p>
           </div>
-          <div className="flex flex-col items-end gap-1">
-            {isAvailable ? (
-              <span className="bg-green-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide whitespace-nowrap shrink-0">
-                ACTIVE ({lead?.bidCount || 0}/10 BIDS)
-              </span>
-            ) : (
-              <span className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide">
-                {lead?.displayStatus === "ACCEPTED" ||
-                lead?.status === "Assigned" ||
-                lead?.status === "Accepted"
-                  ? "ACCEPTED"
-                  : lead?.displayStatus === "LIMIT_REACHED" ||
-                    (lead?.bidCount || 0) >= 10
-                  ? "LIMIT REACHED"
-                  : lead?.availabilityReason || "INACTIVE"}
-              </span>
-            )}
-          </div>
+          <span
+            className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${
+              isAvailable ? "bg-emerald-500 text-white" : "bg-red-500 text-white"
+            }`}
+          >
+            {isAvailable
+              ? `Active (${lead?.bidCount || 0}/10)`
+              : lead?.displayStatus === "ACCEPTED" ||
+                  lead?.status === "Assigned" ||
+                  lead?.status === "Accepted"
+                ? "Accepted"
+                : (lead?.bidCount || 0) >= 10
+                  ? "Limit reached"
+                  : lead?.availabilityReason || "Inactive"}
+          </span>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="p-5 space-y-5 flex-1">
+      {/* Compact details */}
+      <div className="flex flex-col gap-2 p-2.5">
         {/* Route */}
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <FaMapMarkerAlt className="text-green-600" />
-            <div>
-              <p className="text-xs text-gray-500">Pickup</p>
-              <p className="font-semibold">{lead?.pickupLocation || "N/A"}</p>
-            </div>
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-xl border border-gray-100 bg-gray-50 px-3 py-2">
+          <div className="min-w-0">
+            <p className="text-[11px] text-gray-500">Pickup</p>
+            <p className="break-words text-sm font-semibold text-gray-900">
+              {lead?.pickupLocation || lead?.loading_point || "N/A"}
+            </p>
           </div>
-          <FaArrowRight className="text-blue-600" />
-          <div className="text-right">
-            <p className="text-xs text-gray-500">Destination</p>
-            <p className="font-semibold">
-              {lead?.dropLocation || lead?.loading_point || "N/A"}
+          <FaArrowRight className="text-sm text-blue-600" />
+          <div className="min-w-0 text-right">
+            <p className="text-[11px] text-gray-500">Destination</p>
+            <p className="break-words text-sm font-semibold text-gray-900">
+              {lead?.dropLocation || "N/A"}
             </p>
           </div>
         </div>
 
-        {/* Goods */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white/60 rounded-xl p-3 border border-gray-100">
-            <div className="flex items-center gap-2 text-blue-600 text-sm">
+        {/* Goods and weight */}
+        <div className="grid grid-cols-2 gap-2">
+          <div className="rounded-xl border border-gray-100 bg-gray-50 p-2.5">
+            <div className="flex items-center gap-2 text-sm text-blue-600">
               <FaBoxOpen />
               <span>Goods</span>
             </div>
-            <p className="font-semibold mt-2">{lead?.goodsType || "N/A"}</p>
+            <p className="mt-1 break-words text-sm font-semibold text-gray-900">
+              {lead?.goodsType || "N/A"}
+            </p>
           </div>
-          <div className="bg-white/60 rounded-xl p-3 border border-gray-100">
-            <div className="flex items-center gap-2 text-orange-600 text-sm">
+          <div className="rounded-xl border border-gray-100 bg-gray-50 p-2.5">
+            <div className="flex items-center gap-2 text-sm text-orange-600">
               <FaWeightHanging />
               <span>Weight</span>
             </div>
-            <p className="font-semibold mt-2">{lead?.weight || 0}</p>
+            <p className="mt-1 break-words text-sm font-semibold text-gray-900">
+              {lead?.weight || 0}
+            </p>
           </div>
         </div>
 
-        {/* Pickup Date */}
-        {/* <div className="flex items-center gap-3">
-          <FaCalendarAlt className="text-indigo-600" />
-          <div>
-            <p className="text-xs text-gray-500">Pickup Date</p>
-            <p className="font-medium">{formatDate(lead?.pickupDate)}</p>
-          </div>
-        </div> */}
-
         {/* Budget */}
-        <div className="bg-green-50 rounded-2xl p-4 flex justify-between items-center border border-green-100">
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-emerald-100 bg-emerald-50/70 px-3 py-2">
           <div>
-            <p className="text-sm text-gray-500">Expected Budget</p>
-            <h2 className="text-2xl font-bold text-green-700">
+            <p className="text-xs text-gray-500">Expected Budget</p>
+            <p className="mt-0.5 text-lg font-bold text-emerald-700">
               ₹ {lead?.expectedBudget || 0}
-            </h2>
+            </p>
           </div>
-          <FaMoneyBillWave size={35} className="text-green-600" />
+          <FaMoneyBillWave size={22} className="shrink-0 text-emerald-600" />
+        </div>
+
+        {lead?.pickupDate && (
+          <div className="flex items-center gap-2 text-xs text-gray-600">
+            <FaCalendarAlt className="text-indigo-600" />
+            <span>Pickup: {formatDate(lead.pickupDate)}</span>
+          </div>
+        )}
+
+        {/* Reserve equal space for Remarks on every card so Bid buttons align */}
+        <div className="min-h-[56px] rounded-xl border border-amber-100 bg-amber-50/70 p-2">
+          {lead?.remarks ? (
+            <>
+              <p className="text-xs font-semibold text-gray-800">Remarks</p>
+              <p className="mt-0.5 break-words text-xs text-gray-600">{lead.remarks}</p>
+            </>
+          ) : (
+            <p className="text-xs text-transparent select-none" aria-hidden="true">
+              Remarks
+            </p>
+          )}
         </div>
 
         {!isSubscribed && isAvailable && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
-            <p className="text-xs font-semibold text-yellow-700">
-              🔒 Bidding options are restricted to active subscribers.
-            </p>
-          </div>
-        )}
-
-        {/* Remarks */}
-        {lead?.remarks && (
-          <div className="bg-yellow-50/50 rounded-xl p-3 border border-yellow-100">
-            <p className="text-sm font-semibold mb-1">Remarks</p>
-            <p className="text-gray-600 text-sm">{lead.remarks}</p>
-          </div>
+          <p className="text-xs font-medium text-amber-700">
+            Bidding is available to active subscribers.
+          </p>
         )}
       </div>
 
-      {/* Footer Button */}
-      <div className="border-t p-5 bg-white/40">
+      {/* One single Bid button */}
+      <div className="border-t border-gray-100 p-2.5">
         <button
-          onClick={() => handleProtectedAction("bid")}
+          type="button"
+          onClick={handleProtectedAction}
           disabled={!isAvailable}
-          className={`w-full py-3 rounded-xl font-semibold transition text-sm shadow-md cursor-pointer ${
+          className={`w-full rounded-xl py-2.5 text-sm font-bold text-white shadow-sm transition ${
             !isAvailable
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-              : "bg-blue-700 hover:bg-blue-800 text-white active:scale-95"
+              ? "cursor-not-allowed bg-gray-400"
+              : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.99]"
           }`}
         >
           {!isAvailable
@@ -757,61 +257,55 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
               lead?.status === "Assigned" ||
               lead?.status === "Accepted"
               ? "ACCEPTED"
-              : lead?.displayStatus === "LIMIT_REACHED" ||
-                (lead?.bidCount || 0) >= 10
-              ? "BID LIMIT REACHED (10/10)"
-              : "NO LONGER AVAILABLE"
+              : (lead?.bidCount || 0) >= 10
+                ? "BID LIMIT REACHED (10/10)"
+                : "NO LONGER AVAILABLE"
             : !isLoggedIn
-            ? "Login to Bid"
-            : !isSubscribed
-            ? "Upgrade to Bid"
-            : "Add Your Bid"}
+              ? "Login to Bid"
+              : !isSubscribed
+                ? "Upgrade to Bid"
+                : "Place Your Bid"}
         </button>
       </div>
 
-      {/* Bid Modal */}
+      {/* Bid modal */}
       {openBid && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
-            <div className="flex justify-between items-center p-6 border-b">
-              <h2 className="text-2xl font-bold">Place Your Bid</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b p-5">
+              <h2 className="text-xl font-bold">Place Your Bid</h2>
               <button
+                type="button"
                 onClick={() => setOpenBid(false)}
-                className="text-3xl text-gray-500 hover:text-black cursor-pointer"
+                className="text-2xl text-gray-500 hover:text-black"
+                aria-label="Close bid form"
               >
                 ×
               </button>
             </div>
-            <form onSubmit={handleSubmitBid} className="p-6">
-              <div>
-                <label className="block text-sm font-semibold mb-2">
-                  Bid Amount
-                </label>
-                <input
-                  type="number"
-                  required
-                  value={bidAmount}
-                  onChange={(e) => setBidAmount(e.target.value)}
-                  placeholder="Enter your bid amount"
-                  className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm font-semibold mb-2">
-                  Message
-                </label>
-                <textarea
-                  rows={4}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Write your message..."
-                  className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
+            <form onSubmit={handleSubmitBid} className="p-5">
+              <label className="mb-2 block text-sm font-semibold">Bid Amount</label>
+              <input
+                type="number"
+                min="1"
+                required
+                value={bidAmount}
+                onChange={(e) => setBidAmount(e.target.value)}
+                placeholder="Enter your bid amount"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
+              />
+              <label className="mb-2 mt-4 block text-sm font-semibold">Message</label>
+              <textarea
+                rows={3}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Write your message..."
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
+              />
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl mt-6 font-bold transition disabled:opacity-60 cursor-pointer"
+                className="mt-5 w-full rounded-xl bg-orange-500 py-3 font-bold text-white transition hover:bg-orange-600 disabled:opacity-60"
               >
                 {loading ? "Submitting..." : "Submit Bid"}
               </button>
@@ -824,7 +318,7 @@ const SingleLeadCard = ({ lead, onBidSuccess }) => {
 };
 
 // =========================================================================
-// 2. MAIN LEADS COMPONENT (Scroll Restoration Applied)
+// 2. MAIN LEADS COMPONENT (Pagination + Scroll Restoration)
 // =========================================================================
 const Leads = () => {
   const [leads, setLeads] = useState([]);
@@ -833,10 +327,21 @@ const Leads = () => {
   const [search, setSearch] = useState("");
   const [vehicleFilter, setVehicleFilter] = useState("All");
 
+  // Pagination (login ke baad wapas aane par last page restore hota hai)
+  const [currentPage, setCurrentPage] = useState(() => {
+    return Number(sessionStorage.getItem("lastViewedLeadPage")) || 1;
+  });
+
+  const resultsRef = useRef(null);
+
   const getAllLeads = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await API.get("/booking/all");
+      const res = await API.get("/booking/all", {
+        headers: {
+          "X-API-KEY": "ashu@rodio",
+        },
+      });
       setLeads(res.data?.data || []);
     } catch (error) {
       console.error("Failed to fetch leads", error);
@@ -859,22 +364,15 @@ const Leads = () => {
         const timer = setTimeout(() => {
           const element = document.getElementById(lastLeadId);
           if (element) {
-            // Container alignment
-            element.scrollIntoView({
-              behavior: "auto",
-              block: "center",
-              inline: "nearest",
-            });
-
-            // Mobile window viewport alignment
-            const yOffset = -80;
+            const yOffset = -90;
             const y =
               element.getBoundingClientRect().top +
               window.pageYOffset +
               yOffset;
-            window.scrollTo({ top: y, behavior: "auto" });
+            window.scrollTo({ top: Math.max(0, y), behavior: "auto" });
           }
           sessionStorage.removeItem("lastViewedLeadId");
+          sessionStorage.removeItem("lastViewedLeadPage");
         }, 350);
 
         return () => clearTimeout(timer);
@@ -884,7 +382,13 @@ const Leads = () => {
 
   const vehicleTypes = useMemo(() => {
     const list = leads.map((item) => item.vehicleType).filter(Boolean);
-    return ["All", ...new Set(list)];
+    return ["All", ...new Set(list)]
+      .filter((vehicle) => vehicle === "All")
+      .concat(
+        [...new Set(list)].sort((a, b) =>
+          String(a).localeCompare(String(b), "en", { sensitivity: "base" })
+        )
+      );
   }, [leads]);
 
   const filteredLeads = useMemo(() => {
@@ -905,6 +409,40 @@ const Leads = () => {
       return matchSearch && matchVehicle;
     });
   }, [leads, search, vehicleFilter]);
+
+  // ---------- Pagination values ----------
+  const totalPages = Math.max(1, Math.ceil(filteredLeads.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+
+  const paginatedLeads = filteredLeads.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE
+  );
+
+  const scrollToResults = () => {
+    window.setTimeout(() => {
+      const el = resultsRef.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - 20;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    }, 100);
+  };
+
+  const goToPage = (page) => {
+    const next = Math.min(Math.max(1, page), totalPages);
+    setCurrentPage(next);
+    scrollToResults();
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleVehicleChange = (e) => {
+    setVehicleFilter(e.target.value);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -940,13 +478,13 @@ const Leads = () => {
                 placeholder="Search Pickup, Destination, Goods..."
                 className="w-full border rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={handleSearchChange}
               />
             </div>
             <div>
               <select
                 value={vehicleFilter}
-                onChange={(e) => setVehicleFilter(e.target.value)}
+                onChange={handleVehicleChange}
                 className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer"
               >
                 {vehicleTypes.map((vehicle) => (
@@ -964,65 +502,98 @@ const Leads = () => {
       <div className="max-w-7xl mx-auto px-4 mt-8">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-800">Available Leads</h2>
-          <div className="bg-blue-700 text-white px-5 py-2 rounded-full flex items-center gap-2 text-sm font-semibold">
-            <FaTruckMoving />
-            {filteredLeads.length} Leads
-          </div>
+          {!loading && filteredLeads.length > 0 && (
+            <p className="text-xs sm:text-sm font-semibold text-gray-500">
+              Showing{" "}
+              <span className="text-gray-900">
+                {(safePage - 1) * PAGE_SIZE + 1}–
+                {Math.min(safePage * PAGE_SIZE, filteredLeads.length)}
+              </span>{" "}
+              of <span className="text-gray-900">{filteredLeads.length}</span>
+            </p>
+          )}
         </div>
       </div>
 
       {/* Cards Grid */}
-      <div className="max-w-7xl mx-auto px-0 sm:px-4 py-8">
-        <div className="max-h-[750px] overflow-y-auto pr-2 rounded-3xl">
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
-              {[...Array(6)].map((_, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-3xl p-6 shadow animate-pulse"
-                >
-                  <div className="h-10 bg-gray-200 rounded mb-6"></div>
-                  <div className="space-y-4">
-                    <div className="h-4 bg-gray-200 rounded"></div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded"></div>
-                    <div className="h-24 bg-gray-200 rounded-xl"></div>
-                    <div className="h-12 bg-gray-200 rounded-xl"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : filteredLeads.length === 0 ? (
-            <div className="bg-white rounded-3xl shadow-lg py-20 px-8 text-center">
-              <div className="text-7xl mb-6">🚚</div>
-              <h2 className="text-3xl font-bold text-gray-700">
-                No Leads Found
-              </h2>
-              <p className="text-gray-500 mt-4">
-                No transport leads match your search criteria.
-              </p>
-              <button
-                onClick={() => {
-                  setSearch("");
-                  setVehicleFilter("All");
-                }}
-                className="mt-8 bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-xl font-semibold transition cursor-pointer"
+      <div ref={resultsRef} className="max-w-7xl mx-auto px-0 sm:px-4 py-5">
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
+            {[...Array(6)].map((_, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-3xl p-6 shadow animate-pulse"
               >
-                Reset Filters
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7 pb-4">
-              {filteredLeads.map((lead) => (
+                <div className="h-10 bg-gray-200 rounded mb-6"></div>
+                <div className="space-y-4">
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-24 bg-gray-200 rounded-xl"></div>
+                  <div className="h-12 bg-gray-200 rounded-xl"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filteredLeads.length === 0 ? (
+          <div className="bg-white rounded-3xl shadow-lg py-20 px-8 text-center">
+            <div className="text-7xl mb-6">🚚</div>
+            <h2 className="text-3xl font-bold text-gray-700">No Leads Found</h2>
+            <p className="text-gray-500 mt-4">
+              No transport leads match your search criteria.
+            </p>
+            <button
+              onClick={() => {
+                setSearch("");
+                setVehicleFilter("All");
+                setCurrentPage(1);
+              }}
+              className="mt-8 bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-xl font-semibold transition cursor-pointer"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 pb-4 items-stretch px-4 sm:px-0">
+              {paginatedLeads.map((lead) => (
                 <SingleLeadCard
                   key={lead._id}
                   lead={lead}
+                  page={safePage}
                   onBidSuccess={getAllLeads}
                 />
               ))}
             </div>
-          )}
-        </div>
+
+            {/* Pagination: Prev / Next */}
+            {filteredLeads.length > PAGE_SIZE && (
+              <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
+                <button
+                  onClick={() => goToPage(safePage - 1)}
+                  disabled={safePage === 1}
+                  className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-white border border-gray-200 text-sm font-bold text-gray-700 hover:bg-gray-50 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <FaChevronLeft size={12} />
+                  Prev
+                </button>
+
+                <span className="text-sm font-semibold text-gray-600 whitespace-nowrap">
+                  Page {safePage} of {totalPages}
+                </span>
+
+                <button
+                  onClick={() => goToPage(safePage + 1)}
+                  disabled={safePage === totalPages}
+                  className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  Next
+                  <FaChevronRight size={12} />
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import truck from "../assets/oppp.jpg";
 import { useEffect, useRef } from "react";
+import Features from "../components/Features";
 import { ShieldCheck, Zap, Award, Users } from "lucide-react";
 
 export default function About() {
@@ -20,7 +21,7 @@ export default function About() {
             }}
           >
             <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
-              ABOUT RODIO
+              ABOUT RODIO 
             </span>
             <h1 className="text-5xl lg:text-6xl font-extrabold mt-6 leading-tight">
               India's Digital{" "}
@@ -48,7 +49,7 @@ export default function About() {
 
       {/* Statistics */}
       <motion.section
-        className="max-w-7xl mx-auto px-6 py-16"
+        className="max-w-7xl mx-auto px-6 pt-8 pb-0"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -81,47 +82,18 @@ export default function About() {
 
       {/* Why Choose Us Section */}
       <motion.section
-        className="py-24 bg-white"
+        className="pt-0 pb-16 bg-white"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold">
-              Why Choose <span className="text-blue-600">Rodio?</span>
-            </h2>
-            <p className="mt-5 text-gray-600 max-w-3xl mx-auto leading-8">
-              We are more than just a directory. We are a trusted digital platform connecting businesses, transporters, brokers, and customers.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: <ShieldCheck size={32} />, title: "Verified Businesses", desc: "Every profile is manually verified for better trust and reliability." },
-              { icon: <Zap size={32} />, title: "Fast & Easy Search", desc: "Find vehicles, transporters, and businesses in just a few seconds." },
-              { icon: <Award size={32} />, title: "Quality Network", desc: "Connect with the best transport companies from every state of India." },
-              { icon: <Users size={32} />, title: "Business Growth", desc: "Increase your visibility and attract more customers online with us." },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                className="bg-gray-50 rounded-2xl p-8 text-center border border-gray-200 hover:shadow-xl hover:border-blue-300 transition-all duration-300"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-5">
-                  {item.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-gray-600 leading-7">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+         
+    
         </div>
       </motion.section>
+          <Features />
     </div>
   );
 }

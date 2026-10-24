@@ -1875,7 +1875,9 @@ const LocationSearchInput = ({ placeholder, onSelectLocation, zIndex = 10, value
       if (searchTerm.trim().length >= 2) {
         setLoading(true);
         axios
-          .get(`https://rodio-tradelink.onrender.com/api/location/search?query=${searchTerm}`)
+          .get(`https://rodio-tradelink.onrender.com/api/location/search?query=${searchTerm}`,{
+            headers: { "x-api-key":"ashu@rodio" },
+          })
           .then((res) => {
             if (res.data?.success) {
               setSuggestions(res.data.data || []);
@@ -1993,8 +1995,11 @@ const FirmDetails = ({ profileData, onUpdateSuccess }) => {
           "https://rodio-tradelink.onrender.com/api/business/me",
           {
             headers: {
+               "x-api-key":"ashu@rodio" ,
               Authorization: `Bearer ${token}`,
             },
+
+            
           }
         );
 
@@ -2417,7 +2422,7 @@ const handleEdit = () => {
                 <div className="bg-[#f8fafc] p-[16px] rounded-[8px] border border-[#e2e8f0] col-span-full">
                   <div className=" p-5 rounded-[8px]   bg-[#eed97b] flex justify-between items-center mb-[10px]">
                     <span className="block text-[11px] font-bold text-[#64748b] uppercase">
-                      Working Areas Registry (State / City Matrix)
+                      Working Areas 
                     </span>
                     <span className="text-[11px] font-semibold text-[#0891b2] bg-[#ecfeff] px-[8px] py-[2px] rounded border border-[#cffafe]">
                       {formData.workingAreas.filter((w) => w.state).length} States Connected

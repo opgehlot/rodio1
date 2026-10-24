@@ -738,8 +738,8 @@ const Referral = () => {
                     <th className="py-4 px-6">Payment</th>
                     <th className="py-4 px-6">Settlement</th>
                     <th className="py-4 px-6">Refund</th>
-                    <th className="py-4 px-6">Settled At</th>
-                    <th className="py-4 px-6">Date</th>
+                    <th className="py-4 px-8 whitespace-nowrap">Settled At</th>
+                    <th className="py-4 px-6"> Register Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-sm">

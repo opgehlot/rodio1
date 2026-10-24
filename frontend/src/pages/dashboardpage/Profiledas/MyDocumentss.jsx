@@ -583,15 +583,12 @@ const MyDocumentss = () => {
           return;
         }
 
-        const response = await axios.get(
-          "https://rodio-tradelink.onrender.com/api/business/me",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+       const response = await API.get("/business/me", {
+  headers: {
+    "x-api-key": "ashu@rodio",
+    Authorization: `Bearer ${token}`,
+  },
+});
         const business = response.data?.data;
         const isActive =
           business?.subscriptionStatus?.toLowerCase() === "active" &&
@@ -752,6 +749,26 @@ const MyDocumentss = () => {
         overflow: "hidden",
       }}
     >
+      {/* Verification badge requirements */}
+      <div
+        style={{
+          padding: "12px 18px",
+          backgroundColor: "#eff6ff",
+          borderBottom: "1px solid #bfdbfe",
+          color: "#1e40af",
+          fontSize: "13px",
+          lineHeight: "1.6",
+        }}
+      >
+        <strong style={{ display: "block", fontSize: "14px", marginBottom: "3px" }}>
+          Get Rodio Verified Badge
+        </strong>
+        Upload all 3 required documents: <strong>Aadhaar Card, PAN Card, and Gumasta License.</strong>
+        <span style={{ display: "block", color: "#3b82f6", marginTop: "2px" }}>
+          Your badge can be approved after the documents are reviewed and verified.
+        </span>
+      </div>
+
       {/* ================= ACCORDION HEADER ================= */}
       <div
         onClick={handleToggleOpen}

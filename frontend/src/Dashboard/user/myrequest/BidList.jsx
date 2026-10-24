@@ -323,6 +323,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Phone,
   Mail,
+  MessageCircle,
   Calendar,
   Eye,
   CheckCircle,
@@ -356,7 +357,9 @@ function BidList() {
 
   const getBids = async () => {
     try {
-      const res = await API.get(`/bids/booking/${id}`);
+      const res = await API.get(`/bids/booking/${id}`,{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       setBids(res.data.data || []);
     } catch (error) {
      
@@ -378,7 +381,9 @@ function BidList() {
       toast.success(res.data.message || "Bid accepted successfully");
 
       // Refresh bids
-      const bidRes = await API.get(`/bids/booking/${id}`);
+      const bidRes = await API.get(`/bids/booking/${id}`,{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       setBids(bidRes.data.data || []);
     } catch (error) {
      
@@ -581,57 +586,86 @@ function BidList() {
                     </div>
                   )}
 
-                  {/* Bottom Action Grid: View Profile & Accept */}
-                  <div className="grid grid-cols-2 gap-3 pt-1">
-                    {/* View Profile Button with Lock Guard */}
+                  {/* Action Buttons: Profile on top, Call + WhatsApp below */}
+                  <div className="space-y-3 pt-1">
                     <button
                       onClick={() => {
                         if (!isLoggedIn) {
                           navigate("/login", { state: { from: location } });
                           return;
                         }
-
                         if (!isAccepted) {
-                          toast.error(`accept bid first!`, {
-                            id: "accept bid first",
-                          });
+                          toast.error("Accept the bid first!", { id: "accept-bid-first" });
                           return;
                         }
-
                         if (transporterId) {
                           navigate(`/dashboard/transporters/${transporterId}`);
                         } else {
-                         
                           toast.error("Transporter profile ID not found");
                         }
                       }}
-                      className={`py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-lg active:scale-95 ${
+                      className={`w-full py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm uppercase tracking-wide flex items-center justify-center gap-2 transition shadow-md active:scale-[0.98] ${
                         isAccepted
-                          ? "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-600/20"
-                          : "bg-slate-200 hover:bg-slate-300 text-slate-600 shadow-slate-200/20"
+                          ? "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
+                          : "bg-slate-200 text-slate-500"
                       }`}
                     >
-                      {isAccepted ? <Eye size={14} /> : <Lock size={14} />}
+                      {isAccepted ? <Eye size={16} /> : <Lock size={16} />}
                       <span>View Profile</span>
                     </button>
 
-                    {/* Accept Button or Status Indicator */}
-                    {bid.status === "Pending" ? (
-                      <button
-                        onClick={() => acceptBid(bid._id)}
-                        className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/20 active:scale-95"
-                      >
-                        <span>Accept</span>
-                      </button>
+                    {isAccepted ? (
+                      <div className="grid grid-cols-2 gap-3">
+                        {mobile && mobile !== "N/A" ? (
+                          <a
+                            href={`tel:${String(mobile).replace(/[^\d+]/g, "")}`}
+                            className="min-w-0 py-3 px-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm uppercase flex items-center justify-center gap-2 transition shadow-md active:scale-[0.98]"
+                          >
+                            <Phone size={16} />
+                            <span>Call Now</span>
+                          </a>
+                        ) : (
+                          <div className="min-w-0 py-3 px-3 rounded-2xl bg-slate-200 text-slate-500 font-bold text-xs flex items-center justify-center">
+                            Number unavailable
+                          </div>
+                        )}
+
+                        {mobile && mobile !== "N/A" ? (
+                          <a
+                            href={`https://wa.me/${(() => {
+                              const digits = String(mobile).replace(/\D/g, "").replace(/^0+/, "");
+                              return digits.length === 10 ? `91${digits}` : digits;
+                            })()}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="min-w-0 py-3 px-3 rounded-2xl bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-xs sm:text-sm uppercase flex items-center justify-center gap-2 transition shadow-md active:scale-[0.98]"
+                          >
+                            <MessageCircle size={16} />
+                            <span>WhatsApp</span>
+                          </a>
+                        ) : (
+                          <div className="min-w-0 py-3 px-3 rounded-2xl bg-slate-200 text-slate-500 font-bold text-xs flex items-center justify-center">
+                            WhatsApp unavailable
+                          </div>
+                        )}
+                      </div>
                     ) : (
-                      <div
-                        className={`py-2.5 px-4 rounded-xl text-center font-bold text-xs flex items-center justify-center ${
-                          isAccepted
-                            ? "bg-emerald-100 text-emerald-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {bid.status}
+                      <div className="grid grid-cols-2 gap-3">
+                        {bid.status === "Pending" ? (
+                          <button
+                            onClick={() => acceptBid(bid._id)}
+                            className="py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm uppercase flex items-center justify-center gap-2 transition shadow-md active:scale-[0.98]"
+                          >
+                            Accept Bid
+                          </button>
+                        ) : (
+                          <div className="py-3 px-4 rounded-2xl bg-red-100 text-red-800 font-bold text-xs sm:text-sm uppercase flex items-center justify-center">
+                            {bid.status}
+                          </div>
+                        )}
+                        <div className="py-3 px-3 rounded-2xl bg-slate-100 text-slate-500 font-semibold text-xs flex items-center justify-center text-center">
+                          Contact after acceptance
+                        </div>
                       </div>
                     )}
                   </div>

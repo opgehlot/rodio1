@@ -1,351 +1,11 @@
-
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-// import { 
-//   FaStar, 
-//   FaMapMarkerAlt, 
-//   FaUserCircle, 
-//   FaImages, 
-//   FaTimes, 
-//   FaSearchPlus, 
-//   FaSearchMinus,
-//   FaShieldAlt,
-//   FaTruck,
-//   FaBuilding,
-//   FaEnvelope,
-//   FaPhoneAlt
-// } from "react-icons/fa";
-
-// import API from "../../api/api";
-// import AddRating from "../AddRatting";
-// import ReviewSection from "../ReviewSection";
-
-// const TransporterProfile = () => {
-//   const { id } = useParams();
-//   const [profile, setProfile] = useState(null);
-//   const [loading, setLoading] = useState(true);
-  
-//   // States for Full-Screen Modal & Zooming
-//   const [selectedImage, setSelectedImage] = useState(null);
-//   const [zoomLevel, setZoomLevel] = useState(1);
-
-//   useEffect(() => {
-//     if (id) {
-//       getProfile();
-//     }
-//   }, [id]);
-
-//   const getProfile = async () => {
-//     try {
-//       setLoading(true);
-//       const res = await API.get(`/transporters/${id}`);
-//       setProfile(res.data.data);
-//     } catch (error) {
-//       console.log("Profile Error:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // Handlers for Zoom In / Zoom Out / Reset
-//   const handleZoomIn = (e) => {
-//     e.stopPropagation();
-//     setZoomLevel((prev) => Math.min(prev + 0.5, 3)); // Max zoom limit: 3x
-//   };
-
-//   const handleZoomOut = (e) => {
-//     e.stopPropagation();
-//     setZoomLevel((prev) => Math.max(prev - 0.5, 1)); // Min zoom limit: 1x
-//   };
-
-//   const closeModal = () => {
-//     setSelectedImage(null);
-//     setZoomLevel(1); // Reset zoom on close
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="min-h-screen flex flex-col justify-center items-center text-lg font-medium text-slate-500 bg-white px-4 text-center gap-4">
-//         <div className="w-10 h-10 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
-//         <p className="tracking-wide">Loading enterprise profile...</p>
-//       </div>
-//     );
-//   }
-
-//   if (!profile) {
-//     return (
-//       <div className="min-h-screen flex flex-col justify-center items-center text-lg font-medium text-slate-500 bg-white px-4 text-center gap-2">
-//         <FaBuilding className="text-3xl text-slate-300 mb-2" />
-//         <h2 className="text-2xl font-bold text-slate-900">Profile Not Found</h2>
-//         <p className="text-slate-500 text-sm">The requested transport partner profile does not exist or has been removed.</p>
-//       </div>
-//     );
-//   }
-
-//   const galleryItems = profile.gallery || profile.profile?.gallery || [];
-
-//   return (
-//     <div className="w-full min-h-screen bg-white text-slate-900 pb-24 overflow-x-hidden relative font-sans selection:bg-blue-600 selection:text-white">
-      
-//       {/* Editorial Sophisticated Hero Section */}
-//       <header className="pt-16 pb-12 border-b border-slate-200 bg-gradient-to-b from-slate-50/80 to-white">
-//         <div className="max-w-5xl mx-auto px-6 sm:px-8">
-          
-//           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            
-//             <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6">
-//               <img
-//                 src={
-//                   profile.profile?.profileImage ||
-//                   `https://api.dicebear.com/8.x/shapes/svg?seed=${profile.firmName}`
-//                 }
-//                 alt="Firm Logo"
-//                 className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl object-cover border border-slate-200 shadow-sm bg-white shrink-0"
-//               />
-
-//               <div className="space-y-3">
-//                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-//                   <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-blue-700 bg-blue-50 px-3 py-1 rounded-full">
-//                     <FaShieldAlt className="text-blue-600 text-xs" /> Verified Partner
-//                   </span>
-//                   {/* <span className="text-xs font-mono text-slate-400">
-//                     ID: {profile._id?.slice(-8).toUpperCase()}
-//                   </span> */}
-//                 </div>
-
-//                 <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-//                   {profile.firmName}
-//                 </h1>
-
-//                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-slate-600 text-sm sm:text-base font-medium">
-//                   <span className="flex items-center gap-1.5 text-slate-900">
-//                     <FaUserCircle className="text-slate-400 text-lg" />
-//                     <span>{profile.profile?.name || "Contact Person Not Set"}</span>
-//                   </span>
-                  
-//                   <span className="text-slate-300">·</span>
-                  
-//                   <span className="flex items-center gap-1.5 text-slate-700">
-//                     <FaTruck className="text-slate-400" />
-//                     <span>{profile.category}</span>
-//                   </span>
-
-//                   {profile.currentCity && (
-//                     <>
-//                       <span className="text-slate-300">·</span>
-//                       <span className="flex items-center gap-1 text-slate-600">
-//                         <FaMapMarkerAlt className="text-rose-500 text-xs" />
-//                         <span>{profile.currentCity}{profile.currentState ? `, ${profile.currentState}` : ''}</span>
-//                       </span>
-//                     </>
-//                   )}
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* Rating Highlight Block */}
-//             <div className="flex md:flex-col items-center md:items-end justify-center md:justify-start gap-3 md:gap-1 text-center md:text-right bg-white md:bg-transparent p-4 md:p-0 rounded-xl border md:border-none border-slate-200">
-//               <div className="flex items-center gap-2">
-//                 <FaStar className="text-amber-400 text-xl fill-current" />
-//                 <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-//                   {profile.averageRating?.toFixed(1) || "0.0"}
-//                 </span>
-//                 <span className="text-slate-400 text-sm font-semibold">/ 5.0</span>
-//               </div>
-//               <p className="text-slate-500 text-sm font-medium">
-//                 {profile.totalReviews || 0} verified reviews
-//               </p>
-//             </div>
-
-//           </div>
-
-//         </div>
-//       </header>
-
-//       {/* Main Content Area - Editorial Natural Flow */}
-//       <main className="max-w-5xl mx-auto px-6 sm:px-8 py-12 space-y-16">
-        
-//         {/* Contact & Location Section */}
-//         <section className="space-y-6">
-//           <div className="border-b border-slate-200 pb-4">
-//             <h2 className="text-xl font-bold text-slate-900 tracking-tight">Contact & Location</h2>
-//           </div>
-
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-2">
-//             <div>
-//               <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-1.5">
-//                 <FaEnvelope className="text-slate-400 text-xs" /> Email Address
-//               </div>
-//               <div className="text-base font-semibold text-slate-900 break-all">
-//                 {profile.email || "Not specified"}
-//               </div>
-//             </div>
-
-//             <div>
-//               <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-1.5">
-//                 <FaPhoneAlt className="text-slate-400 text-xs" /> Phone Number
-//               </div>
-//               <div className="text-base font-semibold text-slate-900">
-//                 {profile.phoneNumber || "Not specified"}
-//               </div>
-//             </div>
-
-//             <div>
-//               <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-1.5">
-//                 <FaMapMarkerAlt className="text-rose-500 text-xs" /> Operational Base
-//               </div>
-//               <div className="text-base font-semibold text-slate-900">
-//                 {profile.currentCity || "City"}, {profile.currentState || "State"}
-//               </div>
-//             </div>
-//           </div>
-
-//           {profile.address && (
-//             <div className="pt-2">
-//               <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1.5">Complete Business Address</div>
-//               <p className="text-slate-700 text-base leading-relaxed font-normal">
-//                 {profile.address}
-//               </p>
-//             </div>
-//           )}
-//         </section>
-
-//         {/* Firm Gallery Section */}
-//         <section className="space-y-6">
-//           <div className="border-b border-slate-200 pb-4 flex items-center justify-between">
-//             <h2 className="text-xl font-bold text-slate-900 tracking-tight">Firm Gallery</h2>
-//             {galleryItems.length > 0 && (
-//               <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-//                 {galleryItems.length} {galleryItems.length === 1 ? 'Photo' : 'Photos'}
-//               </span>
-//             )}
-//           </div>
-
-//           {galleryItems.length > 0 ? (
-//             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-//               {galleryItems.map((item, index) => (
-//                 <div 
-//                   key={item._id || index} 
-//                   onClick={() => {
-//                     setSelectedImage(item);
-//                     setZoomLevel(1);
-//                   }}
-//                   className="group overflow-hidden rounded-xl bg-slate-100 aspect-square relative cursor-pointer"
-//                 >
-//                   <img
-//                     src={item.imageUrl}
-//                     alt={item.caption || `Gallery item ${index + 1}`}
-//                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-//                   />
-//                   {item.caption && (
-//                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent p-3 pt-6 flex items-end">
-//                       <p className="text-white text-xs font-medium truncate w-full">
-//                         {item.caption}
-//                       </p>
-//                     </div>
-//                   )}
-//                 </div>
-//               ))}
-//             </div>
-//           ) : (
-//             <p className="text-slate-500 text-base font-normal py-4">
-//               No gallery photos available for this enterprise.
-//             </p>
-//           )}
-//         </section>
-
-//         {/* Customer Feedback Section */}
-//         <section className="space-y-8">
-//           <div className="border-b border-slate-200 pb-4">
-//             <h2 className="text-xl font-bold text-slate-900 tracking-tight">Customer Feedback</h2>
-//           </div>
-
-//           <div className="space-y-6">
-//             <ReviewSection transporterId={profile._id} />
-//           </div>
-//         </section>
-
-//         {/* Share Your Experience Section */}
-//         <section className="space-y-6 pt-6 border-t border-slate-200">
-//           <div>
-//             <h2 className="text-xl font-bold text-slate-900 tracking-tight mb-1">Share Your Experience</h2>
-//             <p className="text-slate-500 text-sm">Help the Rodio Tradelink business network by reviewing this transport partner.</p>
-//           </div>
-
-//           <div className="max-w-2xl bg-slate-50/60 p-6 sm:p-8 rounded-2xl border border-slate-200/80">
-//             <AddRating AddtransporterId={profile._id} />
-//           </div>
-//         </section>
-
-//       </main>
-
-//       {/* Full-Screen Image Modal with Zoom In / Zoom Out */}
-//       {selectedImage && (
-//         <div 
-//           onClick={closeModal}
-//           className="fixed inset-0 z-50 bg-slate-950/95 flex flex-col items-center justify-center p-4 backdrop-blur-md overflow-hidden"
-//         >
-//           {/* Action Toolbar */}
-//           <div className="absolute top-6 right-6 flex items-center gap-3 z-50">
-//             <button 
-//               onClick={handleZoomIn}
-//               title="Zoom In"
-//               className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-colors backdrop-blur-md border border-white/10 cursor-pointer"
-//             >
-//               <FaSearchPlus size={16} />
-//             </button>
-//             <button 
-//               onClick={handleZoomOut}
-//               title="Zoom Out"
-//               className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-colors backdrop-blur-md border border-white/10 cursor-pointer"
-//             >
-//               <FaSearchMinus size={16} />
-//             </button>
-//             <button 
-//               onClick={closeModal}
-//               title="Close"
-//               className="bg-rose-600 hover:bg-rose-700 text-white p-3 rounded-full transition-colors shadow-lg cursor-pointer"
-//             >
-//               <FaTimes size={16} />
-//             </button>
-//           </div>
-
-//           {/* Zoomable Image Container */}
-//           <div 
-//             className="relative max-w-full max-h-[80vh] overflow-auto flex items-center justify-center p-2"
-//             onClick={(e) => e.stopPropagation()}
-//           >
-//             <img
-//               src={selectedImage.imageUrl}
-//               alt={selectedImage.caption || "Full view"}
-//               style={{ transform: `scale(${zoomLevel})`, transition: "transform 0.2s ease-in-out" }}
-//               className="max-h-[75vh] object-contain rounded-lg shadow-2xl cursor-grab"
-//             />
-//           </div>
-
-//           {/* Caption info if available */}
-//           {selectedImage.caption && (
-//             <p className="mt-6 text-white text-sm font-medium bg-slate-900/80 px-6 py-2.5 rounded-xl border border-white/10 text-center max-w-lg shadow-lg">
-//               {selectedImage.caption}
-//             </p>
-//           )}
-//         </div>
-//       )}
-
-//     </div>
-//   );
-// };
-
-// export default TransporterProfile;
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { 
-  FaStar, 
-  FaMapMarkerAlt, 
-  FaUserCircle, 
-  FaImages, 
-  FaTimes, 
-  FaSearchPlus, 
+import {
+  FaStar,
+  FaMapMarkerAlt,
+  FaUserCircle,
+  FaTimes,
+  FaSearchPlus,
   FaSearchMinus,
   FaShieldAlt,
   FaTruck,
@@ -358,19 +18,129 @@ import {
   FaClock,
   FaCalendarAlt,
   FaPhoneSquareAlt,
-  FaCheckCircle,
-  FaRoute
+  FaRoute,
+  FaImages,
+  FaCommentDots,
+  FaPen,
+  FaInfoCircle,
+  FaRupeeSign,
 } from "react-icons/fa";
 
 import API from "../../api/api";
 import AddRating from "../AddRatting";
 import ReviewSection from "../ReviewSection";
 
+// Agar tumhare paas Rodio ka logo image hai to uska path yahan daal do.
+// Example: const RODIO_LOGO_URL = "/logo.png";
+// Khali rahega to truck icon + "Rodio" text dikhega.
+const RODIO_LOGO_URL = "";
+
+// ==========================================
+// SMALL REUSABLE PIECES
+// ==========================================
+const SectionTitle = ({ icon: Icon, title, right }) => (
+  <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
+    <div className="flex items-center gap-3">
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20">
+        <Icon className="text-sm" />
+      </span>
+      <h2 className="text-xl font-bold tracking-tight text-slate-900">
+        {title}
+      </h2>
+    </div>
+    {right}
+  </div>
+);
+
+const InfoCard = ({ icon: Icon, label, iconClass = "text-blue-600", children }) => (
+  <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md">
+    <div className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+      <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50">
+        <Icon className={`text-xs ${iconClass}`} />
+      </span>
+      {label}
+    </div>
+    {children}
+  </div>
+);
+
+// ==========================================
+// RODIO BRANDED BANNER (jab ad image na ho)
+// ==========================================
+const RodioBanner = () => (
+  <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-700">
+    {/* Truck animation keyframes */}
+    <style>{`
+      @keyframes rodioDrive {
+        from { left: -10%; }
+        to { left: 105%; }
+      }
+    `}</style>
+
+    {/* Decorative shapes */}
+    <div className="pointer-events-none absolute -right-16 -top-20 h-72 w-72 rounded-full bg-white/10" />
+    <div className="pointer-events-none absolute -bottom-28 left-1/3 h-72 w-72 rounded-full bg-white/10" />
+    <div className="pointer-events-none absolute right-24 top-6 hidden h-24 w-24 rounded-full bg-white/10 sm:block" />
+    <FaRoute className="pointer-events-none absolute right-8 top-8 hidden text-7xl text-white/10 sm:block" />
+
+    {/* Brand content */}
+    <div className="relative flex h-full flex-col justify-center gap-2 px-6 pb-12 sm:gap-3 sm:px-10 sm:pb-16">
+      <div className="flex items-center gap-3">
+        {RODIO_LOGO_URL ? (
+          <img
+            src={RODIO_LOGO_URL}
+            alt="Rodio"
+            className="h-10 w-auto sm:h-14"
+          />
+        ) : (
+          <>
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-700 shadow-lg sm:h-14 sm:w-14 sm:rounded-2xl">
+              <FaTruck className="text-lg sm:text-2xl" />
+            </span>
+            <span className="text-4xl font-black tracking-tight text-white drop-shadow sm:text-6xl">
+              Rodio
+            </span>
+          </>
+        )}
+      </div>
+
+      <p className="text-sm font-semibold text-white/90 sm:text-xl">
+        India's Free Transport Directory
+      </p>
+
+      <div className="hidden flex-wrap gap-2 sm:flex">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+          <FaRupeeSign className="text-[10px]" /> No Brokerage
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+          <FaPhoneAlt className="text-[10px]" /> Direct Calls
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+          <FaShieldAlt className="text-[10px]" /> Verified Partners
+        </span>
+      </div>
+    </div>
+
+    {/* Road + moving truck */}
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-9 bg-black/25 sm:h-11">
+      <div className="absolute inset-x-0 top-1/2 border-t-2 border-dashed border-white/40" />
+      <FaTruck
+        className="absolute bottom-1.5 text-xl text-white sm:text-2xl"
+        style={{ animation: "rodioDrive 9s linear infinite" }}
+      />
+    </div>
+  </div>
+);
+
 const TransporterProfile = () => {
   const { id } = useParams();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
+  // Image fallback states
+  const [profileImgError, setProfileImgError] = useState(false);
+  const [adImgError, setAdImgError] = useState(false);
+
   // States for Full-Screen Modal & Zooming
   const [selectedImage, setSelectedImage] = useState(null);
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -384,6 +154,8 @@ const TransporterProfile = () => {
   const getProfile = async () => {
     try {
       setLoading(true);
+      setProfileImgError(false);
+      setAdImgError(false);
       const res = await API.get(`/transporters/${id}`);
       setProfile(res.data.data);
     } catch (error) {
@@ -412,7 +184,7 @@ const TransporterProfile = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center text-lg font-medium text-slate-500 bg-white px-4 text-center gap-4">
-        <div className="w-10 h-10 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
         <p className="tracking-wide">Loading enterprise profile...</p>
       </div>
     );
@@ -423,7 +195,10 @@ const TransporterProfile = () => {
       <div className="min-h-screen flex flex-col justify-center items-center text-lg font-medium text-slate-500 bg-white px-4 text-center gap-2">
         <FaBuilding className="text-3xl text-slate-300 mb-2" />
         <h2 className="text-2xl font-bold text-slate-900">Profile Not Found</h2>
-        <p className="text-slate-500 text-sm">The requested transport partner profile does not exist or has been removed.</p>
+        <p className="text-slate-500 text-sm">
+          The requested transport partner profile does not exist or has been
+          removed.
+        </p>
       </div>
     );
   }
@@ -436,238 +211,304 @@ const TransporterProfile = () => {
   const landlines = profile.landlineNumbers || [];
   const workingDays = profile.officeWorkingDays || [];
 
+  const primaryPhone = profile.phoneNumber || profile.mobile;
+
+  const profileImage = profile.profile?.profileImage || "";
+  const adImage = profile.profile?.adImage || "";
+  const hasProfileImage = !!profileImage && !profileImgError;
+  const hasAdImage = !!adImage && !adImgError;
+  const firmInitial = (profile.firmName || "T").trim().charAt(0).toUpperCase();
+
+  const isVerified = profile?.documents?.some(
+    (doc) => String(doc.verificationStatus).toLowerCase() === "verified"
+  );
+
+  const ownerName = profile.profile?.name || profile.name;
+
   return (
     <div className="w-full min-h-screen bg-white text-slate-900 pb-24 overflow-x-hidden relative font-sans selection:bg-blue-600 selection:text-white">
-      
-      {/* Editorial Sophisticated Hero Section */}
-      <header className="pt-16 pb-12 border-b border-slate-200 bg-gradient-to-b from-slate-50/80 to-white">
-        <div className="max-w-5xl mx-auto px-6 sm:px-8">
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            
-            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6">
-              <img
-                src={
-                  profile.profile?.profileImage ||
-                  `https://api.dicebear.com/8.x/shapes/svg?seed=${profile.firmName}`
-                }
-                alt="Firm Logo"
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border border-slate-200 shadow-sm bg-white shrink-0"
-              />
-
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-        {profile?.documents?.some(
-  (doc) =>
-    String(doc.verificationStatus).toLowerCase() === "verified"
-) && (
-  <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-blue-700 bg-blue-50 px-3 py-1 rounded-full">
-    <FaShieldAlt className="text-blue-600 text-xs" />
-    Rodio Verified
-  </span>
-)}
-                  {/* {profile.role && (
-                    <span className="inline-flex items-center text-xs font-semibold capitalize tracking-wide text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full">
-                      {profile.role}
-                    </span>
-                  )} */}
-                </div>
-
-                <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-                  {profile.firmName}
-                </h1>
-
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-slate-600 text-sm sm:text-base font-medium">
-                  {(profile.profile?.name || profile.name) && (
-                    <span className="flex items-center gap-1.5 text-slate-900">
-                      <FaUserCircle className="text-slate-400 text-lg" />
-                      <span>{profile.profile?.name || profile.name}</span>
-                    </span>
-                  )}
-                  
-                  {profile.category && (
-                    <>
-                      <span className="text-slate-300">·</span>
-                      <span className="flex items-center gap-1.5 text-slate-700 capitalize">
-                        <FaTruck className="text-slate-400" />
-                        <span>{profile.category}</span>
-                      </span>
-                    </>
-                  )}
-
-                  {(profile.currentCity || profile.currentState) && (
-                    <>
-                      <span className="text-slate-300">·</span>
-                      <span className="flex items-center gap-1 text-slate-600">
-                        <FaMapMarkerAlt className="text-rose-500 text-xs" />
-                        <span>
-                          {profile.currentCity}
-                          {profile.currentState ? `, ${profile.currentState}` : ''}
-                          {profile.pincode ? ` - ${profile.pincode}` : ''}
-                        </span>
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Rating Highlight Block */}
-            <div className="flex md:flex-col items-center md:items-end justify-center md:justify-start gap-3 md:gap-1 text-center md:text-right bg-white md:bg-transparent p-4 md:p-0 rounded-xl border md:border-none border-slate-200">
-              <div className="flex items-center gap-2">
-                <FaStar className="text-amber-400 text-xl fill-current" />
-                <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                  {profile.averageRating?.toFixed(1) || "0.0"}
-                </span>
-                <span className="text-slate-400 text-sm font-semibold">/ 5.0</span>
-              </div>
-              {/* <p className="text-slate-500 text-sm font-medium">
-                {profile.totalReviews || 0} verified reviews
-              </p> */}
-            </div>
-
+      {/* ==========================================
+          HEADER: COVER + AVATAR + NAME
+      ========================================== */}
+      <header className="border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 pt-4 sm:pt-6">
+          {/* COVER / AD BANNER */}
+          <div className="relative h-44 sm:h-60 md:h-72 overflow-hidden rounded-3xl border border-slate-200 shadow-lg">
+            {hasAdImage ? (
+              <>
+                <img
+                  src={adImage}
+                  alt={`${profile.firmName} banner`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  onError={() => setAdImgError(true)}
+                />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" />
+              </>
+            ) : (
+              <RodioBanner />
+            )}
           </div>
 
+          {/* AVATAR + RATING ROW (overlaps the banner) */}
+          <div className="relative z-10 -mt-14 flex items-end justify-between gap-4 px-2 sm:-mt-20 sm:px-6">
+            {/* Profile photo */}
+            <div className="relative shrink-0">
+              <div className="h-28 w-28 overflow-hidden rounded-full bg-white shadow-xl ring-4 ring-white sm:h-36 sm:w-36">
+                {hasProfileImage ? (
+                  <img
+                    src={profileImage}
+                    alt={`${profile.firmName} profile`}
+                    className="h-full w-full object-cover"
+                    onError={() => setProfileImgError(true)}
+                  />
+                ) : (
+                  <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600">
+                    <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-white/15" />
+                    <div className="absolute -bottom-6 -left-4 h-20 w-20 rounded-full bg-white/10" />
+                    <span className="relative text-5xl font-extrabold text-white drop-shadow sm:text-6xl">
+                      {firmInitial}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {isVerified && (
+                <span
+                  title="Rodio Verified"
+                  className="absolute bottom-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg ring-2 ring-white sm:bottom-2 sm:right-2"
+                >
+                  <FaShieldAlt className="text-xs" />
+                </span>
+              )}
+            </div>
+
+            {/* Rating card */}
+            <div className="mb-2 flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 shadow-md sm:mb-4">
+              <FaStar className="text-xl text-amber-400" />
+              <div className="leading-tight">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-extrabold tracking-tight text-slate-900">
+                    {profile.averageRating?.toFixed(1) || "0.0"}
+                  </span>
+                  <span className="text-xs font-semibold text-slate-400">
+                    / 5.0
+                  </span>
+                </div>
+                {profile.totalReviews !== undefined && (
+                  <p className="text-[11px] font-medium text-slate-500">
+                    {profile.totalReviews}{" "}
+                    {profile.totalReviews === 1 ? "review" : "reviews"}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* NAME + META */}
+          <div className="space-y-4 px-2 pb-8 pt-4 sm:px-6">
+            <div className="space-y-2">
+              {isVerified && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-700">
+                  <FaShieldAlt className="text-xs text-blue-600" />
+                  Rodio Verified
+                </span>
+              )}
+
+              <h1 className="break-words text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+                {profile.firmName}
+              </h1>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 text-sm font-medium sm:text-base">
+              {ownerName && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-slate-800 shadow-sm">
+                  <FaUserCircle className="text-slate-400" />
+                  {ownerName}
+                </span>
+              )}
+
+              {profile.category && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 capitalize text-blue-700">
+                  <FaTruck className="text-blue-500" />
+                  {String(profile.category).replace(/_/g, " ")}
+                </span>
+              )}
+
+              {(profile.currentCity || profile.currentState) && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-100 bg-rose-50 px-3 py-1.5 text-rose-700">
+                  <FaMapMarkerAlt className="text-xs text-rose-500" />
+                  {profile.currentCity}
+                  {profile.currentState ? `, ${profile.currentState}` : ""}
+                  {profile.pincode ? ` - ${profile.pincode}` : ""}
+                </span>
+              )}
+
+              {(profile.totalVehicles > 0 || vehicles.length > 0) && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-emerald-700">
+                  <FaTruck className="text-emerald-500" />
+                  {profile.totalVehicles || vehicles.length}{" "}
+                  {(profile.totalVehicles || vehicles.length) === 1
+                    ? "Vehicle"
+                    : "Vehicles"}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="max-w-5xl mx-auto px-6 sm:px-8 py-12 space-y-16">
-        
-        {/* Contact Details Section */}
+      {/* ==========================================
+          MAIN CONTENT
+      ========================================== */}
+      <main className="max-w-5xl mx-auto px-4 sm:px-8 py-12 space-y-16">
+        {/* Contact Information Section */}
         <section className="space-y-6">
-          <div className="border-b border-slate-200 pb-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Contact Information</h2>
-          </div>
+          <SectionTitle icon={FaPhoneAlt} title="Contact Information" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
             {profile.email && (
-              <div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1.5 flex items-center gap-1.5">
-                  <FaEnvelope className="text-slate-400 text-xs" /> Email Address
+              <InfoCard icon={FaEnvelope} label="Email Address">
+                <div className="text-base font-semibold text-slate-900 break-all">
+                  {profile.email}
                 </div>
-                <div className="text-base font-semibold text-slate-900 break-all">{profile.email}</div>
-              </div>
+              </InfoCard>
             )}
 
-            {(profile.phoneNumber || profile.mobile) && (
-              <div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1.5 flex items-center gap-1.5">
-                  <FaPhoneAlt className="text-slate-400 text-xs" /> Primary Phone
+            {primaryPhone && (
+              <InfoCard icon={FaPhoneAlt} label="Primary Phone" iconClass="text-emerald-600">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="text-base font-semibold text-slate-900">
+                    {primaryPhone}
+                  </div>
+                  <a
+                    href={`tel:${primaryPhone}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <FaPhoneAlt className="text-xs" /> Call Now
+                  </a>
                 </div>
-                <div className="text-base font-semibold text-slate-900">{profile.phoneNumber || profile.mobile}</div>
-              </div>
+              </InfoCard>
             )}
 
             {profile.whatsappNumber && (
-              <div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1.5 flex items-center gap-1.5">
-                  <FaWhatsapp className="text-emerald-500 text-sm" /> WhatsApp
+              <InfoCard icon={FaWhatsapp} label="WhatsApp" iconClass="text-emerald-500">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="text-base font-semibold text-slate-900">
+                    {profile.whatsappNumber}
+                  </div>
+                  <a
+                    href={`https://wa.me/${String(profile.whatsappNumber).replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#25D366] to-[#1DA851] px-4 py-2 text-sm font-semibold text-white shadow-md shadow-green-500/20 transition hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <FaWhatsapp className="text-base" /> WhatsApp
+                  </a>
                 </div>
-                <div className="text-base font-semibold text-slate-900">{profile.whatsappNumber}</div>
-              </div>
+              </InfoCard>
             )}
 
             {altPhones.length > 0 && (
-              <div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1.5 flex items-center gap-1.5">
-                  <FaPhoneAlt className="text-slate-400 text-xs" /> Alternate Numbers
+              <InfoCard icon={FaPhoneAlt} label="Alternate Numbers">
+                <div className="text-base font-semibold text-slate-900">
+                  {altPhones.join(", ")}
                 </div>
-                <div className="text-base font-semibold text-slate-900">{altPhones.join(", ")}</div>
-              </div>
+              </InfoCard>
             )}
 
             {landlines.length > 0 && (
-              <div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1.5 flex items-center gap-1.5">
-                  <FaPhoneSquareAlt className="text-slate-400 text-xs" /> Landline Numbers
+              <InfoCard icon={FaPhoneSquareAlt} label="Landline Numbers">
+                <div className="text-base font-semibold text-slate-900">
+                  {landlines.join(", ")}
                 </div>
-                <div className="text-base font-semibold text-slate-900">{landlines.join(", ")}</div>
-              </div>
+              </InfoCard>
             )}
 
             {profile.website && (
-              <div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1.5 flex items-center gap-1.5">
-                  <FaGlobe className="text-slate-400 text-xs" /> Website
-                </div>
-                <a 
-                  href={profile.website.startsWith("http") ? profile.website : `https://${profile.website}`} 
-                  target="_blank" 
-                  rel="noreferrer" 
+              <InfoCard icon={FaGlobe} label="Website">
+                <a
+                  href={
+                    profile.website.startsWith("http")
+                      ? profile.website
+                      : `https://${profile.website}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
                   className="text-base font-semibold text-blue-600 hover:underline break-all"
                 >
                   {profile.website}
                 </a>
-              </div>
+              </InfoCard>
             )}
           </div>
         </section>
 
         {/* Business Overview & Timings */}
         <section className="space-y-6">
-          <div className="border-b border-slate-200 pb-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Business Overview & Hours</h2>
-          </div>
+          <SectionTitle icon={FaInfoCircle} title="Business Overview & Hours" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
             {profile.employeeRange && (
-              <div className="flex items-start gap-3">
-                <FaUsers className="text-slate-400 text-xl mt-1" />
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Company Size</div>
-                  <div className="text-base font-semibold text-slate-900">{profile.employeeRange} Employees</div>
+              <InfoCard icon={FaUsers} label="Company Size">
+                <div className="text-base font-semibold text-slate-900">
+                  {profile.employeeRange} Employees
                 </div>
-              </div>
+              </InfoCard>
             )}
 
-            {profile.officeWorkingHours && (profile.officeWorkingHours.start || profile.officeWorkingHours.end) && (
-              <div className="flex items-start gap-3">
-                <FaClock className="text-slate-400 text-xl mt-1" />
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Working Hours</div>
+            {profile.officeWorkingHours &&
+              (profile.officeWorkingHours.start ||
+                profile.officeWorkingHours.end) && (
+                <InfoCard icon={FaClock} label="Working Hours" iconClass="text-amber-500">
                   <div className="text-base font-semibold text-slate-900">
-                    {profile.officeWorkingHours.start || "N/A"} - {profile.officeWorkingHours.end || "N/A"}
+                    {profile.officeWorkingHours.start || "N/A"} -{" "}
+                    {profile.officeWorkingHours.end || "N/A"}
                   </div>
-                </div>
-              </div>
-            )}
+                </InfoCard>
+              )}
 
             {workingDays.length > 0 && (
-              <div className="flex items-start gap-3 sm:col-span-2 md:col-span-1">
-                <FaCalendarAlt className="text-slate-400 text-xl mt-1" />
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Working Days</div>
-                  <div className="text-sm font-semibold text-slate-800 flex flex-wrap gap-1 mt-1">
+              <div className="sm:col-span-2 md:col-span-1">
+                <InfoCard icon={FaCalendarAlt} label="Working Days" iconClass="text-purple-600">
+                  <div className="flex flex-wrap gap-1.5">
                     {workingDays.map((day, idx) => (
-                      <span key={idx} className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs">
+                      <span
+                        key={idx}
+                        className="rounded-md border border-blue-100 bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700"
+                      >
                         {day}
                       </span>
                     ))}
                   </div>
-                </div>
+                </InfoCard>
               </div>
             )}
           </div>
 
           {/* Primary & Branch Addresses */}
           {(profile.address || addresses.length > 0) && (
-            <div className="pt-4 border-t border-slate-100 space-y-4">
+            <div className="pt-2 space-y-4">
               {profile.address && (
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Main Address</div>
+                <InfoCard icon={FaMapMarkerAlt} label="Main Address" iconClass="text-rose-500">
                   <p className="text-slate-700 text-base">{profile.address}</p>
-                </div>
+                </InfoCard>
               )}
 
               {addresses.length > 0 && (
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Office Branches</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
+                    Office Branches
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {addresses.map((addr, idx) => (
-                      <div key={idx} className="p-3 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-800 flex items-start gap-2">
-                        <FaBuilding className="text-slate-400 mt-0.5 shrink-0" />
-                        <span>{addr}</span>
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-800 shadow-sm"
+                      >
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                          <FaBuilding className="text-sm" />
+                        </span>
+                        <span className="pt-1">{addr}</span>
                       </div>
                     ))}
                   </div>
@@ -680,330 +521,187 @@ const TransporterProfile = () => {
         {/* Working Operational Areas */}
         {workingAreas.length > 0 && (
           <section className="space-y-6">
-            <div className="border-b border-slate-200 pb-4 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 tracking-tight">Working Areas & Routes</h2>
-              {/* <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                {workingAreas.length} {workingAreas.length === 1 ? 'State' : 'States'} Covered
-              </span> */}
+            <SectionTitle icon={FaRoute} title="Working Areas & Routes" />
+
+            <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 sm:overflow-visible sm:pb-0 sm:snap-none">
+              {workingAreas.map((area) => (
+                <div
+                  key={area._id}
+                  className="flex-shrink-0 w-[80vw] snap-start rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md sm:w-auto sm:flex-shrink"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <FaRoute className="text-sm" />
+                    </span>
+                    <h3 className="font-bold text-slate-900 text-base">
+                      {area.state}
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5">
+                    {area.cities?.map((city, idx) => (
+                      <span
+                        key={idx}
+                        className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700"
+                      >
+                        {city}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-
-            <div
-  className="
-    flex
-    gap-4
-    overflow-x-auto
-    pb-3
-    snap-x
-    snap-mandatory
-
-    sm:grid
-    sm:grid-cols-2
-    md:grid-cols-3
-    sm:overflow-visible
-    sm:pb-0
-    sm:snap-none
-  "
->
-  {workingAreas.map((area) => (
-    <div
-      key={area._id}
-      className="
-        p-4
-        rounded-xl
-        border
-        border-slate-200
-        bg-white
-        shadow-xs
-
-        flex-shrink-0
-        w-[80vw]
-        snap-start
-
-        sm:w-auto
-        sm:flex-shrink
-      "
-    >
-      <div className="flex items-center gap-2 mb-3">
-        <FaRoute className="text-blue-600" />
-
-        <h3 className="font-bold text-slate-900 text-base">
-          {area.state}
-        </h3>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5">
-        {area.cities?.map((city, idx) => (
-          <span
-            key={idx}
-            className="
-              text-xs
-              font-medium
-              bg-slate-100
-              text-slate-700
-              px-2.5
-              py-1
-              rounded-md
-            "
-          >
-            {city}
-          </span>
-        ))}
-      </div>
-    </div>
-  ))}
-</div>
           </section>
         )}
 
         {/* Fleet & Vehicles Section */}
-       {vehicles.length > 0 && (
-  <section className="space-y-6">
-    <div className="border-b border-slate-200 pb-4 flex items-center justify-between">
-      <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-        Fleet Details
-      </h2>
+        {vehicles.length > 0 && (
+          <section className="space-y-6">
+            <SectionTitle
+              icon={FaTruck}
+              title="Fleet Details"
+              right={
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-700">
+                  {profile.totalVehicles || vehicles.length}{" "}
+                  {vehicles.length === 1 ? "Vehicle" : "Vehicles"}
+                </span>
+              }
+            />
 
-      <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-        {profile.totalVehicles || vehicles.length}{" "}
-        {vehicles.length === 1 ? "Vehicle" : "Vehicles"}
-      </span>
-    </div>
-
-    <div
-      className="
-        flex
-        gap-4
-        overflow-x-auto
-        pb-3
-        snap-x
-        snap-mandatory
-
-        sm:grid
-        sm:grid-cols-2
-        md:grid-cols-3
-        sm:overflow-visible
-        sm:pb-0
-        sm:snap-none
-      "
-    >
-      {vehicles.map((v) => (
-        <div
-          key={v._id}
-          className="
-            p-4
-            rounded-xl
-            border
-            border-slate-200
-            bg-white
-            hover:border-slate-300
-            transition-colors
-
-            flex-shrink-0
-            w-[82vw]
-            snap-start
-
-            sm:w-auto
-            sm:flex-shrink
-          "
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-bold text-slate-900 text-base flex items-center gap-2">
-              <FaTruck className="text-slate-500" />
-              {v.vehicleType}
-            </span>
-
-            {v.status && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                <FaCheckCircle className="text-[10px]" />
-                {v.status}
-              </span>
-            )}
-          </div>
-
-          <div className="text-sm font-mono text-blue-700 font-semibold mb-2">
-            {v.vehicleNumber}
-          </div>
-
-          <div className="text-xs text-slate-500 flex justify-between border-t border-slate-100 pt-2 gap-3">
-            <span>
-              Capacity:{" "}
-              <strong className="text-slate-700">
-                {v.capacity || "N/A"}
-              </strong>
-            </span>
-
-            <span>
-              Body:{" "}
-              <strong className="text-slate-700">
-                {v.bodyType || "N/A"}
-              </strong>
-            </span>
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-)}
+            <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 sm:overflow-visible sm:pb-0 sm:snap-none">
+              {vehicles.map((v) => (
+                <div
+                  key={v._id}
+                  className="flex-shrink-0 w-[82vw] snap-start rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md sm:w-auto sm:flex-shrink"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20">
+                      <FaTruck className="text-sm" />
+                    </span>
+                    <span className="font-bold text-slate-900 text-base">
+                      {v.vehicleType || v.name || "Commercial Vehicle"}
+                    </span>
+                  </div>
+                  {v.capacity && (
+                    <p className="text-slate-600 text-sm">
+                      Capacity:{" "}
+                      <span className="font-semibold text-slate-900">
+                        {v.capacity}
+                      </span>
+                    </p>
+                  )}
+                  {v.count && (
+                    <p className="text-slate-600 text-sm">
+                      Count:{" "}
+                      <span className="font-semibold text-slate-900">
+                        {v.count}
+                      </span>
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Firm Gallery Section */}
-       <section className="space-y-6">
-  {/* Gallery Header */}
-  <div className="border-b border-slate-200 pb-4 flex items-center justify-between">
-    <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-      Firm Gallery
-    </h2>
-
-    {galleryItems.length > 0 && (
-      <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-        {profile.totalUploadedImages || galleryItems.length}{" "}
-        {galleryItems.length === 1 ? "Photo" : "Photos"}
-      </span>
-    )}
-  </div>
-
-  {/* Gallery */}
-  {galleryItems.length > 0 ? (
-    <div
-      className="
-        flex gap-4 overflow-x-auto pb-3
-        snap-x snap-mandatory
-        scrollbar-hide
-        sm:grid sm:grid-cols-3 sm:gap-4
-        md:grid-cols-4
-        sm:overflow-visible
-        sm:pb-0
-        sm:snap-none
-      "
-    >
-      {galleryItems.map((item, index) => (
-        <div
-          key={item._id || index}
-          onClick={() => {
-            setSelectedImage(item);
-            setZoomLevel(1);
-          }}
-          className="
-            group
-            relative
-            overflow-hidden
-            rounded-xl
-            bg-slate-100
-            aspect-square
-            cursor-pointer
-            flex-shrink-0
-            w-[45vw]
-            snap-start
-
-            sm:w-auto
-            sm:flex-shrink
-          "
-        >
-          {/* Image */}
-          <img
-            src={item.imageUrl}
-            alt={
-              item.caption ||
-              `Gallery item ${index + 1}`
+        <section className="space-y-6">
+          <SectionTitle
+            icon={FaImages}
+            title="Firm Gallery"
+            right={
+              galleryItems.length > 0 && (
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-700">
+                  {galleryItems.length}{" "}
+                  {galleryItems.length === 1 ? "Photo" : "Photos"}
+                </span>
+              )
             }
-            className="
-              w-full
-              h-full
-              object-cover
-              transition-transform
-              duration-500
-              ease-out
-              group-hover:scale-105
-            "
           />
 
-          {/* Caption */}
-          {item.caption && (
-            <div
-              className="
-                absolute
-                inset-x-0
-                bottom-0
-                bg-gradient-to-t
-                from-slate-950/80
-                via-slate-950/40
-                to-transparent
-                p-3
-                pt-6
-                flex
-                items-end
-              "
-            >
-              <p
-                className="
-                  text-white
-                  text-xs
-                  font-medium
-                  truncate
-                  w-full
-                "
-              >
-                {item.caption}
+          {galleryItems.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {galleryItems.map((item, index) => (
+                <div
+                  key={item._id || index}
+                  onClick={() => {
+                    setSelectedImage(item);
+                    setZoomLevel(1);
+                  }}
+                  className="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl bg-slate-100 shadow-sm transition hover:shadow-xl"
+                >
+                  <img
+                    src={item.imageUrl}
+                    alt={item.caption || `Gallery item ${index + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                  {item.caption && (
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent p-3 pt-6 flex items-end">
+                      <p className="text-white text-xs font-medium truncate w-full">
+                        {item.caption}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/60 py-12 text-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-300 shadow-sm">
+                <FaImages className="text-xl" />
+              </span>
+              <p className="text-slate-500 text-sm font-medium">
+                No gallery photos available for this enterprise.
               </p>
             </div>
           )}
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p className="text-slate-500 text-base font-normal py-4">
-      No gallery photos available for this enterprise.
-    </p>
-  )}
-</section>
+        </section>
 
         {/* Customer Feedback Section */}
-       
-
-        {/* Share Your Experience Section */}
-        <section className="space-y-6 pt-6 border-t border-slate-200">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight mb-1">Share Your Experience</h2>
-            <p className="text-slate-500 text-sm">Help the business network by reviewing this transport partner.</p>
-          </div>
-
-          <div className="max-w-2xl bg-slate-50/60 p-6 sm:p-8 rounded-2xl border border-slate-200/80">
-            <AddRating AddtransporterId={profile._id} />
-          </div>
-        </section>
-         <section className="space-y-8">
-          <div className="border-b border-slate-200 pb-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Customer Feedback</h2>
-          </div>
+        <section className="space-y-8">
+          <SectionTitle icon={FaCommentDots} title="Customer Feedback" />
 
           <div className="space-y-6">
             <ReviewSection transporterId={profile._id} />
           </div>
         </section>
 
+        {/* Share Your Experience Section */}
+        <section className="space-y-6 pt-6 border-t border-slate-200">
+          <SectionTitle icon={FaPen} title="Share Your Experience" />
+          <p className="-mt-2 text-slate-500 text-sm">
+            Help the business network by reviewing this transport partner.
+          </p>
+
+          <div className="max-w-2xl rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm sm:p-8">
+            <AddRating AddtransporterId={profile._id} />
+          </div>
+        </section>
       </main>
 
       {/* Full-Screen Image Modal with Zoom */}
       {selectedImage && (
-        <div 
+        <div
           onClick={closeModal}
           className="fixed inset-0 z-50 bg-slate-950/95 flex flex-col items-center justify-center p-4 backdrop-blur-md overflow-hidden"
         >
           <div className="absolute top-6 right-6 flex items-center gap-3 z-50">
-            <button 
+            <button
               onClick={handleZoomIn}
               title="Zoom In"
               className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-colors backdrop-blur-md border border-white/10 cursor-pointer"
             >
               <FaSearchPlus size={16} />
             </button>
-            <button 
+            <button
               onClick={handleZoomOut}
               title="Zoom Out"
               className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-colors backdrop-blur-md border border-white/10 cursor-pointer"
             >
               <FaSearchMinus size={16} />
             </button>
-            <button 
+            <button
               onClick={closeModal}
               title="Close"
               className="bg-rose-600 hover:bg-rose-700 text-white p-3 rounded-full transition-colors shadow-lg cursor-pointer"
@@ -1012,14 +710,17 @@ const TransporterProfile = () => {
             </button>
           </div>
 
-          <div 
+          <div
             className="relative max-w-full max-h-[80vh] overflow-auto flex items-center justify-center p-2"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={selectedImage.imageUrl}
               alt={selectedImage.caption || "Full view"}
-              style={{ transform: `scale(${zoomLevel})`, transition: "transform 0.2s ease-in-out" }}
+              style={{
+                transform: `scale(${zoomLevel})`,
+                transition: "transform 0.2s ease-in-out",
+              }}
               className="max-h-[75vh] object-contain rounded-lg shadow-2xl cursor-grab"
             />
           </div>
@@ -1031,7 +732,6 @@ const TransporterProfile = () => {
           )}
         </div>
       )}
-
     </div>
   );
 };

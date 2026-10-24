@@ -667,10 +667,13 @@ import MyDocumentss from "../pages/dashboardpage/Profiledas/MyDocumentss";
 
 export function Profile() {
   const fileInputRef = useRef(null);
+  const adImageInputRef = useRef(null);
 
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [uploadingAdImage, setUploadingAdImage] = useState(false);
+  const [adImagePreview, setAdImagePreview] = useState(null);
 
   const [previewImage, setPreviewImage] = useState(null);
   const [showImagePreview, setShowImagePreview] = useState(false);
@@ -683,7 +686,8 @@ export function Profile() {
     try {
       if (isInitial) setLoading(true);
 
-      const response = await API.get("/profile");
+      const response = await API.get("/profile"
+           );
 
       const data =
         response.data?.profile ||
@@ -740,6 +744,9 @@ export function Profile() {
 
       const response = await API.put("/profile", data, {
         headers: {
+    
+           
+      
           "Content-Type": "multipart/form-data",
         },
       });
@@ -772,6 +779,57 @@ export function Profile() {
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+    }
+  };
+
+  // Upload/update Ad Photo separately from the Profile Photo.
+  const handleAdImageChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file.");
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Ad image size must be less than 5MB.");
+      e.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => setAdImagePreview(reader.result);
+    reader.readAsDataURL(file);
+
+    try {
+      setUploadingAdImage(true);
+      const data = new FormData();
+      data.append("adImage", file);
+
+      const response = await API.put("/profile/ad-image", data, {
+        headers: {
+     
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data?.success) {
+        toast.success("Ad Photo updated successfully!");
+        setAdImagePreview(null);
+        await fetchProfile(false);
+      } else {
+        toast.error(response.data?.message || "Failed to update Ad Photo.");
+        setAdImagePreview(null);
+      }
+    } catch (error) {
+      console.error("Ad Photo Upload Error:", error);
+      toast.error(error?.response?.data?.message || "Error uploading Ad Photo.");
+      setAdImagePreview(null);
+    } finally {
+      setUploadingAdImage(false);
+      if (adImageInputRef.current) adImageInputRef.current.value = "";
     }
   };
 
@@ -867,6 +925,9 @@ export function Profile() {
         </div>
 
       </div>
+
+      {/* ================= SEPARATE AD PHOTO ================= */}
+      
 
       {/* ===================================================== */}
       {/* WHATSAPP STYLE IMAGE POPUP */}

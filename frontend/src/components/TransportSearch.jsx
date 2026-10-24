@@ -1,1060 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import {
-//   Search,
-//   MapPin,
-//   Truck,
-//   Phone,
-//   MapPinned,
-//   User,
-//   Loader2,
-//   Building2,
-//   Eye,
-// } from "lucide-react";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import toast from "react-hot-toast";
-
-// import API from "../api/api";
-// import LocationSearchInput from "../Dashboard/user/LocationSearchInput";
-
-// const TransportSearch = () => {
-//   const navigate = useNavigate();
-//   const location = useLocation();
-
-//   const [fromLocation, setFromLocation] = useState(null);
-//   const [toLocation, setToLocation] = useState(null);
-//   const [vehicleType, setVehicleType] = useState("");
-
-//   const [vehicles, setVehicles] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [initialLoading, setInitialLoading] = useState(true);
-
-//   // Check login status helper
-//   const checkUserLoggedIn = () => {
-//     return !!localStorage.getItem("token");
-//   };
-
-//   const isLoggedIn = checkUserLoggedIn();
-
-//   useEffect(() => {
-//     fetchAllVehicles();
-//   }, []);
-
-//   const fetchAllVehicles = async () => {
-//     try {
-//       setInitialLoading(true);
-//       const { data } = await API.get("/vehicles/search");
-
-//       if (data.success) {
-//         setVehicles(data.data || []);
-//       }
-//     } catch (error) {
-//       console.error("Fetch Default Vehicles Error:", error);
-//       setVehicles([]);
-//     } finally {
-//       setInitialLoading(false);
-//     }
-//   };
-
-//   const handleSearch = async () => {
-//     try {
-//       if (!isLoggedIn) {
-//         toast.error("Please login or register first to search routes!", {
-//           id: "login-required",
-//         });
-//         navigate("/login", { state: { from: location } });
-//         return;
-//       }
-
-//       if (!fromLocation || !toLocation) {
-//         toast.error("Please select Origin & Destination", {
-//           id: "location-required",
-//         });
-//         return;
-//       }
-
-//       const from =
-//         typeof fromLocation === "object"
-//           ? fromLocation.name || fromLocation.label
-//           : fromLocation;
-
-//       const to =
-//         typeof toLocation === "object"
-//           ? toLocation.name || toLocation.label
-//           : toLocation;
-
-//       const params = { from, to };
-
-//       if (vehicleType) {
-//         params.vehicleType = vehicleType;
-//       }
-
-//       setLoading(true);
-
-//       const { data } = await API.get("/vehicles/search", { params });
-
-//       setLoading(false);
-
-//       if (!data.success) {
-//         toast.error(data.message || "No Vehicles Found");
-//         setVehicles([]);
-//         return;
-//       }
-
-//       toast.success(`Found ${data.count} Vehicles`);
-//       setVehicles(data.data);
-//     } catch (error) {
-//       setLoading(false);
-//       toast.error(error.response?.data?.message || "Unable to Search Vehicles");
-//       setVehicles([]);
-//     }
-//   };
-
-//   // Helper functions for masking sensitive data
-//   const maskPhoneNumber = (number) => {
-//     if (!number) return "XXXXXX";
-//     const str = String(number);
-//     if (str.length >= 4) {
-//       return "XXXXXX" + str.slice(-4);
-//     }
-//     return "XXXXXX";
-//   };
-
-//   const maskVehicleNumber = (number) => {
-//     if (!number) return "DL-XX-XXXX";
-//     const str = String(number);
-//     if (str.length >= 4) {
-//       return str.slice(0, 4) + "XX" + str.slice(-4);
-//     }
-//     return "DL-XX-XXXX";
-//   };
-
-//   // Restrict items to 6 if user is not logged in
-//   const displayedVehicles = isLoggedIn ? vehicles : vehicles.slice(0, 6);
-
-//   return (
-//     <div className="w-full bg-slate-50 min-h-screen pb-16">
-//       {/* Hero Header Section */}
-//       <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white py-12 px-4 shadow-md mb-8">
-//         <div className="max-w-6xl mx-auto text-center space-y-3">
-//           <span className="bg-blue-600 text-white border border-white/20 px-4 py-1.5 rounded-full text-xs font-light uppercase tracking-widest inline-block backdrop-blur-md">
-//             India's Trusted Transport Network
-//           </span>
-//           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight">
-//             Find Verified Transport Services
-//           </h1>
-//           <p className="text-blue-100 text-xs md:text-sm font-bold uppercase tracking-wider max-w-xl mx-auto">
-//             Search trucks, commercial vehicles, and reliable transport services
-//             seamlessly across India.
-//           </p>
-//         </div>
-//       </div>
-
-//       <div className="max-w-6xl mx-auto px-4">
-//         {/* Search Control Card */}
-//         <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8 -mt-16 mb-12 relative z-10 grid md:grid-cols-2 lg:grid-cols-4 gap-5 items-end">
-//           {/* From */}
-//           <div className="space-y-1.5">
-//             <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
-//               <MapPin size={16} className="text-blue-600" />
-//               Origin / From
-//             </label>
-//             <LocationSearchInput
-//               placeholder="Enter Origin City"
-//               onSelectLocation={setFromLocation}
-//             />
-//           </div>
-
-//           {/* To */}
-//           <div className="space-y-1.5">
-//             <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
-//               <MapPin size={16} className="text-emerald-600" />
-//               Destination / To
-//             </label>
-//             <LocationSearchInput
-//               placeholder="Enter Destination City"
-//               onSelectLocation={setToLocation}
-//             />
-//           </div>
-
-//           {/* Vehicle Type */}
-//           <div className="space-y-1.5">
-//             <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
-//               <Truck size={16} className="text-orange-500" />
-//               Vehicle Type
-//             </label>
-//             <select
-//               value={vehicleType}
-//               onChange={(e) => setVehicleType(e.target.value)}
-//               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
-//             >
-//               <option value="">All Vehicles</option>
-//               <option value="Pickup / Auto">Pickup / Auto</option>
-//               <option value="LCV">LCV / MINITRUCK / EICHER</option>
-//               <option value="HCV">HCV / TRUCK</option>
-//               <option value="Container">Container</option>
-//               <option value="Trailer">Trailer</option>
-//               <option value="Refrigerated Van">Refrigerated Van</option>
-//               <option value="Hydra">Hydra / JCB / CRANES</option>
-//               <option value="Mining Vehicle">Mining Vehicle</option>
-//             </select>
-//           </div>
-
-//           {/* Search Button */}
-//           <div>
-//             <button
-//               onClick={handleSearch}
-//               disabled={loading}
-//               className="w-full bg-gradient-to-r from-[#2263F1] via-[#395DEF] to-[#4758EE] text-white rounded-xl py-3 px-4 text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 disabled:opacity-50 h-[46px]"
-//             >
-//               {loading ? (
-//                 <>
-//                   <Loader2 className="animate-spin" size={16} />
-//                   <span>Searching...</span>
-//                 </>
-//               ) : (
-//                 <>
-//                   <Search size={16} />
-//                   <span>Search Transport</span>
-//                 </>
-//               )}
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Section Heading */}
-//         {/* <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">
-//           <h2 className="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight">
-//             Available Vehicles / Search Results
-//           </h2>
-//           <span className="text-xs font-black bg-slate-200 text-slate-700 px-3 py-1 rounded-full uppercase tracking-wider">
-//             {isLoggedIn
-//               ? vehicles.length
-//               : `${displayedVehicles.length} of ${vehicles.length}`}{" "}
-//             Vehicles Shown
-//           </span>
-//         </div> */}
-
-//         {/* Initial or Search Loading State */}
-//         {(initialLoading || loading) && (
-//           <div className="min-h-[30vh] w-full flex items-center justify-center bg-white rounded-3xl border border-slate-100 shadow-sm">
-//             <div className="flex flex-col items-center gap-3">
-//               <Loader2 className="animate-spin text-slate-900" size={32} />
-//               <p className="text-xs font-black text-slate-500 uppercase tracking-widest">
-//                 {initialLoading
-//                   ? "Loading Available Vehicles..."
-//                   : "Searching Vehicles..."}
-//               </p>
-//             </div>
-//           </div>
-//         )}
-
-//         {/* No Result State */}
-//         {!initialLoading && !loading && vehicles.length === 0 && (
-//           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center">
-//             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-400">
-//               <Truck size={32} />
-//             </div>
-//             <h3 className="text-lg font-black text-slate-800 uppercase">
-//               No Vehicles Found
-//             </h3>
-//             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1 max-w-sm mx-auto">
-//               Try changing your origin, destination routes or searching with a
-//               different vehicle category.
-//             </p>
-//           </div>
-//         )}
-
-//         {/* Vehicle Cards Container with Scrollable Box */}
-//         {!initialLoading && !loading && displayedVehicles.length > 0 && (
-//           <>
-//             <div className="max-h-[750px] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
-//               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-4">
-//                 {displayedVehicles.map((vehicle) => {
-//                   const role =
-//                     vehicle.business?.role || vehicle.role || "Transporter";
-//                   const rawPhoneNumber =
-//                     vehicle.business?.phoneNumber ||
-//                     vehicle.phoneNumber ||
-//                     "N/A";
-
-//                   const firmName =
-//                     vehicle.business?.firmName || "Transport Firm";
-//                   const ownerName = vehicle.business?.ownerName || "Owner";
-//                   const phoneNumber = isLoggedIn
-//                     ? rawPhoneNumber
-//                     : maskPhoneNumber(rawPhoneNumber);
-//                   const vehicleNumber = isLoggedIn
-//                     ? vehicle.vehicleNumber
-//                     : maskVehicleNumber(vehicle.vehicleNumber);
-//                   const currentCity =
-//                     vehicle.business?.currentCity || "Location Not Set";
-
-//                   // Extract transporter ID safely from business or user reference
-//                   const transporterId =
-//                     vehicle.business?._id || vehicle.business || vehicle.user;
-
-//                   const whatsappMessage = ` Rodio Tradelink
-// Hello ${firmName},
-// Your transport profile is listed on Rodio.
-// Available Vehicle:
-// ${vehicle.vehicleType}
-// Connect with verified transporters across India.
-// 🌐 https://rodiotradelink.com`;
-
-//                   const whatsappUrl = `https://wa.me/91${rawPhoneNumber}?text=${encodeURIComponent(
-//                     whatsappMessage,
-//                   )}`;
-
-//                   return (
-//                     <div
-//                       key={vehicle._id}
-//                       id={`vehicle-card-${vehicle._id}`}
-//                       className="bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between"
-//                     >
-//                       {/* Card Header */}
-//                       <div className="bg-gradient-to-r from-[#2263F1] via-[#395DEF] to-[#4758EE] p-5 text-white">
-//                         <div className="flex justify-between items-start">
-//                           <h3 className="text-base font-black uppercase truncate max-w-[200px]">
-//                             {firmName}
-//                           </h3>
-//                          <span className="inline-flex items-center gap-1.5 text-white whitespace-nowrap">
-//   <Building2
-//     size={13}
-//     strokeWidth={2.5}
-//     className="text-white shrink-0"
-//   />
-//   <span className="text-[8px] font-bold uppercase tracking-wide leading-none">
-//     {role}
-//   </span>
-// </span>
-//                         </div>
-//                         {/* <div className="flex items-center gap-1.5 text-white text-xs font-bold uppercase tracking-wider mt-1.5">
-//                           <User size={14} className="text-white" />
-//                           <span>{ownerName}</span>
-//                         </div> */}
-//                       </div>
-
-//                       {/* Card Specs Body */}
-//                       <div className="p-5 space-y-3.5 flex-1 text-xs">
-//                         <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                           <span className="font-bold uppercase tracking-widest text-slate-400">
-//                             Vehicle Type
-//                           </span>
-//                           <span className="font-black uppercase text-slate-800">
-//                             {vehicle.vehicleType}
-//                           </span>
-//                         </div>
-
-//                         {/* <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                           <span className="font-bold uppercase tracking-widest text-slate-400">
-//                             Vehicle Number
-//                           </span>
-//                           <span className="font-black uppercase text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">
-//                             {vehicleNumber}
-//                           </span>
-//                         </div> */}
-
-//                         <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                           <span className="font-bold uppercase tracking-widest text-slate-400">
-//                             Phone Number
-//                           </span>
-//                           <span className="font-black text-slate-800 flex items-center gap-1.5">
-//                             <Phone size={13} className="text-emerald-600" />
-//                             {phoneNumber}
-//                           </span>
-//                         </div>
-
-//                         <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                           <span className="font-bold uppercase tracking-widest text-slate-400">
-//                             Capacity
-//                           </span>
-//                           <span className="font-black uppercase text-slate-800">
-//                             {vehicle.capacity || "N/A"}
-//                           </span>
-//                         </div>
-
-//                         <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                           <span className="font-bold uppercase tracking-widest text-slate-400">
-//                             Body Type
-//                           </span>
-//                           <span className="font-black uppercase text-slate-800">
-//                             {vehicle.bodyType || "N/A"}
-//                           </span>
-//                         </div>
-
-//                         <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                           <span className="font-bold uppercase tracking-widest text-slate-400">
-//                             Status
-//                           </span>
-//                           <span className="font-black uppercase text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
-//                             {vehicle.status || "Available"}
-//                           </span>
-//                         </div>
-
-//                         {/* Current Location Info */}
-//                         {/* <div className="flex items-start gap-2.5 pt-2">
-//                           <div className="bg-blue-50 text-blue-600 p-2 rounded-xl mt-0.5 border border-blue-100">
-//                             <MapPinned size={16} />
-//                           </div>
-//                           <div>
-//                             <p className="font-black uppercase text-slate-800">
-//                               {currentCity}
-//                             </p>
-//                             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-//                               {vehicle.business?.currentState || "India"}
-//                             </p>
-//                           </div>
-//                         </div> */}
-//                       </div>
-
-//                       {/* Actions */}
-//                       <div className="p-5 pt-0 space-y-2">
-//                         {/* View Profile Button */}
-//                         <div>
-//                           {isLoggedIn ? (
-//                             <button
-//     onClick={() => {
-//       if (transporterId) {
-//         navigate(`/dashboard/transporters/${transporterId}`);
-//       } else {
-//         toast.error("Transporter profile ID not found");
-//       }
-//     }}
-//                               className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
-//                             >
-//                               <Eye size={14} />
-//                               <span>View Profile</span>
-//                             </button>
-//                           ) : (
-//                             <button
-//                               onClick={() => {
-//                                 toast.error(
-//                                   "Please login or register to view profile!",
-//                                 );
-//                                navigate("/login", {
-//   state: {
-//     returnTo: `/dashboard/transporters/${transporterId}`,
-//   },
-// });
-//                               }}
-//                               className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
-//                             >
-//                               <span>View Profile</span>
-//                             </button>
-//                           )}
-//                         </div>
-
-//                         {/* Call & WhatsApp Actions */}
-//                         <div className="grid grid-cols-2 gap-2">
-//                           {isLoggedIn ? (
-//                             <>
-//                               <a
-//                                 href={`tel:${rawPhoneNumber}`}
-//                                 className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95"
-//                               >
-//                                 <Phone size={14} />
-//                                 <span>Call Now</span>
-//                               </a>
-
-//                               <a
-//                                 href={whatsappUrl}
-//                                 target="_blank"
-//                                 rel="noreferrer"
-//                                 className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
-//                               >
-//                                 <span>WhatsApp</span>
-//                               </a>
-//                             </>
-//                           ) : (
-//                             <>
-//                               <button
-//                                 onClick={() => {
-//                                   toast.error(
-//                                     "Please login or register to call transporter!",
-//                                   );
-//                                   navigate("/login", {
-//                                     state: {
-//                                      returnTo: "/dashboard/transportsearch",
-//                                     },
-//                                   });
-//                                 }}
-//                                 className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95"
-//                               >
-//                                 <span>Call Now</span>
-//                               </button>
-
-//                               <button
-//                                 onClick={() => {
-//                                   toast.error(
-//                                     "Please login or register to message transporter!",
-//                                   );
-//                                   navigate("/login", {
-//                                     state: {
-//                                      returnTo: "/dashboard/transportsearch",
-//                                     },
-//                                   });
-//                                 }}
-//                                 className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
-//                               >
-//                                 <span>WhatsApp</span>
-//                               </button>
-//                             </>
-//                           )}
-//                         </div>
-//                       </div>
-//                     </div>
-//                   );
-//                 })}
-//               </div>
-//             </div>
-
-//             {/* Login Prompt Banner for Logged Out Users
-//             {!isLoggedIn && vehicles.length > 6 && (
-//               <div className="mt-12 bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-3xl p-8 text-center space-y-4 shadow-xl">
-//                 <h3 className="text-xl md:text-2xl font-black uppercase">
-//                   Want to view all {vehicles.length} vehicles and get direct
-//                   phone numbers?
-//                 </h3>
-//                 <p className="text-xs font-bold text-slate-300 uppercase tracking-wider max-w-lg mx-auto">
-//                   Login or create an account to unlock complete transporter
-//                   contacts, search routes freely, and book vehicles instantly.
-//                 </p>
-//                 <div>
-//                   <button
-//                     onClick={() =>
-//                       navigate("/login", {
-//                         state: {
-//                           returnTo: location.pathname + location.search,
-//                         },
-//                       })
-//                     }
-//                     className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition active:scale-95 shadow-lg"
-//                   >
-//                     Login / Register Now
-//                   </button>
-//                 </div>
-//               </div>
-//             )} */}
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TransportSearch;
-// import React, { useState, useEffect } from "react";
-// import {
-//   Search,
-//   MapPin,
-//   Truck,
-//   Phone,
-//   Building2,
-//   Eye,
-//   Loader2,
-// } from "lucide-react";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import toast from "react-hot-toast";
-
-// import API from "../api/api";
-// import LocationSearchInput from "../Dashboard/user/LocationSearchInput";
-
-// const TransportSearch = () => {
-//   const navigate = useNavigate();
-//   const location = useLocation();
-
-//   const [fromLocation, setFromLocation] = useState(null);
-//   const [toLocation, setToLocation] = useState(null);
-//   const [vehicleType, setVehicleType] = useState("");
-
-//   const [vehicles, setVehicles] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [initialLoading, setInitialLoading] = useState(true);
-
-//   // Check login status
-//   const checkUserLoggedIn = () => {
-//     return !!localStorage.getItem("token");
-//   };
-
-//   const isLoggedIn = checkUserLoggedIn();
-
-//   useEffect(() => {
-//     fetchAllVehicles();
-//   }, []);
-
-//   // Laptop aur Mobile dono ke liye instant card position restoration
-//   useEffect(() => {
-//     if (!initialLoading && !loading && vehicles.length > 0) {
-//       const lastCardId = sessionStorage.getItem("lastViewedCardId");
-
-//       if (lastCardId) {
-//         // Mobile rendering delay ke liye 350ms buffer
-//         const timer = setTimeout(() => {
-//           const element = document.getElementById(lastCardId);
-
-//           if (element) {
-//             // 1. Inner scroll container alignment
-//             element.scrollIntoView({
-//               behavior: "auto",
-//               block: "center",
-//               inline: "nearest",
-//             });
-
-//             // 2. Mobile window/browser screen alignment (navbar offset ke sath)
-//             const yOffset = -80;
-//             const y =
-//               element.getBoundingClientRect().top +
-//               window.pageYOffset +
-//               yOffset;
-//             window.scrollTo({ top: y, behavior: "auto" });
-//           }
-
-//           // Card par reach karne ke baad storage clear
-//           sessionStorage.removeItem("lastViewedCardId");
-//         }, 350);
-
-//         return () => clearTimeout(timer);
-//       }
-//     }
-//   }, [initialLoading, loading, vehicles]);
-
-//   const fetchAllVehicles = async () => {
-//     try {
-//       setInitialLoading(true);
-//       const { data } = await API.get("/vehicles/search");
-
-//       if (data.success) {
-//         setVehicles(data.data || []);
-//       }
-//     } catch (error) {
-//       console.error("Fetch Default Vehicles Error:", error);
-//       setVehicles([]);
-//     } finally {
-//       setInitialLoading(false);
-//     }
-//   };
-
-//   const handleSearch = async () => {
-//     try {
-//       if (!isLoggedIn) {
-//         toast.error("Please login or register first to search routes!", {
-//           id: "login-required",
-//         });
-//         navigate("/login", { state: { from: location } });
-//         return;
-//       }
-
-//       if (!fromLocation || !toLocation) {
-//         toast.error("Please select Origin & Destination", {
-//           id: "location-required",
-//         });
-//         return;
-//       }
-
-//       const from =
-//         typeof fromLocation === "object"
-//           ? fromLocation.name || fromLocation.label
-//           : fromLocation;
-
-//       const to =
-//         typeof toLocation === "object"
-//           ? toLocation.name || toLocation.label
-//           : toLocation;
-
-//       const params = { from, to };
-
-//       if (vehicleType) {
-//         params.vehicleType = vehicleType;
-//       }
-
-//       setLoading(true);
-
-//       const { data } = await API.get("/vehicles/search", { params });
-
-//       setLoading(false);
-
-//       if (!data.success) {
-//         toast.error(data.message || "No Vehicles Found");
-//         setVehicles([]);
-//         return;
-//       }
-
-//       toast.success(`Found ${data.count} Vehicles`);
-//       setVehicles(data.data);
-//     } catch (error) {
-//       setLoading(false);
-//       toast.error(error.response?.data?.message || "Unable to Search Vehicles");
-//       setVehicles([]);
-//     }
-//   };
-
-//   // Helper functions for masking sensitive data
-//   const maskPhoneNumber = (number) => {
-//     if (!number) return "XXXXXX";
-//     const str = String(number);
-//     if (str.length >= 4) {
-//       return "XXXXXX" + str.slice(-4);
-//     }
-//     return "XXXXXX";
-//   };
-
-//   const maskVehicleNumber = (number) => {
-//     if (!number) return "DL-XX-XXXX";
-//     const str = String(number);
-//     if (str.length >= 4) {
-//       return str.slice(0, 4) + "XX" + str.slice(-4);
-//     }
-//     return "DL-XX-XXXX";
-//   };
-
-//   // Restrict items to 6 if user is not logged in
-//   const displayedVehicles = isLoggedIn ? vehicles : vehicles.slice(0, 6);
-
-//   return (
-//     <div className="w-full bg-slate-50 min-h-screen pb-16">
-//       {/* Hero Header Section */}
-//       <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white py-12 px-4 shadow-md mb-8">
-//         <div className="max-w-6xl mx-auto text-center space-y-3">
-//           <span className="bg-blue-600 text-white border border-white/20 px-4 py-1.5 rounded-full text-xs font-light uppercase tracking-widest inline-block backdrop-blur-md">
-//             India's Trusted Transport Network
-//           </span>
-//           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight">
-//             Find Verified Transport Services
-//           </h1>
-//           <p className="text-blue-100 text-xs md:text-sm font-bold uppercase tracking-wider max-w-xl mx-auto">
-//             Search trucks, commercial vehicles, and reliable transport services
-//             seamlessly across India.
-//           </p>
-//         </div>
-//       </div>
-
-//       <div className="max-w-6xl mx-auto px-4">
-//         {/* Search Control Card */}
-//         <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8 -mt-16 mb-12 relative z-10 grid md:grid-cols-2 lg:grid-cols-4 gap-5 items-end">
-//           {/* From */}
-//           <div className="space-y-1.5">
-//             <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
-//               <MapPin size={16} className="text-blue-600" />
-//               Origin / From
-//             </label>
-//             <LocationSearchInput
-//               placeholder="Enter Origin City"
-//               onSelectLocation={setFromLocation}
-//             />
-//           </div>
-
-//           {/* To */}
-//           <div className="space-y-1.5">
-//             <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
-//               <MapPin size={16} className="text-emerald-600" />
-//               Destination / To
-//             </label>
-//             <LocationSearchInput
-//               placeholder="Enter Destination City"
-//               onSelectLocation={setToLocation}
-//             />
-//           </div>
-
-//           {/* Vehicle Type */}
-//           <div className="space-y-1.5">
-//             <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
-//               <Truck size={16} className="text-orange-500" />
-//               Vehicle Type
-//             </label>
-//             <select
-//               value={vehicleType}
-//               onChange={(e) => setVehicleType(e.target.value)}
-//               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 transition"
-//             >
-//               <option value="">All Vehicles</option>
-//               <option value="Pickup / Auto">Pickup / Auto</option>
-//               <option value="LCV">LCV / MINITRUCK / EICHER</option>
-//               <option value="HCV">HCV / TRUCK</option>
-//               <option value="Container">Container</option>
-//               <option value="Trailer">Trailer</option>
-//               <option value="Refrigerated Van">Refrigerated Van</option>
-//               <option value="Hydra">Hydra / JCB / CRANES</option>
-//               <option value="Mining Vehicle">Mining Vehicle</option>
-//             </select>
-//           </div>
-
-//           {/* Search Button */}
-//           <div>
-//             <button
-//               onClick={handleSearch}
-//               disabled={loading}
-//               className="w-full bg-gradient-to-r from-[#2263F1] via-[#395DEF] to-[#4758EE] text-white rounded-xl py-3 px-4 text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 disabled:opacity-50 h-[46px]"
-//             >
-//               {loading ? (
-//                 <>
-//                   <Loader2 className="animate-spin" size={16} />
-//                   <span>Searching...</span>
-//                 </>
-//               ) : (
-//                 <>
-//                   <Search size={16} />
-//                   <span>Search Transport</span>
-//                 </>
-//               )}
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Loading State */}
-//         {(initialLoading || loading) && (
-//           <div className="min-h-[30vh] w-full flex items-center justify-center bg-white rounded-3xl border border-slate-100 shadow-sm">
-//             <div className="flex flex-col items-center gap-3">
-//               <Loader2 className="animate-spin text-slate-900" size={32} />
-//               <p className="text-xs font-black text-slate-500 uppercase tracking-widest">
-//                 {initialLoading
-//                   ? "Loading Available Vehicles..."
-//                   : "Searching Vehicles..."}
-//               </p>
-//             </div>
-//           </div>
-//         )}
-
-//         {/* No Result State */}
-//         {!initialLoading && !loading && vehicles.length === 0 && (
-//           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center">
-//             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-400">
-//               <Truck size={32} />
-//             </div>
-//             <h3 className="text-lg font-black text-slate-800 uppercase">
-//               No Vehicles Found
-//             </h3>
-//             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1 max-w-sm mx-auto">
-//               Try changing your origin, destination routes or searching with a
-//               different vehicle category.
-//             </p>
-//           </div>
-//         )}
-
-//         {/* Vehicle Cards Grid */}
-//         {!initialLoading && !loading && displayedVehicles.length > 0 && (
-//           <div className="max-h-[750px] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
-//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-4">
-//               {displayedVehicles.map((vehicle) => {
-//                 const role =
-//                   vehicle.business?.role || vehicle.role || "Transporter";
-//                 const rawPhoneNumber =
-//                   vehicle.business?.phoneNumber ||
-//                   vehicle.phoneNumber ||
-//                   "N/A";
-
-//                 const firmName =
-//                   vehicle.business?.firmName || "Transport Firm";
-//                 const phoneNumber = isLoggedIn
-//                   ? rawPhoneNumber
-//                   : maskPhoneNumber(rawPhoneNumber);
-
-//                 const transporterId =
-//                   vehicle.business?._id || vehicle.business || vehicle.user;
-
-//                 const whatsappMessage = ` Rodio Tradelink
-// Hello ${firmName},
-// Your transport profile is listed on Rodio.
-// Available Vehicle:
-// ${vehicle.vehicleType}
-// Connect with verified transporters across India.
-// 🌐 https://rodiotradelink.com`;
-
-//                 const whatsappUrl = `https://wa.me/91${rawPhoneNumber}?text=${encodeURIComponent(
-//                   whatsappMessage
-//                 )}`;
-
-//                 return (
-//                   <div
-//                     key={vehicle._id}
-//                     id={`vehicle-card-${vehicle._id}`}
-//                     className="bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between"
-//                   >
-//                     {/* Card Header */}
-//                     <div className="bg-gradient-to-r from-[#2263F1] via-[#395DEF] to-[#4758EE] p-5 text-white">
-//                       <div className="flex justify-between items-start">
-//                         <h3 className="text-base font-black uppercase truncate max-w-[200px]">
-//                           {firmName}
-//                         </h3>
-//                         <span className="inline-flex items-center gap-1.5 text-white whitespace-nowrap">
-//                           <Building2
-//                             size={13}
-//                             strokeWidth={2.5}
-//                             className="text-white shrink-0"
-//                           />
-//                           <span className="text-[8px] font-bold uppercase tracking-wide leading-none">
-//                             {role}
-//                           </span>
-//                         </span>
-//                       </div>
-//                     </div>
-
-//                     {/* Card Specs Body */}
-//                     <div className="p-5 space-y-3.5 flex-1 text-xs">
-//                       <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                         <span className="font-bold uppercase tracking-widest text-slate-400">
-//                           Vehicle Type
-//                         </span>
-//                         <span className="font-black uppercase text-slate-800">
-//                           {vehicle.vehicleType}
-//                         </span>
-//                       </div>
-
-//                       <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                         <span className="font-bold uppercase tracking-widest text-slate-400">
-//                           Phone Number
-//                         </span>
-//                         <span className="font-black text-slate-800 flex items-center gap-1.5">
-//                           <Phone size={13} className="text-emerald-600" />
-//                           {phoneNumber}
-//                         </span>
-//                       </div>
-
-//                       <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                         <span className="font-bold uppercase tracking-widest text-slate-400">
-//                           Capacity
-//                         </span>
-//                         <span className="font-black uppercase text-slate-800">
-//                           {vehicle.capacity || "N/A"}
-//                         </span>
-//                       </div>
-
-//                       <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                         <span className="font-bold uppercase tracking-widest text-slate-400">
-//                           Body Type
-//                         </span>
-//                         <span className="font-black uppercase text-slate-800">
-//                           {vehicle.bodyType || "N/A"}
-//                         </span>
-//                       </div>
-
-//                       <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
-//                         <span className="font-bold uppercase tracking-widest text-slate-400">
-//                           Status
-//                         </span>
-//                         <span className="font-black uppercase text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
-//                           {vehicle.status || "Available"}
-//                         </span>
-//                       </div>
-//                     </div>
-
-//                     {/* Actions */}
-//                     <div className="p-5 pt-0 space-y-2">
-//                       <div>
-//                         {isLoggedIn ? (
-//                           <button
-//                             onClick={() => {
-//                               if (transporterId) {
-//                                 sessionStorage.setItem(
-//                                   "lastViewedCardId",
-//                                   `vehicle-card-${vehicle._id}`
-//                                 );
-//                                 navigate(
-//                                   `/dashboard/transporters/${transporterId}`
-//                                 );
-//                               } else {
-//                                 toast.error("Transporter profile ID not found");
-//                               }
-//                             }}
-//                             className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
-//                           >
-//                             <Eye size={14} />
-//                             <span>View Profile</span>
-//                           </button>
-//                         ) : (
-//                           <button
-//                             onClick={() => {
-//                               // Card ID save karna zaroori hai taaki login ke baad bhi memory me rahe
-//                               sessionStorage.setItem(
-//                                 "lastViewedCardId",
-//                                 `vehicle-card-${vehicle._id}`
-//                               );
-//                               toast.error(
-//                                 "Please login or register to view profile!"
-//                               );
-//                               navigate("/login", {
-//                                 state: {
-//                                   returnTo: `/dashboard/transporters/${transporterId}`,
-//                                   fromSearch: true,
-//                                 },
-//                               });
-//                             }}
-//                             className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95"
-//                           >
-//                             <span>View Profile</span>
-//                           </button>
-//                         )}
-//                       </div>
-
-//                       {/* Call & WhatsApp Actions */}
-//                       <div className="grid grid-cols-2 gap-2">
-//                         {isLoggedIn ? (
-//                           <>
-//                             <a
-//                               href={`tel:${rawPhoneNumber}`}
-//                               className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95"
-//                             >
-//                               <Phone size={14} />
-//                               <span>Call Now</span>
-//                             </a>
-
-//                             <a
-//                               href={whatsappUrl}
-//                               target="_blank"
-//                               rel="noreferrer"
-//                               className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
-//                             >
-//                               <span>WhatsApp</span>
-//                             </a>
-//                           </>
-//                         ) : (
-//                           <>
-//                             <button
-//                               onClick={() => {
-//                                 toast.error(
-//                                   "Please login or register to call transporter!"
-//                                 );
-//                                 navigate("/login", {
-//                                   state: {
-//                                     returnTo: "/dashboard/transportsearch",
-//                                   },
-//                                 });
-//                               }}
-//                               className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95"
-//                             >
-//                               <span>Call Now</span>
-//                             </button>
-
-//                             <button
-//                               onClick={() => {
-//                                 toast.error(
-//                                   "Please login or register to message transporter!"
-//                                 );
-//                                 navigate("/login", {
-//                                   state: {
-//                                     returnTo: "/dashboard/transportsearch",
-//                                   },
-//                                 });
-//                               }}
-//                               className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
-//                             >
-//                               <span>WhatsApp</span>
-//                             </button>
-//                           </>
-//                         )}
-//                       </div>
-//                     </div>
-//                   </div>
-//                 );
-//               })}
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TransportSearch;
 import React, { useState, useEffect, useRef } from "react";
 import {
   Search,
@@ -1065,8 +8,8 @@ import {
   Eye,
   Loader2,
   CheckCircle2,
-  MessageSquare,
-  ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -1074,6 +17,8 @@ import toast from "react-hot-toast";
 
 import API from "../api/api";
 import LocationSearchInput from "../Dashboard/user/LocationSearchInput";
+
+const PAGE_SIZE = 10;
 
 const TransportSearch = () => {
   const navigate = useNavigate();
@@ -1087,19 +32,20 @@ const TransportSearch = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
 
-  const scrollContainerRef = useRef(null);
+  // Pagination (wapas aane par last page restore hota hai)
+  const [currentPage, setCurrentPage] = useState(() => {
+    return Number(sessionStorage.getItem("lastViewedPage")) || 1;
+  });
 
-  const checkUserLoggedIn = () => {
-    return !!localStorage.getItem("token");
-  };
+  const resultsRef = useRef(null);
 
-  const isLoggedIn = checkUserLoggedIn();
+  const isLoggedIn = !!localStorage.getItem("token");
 
   useEffect(() => {
     fetchAllVehicles();
   }, []);
 
-  // Position restoration buffer
+  // Profile se wapas aane par same card par scroll restore
   useEffect(() => {
     if (!initialLoading && !loading && vehicles.length > 0) {
       const lastCardId = sessionStorage.getItem("lastViewedCardId");
@@ -1109,21 +55,16 @@ const TransportSearch = () => {
           const element = document.getElementById(lastCardId);
 
           if (element) {
-            element.scrollIntoView({
-              behavior: "auto",
-              block: "center",
-              inline: "nearest",
-            });
-
             const yOffset = -90;
             const y =
               element.getBoundingClientRect().top +
               window.pageYOffset +
               yOffset;
-            window.scrollTo({ top: y, behavior: "auto" });
+            window.scrollTo({ top: Math.max(0, y), behavior: "auto" });
           }
 
           sessionStorage.removeItem("lastViewedCardId");
+          sessionStorage.removeItem("lastViewedPage");
         }, 350);
 
         return () => clearTimeout(timer);
@@ -1131,38 +72,44 @@ const TransportSearch = () => {
     }
   }, [initialLoading, loading, vehicles]);
 
-  // Last card ke baad scroll ko window/page par transfer karne ke liye event handler
-  const handleContainerWheel = (e) => {
-    const el = scrollContainerRef.current;
-    if (!el) return;
-
-    const isAtBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 2;
-    const isAtTop = el.scrollTop <= 0;
-
-    // Agar last card par hai aur neeche scroll kar rahe hain to window scroll hone lagegi
-    if (isAtBottom && e.deltaY > 0) {
-      window.scrollBy({ top: e.deltaY, behavior: "auto" });
-    }
-    // Agar top par hai aur upar scroll kar rahe hain to window scroll hone lagegi
-    else if (isAtTop && e.deltaY < 0) {
-      window.scrollBy({ top: e.deltaY, behavior: "auto" });
-    }
-  };
-
   const fetchAllVehicles = async () => {
     try {
       setInitialLoading(true);
-      const { data } = await API.get("/vehicles/search");
+
+      const { data } = await API.get("/vehicles/search", {
+        headers: {
+          "X-API-KEY": "ashu@rodio",
+        },
+      });
 
       if (data.success) {
         setVehicles(data.data || []);
+      } else {
+        setVehicles([]);
       }
     } catch (error) {
-      console.error("Fetch Default Vehicles Error:", error);
+      console.error(
+        "Fetch Default Vehicles Error:",
+        error.response?.data || error.message
+      );
       setVehicles([]);
     } finally {
       setInitialLoading(false);
     }
+  };
+
+  const scrollToResults = () => {
+    window.setTimeout(() => {
+      const el = resultsRef.current;
+      if (!el) return;
+
+      const top = el.getBoundingClientRect().top + window.pageYOffset - 40;
+
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth",
+      });
+    }, 150);
   };
 
   const handleSearch = async () => {
@@ -1199,21 +146,33 @@ const TransportSearch = () => {
       }
 
       setLoading(true);
-      const { data } = await API.get("/vehicles/search", { params });
+      const { data } = await API.get("/vehicles/search", {
+        params,
+        headers: {
+          "X-API-KEY": "ashu@rodio",
+        },
+      });
       setLoading(false);
 
       if (!data.success) {
         toast.error(data.message || "No matching vehicles found");
         setVehicles([]);
+        setCurrentPage(1);
         return;
       }
 
       toast.success(`Found ${data.count} verified partners`);
-      setVehicles(data.data);
+      setVehicles(data.data || []);
+      setCurrentPage(1); // naye search par hamesha page 1
+
+      if (Array.isArray(data.data) && data.data.length > 0) {
+        scrollToResults();
+      }
     } catch (error) {
       setLoading(false);
       toast.error(error.response?.data?.message || "Unable to complete search");
       setVehicles([]);
+      setCurrentPage(1);
     }
   };
 
@@ -1226,25 +185,35 @@ const TransportSearch = () => {
     return "+91 ••••• •••••";
   };
 
+  // ---------- Pagination values ----------
+  const totalPages = Math.max(1, Math.ceil(vehicles.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+
+  const paginatedVehicles = vehicles.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE
+  );
+
+  const goToPage = (page) => {
+    const next = Math.min(Math.max(1, page), totalPages);
+    setCurrentPage(next);
+    scrollToResults();
+  };
+
   return (
     <div className="w-full bg-[#f8fafc] min-h-screen text-slate-800 pb-20 antialiased selection:bg-blue-100 selection:text-blue-900">
       {/* Top Banner */}
-      <section className=" bg-blue-700 text-white pt-10 pb-24 px-4 sm:px-6 relative overflow-hidden">
+      <section className="bg-blue-700 text-white pt-10 pb-24 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:20px_20px] opacity-15 pointer-events-none" />
 
         <div className="max-w-5xl mx-auto text-center relative z-10 space-y-4">
-          {/* <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 text-blue-300 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md">
-            <ShieldCheck size={14} className="text-blue-400" />
-            <span>Pan-India Verified Logistics Network</span>
-          </div> */}
-
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
             Find & Book Reliable Freight Transporters
           </h1>
 
           <p className="text-slate-300 text-xl sm:text-sm md:text-base max-w-2xl mx-auto font-normal leading-relaxed">
             Search trucks, commercial vehicles, and reliable transport services
-           seamlessly across India.
+            seamlessly across India.
           </p>
         </div>
       </section>
@@ -1258,7 +227,7 @@ const TransportSearch = () => {
             <div className="space-y-1.5">
               <label className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">
                 <MapPin size={15} className="text-blue-600" />
-                Pickup 
+                Pickup STATION
               </label>
               <LocationSearchInput
                 placeholder="City or State"
@@ -1270,7 +239,7 @@ const TransportSearch = () => {
             <div className="space-y-1.5">
               <label className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">
                 <MapPin size={15} className="text-emerald-600" />
-                Drop 
+                DELIVERY STATION
               </label>
               <LocationSearchInput
                 placeholder="City or State"
@@ -1352,16 +321,24 @@ const TransportSearch = () => {
           </div>
         )}
 
-        {/* Scrollable Container with Seamless Scroll-Chaining */}
+        {/* Results */}
         {!initialLoading && !loading && vehicles.length > 0 && (
-          <div
-            ref={scrollContainerRef}
-            onWheel={handleContainerWheel}
-            className="max-h-[750px] overflow-y-auto overscroll-y-auto pr-1 sm:pr-2.5 custom-scrollbar"
-            style={{ overscrollBehaviorY: "auto" }}
-          >
+          <div ref={resultsRef}>
+            {/* Result count */}
+            <div className="flex items-center justify-between mb-4 px-1">
+              <p className="text-xs sm:text-sm font-semibold text-slate-500">
+                Showing{" "}
+                <span className="text-slate-900">
+                  {(safePage - 1) * PAGE_SIZE + 1}–
+                  {Math.min(safePage * PAGE_SIZE, vehicles.length)}
+                </span>{" "}
+                of <span className="text-slate-900">{vehicles.length}</span>{" "}
+                transporters
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 pb-6">
-              {vehicles.map((vehicle) => {
+              {paginatedVehicles.map((vehicle) => {
                 const role =
                   vehicle.business?.role || vehicle.role || "Transporter";
                 const rawPhoneNumber =
@@ -1380,10 +357,6 @@ const TransportSearch = () => {
                   .filter(Boolean)
                   .join(", ");
 
-                const availableCount = (
-                  vehicle.business?.vehicles || []
-                ).filter((v) => v.status === "available").length;
-
                 const whatsappMessage = `Rodio Tradelink\nHello ${firmName},\nI found your transport profile on Rodio Tradelink.\nAvailable Types: ${vehicleNames || "Commercial Fleet"}\nLooking forward to booking a shipment.`;
 
                 const whatsappUrl = `https://wa.me/91${rawPhoneNumber}?text=${encodeURIComponent(
@@ -1394,95 +367,144 @@ const TransportSearch = () => {
                   <div
                     key={vehicle._id}
                     id={`vehicle-card-${vehicle._id}`}
-                    className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                    className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col"
                   >
-                    {/* Card Header */}
-                    <div className="p-5 pb-4 border-b border-slate-100 bg-white">
-                      <div className="flex items-start justify-between gap-3">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3 text-white">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-white/20 border border-white/40 flex items-center justify-center shrink-0">
+                          <Building2 size={21} />
+                        </div>
+
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <CheckCircle2
-                              size={13}
-                              className="text-blue-600 shrink-0"
-                            />
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
-                              Verified Fleet
-                            </span>
-                          </div>
                           <h3
-                            className="text-base font-bold text-slate-900 truncate"
+                            className="text-base font-extrabold truncate"
                             title={firmName}
                           >
                             {firmName}
                           </h3>
+                          <p className="text-xs text-blue-100 truncate">
+                            {vehicle.business?.ownerName || "Transport Partner"}{" "}
+                            · {role}
+                          </p>
                         </div>
-                        <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shrink-0">
-                          <Building2 size={12} />
-                          {role}
+
+                        <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-white/20 border border-white/30 px-2 py-1 text-[10px] font-bold">
+                          <CheckCircle2 size={12} />
+                          Rodio Verified
                         </span>
                       </div>
                     </div>
 
-                    {/* Card Body */}
-                    <div className="p-5 py-4 space-y-3.5 flex-1 text-xs">
-                      {/* Fleet Types */}
-                      <div className="flex items-start justify-between gap-3">
-                        <span className="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
-                          Vehicle Types
-                        </span>
-                        <span className="font-bold text-slate-800 text-right line-clamp-2 max-w-[65%]">
-                          {vehicleNames || "Standard Commercial Fleet"}
-                        </span>
-                      </div>
-
-                      {/* Contact Number */}
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
-                          Phone
-                        </span>
-                        <span className="font-bold text-slate-800 font-mono tracking-tight flex items-center gap-1">
-                          <Phone size={13} className="text-emerald-600" />
-                          {phoneNumber}
+                    {/* Card Details */}
+                    <div className="p-3.5 space-y-2.5 flex-1">
+                      {/* Location */}
+                      <div className="flex items-center gap-2.5 rounded-xl bg-slate-50 border border-slate-100 p-3">
+                        <MapPin size={17} className="text-rose-500 shrink-0" />
+                        <span className="text-sm font-medium text-slate-800">
+                          {[
+                            vehicle.business?.currentCity,
+                            vehicle.business?.currentState,
+                          ]
+                            .filter(Boolean)
+                            .join(", ") || "Location Not Set"}
                         </span>
                       </div>
 
-                      {/* Live Status */}
-                      <div className="flex items-center justify-between gap-3 pt-1">
-                        <span className="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
-                          Availability
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          {availableCount > 0
-                            ? `${availableCount} Ready for Load`
-                            : "In Transit / On Call"}
-                        </span>
+                      {/* Rating and Contact */}
+                      <div className="grid grid-cols-2 gap-2.5">
+                        <div className="rounded-xl bg-slate-50 border border-slate-100 p-2.5 min-w-0">
+                          <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wide mb-1">
+                            Rating
+                          </p>
+                          <div className="flex items-center gap-1 flex-wrap">
+                            <span className="text-amber-500 text-lg">★</span>
+                            <span className="text-sm font-extrabold text-slate-900">
+                              {Number(vehicle.business?.rating || 0).toFixed(1)}
+                            </span>
+                            <span className="text-xs text-slate-500">
+                              ({vehicle.business?.reviewCount || 0})
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="rounded-xl bg-slate-50 border border-slate-100 p-2.5 min-w-0">
+                          <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wide mb-1">
+                            Contact
+                          </p>
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <Phone
+                              size={15}
+                              className="text-emerald-600 shrink-0"
+                            />
+                            <span className="text-xs font-extrabold text-slate-900 truncate">
+                              {phoneNumber}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Vehicles */}
+                      <div className="flex items-start gap-2 rounded-xl bg-blue-50/60 border border-blue-100 p-2.5">
+                        <Truck
+                          size={15}
+                          className="text-blue-600 shrink-0 mt-0.5"
+                        />
+                        <p className="text-xs text-slate-700 leading-5">
+                          <span className="font-semibold">
+                            {(vehicle.business?.vehicles || []).length || 1}{" "}
+                            Vehicles:
+                          </span>{" "}
+                          <span className="font-medium">
+                            {vehicleNames || "Commercial Fleet"}
+                          </span>
+                        </p>
+                      </div>
+
+                      {/* Working Routes */}
+                      <div className="rounded-xl bg-blue-50/70 border border-blue-100 p-2.5">
+                        <div className="flex items-center gap-2 text-blue-700 font-bold text-xs mb-1.5">
+                          <MapPin size={14} />
+                          <span>Working Routes:</span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          <span className="rounded-full border border-blue-200 bg-white px-2.5 py-1 text-[11px] font-medium text-blue-700">
+                            {vehicle.business?.currentCity || "India"}
+                            {vehicle.business?.currentState
+                              ? ` (${vehicle.business.currentState})`
+                              : ""}
+                          </span>
+                          <span className="rounded-full border border-blue-200 bg-white px-2.5 py-1 text-[11px] font-medium text-blue-700">
+                            India
+                          </span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Card Actions */}
-                    <div className="p-4 pt-2 bg-slate-50/60 border-t border-slate-100 space-y-2">
-                      {/* View Profile */}
+                    {/* Footer Actions */}
+                    <div className="border-t border-slate-100 p-5 space-y-2.5">
                       <button
                         onClick={() => {
                           sessionStorage.setItem(
                             "lastViewedCardId",
                             `vehicle-card-${vehicle._id}`
                           );
+                          sessionStorage.setItem(
+                            "lastViewedPage",
+                            String(safePage)
+                          );
+
                           if (isLoggedIn) {
                             if (transporterId) {
-                              navigate(
-                                `/dashboard/transporters/${transporterId}`
-                              );
+                              navigate(`/dashboard/transporters/${transporterId}`);
                             } else {
                               toast.error(
                                 "Transporter profile details not available"
                               );
                             }
                           } else {
-                            toast.error(
-                              "Please login to access profile details"
-                            );
+                            toast.error("Please login to access profile details");
                             navigate("/login", {
                               state: {
                                 returnTo: `/dashboard/transporters/${transporterId}`,
@@ -1491,22 +513,20 @@ const TransportSearch = () => {
                             });
                           }
                         }}
-                        className="w-full min-h-[40px] py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition"
+                        className="w-full min-h-[48px] rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-md transition active:scale-[0.98]"
                       >
-                        <Eye size={14} />
-                        <span>View Profile</span>
+                        <Eye size={17} />
+                        View Profile
                       </button>
 
-                      {/* Dual Action: Call & WhatsApp */}
-                      <div className="grid grid-cols-2 gap-2">
-                        {/* Call Button */}
+                      <div className="grid grid-cols-2 gap-2.5">
                         {isLoggedIn ? (
                           <a
                             href={`tel:${rawPhoneNumber}`}
-                            className="min-h-[40px] rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 active:scale-[0.98] text-white text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 transition shadow-sm"
+                            className="min-h-[48px] rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]"
                           >
-                            <Phone size={13} />
-                            <span>Call Now</span>
+                            <Phone size={16} />
+                            Call Now
                           </a>
                         ) : (
                           <button
@@ -1518,40 +538,37 @@ const TransportSearch = () => {
                                 },
                               });
                             }}
-                            className="min-h-[40px] rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 active:scale-[0.98] text-white text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 transition shadow-sm"
+                            className="min-h-[48px] rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]"
                           >
-                            <Phone size={13} />
-                            <span>Call Now</span>
+                            <Phone size={16} />
+                            Call Now
                           </button>
                         )}
 
-                        {/* WhatsApp Button */}
                         {isLoggedIn ? (
                           <a
                             href={whatsappUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="min-h-[40px] rounded-xl bg-[#25D366] hover:bg-[#20ba5a] active:scale-[0.98] text-white text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 transition shadow-sm"
+                            className="min-h-[48px] rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]"
                           >
-                           <FaWhatsapp size={16} />
-                            <span>WhatsApp</span>
+                            <FaWhatsapp size={18} />
+                            WhatsApp
                           </a>
                         ) : (
                           <button
                             onClick={() => {
-                              toast.error(
-                                "Please login to message transporter"
-                              );
+                              toast.error("Please login to message transporter");
                               navigate("/login", {
                                 state: {
                                   returnTo: "/dashboard/transportsearch",
                                 },
                               });
                             }}
-                            className="min-h-[40px] rounded-xl bg-[#25D366] hover:bg-[#20ba5a] active:scale-[0.98] text-white text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 transition shadow-sm"
+                            className="min-h-[48px] rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]"
                           >
-                            <FaWhatsapp size={16} />
-                            <span>WhatsApp</span>
+                            <FaWhatsapp size={18} />
+                            WhatsApp
                           </button>
                         )}
                       </div>
@@ -1560,6 +577,33 @@ const TransportSearch = () => {
                 );
               })}
             </div>
+
+            {/* Pagination: Prev / Next */}
+            {vehicles.length > PAGE_SIZE && (
+              <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
+                <button
+                  onClick={() => goToPage(safePage - 1)}
+                  disabled={safePage === 1}
+                  className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft size={16} />
+                  Prev
+                </button>
+
+                <span className="text-sm font-semibold text-slate-600 whitespace-nowrap">
+                  Page {safePage} of {totalPages}
+                </span>
+
+                <button
+                  onClick={() => goToPage(safePage + 1)}
+                  disabled={safePage === totalPages}
+                  className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Next
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
           </div>
         )}
       </main>

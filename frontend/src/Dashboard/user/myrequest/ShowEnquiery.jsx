@@ -220,7 +220,9 @@ function ShowEnquiry() {
   const getBookings = async () => {
     try {
       setLoading(true);
-      const res = await API.get("/booking/my-bookings");
+      const res = await API.get("/booking/my-bookings",{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       setBookings(res.data?.data || []);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch enquiries", {
@@ -269,7 +271,9 @@ function ShowEnquiry() {
 
     setEditLoading(true);
     try {
-      const res = await API.patch(`/booking/${editFormData._id}`, editFormData);
+      const res = await API.patch(`/booking/${editFormData._id}`, editFormData,{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       if (res.data?.success || res.status === 200) {
         toast.success("Enquiry updated successfully!", { id: "edit-enquiry-success" });
         setShowEditModal(false);
@@ -289,7 +293,9 @@ function ShowEnquiry() {
     if (!window.confirm("Are you sure you want to delete this enquiry?")) return;
 
     try {
-      const res = await API.delete(`/booking/${id}`);
+      const res = await API.delete(`/booking/${id}`,{
+            headers: { "x-api-key": "ashu@rodio" },
+           });
       if (res.data?.success || res.status === 200) {
         toast.success("Enquiry deleted successfully", { id: "delete-enquiry-success" });
         setBookings((prev) => prev.filter((item) => item._id !== id));
