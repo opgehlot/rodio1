@@ -1023,6 +1023,7 @@ import {
   HandCoins,
   UserRound,
   Crown,
+   Star,
 } from "lucide-react";
 import LogoutButton from "../utils/LogoutButton";
 
@@ -1337,7 +1338,7 @@ export default function Sidebar({ open, setOpen }) {
           >
             <div className="flex items-center gap-3.5">
               <PlusCircle size={20} />
-              <span>Add Load Enquiry</span>
+              <span>Add Load </span>
             </div>
           </NavLink>
 
@@ -1432,6 +1433,29 @@ export default function Sidebar({ open, setOpen }) {
               <Images size={20} />
               <span>My Gallery</span>
             </div>
+
+            {!subscriptionActive && (
+              <Lock size={16} className="text-slate-400" />
+            )}
+          </div>
+          <div
+            onClick={(e) =>
+              handleRestrictedClick(
+                e,
+                "Vehicle Image Gallery",
+                "/dashboard/reviews"
+              )
+            }
+            className={`cursor-pointer ${linkClass({
+              isActive:
+                window.location.pathname ===
+                "/dashboard/reviews",
+            })}`}
+          >
+           <div className="flex items-center gap-3.5">
+  <Star size={20} />
+  <span>My Reviews</span>
+</div>
 
             {!subscriptionActive && (
               <Lock size={16} className="text-slate-400" />
