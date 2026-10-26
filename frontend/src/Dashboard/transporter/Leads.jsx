@@ -765,21 +765,26 @@ const SingleLeadCard = ({ lead, onBidSuccess, page }) => {
       {/* Compact details */}
       <div className="flex flex-col gap-2 p-2.5">
         {/* Route */}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-xl border border-gray-100 bg-gray-50 px-3 py-2">
-          <div className="min-w-0">
-            <p className="text-[11px] text-gray-500">Pickup</p>
-            <p className="break-words text-sm font-semibold text-gray-900">
-              {lead?.pickupLocation || lead?.loading_point || "N/A"}
-            </p>
-          </div>
-          <FaArrowRight className="text-sm text-blue-600" />
-          <div className="min-w-0 text-right">
-            <p className="text-[11px] text-gray-500">Destination</p>
-            <p className="break-words text-sm font-semibold text-gray-900">
-              {lead?.dropLocation || "N/A"}
-            </p>
-          </div>
-        </div>
+      
+{/* Route */}
+<div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-xl border border-gray-100 bg-gray-50 px-3 py-2">
+  <div className="min-w-0">
+    <p className="text-[11px] text-gray-500">Pickup</p>
+    <p className="break-words text-sm font-semibold text-gray-900">
+      {lead?.pickupLocation || lead?.loading_point || "N/A"}
+    </p>
+  </div>
+
+  <FaArrowRight className="text-sm text-blue-600" />
+
+  <div className="min-w-0 text-right">
+    <p className="text-[11px] text-gray-500">Destination</p>
+    <p className="break-words text-sm font-semibold text-gray-900">
+      {lead?.dropLocation || lead?.unloading_point || lead?.unloadingPoint || lead?.toLocation || lead?.to || lead?.destination || lead?.loading_point || "N/A"}
+    </p>
+  </div>
+</div>
+
 
         {/* Goods and weight */}
         <div className="grid grid-cols-2 gap-2">
