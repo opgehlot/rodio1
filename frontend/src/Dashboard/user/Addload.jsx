@@ -2323,7 +2323,7 @@ export default function Addload() {
 
   const vehicleTypes = [
     "Pickup / Auto",
-    "LCV",
+    "LCV/MINI TRUCK",
     "HCV/TRUCK",
     "Container",
     "Trailer",

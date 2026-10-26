@@ -18,7 +18,7 @@ import DownloadApp from "../components/Downlodapp";
 
 
 function Home() {
-  const [activeTab, setActiveTab] = useState("search");
+ const [activeTab, setActiveTab] = useState("leads");
 
   return (
     <div>

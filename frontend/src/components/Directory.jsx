@@ -6,9 +6,10 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import RodioVerified from "../assets/rodio-verified.png";
 import { FaWhatsapp } from "react-icons/fa";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence }  from "framer-motion";
 import {
   Search,
   MapPin,
@@ -826,41 +827,48 @@ const Directory = () => {
     const { formattedRole, profileImage } = getCardMeta(item);
 
     return (
-      <div className="relative flex w-full shrink-0 items-center gap-3 overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 p-3 text-white sm:p-4">
-        <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-white/10" />
-        <div className="pointer-events-none absolute -bottom-12 left-1/3 h-24 w-24 rounded-full bg-white/5" />
+     <div className="relative flex w-full shrink-0 items-center gap-3 overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 p-3 text-white sm:p-4">
+  <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-white/10" />
+  <div className="pointer-events-none absolute -bottom-12 left-1/3 h-24 w-24 rounded-full bg-white/5" />
 
-        {profileImage ? (
-          <img
-            src={profileImage}
-            alt={`${item.firmName || "Business"} profile`}
-            className="relative h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-md ring-4 ring-white/20 sm:h-14 sm:w-14"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
-        ) : (
-          <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-white/70 bg-white/20 text-xl font-bold shadow-md ring-4 ring-white/10 sm:h-14 sm:w-14">
-            {(item.firmName || "T").charAt(0).toUpperCase()}
-          </div>
-        )}
+  {profileImage ? (
+    <img
+      src={profileImage}
+      alt={`${item.firmName || "Business"} profile`}
+      className="relative h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-md ring-4 ring-white/20 sm:h-14 sm:w-14"
+      onError={(e) => {
+        e.currentTarget.style.display = "none";
+      }}
+    />
+  ) : (
+    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-white/70 bg-white/20 text-xl font-bold shadow-md ring-4 ring-white/10 sm:h-14 sm:w-14">
+      {(item.firmName || "T").charAt(0).toUpperCase()}
+    </div>
+  )}
 
-        <div className="relative min-w-0 flex-1">
-          <p className="text-base font-bold leading-snug [overflow-wrap:break-word] sm:text-lg">
-            {item.firmName || "Transport Partner"}
-          </p>
-          <p className="mt-0.5 truncate text-sm text-white/85">
-            {item.ownerName || formattedRole}
-          </p>
+  <div className="relative flex min-w-0 flex-1 items-center justify-between gap-2">
+    <div className="min-w-0 flex-1">
+      <p className="text-base font-bold leading-snug [overflow-wrap:break-word] sm:text-lg">
+        {item.firmName || "Transport Partner"}
+      </p>
 
-          {item.isVerified && (
-            <span className="mt-1.5 inline-flex items-center gap-1 rounded-full border border-white/40 bg-white/15 px-2 py-0.5 text-[11px] font-semibold backdrop-blur-sm">
-              <BadgeCheck size={13} />
-              Rodio Verified
-            </span>
-          )}
-        </div>
-      </div>
+      <p className="mt-0.5 truncate text-sm text-white/90">
+        {item.ownerName || formattedRole}
+      </p>
+    </div>
+
+    {item.isVerified && (
+      <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border-2 border-emerald-200 bg-white px-2.5 py-1.5 text-[11px] font-extrabold text-blue-800 shadow-lg sm:px-3 sm:py-2 sm:text-xs">
+        <img
+          src={RodioVerified}
+          alt="Rodio Verified"
+          className="h-7 w- shrink-0 object-contain sm:h-6 sm:w-6"
+        />
+        <span className="whitespace-nowrap">Rodio Verified</span>
+      </span>
+    )}
+  </div>
+</div>
     );
   };
 
@@ -937,8 +945,7 @@ const Directory = () => {
       onKeyDown={(e) => {
         if (e.key === "Enter") openProfile(item, cardId);
       }}
-      className="flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-xl border border-gray-100 bg-white text-left"
-      aria-label={`View profile of ${item.firmName || "Transport Partner"}`}
+className="group flex w-full flex-col overflow-hidden rounded-2xl border-2 border-blue-500 bg-white shadow-sm transition-shadow duration-300 hover:border-blue-800 hover:shadow-xl hover:shadow-blue-100/60"      aria-label={`View profile of ${item.firmName || "Transport Partner"}`}
     >
       {renderCardHeader(item)}
       {renderCardData(item)}
@@ -969,8 +976,7 @@ const Directory = () => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -3 }}
         transition={{ duration: 0.2 }}
-        className="group flex w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow duration-300 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/60"
-      >
+className="group flex w-full flex-col overflow-hidden rounded-2xl border-4 border-blue-500 bg-white shadow-sm transition-shadow duration-300 hover:border-blue-700 hover:shadow-xl hover:shadow-blue-100/60"      >
         {/* TOP: image + info.
             auto-fit: jagah kam ho to apne aap 1 column (image upar, info neeche) */}
         <div className="grid [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">

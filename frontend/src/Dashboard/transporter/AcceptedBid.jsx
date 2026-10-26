@@ -133,6 +133,20 @@ function AcceptedBid() {
     const b = bid?.booking || bid?.load || bid || {};
     return b.weight ? `${b.weight}` : b.loadType || b.quantity || b.vehicleType || "N/A";
   };
+  const getRequiredVehicle = (bid) => {
+  const b = bid?.booking || bid?.load || bid || {};
+
+  return (
+    b.requiredVehicle ||
+    b.vehicleRequired ||
+    b.vehicleType ||
+    b.truckType ||
+    b.preferredVehicle ||
+    b.vehicleCategory ||
+    b.bodyType ||
+    "Vehicle not specified"
+  );
+};
 
   const getCustomerName = (bid) => {
     const b = bid?.booking || bid?.load || bid || {};
@@ -809,6 +823,21 @@ function AcceptedBid() {
                       </div>
                     </div>
                   </section>
+                  <div className="flex items-start gap-4">
+  <div className="pt-0.5 text-blue-600">
+    <Truck size={21} strokeWidth={1.8} />
+  </div>
+
+  <div>
+    <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+      Required Vehicle
+    </p>
+
+    <p className="mt-1.5 text-base font-semibold text-slate-900">
+      {getRequiredVehicle(selectedBid)}
+    </p>
+  </div>
+</div>
 
                   {/* Remarks */}
                   <section className="py-7 sm:py-8 border-b border-slate-200">

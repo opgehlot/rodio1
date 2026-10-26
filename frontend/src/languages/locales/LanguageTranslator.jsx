@@ -330,14 +330,14 @@ const LanguageTranslator = () => {
           value="en"
           className="bg-white text-black"
         >
-          🇬🇧 English
+           English
         </option>
 
         <option
           value="hi"
           className="bg-white text-black"
         >
-          🇮🇳 हिन्दी
+           हिन्दी
         </option>
       </select>
     </div>

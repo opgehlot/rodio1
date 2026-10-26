@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-
+import { ProfileProvider } from "./context/ProfileContext";
 import "./languages";
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider>
+    <ProfileProvider>
     <BusinessRegistrationProvider>
       <ToastContainer
         position="top-right"
@@ -19,5 +20,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       />
       <App />
     </BusinessRegistrationProvider>
+      </ProfileProvider>
   </AuthProvider>
 );
+
+
