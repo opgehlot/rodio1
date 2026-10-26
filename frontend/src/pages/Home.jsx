@@ -11,6 +11,7 @@ import ReviewChatSection from "../components/ReviewChatSection";
 import AdminHeroSlideManager from "../components/AdminHeroSlideManager";
 import MediaGallery from "../components/MediaGallery";
 import DownloadApp from "../components/Downlodapp";
+import PlanSelection from "../../payment/PlanSelection";
 // import PlanSelection from "../../payment/PlanSelection";
 
 // import AdminReferralPayouts from "../components/AdminReferralPayout";
@@ -34,6 +35,7 @@ function Home() {
 
       {/* Other Sections */}
       <Features />
+      <PlanSelection/>
       {/* <PlanSelection/> */}
       <ReviewChatSection/>
       
