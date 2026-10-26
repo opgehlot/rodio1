@@ -21,7 +21,7 @@ import axios from "axios";
 
 const API = axios.create({
   // https://rodio-tradelink.onrender.com
-  baseURL: "https://rodio-tradelink.onrender.com/api",
+  baseURL: "/api",
 });
 
 const logout = () => {
