@@ -276,9 +276,6 @@ import { Link } from "react-router-dom";
 import { FaWhatsapp } from "react-icons/fa";
 import {
   Truck,
-  MapPin,
-  Mail,
-  Phone,
   ChevronRight,
   ArrowUp,
 } from "lucide-react";
@@ -338,7 +335,7 @@ export default function Footer() {
     { label: "Home", to: "/" },
     { label: "About", to: "/about" },
     { label: "Services", to: "/services" },
-    { label: "Search Transport", to: "/register" },
+    // { label: "Search Transport", to: "/transportsearch" },
     { label: "Contact Us", to: "/queryform" },
   ];
 
@@ -348,11 +345,6 @@ export default function Footer() {
     { label: "Privacy Policy", to: "/privaceypolicy" },
   ];
 
-  const companyLinks = [
-    { label: "Become Transporter", to: "/register" },
-    { label: "Ship with Rodio", to: "/register" },
-    { label: "Login", to: "/login" },
-  ];
 
   const LinkList = ({ title, items }) => (
     <div>
@@ -377,26 +369,6 @@ export default function Footer() {
     </div>
   );
 
-  const contactCards = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "support.rodiotradelink@gmail.com",
-      extra: "break-all",
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      value: "+91 9993738255, +91 8319501708",
-      extra: "",
-    },
-    {
-      icon: MapPin,
-      label: "Address",
-      value: "EA-60, Scheme 94, Ring Road Indore",
-      extra: "",
-    },
-  ];
 
   return (
     <footer className="bg-white text-gray-700 border-t border-gray-200">
@@ -472,7 +444,7 @@ export default function Footer() {
         {/* Row 1: Brand + link columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10">
           {/* Brand + tagline + social */}
-          <div className="sm:col-span-2 lg:col-span-4">
+          <div className="sm:col-span-2 lg:col-span-5">
             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
               Rodio <span className="text-orange-500">Tradelink</span>
             </h2>
@@ -503,45 +475,16 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <LinkList title="Quick Links" items={quickLinks} />
           </div>
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-4">
             <LinkList title="Policies" items={policyLinks} />
           </div>
-          <div className="lg:col-span-3">
-            <LinkList title="Company" items={companyLinks} />
-          </div>
         </div>
 
-        {/* Row 2: Contact cards */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5">
-          {contactCards.map((card) => {
-            const Icon = card.icon;
-            return (
-              <div
-                key={card.label}
-                className="flex items-center gap-4 rounded-2xl bg-orange-50 border border-orange-100 p-5"
-              >
-                <div className="w-14 h-14 rounded-full bg-white text-orange-500 ring-1 ring-orange-200 flex items-center justify-center shrink-0">
-                  <Icon size={24} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
-                    {card.label}
-                  </p>
-                  <p
-                    className={`text-lg font-semibold text-gray-900 leading-snug ${card.extra}`}
-                  >
-                    {card.value}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
 
-        {/* Row 3: Bottom bar */}
+        {/* Bottom bar */}
         <div className="border-t border-gray-200 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-base text-gray-600 text-center md:text-left">
             © {new Date().getFullYear()}{" "}

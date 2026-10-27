@@ -297,7 +297,8 @@ const LocationSearchInput = ({
 //
 // STRUCTURE (baad me admin panel se ads add karne ke liye):
 //   - Strip me fixed-size (3:4) ad slots hote hain.
-//   - Jab tak ADMIN_ADS khaali hai -> khaali "Ad Space" slots dikhte hain.
+//   - Jab tak ADMIN_ADS khaali hai -> khaali "Ad Space" slots dikhte hain
+//     aur wo bhi apne aap upar ki taraf scroll hote hain.
 //   - Admin panel se ad aaye to bas us list me ye shape ka object daalo:
 //       {
 //         _id:   "unique-id",
@@ -305,14 +306,16 @@ const LocationSearchInput = ({
 //         link:  "https://..."  ,          // optional (click par naye tab me khulega)
 //         title: "Ad name"                 // optional (alt text)
 //       }
-//   - 3 ya usse zyada ads hone par strip apne aap upar scroll hoti hai
-//     (hover par ruk jaati hai).
+//   - Placeholders ho ya 3 ya usse zyada ads hon -> strip apne aap upar
+//     scroll hoti hai (cursor le jaane / hover par ruk jaati hai).
+//   - Mobile / tablet par ye strip hidden rehti hai (aside: hidden lg:block).
 // ==========================================
 const AD_PLACEHOLDER_COUNT = 8;
 
 const AdsStrip = ({ ads = [] }) => {
   const hasAds = ads.length > 0;
-  const shouldScroll = ads.length >= 3;
+  // Placeholders ho ya 3+ ads -> auto scroll
+  const shouldScroll = !hasAds || ads.length >= 3;
 
   const slots = hasAds
     ? ads
@@ -323,7 +326,7 @@ const AdsStrip = ({ ads = [] }) => {
 
   // Seamless loop ke liye list 2 baar
   const loopSlots = shouldScroll ? [...slots, ...slots] : slots;
-  const duration = Math.max(20, ads.length * 6);
+  const duration = Math.max(20, slots.length * 6);
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
@@ -332,7 +335,7 @@ const AdsStrip = ({ ads = [] }) => {
           0% { transform: translateY(0); }
           100% { transform: translateY(-50%); }
         }
-        .ads-track-run { animation: adsScrollUp ${duration}s linear infinite; }
+        .ads-track-run { animation: adsScrollUp ${duration}s linear infinite; will-change: transform; }
         .ads-viewport:hover .ads-track-run { animation-play-state: paused; }
       `}</style>
 
@@ -342,16 +345,17 @@ const AdsStrip = ({ ads = [] }) => {
       </div>
 
       <div className="ads-viewport relative min-h-0 flex-1 overflow-hidden bg-gray-50/60">
+        {/* gap ki jagah har slot par mt-3 -> -50% loop bilkul exact baithta hai */}
         <div
-          className={`flex flex-col gap-3 p-3 ${
-            shouldScroll ? "ads-track-run" : ""
+          className={`flex flex-col px-3 ${
+            shouldScroll ? "ads-track-run" : "pb-3"
           }`}
         >
           {loopSlots.map((ad, i) =>
             ad.placeholder ? (
               <div
-                key={ad._id}
-                className="flex aspect-[3/4] w-full shrink-0 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-blue-200 bg-white text-center"
+                key={`${ad._id}-${i}`}
+                className="mt-3 flex aspect-[3/4] w-full shrink-0 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-blue-200 bg-white text-center"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-500">
                   <Megaphone size={18} />
@@ -365,7 +369,7 @@ const AdsStrip = ({ ads = [] }) => {
                 href={ad.link || undefined}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative block aspect-[3/4] w-full shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
+                className="group relative mt-3 block aspect-[3/4] w-full shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
               >
                 <img
                   src={ad.image}
@@ -955,6 +959,7 @@ className="group flex w-full flex-col overflow-hidden rounded-2xl border-2 borde
   // ==========================================
   // ROW TYPE 1: AD CARD (ek hi card, image aur data ke beech koi gap nahi)
   //
+  //  Desktop:
   //  ┌────────────────────┬─────────────────────────────┐
   //  │                    │ (o) Firm name               │  <- blue header
   //  │      ad image      │     Owner / Rodio Verified  │
@@ -963,6 +968,8 @@ className="group flex w-full flex-col overflow-hidden rounded-2xl border-2 borde
   //  ├────────────────────┴─────────────────────────────┤
   //  │ [ Call ]       [ WhatsApp ]      [ View Profile ] │
   //  └──────────────────────────────────────────────────┘
+  //
+  //  Mobile: upar ad image, uske neeche card, sabse neeche buttons
   // ==========================================
   const renderAdRow = ({ item, index }) => {
     const cardId = getCardId(item, index);
@@ -978,8 +985,9 @@ className="group flex w-full flex-col overflow-hidden rounded-2xl border-2 borde
         transition={{ duration: 0.2 }}
 className="group flex w-full flex-col overflow-hidden rounded-2xl border-4 border-blue-500 bg-white shadow-sm transition-shadow duration-300 hover:border-blue-700 hover:shadow-xl hover:shadow-blue-100/60"      >
         {/* TOP: image + info.
-            auto-fit: jagah kam ho to apne aap 1 column (image upar, info neeche) */}
-        <div className="grid [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
+            Mobile: 1 column (image upar, card neeche).
+            sm+: auto-fit (jagah ho to image left, card right) */}
+        <div className="grid grid-cols-1 sm:[grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
           {/* AD IMAGE */}
           <div className="relative h-[220px] w-full overflow-hidden bg-gray-50 sm:h-auto sm:min-h-[300px]">
             <img
@@ -1278,8 +1286,8 @@ className="group flex w-full flex-col overflow-hidden rounded-2xl border-4 borde
       ========================================== */}
       <div ref={resultsRef} className="scroll-mt-24">
         <div className="flex items-stretch gap-5">
-          {/* LEFT: ads strip. Sirf badi screen (xl+) par dikhti hai.
-              Dashboard me sidebar ki wajah se jagah kam hoti hai, isliye 280px. */}
+          {/* LEFT: ads strip. Mobile / tablet par hidden, sirf badi screen (lg+) par dikhti hai.
+              Dashboard me sidebar ki wajah se jagah kam hoti hai, isliye chhoti width. */}
           <aside
             className={
               inDashboard
