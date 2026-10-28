@@ -2947,6 +2947,825 @@
 // }
 
 // export default PlanSelection;
+// import { useEffect, useRef, useState } from "react";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import toast from "react-hot-toast";
+
+// import {
+//   Check,
+//   Loader2,
+//   ShieldCheck,
+//   Sparkles,
+//   Building2,
+// } from "lucide-react";
+
+// import API from "../src/api/api";
+
+// export function PlanSelection() {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const autoPaymentStarted = useRef(false);
+
+//   // =====================================================
+//   // STATES
+//   // =====================================================
+
+//   const [selectedPlanKey, setSelectedPlanKey] = useState("1year");
+//   const [referralCode, setReferralCode] = useState("");
+//   const [paymentLoading, setPaymentLoading] = useState(false);
+//   const [pageLoading, setPageLoading] = useState(true);
+//   const [isGeneratingReceipt, setIsGeneratingReceipt] = useState(false);
+//   const [business, setBusiness] = useState(null);
+//   const [razorpayReady, setRazorpayReady] = useState(Boolean(window.Razorpay));
+
+//   // =====================================================
+//   // PLANS
+//   // =====================================================
+
+//   const plans = [
+//     // {
+//     //   key: "3month",
+//     //   name: "3 Month",
+//     //   originalPrice: 675,
+//     //   price: 599,
+//     //   duration: "3 months",
+//     //   perMonthText: "₹199/month",
+//     //   benefit: "11% benefit",
+//     //   features: [
+//     //     "Standard Booking Access",
+//     //     "Email Support",
+//     //     "Directory Listing",
+//     //     "Add & Manage Vehicles",
+//     //   ],
+//     // },
+//     // {
+//     //   key: "testing",
+//     //   name: "Testing Plan",
+//     //   price: 1,
+//     //   duration: "1 day",
+//     //   features: [
+//     //     "Instant Feature Test",
+//     //     "Valid for 24 Hours",
+//     //     "All Premium Features Included",
+//     //   ],
+//     // },
+
+//     {
+//       key: "6months",
+//       name: "6 Months",
+//       originalPrice: 1350,
+//       price: 999,
+//       duration: "6 months",
+//       perMonthText: "₹166/month",
+//       benefit: "26% benefit",
+//       features: [
+      
+//          " daily transport leads",
+//         "Unlimited Booking",
+//         "Priority Support 24/7",
+//         "Top Directory Listing",
+//         "Verified Badge on Profile",
+//         "Add & Manage Vehicles",
+//         "Add & Manage Routes",
+//       ],
+//     },
+
+//     {
+//       key: "1year",
+//       name: "1 Year",
+//       originalPrice: 2700,
+//       price: 1599,
+//       duration: "1 year",
+//       perMonthText: "₹133/month",
+//       benefit: "41% benefit",
+//       features: [
+//           "Priority Of transport leads",
+//         "Unlimited Booking",
+//         "Priority Support 24/7",
+//         "Top Directory Listing",
+//         "Verified Badge on Profile",
+//         "Direct Client Connect",
+//         "Complete Business Profile",
+//       ],
+//     },
+//   ];
+
+//   // =====================================================
+//   // LOAD RAZORPAY
+//   // =====================================================
+
+//   useEffect(() => {
+//     const loadRazorpay = () => {
+//       return new Promise((resolve) => {
+//         if (window.Razorpay) {
+//           setRazorpayReady(true);
+//           resolve(true);
+//           return;
+//         }
+
+//         const existingScript = document.querySelector(
+//           'script[src="https://checkout.razorpay.com/v1/checkout.js"]'
+//         );
+
+//         if (existingScript) {
+//           existingScript.addEventListener("load", () => {
+//             setRazorpayReady(true);
+//             resolve(true);
+//           }, { once: true });
+//           existingScript.addEventListener("error", () => resolve(false), { once: true });
+//           return;
+//         }
+
+//         const script = document.createElement("script");
+//         script.src = "https://checkout.razorpay.com/v1/checkout.js";
+//         script.async = true;
+//         script.onload = () => {
+//           setRazorpayReady(true);
+//           resolve(true);
+//         };
+//         script.onerror = () => {
+//           setRazorpayReady(false);
+//           resolve(false);
+//         };
+//         document.body.appendChild(script);
+//       });
+//     };
+
+//     loadRazorpay();
+//   }, []);
+
+//   // =====================================================
+//   // BUSINESS PROFILE CHECK REMOVED
+//   // Plans can be purchased without a business profile.
+//   // =====================================================
+//   useEffect(() => {
+//     setBusiness(null);
+//     setPageLoading(false);
+//   }, []);
+
+//   // =====================================================
+//   // HANDLE PAYMENT
+//   // =====================================================
+
+//   const handlePayment = async (planKey) => {
+//     try {
+//       if (paymentLoading) return;
+
+//       if (!window.Razorpay) {
+//         toast.error(
+//           "Payment service is still loading. Please try again.",
+//           {
+//             id: "razorpay-loading-error",
+//           }
+//         );
+
+//         return;
+//       }
+
+//       const activePlan = plans.find((plan) => plan.key === planKey);
+
+//       if (!activePlan) {
+//         toast.error("Please select a valid subscription plan.", {
+//           id: "plan-error",
+//         });
+
+//         return;
+//       }
+
+//       setSelectedPlanKey(planKey);
+//       setPaymentLoading(true);
+
+//       // =================================================
+//       // CREATE ORDER
+//       // =================================================
+
+//       const { data: createOrderRes } = await API.post(
+//         "/payment/create-order",
+//         {
+//           planKey: planKey,
+
+//           // Referral optional hai
+//           referralCode:
+//             referralCode.trim().toUpperCase() || undefined,
+//         }
+//       );
+
+//       if (!createOrderRes?.success) {
+//         toast.error(
+//           createOrderRes?.message ||
+//             "Unable to create payment order.",
+//           {
+//             id: "create-order-error",
+//           }
+//         );
+
+//         setPaymentLoading(false);
+//         return;
+//       }
+
+//       // =================================================
+//       // FREE PAYMENT
+//       // =================================================
+
+//       const finalPayableAmount =
+//         createOrderRes.planDetails?.amount ??
+//         activePlan.price;
+
+//       if (
+//         createOrderRes.isFree ||
+//         Number(finalPayableAmount) === 0
+//       ) {
+//         toast.success(
+//           "Free subscription activated successfully!",
+//           {
+//             id: "free-success",
+//           }
+//         );
+
+//         setPaymentLoading(false);
+
+//         navigate("/dashboard", {
+//           replace: true,
+//         });
+
+//         return;
+//       }
+
+//       // =================================================
+//       // CHECK ORDER
+//       // =================================================
+
+//       if (!createOrderRes.order) {
+//         toast.error(
+//           "Payment order was not created.",
+//           {
+//             id: "order-missing-error",
+//           }
+//         );
+
+//         setPaymentLoading(false);
+//         return;
+//       }
+
+//       const order = createOrderRes.order;
+
+//       // =================================================
+//       // RAZORPAY OPTIONS
+//       // =================================================
+
+//       const options = {
+//         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+//         amount: order.amount,
+
+//         currency: order.currency || "INR",
+
+//         order_id: order.id,
+
+//         name: "Rodio Tradelink",
+
+//         description: `${activePlan.name} Business Subscription`,
+
+//         prefill: {
+//           name: business?.user?.name || business?.name || "",
+//           email: business?.user?.email || business?.email || "",
+//           contact: business?.user?.mobile || business?.phoneNumber || "",
+//         },
+
+//         notes: {
+//           ...(business?._id ? { businessId: business._id.toString() } : {}),
+//           plan: activePlan.name,
+//         },
+
+//         theme: {
+//           color: "#f97316",
+//         },
+
+//         // =================================================
+//         // PAYMENT SUCCESS
+//         // =================================================
+
+//         handler: async function (response) {
+//           try {
+//             setIsGeneratingReceipt(true);
+
+//             // =============================================
+//             // VERIFY PAYMENT
+//             // =============================================
+
+//             const verifyRes = await API.post(
+//               "/payment/verify-payment",
+//               {
+//                 razorpay_order_id:
+//                   response.razorpay_order_id,
+
+//                 razorpay_payment_id:
+//                   response.razorpay_payment_id,
+
+//                 razorpay_signature:
+//                   response.razorpay_signature,
+//               }
+//             );
+
+//             if (!verifyRes.data?.success) {
+//               setIsGeneratingReceipt(false);
+
+//               toast.error(
+//                 verifyRes.data?.message ||
+//                   "Payment verification failed.",
+//                 {
+//                   id: "verify-payment-error",
+//                 }
+//               );
+
+//               setPaymentLoading(false);
+
+//               return;
+//             }
+
+//             // =============================================
+//             // UPDATE LOCAL USER
+//             // =============================================
+
+//             try {
+//               const user = JSON.parse(
+//                 localStorage.getItem("user") || "{}"
+//               );
+
+//               user.isSubscriptionActive = true;
+
+//               user.subscription = {
+//                 ...(user.subscription || {}),
+//                 status: "active",
+//                 plan: activePlan.name,
+//               };
+
+//               localStorage.setItem(
+//                 "user",
+//                 JSON.stringify(user)
+//               );
+
+//               window.dispatchEvent(
+//                 new Event("subscriptionUpdated")
+//               );
+//             } catch (localStorageError) {
+//               console.error(
+//                 "LOCAL USER UPDATE ERROR:",
+//                 localStorageError
+//               );
+//             }
+
+//             // =============================================
+//             // SUCCESS
+//             // =============================================
+
+//             toast.success(
+//               "Payment successful! Business activated.",
+//               {
+//                 id: "payment-success",
+//               }
+//             );
+
+//             setReferralCode("");
+
+//             const paymentMongoId =
+//               verifyRes.data?.paymentId ||
+//               response.razorpay_payment_id;
+
+//             // =============================================
+//             // GO TO RECEIPT
+//             // =============================================
+
+//             setTimeout(() => {
+//               setIsGeneratingReceipt(false);
+
+//               setPaymentLoading(false);
+
+//               navigate(
+//                 `/dashboard/receipt/${paymentMongoId}`,
+//                 {
+//                   replace: true,
+//                 }
+//               );
+//             }, 1000);
+//           } catch (error) {
+//             console.error(
+//               "PAYMENT VERIFY ERROR:",
+//               error
+//             );
+
+//             setIsGeneratingReceipt(false);
+
+//             setPaymentLoading(false);
+
+//             toast.error(
+//               error?.response?.data?.message ||
+//                 "Payment verification failed.",
+//               {
+//                 id: "payment-verification-error",
+//               }
+//             );
+//           }
+//         },
+
+//         // =================================================
+//         // PAYMENT MODAL CLOSED
+//         // =================================================
+
+//         modal: {
+//           ondismiss: () => {
+//             setPaymentLoading(false);
+
+//             toast(
+//               "Payment cancelled. You can try again anytime.",
+//               {
+//                 id: "payment-cancelled",
+//               }
+//             );
+//           },
+//         },
+//       };
+
+//       // =================================================
+//       // OPEN RAZORPAY
+//       // =================================================
+
+//       const razorpay = new window.Razorpay(options);
+
+//       // =================================================
+//       // PAYMENT FAILED
+//       // =================================================
+
+//       razorpay.on(
+//         "payment.failed",
+//         function (response) {
+//           console.error(
+//             "RAZORPAY PAYMENT FAILED:",
+//             response.error
+//           );
+
+//           setPaymentLoading(false);
+
+//           toast.error(
+//             response.error?.description ||
+//               "Payment failed. Please try again.",
+//             {
+//               id: "payment-failed",
+//             }
+//           );
+//         }
+//       );
+
+//       razorpay.open();
+//     } catch (error) {
+//       console.error(
+//         "CREATE PAYMENT ORDER ERROR:",
+//         error
+//       );
+
+//       setPaymentLoading(false);
+
+//       toast.error(
+//         error?.response?.data?.message ||
+//           "Unable to initiate payment.",
+//         {
+//           id: "create-payment-error",
+//         }
+//       );
+//     }
+//   };
+
+//   // =====================================================
+//   // AUTO-OPEN PAYMENT AFTER LOGIN
+//   // =====================================================
+
+//   useEffect(() => {
+//     const params = new URLSearchParams(location.search);
+//     const requestedPlan = params.get("buyPlan");
+//     const validPlan = plans.some((plan) => plan.key === requestedPlan);
+
+//     if (!requestedPlan || !validPlan) return;
+//     if (!localStorage.getItem("token")) return;
+//     if (pageLoading || !razorpayReady) return;
+//     if (autoPaymentStarted.current) return;
+
+//     autoPaymentStarted.current = true;
+//     setSelectedPlanKey(requestedPlan);
+//     navigate(location.pathname, { replace: true });
+//     handlePayment(requestedPlan);
+//   // Intentionally trigger one checkout for the selected return-to plan.
+//   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [location.pathname, location.search, pageLoading, razorpayReady, navigate]);
+
+//   // =====================================================
+//   // PAGE LOADING
+//   // =====================================================
+
+//   if (pageLoading) {
+//     return (
+//       <div className="min-h-[400px] bg-white flex items-center justify-center rounded-2xl">
+//         <div className="flex flex-col items-center gap-4">
+//           <Loader2
+//             size={38}
+//             className="animate-spin text-orange-500"
+//           />
+
+//           <p className="text-slate-500 font-medium">
+//             Loading subscription plans...
+//           </p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // =====================================================
+//   // UI
+//   // =====================================================
+
+//   return (
+//     <div className="min-h-full bg-slate-50 py-3 sm:py-4 px-4 sm:px-6 rounded-2xl flex flex-col items-center justify-center">
+//       <div className="max-w-5xl w-full mx-auto">
+
+//         {/* ================================================
+//             HEADER
+//         ================================================= */}
+
+//         <div className="text-center mb-3 sm:mb-4">
+//           <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-600 border border-orange-200 mb-1.5">
+//             <Sparkles size={14} />
+
+//             Complete Registration
+//           </span>
+
+//           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+//             Choose Your Subscription Plan
+//           </h1>
+
+//           <p className="text-slate-500 text-xs mt-0.5">
+//             Select a plan and complete your payment to
+//             activate your business profile.
+//           </p>
+//         </div>
+
+//         {/* ================================================
+//             BUSINESS BASIC CARD & REFERRAL CODE (COMPACT ROW)
+//         ================================================= */}
+
+//         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4 max-w-2xl mx-auto w-full">
+//           {/* Business Info: show only when business data is available */}
+//           {business && (
+//             <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-2.5 w-full sm:flex-1">
+//               <div className="flex items-center gap-2.5">
+//                 <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+//                   <Building2 size={16} />
+//                 </div>
+//                 <div className="min-w-0">
+//                   <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Business</p>
+//                   <h3 className="font-bold text-slate-900 text-xs truncate">
+//                     {business.firmName || business.name || business.user?.name || "Your Business"}
+//                   </h3>
+//                   <p className="text-[10px] text-slate-400 truncate">
+//                     {business.category || "Business Profile"}
+//                   </p>
+//                 </div>
+//               </div>
+//             </div>
+//           )}
+
+//           {/* Referral Code Compact */}
+//           <div className="w-full sm:flex-1">
+//             <input
+//               type="text"
+//               value={referralCode}
+//               disabled={paymentLoading}
+//               onChange={(e) =>
+//                 setReferralCode(
+//                   e.target.value
+//                     .toUpperCase()
+//                     .replace(/[^A-Z0-9]/g, "")
+//                 )
+//               }
+//               placeholder="REFERRAL CODE (OPTIONAL)"
+//               className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-center font-mono text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 uppercase tracking-wider shadow-sm"
+//             />
+//           </div>
+//         </div>
+
+//         {/* ================================================
+//             PLANS (Centered & Spacious 2 Cards Layout)
+//         ================================================= */}
+
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 justify-center items-stretch max-w-3xl mx-auto">
+
+//           {plans.map((p) => {
+//             const isSelected = selectedPlanKey === p.key;
+
+//             return (
+//               <div
+//                 key={p.key}
+//                 className="bg-white border border-slate-200 hover:border-orange-400 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md relative flex flex-col justify-between transition-all w-full"
+//               >
+//                 <div>
+
+//                   {/* Plan title */}
+//                   <div className="flex justify-between items-start gap-2">
+
+//                     <h2 className="text-xl font-bold text-slate-900">
+//                       {p.name}
+//                     </h2>
+
+//                     {p.benefit && (
+//                       <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-200 whitespace-nowrap">
+//                         {p.benefit}
+//                       </span>
+//                     )}
+
+//                   </div>
+
+//                   <p className="text-slate-500 text-[11px] mt-0.5">
+//                     Access duration
+//                   </p>
+
+//                   {/* Price */}
+//                   <div className="flex items-baseline gap-2 my-2.5">
+
+//                     {p.originalPrice && (
+//                       <span className="text-base font-semibold text-slate-400 line-through">
+//                         ₹{p.originalPrice}
+//                       </span>
+//                     )}
+
+//                     <div className="flex items-baseline gap-0.5">
+
+//                       <span className="text-xl font-semibold text-orange-600">
+//                         ₹
+//                       </span>
+
+//                       <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+//                         {p.price}
+//                       </span>
+
+//                     </div>
+
+//                     <span className="text-slate-500 text-xs ml-1 font-medium">
+//                       / {p.duration}
+//                     </span>
+
+//                   </div>
+
+//                   {/* Per month */}
+//                   {p.perMonthText && (
+//                     <div className="text-[11px] font-semibold text-orange-600 bg-orange-50 inline-block px-2.5 py-1 rounded-md mb-2">
+//                       Effective: {p.perMonthText}
+//                     </div>
+//                   )}
+
+//                   <hr className="border-slate-100 my-3" />
+
+//                   {/* Features */}
+//                   <div className="space-y-2 mb-5">
+
+//                     {p.features.map(
+//                       (feature, idx) => (
+//                         <div
+//                           key={idx}
+//                           className="flex items-start gap-2.5"
+//                         >
+
+//                           <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0 mt-0.5">
+
+//                             <Check
+//                               size={10}
+//                               className="text-emerald-600"
+//                             />
+
+//                           </div>
+
+//                           <span className="text-slate-700 text-xs font-medium leading-tight">
+//                             {feature}
+//                           </span>
+
+//                         </div>
+//                       )
+//                     )}
+
+//                   </div>
+//                 </div>
+
+//                 {/* ==========================================
+//                     DIRECT PAYMENT BUTTON
+//                 =========================================== */}
+
+//                 <button
+//                   type="button"
+//                   disabled={paymentLoading}
+//                   onClick={() => {
+//                     const token = localStorage.getItem("token");
+
+//                     if (!token) {
+//                       navigate("/login", {
+//                         state: {
+//                           returnTo: `${location.pathname}?buyPlan=${encodeURIComponent(p.key)}`,
+//                         },
+//                       });
+//                       return;
+//                     }
+
+//                     setSelectedPlanKey(p.key);
+//                     handlePayment(p.key);
+//                   }}
+//                   className="w-full py-3 rounded-xl font-bold text-sm shadow-sm transition flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+//                 >
+
+//                   {paymentLoading && isSelected ? (
+//                     <>
+//                       <Loader2
+//                         className="animate-spin"
+//                         size={18}
+//                       />
+
+//                       Processing...
+//                     </>
+//                   ) : (
+//                     <>
+//                       Pay ₹{p.price}
+//                     </>
+//                   )}
+
+//                 </button>
+
+//               </div>
+//             );
+//           })}
+
+//         </div>
+
+//         {/* ================================================
+//             SECURE FOOTER
+//         ================================================= */}
+
+//         <div className="flex items-center justify-center gap-1.5 mt-4 text-xs text-slate-500">
+
+//           <ShieldCheck
+//             size={14}
+//             className="text-emerald-600"
+//           />
+
+//           Secure Razorpay Payment Gateway
+
+//         </div>
+
+//         {/* ================================================
+//             EXTRA INFORMATION
+//         ================================================= */}
+
+//         <p className="text-center text-[11px] text-slate-400 mt-1 max-w-lg mx-auto">
+//           You can add or update your address, working
+//           areas, vehicles, routes and other business
+//           details after payment from your dashboard.
+//         </p>
+
+//       </div>
+
+//       {/* ================================================
+//           PAYMENT PROCESSING OVERLAY
+//       ================================================= */}
+
+//       {isGeneratingReceipt && (
+//         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+
+//           <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm text-center">
+
+//             <div className="w-14 h-14 mx-auto rounded-full bg-orange-50 flex items-center justify-center mb-4">
+
+//               <Loader2
+//                 size={28}
+//                 className="animate-spin text-orange-500"
+//               />
+
+//             </div>
+
+//             <h3 className="text-lg font-bold text-slate-900">
+//               Payment Successful
+//             </h3>
+
+//             <p className="text-sm text-slate-500 mt-2">
+//               Activating your business profile...
+//             </p>
+
+//             <p className="text-xs text-slate-400 mt-4">
+//               Please don't close this page.
+//             </p>
+
+//           </div>
+
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default PlanSelection;
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -3019,6 +3838,8 @@ export function PlanSelection() {
       perMonthText: "₹166/month",
       benefit: "26% benefit",
       features: [
+      
+         " daily transport leads",
         "Unlimited Booking",
         "Priority Support 24/7",
         "Top Directory Listing",
@@ -3037,6 +3858,7 @@ export function PlanSelection() {
       perMonthText: "₹133/month",
       benefit: "41% benefit",
       features: [
+          "Priority Of transport leads",
         "Unlimited Booking",
         "Priority Support 24/7",
         "Top Directory Listing",
@@ -3463,11 +4285,11 @@ export function PlanSelection() {
       <div className="min-h-[400px] bg-white flex items-center justify-center rounded-2xl">
         <div className="flex flex-col items-center gap-4">
           <Loader2
-            size={38}
+            size={44}
             className="animate-spin text-orange-500"
           />
 
-          <p className="text-slate-500 font-medium">
+          <p className="text-slate-500 font-medium text-lg">
             Loading subscription plans...
           </p>
         </div>
@@ -3488,17 +4310,17 @@ export function PlanSelection() {
         ================================================= */}
 
         <div className="text-center mb-3 sm:mb-4">
-          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-600 border border-orange-200 mb-1.5">
-            <Sparkles size={14} />
+          <span className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full text-sm sm:text-base font-semibold bg-orange-50 text-orange-600 border border-orange-200 mb-1.5">
+            <Sparkles size={18} />
 
             Complete Registration
           </span>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
             Choose Your Subscription Plan
           </h1>
 
-          <p className="text-slate-500 text-xs mt-0.5">
+          <p className="text-slate-500 text-base sm:text-lg mt-1">
             Select a plan and complete your payment to
             activate your business profile.
           </p>
@@ -3513,15 +4335,15 @@ export function PlanSelection() {
           {business && (
             <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-2.5 w-full sm:flex-1">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-                  <Building2 size={16} />
+                <div className="w-10 h-10 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+                  <Building2 size={20} />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Business</p>
-                  <h3 className="font-bold text-slate-900 text-xs truncate">
+                  <p className="text-sm text-slate-500 uppercase tracking-wider font-semibold">Business</p>
+                  <h3 className="font-bold text-slate-900 text-base truncate">
                     {business.firmName || business.name || business.user?.name || "Your Business"}
                   </h3>
-                  <p className="text-[10px] text-slate-400 truncate">
+                  <p className="text-sm text-slate-400 truncate">
                     {business.category || "Business Profile"}
                   </p>
                 </div>
@@ -3543,7 +4365,7 @@ export function PlanSelection() {
                 )
               }
               placeholder="REFERRAL CODE (OPTIONAL)"
-              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-center font-mono text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 uppercase tracking-wider shadow-sm"
+              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-3 text-center font-mono text-base text-slate-900 placeholder:text-slate-400 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 uppercase tracking-wider shadow-sm"
             />
           </div>
         </div>
@@ -3567,44 +4389,44 @@ export function PlanSelection() {
                   {/* Plan title */}
                   <div className="flex justify-between items-start gap-2">
 
-                    <h2 className="text-xl font-bold text-slate-900">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
                       {p.name}
                     </h2>
 
                     {p.benefit && (
-                      <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-200 whitespace-nowrap">
+                      <span className="bg-emerald-50 text-emerald-700 text-sm font-bold px-2.5 py-1 rounded-full border border-emerald-200 whitespace-nowrap">
                         {p.benefit}
                       </span>
                     )}
 
                   </div>
 
-                  <p className="text-slate-500 text-[11px] mt-0.5">
+                  <p className="text-slate-500 text-base mt-0.5">
                     Access duration
                   </p>
 
                   {/* Price */}
-                  <div className="flex items-baseline gap-2 my-2.5">
+                  <div className="flex items-baseline gap-2 my-2.5 flex-wrap">
 
                     {p.originalPrice && (
-                      <span className="text-base font-semibold text-slate-400 line-through">
+                      <span className="text-xl font-semibold text-slate-400 line-through">
                         ₹{p.originalPrice}
                       </span>
                     )}
 
                     <div className="flex items-baseline gap-0.5">
 
-                      <span className="text-xl font-semibold text-orange-600">
+                      <span className="text-2xl font-semibold text-orange-600">
                         ₹
                       </span>
 
-                      <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                      <span className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
                         {p.price}
                       </span>
 
                     </div>
 
-                    <span className="text-slate-500 text-xs ml-1 font-medium">
+                    <span className="text-slate-500 text-base ml-1 font-medium">
                       / {p.duration}
                     </span>
 
@@ -3612,7 +4434,7 @@ export function PlanSelection() {
 
                   {/* Per month */}
                   {p.perMonthText && (
-                    <div className="text-[11px] font-semibold text-orange-600 bg-orange-50 inline-block px-2.5 py-1 rounded-md mb-2">
+                    <div className="text-base font-semibold text-orange-600 bg-orange-50 inline-block px-3 py-1 rounded-md mb-2">
                       Effective: {p.perMonthText}
                     </div>
                   )}
@@ -3620,7 +4442,7 @@ export function PlanSelection() {
                   <hr className="border-slate-100 my-3" />
 
                   {/* Features */}
-                  <div className="space-y-2 mb-5">
+                  <div className="space-y-3 mb-5">
 
                     {p.features.map(
                       (feature, idx) => (
@@ -3629,16 +4451,16 @@ export function PlanSelection() {
                           className="flex items-start gap-2.5"
                         >
 
-                          <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0 mt-0.5">
+                          <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0 mt-0.5">
 
                             <Check
-                              size={10}
+                              size={14}
                               className="text-emerald-600"
                             />
 
                           </div>
 
-                          <span className="text-slate-700 text-xs font-medium leading-tight">
+                          <span className="text-slate-700 text-base sm:text-lg font-medium leading-snug">
                             {feature}
                           </span>
 
@@ -3671,14 +4493,14 @@ export function PlanSelection() {
                     setSelectedPlanKey(p.key);
                     handlePayment(p.key);
                   }}
-                  className="w-full py-3 rounded-xl font-bold text-sm shadow-sm transition flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full py-4 rounded-xl font-bold text-lg sm:text-xl shadow-sm transition flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
 
                   {paymentLoading && isSelected ? (
                     <>
                       <Loader2
                         className="animate-spin"
-                        size={18}
+                        size={22}
                       />
 
                       Processing...
@@ -3701,26 +4523,26 @@ export function PlanSelection() {
             SECURE FOOTER
         ================================================= */}
 
-        <div className="flex items-center justify-center gap-1.5 mt-4 text-xs text-slate-500">
+        {/* <div className="flex items-center justify-center gap-1.5 mt-4 text-base text-slate-500">
 
           <ShieldCheck
-            size={14}
+            size={20}
             className="text-emerald-600"
           />
 
           Secure Razorpay Payment Gateway
 
-        </div>
+        </div> */}
 
         {/* ================================================
             EXTRA INFORMATION
         ================================================= */}
 
-        <p className="text-center text-[11px] text-slate-400 mt-1 max-w-lg mx-auto">
+        {/* <p className="text-center text-sm sm:text-base text-slate-400 mt-1 max-w-lg mx-auto">
           You can add or update your address, working
           areas, vehicles, routes and other business
           details after payment from your dashboard.
-        </p>
+        </p> */}
 
       </div>
 
@@ -3742,15 +4564,15 @@ export function PlanSelection() {
 
             </div>
 
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-2xl font-bold text-slate-900">
               Payment Successful
             </h3>
 
-            <p className="text-sm text-slate-500 mt-2">
+            <p className="text-lg text-slate-500 mt-2">
               Activating your business profile...
             </p>
 
-            <p className="text-xs text-slate-400 mt-4">
+            <p className="text-base text-slate-400 mt-4">
               Please don't close this page.
             </p>
 

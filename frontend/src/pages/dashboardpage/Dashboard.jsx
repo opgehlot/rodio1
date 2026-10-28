@@ -243,9 +243,8 @@ export function Dashboard() {
           </div>
         )}
 
-        {/* STATE 3: ACTIVE BUSINESS & SUBSCRIPTION */}
-        {/* MY REVIEWS & RATINGS DROPDOWN */}
-        <details className="group rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
+      
+        {/* <details className="group rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-5 py-4 transition hover:bg-white [&::-webkit-details-marker]:hidden">
             <div className="flex items-center gap-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
@@ -273,7 +272,7 @@ export function Dashboard() {
               View My Reviews <ArrowRight size={16} />
             </button>
           </div>
-        </details>
+        </details>  */}
 
         {hasBusiness && hasActiveSubscription && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

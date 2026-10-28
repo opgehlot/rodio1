@@ -1276,6 +1276,7 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../../api/api";
+import FeaturedAds from "../../components/FeaturedAds";
 import {
   FaSearch,
   FaTruckMoving,
@@ -1863,81 +1864,97 @@ const Leads = () => {
         </div>
       </div>
 
-      {/* Cards Grid */}
-      <div ref={resultsRef} className="max-w-7xl mx-auto px-0 sm:px-4 py-5">
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
-            {[...Array(6)].map((_, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-3xl p-6 shadow animate-pulse"
-              >
-                <div className="h-10 bg-gray-200 rounded mb-6"></div>
-                <div className="space-y-4">
-                  <div className="h-4 bg-gray-200 rounded"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-200 rounded"></div>
-                  <div className="h-24 bg-gray-200 rounded-xl"></div>
-                  <div className="h-12 bg-gray-200 rounded-xl"></div>
+      {/* Results: Featured Ads 40% | Leads 60% */}
+<div
+  ref={resultsRef}
+  className="w-full max-w-none px-6 py-5 sm:px-8 lg:px-10 xl:px-12 2xl:px-16"
+>      <div className="grid w-full grid-cols-1 items-start gap-4 lg:grid-cols-[40%_60%] lg:gap-3">
+          {/* LEFT: Featured Ads - 40% */}
+          <aside className="hidden min-w-0 w-full lg:sticky lg:top-24 lg:block">
+            <FeaturedAds
+              placement="leads"
+              className="h-[650px] w-full min-w-0"
+            />
+          </aside>
+
+          {/* RIGHT: Leads - 60% */}
+          <section className="min-w-0 w-full">
+            {loading ? (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {[...Array(4)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="animate-pulse rounded-2xl bg-white p-5 shadow-sm"
+                  >
+                    <div className="mb-5 h-10 rounded bg-gray-200" />
+                    <div className="space-y-3">
+                      <div className="h-4 rounded bg-gray-200" />
+                      <div className="h-4 w-3/4 rounded bg-gray-200" />
+                      <div className="h-20 rounded-xl bg-gray-200" />
+                      <div className="h-10 rounded-xl bg-gray-200" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredLeads.length === 0 ? (
+              <div className="rounded-3xl border border-gray-100 bg-white px-6 py-16 text-center shadow-sm sm:px-8">
+                <div className="mb-4 text-5xl">🚚</div>
+                <h2 className="text-2xl font-bold text-gray-700">No Leads Found</h2>
+                <p className="mt-3 text-base text-gray-500">
+                  No transport leads match your search criteria.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="mt-6 rounded-xl bg-blue-700 px-6 py-3 font-semibold text-white transition hover:bg-blue-800"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
+                  {paginatedLeads.map((lead) => (
+                    <SingleLeadCard
+                      key={lead._id}
+                      lead={lead}
+                      page={safePage}
+                      onBidSuccess={getAllLeads}
+                    />
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : filteredLeads.length === 0 ? (
-          <div className="bg-white rounded-3xl shadow-lg py-20 px-8 text-center">
-            <div className="text-7xl mb-6">🚚</div>
-            <h2 className="text-4xl font-bold text-gray-700">No Leads Found</h2>
-            <p className="text-xl text-gray-500 mt-4">
-              No transport leads match your search criteria.
-            </p>
-            <button
-              onClick={resetFilters}
-              className="mt-8 bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 text-lg rounded-xl font-semibold transition cursor-pointer"
-            >
-              Reset Filters
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 pb-4 items-stretch px-4 sm:px-0">
-              {paginatedLeads.map((lead) => (
-                <SingleLeadCard
-                  key={lead._id}
-                  lead={lead}
-                  page={safePage}
-                  onBidSuccess={getAllLeads}
-                />
-              ))}
-            </div>
 
-            {/* Pagination: Prev / Next */}
-            {filteredLeads.length > PAGE_SIZE && (
-              <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
-                <button
-                  onClick={() => goToPage(safePage - 1)}
-                  disabled={safePage === 1}
-                  className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-white border border-gray-200 text-lg font-bold text-gray-700 hover:bg-gray-50 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                >
-                  <FaChevronLeft size={12} />
-                  Prev
-                </button>
+                {filteredLeads.length > PAGE_SIZE && (
+                  <div className="mt-5 flex items-center justify-center gap-3 sm:gap-4">
+                    <button
+                      type="button"
+                      onClick={() => goToPage(safePage - 1)}
+                      disabled={safePage === 1}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      <FaChevronLeft size={12} />
+                      Prev
+                    </button>
 
-                <span className="text-lg font-semibold text-gray-600 whitespace-nowrap">
-                  Page {safePage} of {totalPages}
-                </span>
+                    <span className="whitespace-nowrap text-sm font-semibold text-gray-600">
+                      Page {safePage} of {totalPages}
+                    </span>
 
-                <button
-                  onClick={() => goToPage(safePage + 1)}
-                  disabled={safePage === totalPages}
-                  className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                >
-                  Next
-                  <FaChevronRight size={12} />
-                </button>
-              </div>
+                    <button
+                      type="button"
+                      onClick={() => goToPage(safePage + 1)}
+                      disabled={safePage === totalPages}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Next
+                      <FaChevronRight size={12} />
+                    </button>
+                  </div>
+                )}
+              </>
             )}
-          </>
-        )}
+          </section>
+        </div>
       </div>
     </div>
   );

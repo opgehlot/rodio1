@@ -1160,10 +1160,7 @@ catch (error) {
         {/* LEFT SIDE */}
         <div className="hidden lg:flex lg:w-1/2 bg-white p-16 flex-col justify-between items-center text-center border-r border-slate-100">
           <div className="my-auto py-12 max-w-lg space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-wider uppercase">
-              <Sparkles size={14} />
-              WELCOME BACK
-            </div>
+           
             <h2 className="text-4xl xl:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
               Continue Your Journey with{" "}
               <span className="text-blue-600">RODIO</span>

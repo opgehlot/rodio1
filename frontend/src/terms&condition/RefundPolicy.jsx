@@ -62,8 +62,10 @@ const RefundPolicy = () => {
           5. Contact Us
         </h2>
 
-        <p>Email: support@rodio.in</p>
-        <p>Address: [Your Business Address]</p>
+        <p>Email:Email
+
+support.rodiotradelink@gmail.com</p>
+        <p>Address: [EA-60 Scheme 94 Ring Road Indore]</p>
 
       </div>
 

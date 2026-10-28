@@ -1247,52 +1247,69 @@ export default function Sidebar({ open, setOpen }) {
         </Link>
 
         {/* 2. Profile Card: user's own business details */}
-        <div className="shrink-0 px-4 pt-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 text-center shadow-sm">
-            {/* Profile Image */}
-            <div className="mx-auto flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-slate-100 ring-4 ring-orange-100">
-              {profileImage ? (
-                <img
-                  src={profileImage}
-                  alt="Business profile"
-                  className="h-full w-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              ) : (
-                <UserRound size={36} className="text-slate-400" />
-              )}
-            </div>
+      <div className="shrink-0 px-4 pt-4">
+  <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    {/* Profile Image */}
+    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 ring-4 ring-orange-100">
+      {profileImage ? (
+        <img
+          src={profileImage}
+          alt="Business profile"
+          className="h-full w-full object-cover"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      ) : (
+        <UserRound size={30} className="text-slate-400" />
+      )}
+    </div>
 
-            {/* Firm name */}
-            <h3
-              title={firmName}
-              className="mt-3 break-words text-base font-extrabold uppercase leading-6 text-slate-900"
-            >
-              {firmName}
-            </h3>
+    {/* Firm and Owner Details */}
+    <div className="min-w-0 flex-1">
+      <h3
+        title={firmName}
+        className="break-words text-base font-extrabold uppercase leading-5 text-slate-900"
+      >
+        {firmName}
+      </h3>
 
-            {/* Owner name */}
-            <p className="mt-0.5 break-words text-sm text-slate-500">
-              Owner: <span className="font-semibold text-slate-700">{ownerName}</span>
-            </p>
+      <p className="mt-1 break-words text-sm text-slate-500">
+        Owner:{" "}
+        <span className="font-semibold text-slate-700">
+          {ownerName}
+        </span>
+      </p>
 
-            {/* Role badge */}
-            <div className="mt-3 inline-flex max-w-full items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3 py-1">
-              <Crown size={14} className="shrink-0 text-orange-500" />
-              <span className="break-words text-[11px] font-bold uppercase tracking-wide text-orange-600">
-                {displayRole}
-              </span>
-            </div>
-          </div>
-        </div>
+      {/* Role Badge */}
+      <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3 py-1">
+        <Crown size={14} className="shrink-0 text-orange-500" />
+        <span className="break-words text-[11px] font-bold uppercase tracking-wide text-orange-600">
+          {displayRole}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
 
         {/* Navigation Menu */}
-        <nav
-          id="sidebar-nav"
-          className="scrollbar-thin scrollbar-thumb-slate-300 flex-1 space-y-1.5 overflow-y-auto p-4"
-        >
+       <nav
+  id="sidebar-nav"
+  onWheel={(e) => {
+    const el = e.currentTarget;
+    const atTop = el.scrollTop <= 0;
+    const atBottom =
+      el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+
+    if (
+      (e.deltaY < 0 && atTop) ||
+      (e.deltaY > 0 && atBottom)
+    ) {
+      e.preventDefault();
+    }
+  }}
+  className="scrollbar-thin scrollbar-thumb-slate-300 flex-1 min-h-0 space-y-1.5 overflow-y-auto overscroll-y-contain p-4"
+>
           <NavLink
             id="nav-profile"
             end

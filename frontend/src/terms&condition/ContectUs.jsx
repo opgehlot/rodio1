@@ -21,7 +21,7 @@ const ContactUs = () => {
         </h2>
 
         <p><strong>Business Name:</strong> Rodio</p>
-        <p><strong>Email:</strong> support@rodio.in</p>
+        <p><strong>Email:</strong> support.rodiotradelink@gmail.com</p>
         <p><strong>Phone:</strong> +91-9098328828</p>
         <p><strong>Address:</strong> Your Business Address, City, State, India</p>
 

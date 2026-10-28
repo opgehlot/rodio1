@@ -9,9 +9,12 @@ import { BusinessRegistrationProvider } from "./pages/addServices/BusinessRegist
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
+import { FeaturedAdsProvider } from "./context/FeaturedAdsContext";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <ProfileProvider>
+       <FeaturedAdsProvider>
     <BusinessRegistrationProvider>
       <ToastContainer
         position="top-right"
@@ -20,8 +23,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       />
       <App />
     </BusinessRegistrationProvider>
+    </FeaturedAdsProvider>
       </ProfileProvider>
   </AuthProvider>
 );
-
 

@@ -278,12 +278,16 @@ import {
   Truck,
   ChevronRight,
   ArrowUp,
+  Mail,
+  Phone,
+  MapPin,
 } from "lucide-react";
 import {
   FaFacebook,
   FaInstagram,
   FaLinkedin,
   FaXTwitter,
+  FaYoutube,
 } from "react-icons/fa6";
 
 export default function Footer() {
@@ -329,6 +333,12 @@ export default function Footer() {
       url: "https://chat.whatsapp.com/DoIcWaIOFPz7qGTssjOm9g?s=sh&p=a&ilr=1",
       color: "text-green-500",
     },
+    {
+  name: "YouTube",
+  icon: FaYoutube,
+  url: "https://www.youtube.com/@Rodiotradelink",
+  color: "text-red-600",
+},
   ];
 
   const quickLinks = [
@@ -483,6 +493,64 @@ export default function Footer() {
           </div>
         </div>
 
+
+        {/* Contact cards — same design as the provided reference */}
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Email */}
+          <a
+            href="mailto:support.rodiotradelink@gmail.com"
+            className="flex min-h-[105px] min-w-0 items-center gap-3 rounded-2xl border border-orange-100 bg-[#fff8f2] p-4 sm:p-[18px] transition hover:border-orange-200 hover:shadow-sm"
+          >
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-orange-200 bg-white text-orange-500">
+              <Mail size={29} strokeWidth={1.9} />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-xs font-medium uppercase tracking-wide text-orange-600">
+                Email
+              </span>
+              <span className="mt-1 block break-all text-base font-semibold leading-6 text-slate-900">
+                support.rodiotradelink@gmail.com
+              </span>
+            </span>
+          </a>
+
+          {/* Phone */}
+          <div className="flex min-h-[105px] min-w-0 items-center gap-3 rounded-2xl border border-orange-100 bg-[#fff8f2] p-4 sm:p-[18px]">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-orange-200 bg-white text-orange-500">
+              <Phone size={29} strokeWidth={1.9} />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-xs font-medium uppercase tracking-wide text-orange-600">
+                Phone
+              </span>
+              <span className="mt-1 block text-base font-semibold leading-6 text-slate-900">
+                <a className="hover:text-orange-600" href="tel:+919993738255">+91 9993738255</a>
+                <span>, </span>
+                <a className="hover:text-orange-600" href="tel:+918319501708">+91 8319501708</a>
+              </span>
+            </span>
+          </div>
+
+          {/* Address */}
+          <a
+            href="https://maps.google.com/?q=EA-60+Scheme+94+Ring+Road+Indore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-[105px] min-w-0 items-center gap-3 rounded-2xl border border-orange-100 bg-[#fff8f2] p-4 sm:p-[18px] transition hover:border-orange-200 hover:shadow-sm sm:col-span-2 lg:col-span-1"
+          >
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-orange-200 bg-white text-orange-500">
+              <MapPin size={29} strokeWidth={1.9} />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-xs font-medium uppercase tracking-wide text-orange-600">
+                Address
+              </span>
+              <span className="mt-1 block text-base font-semibold leading-6 text-slate-900">
+                EA-60, Scheme 94, Ring Road Indore
+              </span>
+            </span>
+          </a>
+        </div>
 
         {/* Bottom bar */}
         <div className="border-t border-gray-200 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">

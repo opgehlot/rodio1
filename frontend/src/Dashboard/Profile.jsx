@@ -656,18 +656,396 @@
 // }
 
 // export default Profile;
+// import { useEffect, useState, useRef } from "react";
+// import { Crown, Loader2, Camera, X } from "lucide-react";
+// import toast from "react-hot-toast";
+// import API from "../api/api";
+// import OwnerDetails from "../pages/dashboardpage/Profiledas/OwnerDetails";
+// import FirmDetails from "../pages/dashboardpage/Profiledas/FirmDetails";
+// import VehicleServices from "../pages/dashboardpage/Profiledas/VehicleServices";
+// import MyDocumentss from "../pages/dashboardpage/Profiledas/MyDocumentss";
+
+// export function Profile() {
+//   const fileInputRef = useRef(null);
+//   const adImageInputRef = useRef(null);
+
+//   const [profileData, setProfileData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+//   const [uploadingAdImage, setUploadingAdImage] = useState(false);
+//   const [adImagePreview, setAdImagePreview] = useState(null);
+
+//   const [previewImage, setPreviewImage] = useState(null);
+//   const [showImagePreview, setShowImagePreview] = useState(false);
+
+//   useEffect(() => {
+//     fetchProfile(true);
+//   }, []);
+
+//   const fetchProfile = async (isInitial = false) => {
+//     try {
+//       if (isInitial) setLoading(true);
+
+//       const response = await API.get("/profile"
+//            );
+
+//       const data =
+//         response.data?.profile ||
+//         response.data?.data ||
+//         null;
+
+//       setProfileData(data);
+//     } catch (error) {
+//       console.error("Profile Fetch Error:", error);
+
+//       toast.error(
+//         error?.response?.data?.message ||
+//           "Failed to load profile details",
+//         {
+//           id: "profile-fetch-error",
+//         }
+//       );
+//     } finally {
+//       if (isInitial) setLoading(false);
+//     }
+//   };
+
+//   const handlePhotoChange = async (e) => {
+//     const file = e.target.files?.[0];
+
+//     if (!file) return;
+
+//     if (file.size > 5 * 1024 * 1024) {
+//       toast.error("Image size must be less than 5MB", {
+//         id: "photo-size-error",
+//       });
+
+//       if (fileInputRef.current) {
+//         fileInputRef.current.value = "";
+//       }
+
+//       return;
+//     }
+
+//     // Show selected image immediately
+//     const reader = new FileReader();
+
+//     reader.onloadend = () => {
+//       setPreviewImage(reader.result);
+//     };
+
+//     reader.readAsDataURL(file);
+
+//     try {
+//       setUploadingPhoto(true);
+
+//       const data = new FormData();
+//       data.append("profileImage", file);
+
+//       const response = await API.put("/profile", data, {
+//         headers: {
+    
+           
+      
+//           "Content-Type": "multipart/form-data",
+//         },
+//       });
+
+//       if (response.data?.success) {
+//         toast.success("Profile photo updated successfully!", {
+//           id: "photo-upload-success",
+//         });
+
+//         setPreviewImage(null);
+//         setShowImagePreview(false);
+
+//         await fetchProfile(false);
+//       }
+//     } catch (error) {
+//       console.error("Photo Upload Error:", error);
+
+//       toast.error(
+//         error?.response?.data?.message ||
+//           "Error uploading profile photo",
+//         {
+//           id: "photo-upload-error",
+//         }
+//       );
+
+//       setPreviewImage(null);
+//     } finally {
+//       setUploadingPhoto(false);
+
+//       if (fileInputRef.current) {
+//         fileInputRef.current.value = "";
+//       }
+//     }
+//   };
+
+//   // Upload/update Ad Photo separately from the Profile Photo.
+//   const handleAdImageChange = async (e) => {
+//     const file = e.target.files?.[0];
+//     if (!file) return;
+
+//     if (!file.type.startsWith("image/")) {
+//       toast.error("Please select an image file.");
+//       e.target.value = "";
+//       return;
+//     }
+
+//     if (file.size > 5 * 1024 * 1024) {
+//       toast.error("Ad image size must be less than 5MB.");
+//       e.target.value = "";
+//       return;
+//     }
+
+//     const reader = new FileReader();
+//     reader.onloadend = () => setAdImagePreview(reader.result);
+//     reader.readAsDataURL(file);
+
+//     try {
+//       setUploadingAdImage(true);
+//       const data = new FormData();
+//       data.append("adImage", file);
+
+//       const response = await API.put("/profile/ad-image", data, {
+//         headers: {
+     
+//           "Content-Type": "multipart/form-data",
+//         },
+//       });
+
+//       if (response.data?.success) {
+//         toast.success("Ad Photo updated successfully!");
+//         setAdImagePreview(null);
+//         await fetchProfile(false);
+//       } else {
+//         toast.error(response.data?.message || "Failed to update Ad Photo.");
+//         setAdImagePreview(null);
+//       }
+//     } catch (error) {
+//       console.error("Ad Photo Upload Error:", error);
+//       toast.error(error?.response?.data?.message || "Error uploading Ad Photo.");
+//       setAdImagePreview(null);
+//     } finally {
+//       setUploadingAdImage(false);
+//       if (adImageInputRef.current) adImageInputRef.current.value = "";
+//     }
+//   };
+
+//   if (loading) {
+//     return (
+//       <div className="min-h-[50vh] w-full flex items-center justify-center">
+//         <div className="flex flex-col items-center gap-3">
+//           <Loader2
+//             className="animate-spin text-slate-900"
+//             size={32}
+//           />
+
+//           <p className="text-xs font-black text-slate-500 uppercase tracking-widest">
+//             LOADING PROFILE...
+//           </p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   const fallbackImage =
+//     "https://res.cloudinary.com/tyt9mt1f/image/upload/v1784103262/DUMMYIMAGE_xuc0xa.jpg";
+
+//   const profileImage =
+//     previewImage ||
+//     profileData?.profileImage ||
+//     fallbackImage;
+
+//   return (
+//     <div className="w-full sm:px-6 lg:px-8 py-4">
+
+//       {/* ================= PROFILE HEADER ================= */}
+
+//       <div className="bg-slate-100 p-6 sm:p-8 mb-6">
+
+//         <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
+
+//           {/* ================= PROFILE IMAGE ================= */}
+
+//           <div className="relative shrink-0">
+
+//             <div
+//               onClick={() => setShowImagePreview(true)}
+//               className="w-34 h-34 sm:w-28 sm:h-28 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border-2 border-slate-200 shadow-inner cursor-pointer"
+//             >
+//               <img
+//                 src={profileImage}
+//                 alt="Profile"
+//                 className="w-full h-full object-cover"
+//               />
+//             </div>
+
+//             {/* HIDDEN FILE INPUT */}
+
+//             <input
+//               type="file"
+//               ref={fileInputRef}
+//               onChange={handlePhotoChange}
+//               accept="image/*"
+//               className="hidden"
+//             />
+
+//           </div>
+
+//           {/* ================= USER & FIRM DETAILS ================= */}
+
+//           <div className="space-y-1.5 flex-1 min-w-0">
+
+//             <h2 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight truncate">
+//               {profileData?.firmName ||
+//                 profileData?.name ||
+//                 "Business Profile"}
+//             </h2>
+
+//             <p className="text-xs sm:text-sm font-semibold text-slate-500 break-all">
+//               Owner: {profileData?.name || " "}
+//             </p>
+
+//             <div className="pt-1">
+
+//               <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-blue-100">
+
+//                 <Crown size={13} />
+
+//                 {profileData?.role || "Transporter"}
+
+//               </span>
+
+//             </div>
+
+//           </div>
+
+//         </div>
+
+//       </div>
+
+//       {/* ================= SEPARATE AD PHOTO ================= */}
+      
+
+//       {/* ===================================================== */}
+//       {/* WHATSAPP STYLE IMAGE POPUP */}
+//       {/* ===================================================== */}
+
+//       {showImagePreview && (
+//         <div
+//           className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4"
+//           onClick={() => setShowImagePreview(false)}
+//         >
+
+//           <div
+//             className="relative w-full max-w-md bg-black rounded-2xl overflow-hidden shadow-2xl"
+//             onClick={(e) => e.stopPropagation()}
+//           >
+
+//             {/* ================= CLOSE BUTTON ================= */}
+
+//             <button
+//               type="button"
+//               onClick={() => setShowImagePreview(false)}
+//               className="absolute top-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition"
+//             >
+//               <X size={22} />
+//             </button>
+
+//             {/* ================= BIG IMAGE ================= */}
+
+//             <div className="w-full aspect-square bg-black flex items-center justify-center">
+
+//               <img
+//                 src={profileImage}
+//                 alt="Profile Preview"
+//                 className="w-full h-full object-contain"
+//               />
+
+//             </div>
+
+//             {/* ================= CHANGE BUTTON ================= */}
+
+//             <div className="bg-black p-4">
+
+//               <button
+//                 type="button"
+//                 disabled={uploadingPhoto}
+//                 onClick={() => fileInputRef.current?.click()}
+//                 className="w-full bg-white text-black py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-200 transition active:scale-[0.98]"
+//               >
+
+//                 {uploadingPhoto ? (
+//                   <>
+//                     <Loader2
+//                       size={18}
+//                       className="animate-spin"
+//                     />
+
+//                     Changing...
+//                   </>
+//                 ) : (
+//                   <>
+//                     <Camera size={18} />
+
+//                     Change Profile Photo
+//                   </>
+//                 )}
+
+//               </button>
+
+//             </div>
+
+//           </div>
+
+//         </div>
+//       )}
+
+//       {/* ================= ACCORDION MODULES ================= */}
+
+//       <OwnerDetails
+//         profileData={profileData}
+//         onUpdateSuccess={setProfileData}
+//       />
+
+//       <FirmDetails
+//         profileData={profileData}
+//         onUpdateSuccess={setProfileData}
+//       />
+
+//       <VehicleServices
+//         profileData={profileData}
+//         onUpdateSuccess={setProfileData}
+//       />
+
+//       <MyDocumentss
+//         profileData={profileData}
+//         onUpdateSuccess={setProfileData}
+//       />
+
+//     </div>
+//   );
+// }
+
+// export default Profile;
+
 import { useEffect, useState, useRef } from "react";
-import { Crown, Loader2, Camera, X } from "lucide-react";
+import { Crown, Loader2, Camera, X, Star, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../api/api";
 import OwnerDetails from "../pages/dashboardpage/Profiledas/OwnerDetails";
 import FirmDetails from "../pages/dashboardpage/Profiledas/FirmDetails";
 import VehicleServices from "../pages/dashboardpage/Profiledas/VehicleServices";
 import MyDocumentss from "../pages/dashboardpage/Profiledas/MyDocumentss";
+import MyReviewsRatings from "../pages/dashboardpage/MyReviewsRatings";
 
 export function Profile() {
   const fileInputRef = useRef(null);
   const adImageInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -686,8 +1064,7 @@ export function Profile() {
     try {
       if (isInitial) setLoading(true);
 
-      const response = await API.get("/profile"
-           );
+      const response = await API.get("/profile");
 
       const data =
         response.data?.profile ||
@@ -701,9 +1078,7 @@ export function Profile() {
       toast.error(
         error?.response?.data?.message ||
           "Failed to load profile details",
-        {
-          id: "profile-fetch-error",
-        }
+        { id: "profile-fetch-error" }
       );
     } finally {
       if (isInitial) setLoading(false);
@@ -727,7 +1102,6 @@ export function Profile() {
       return;
     }
 
-    // Show selected image immediately
     const reader = new FileReader();
 
     reader.onloadend = () => {
@@ -744,9 +1118,6 @@ export function Profile() {
 
       const response = await API.put("/profile", data, {
         headers: {
-    
-           
-      
           "Content-Type": "multipart/form-data",
         },
       });
@@ -767,9 +1138,7 @@ export function Profile() {
       toast.error(
         error?.response?.data?.message ||
           "Error uploading profile photo",
-        {
-          id: "photo-upload-error",
-        }
+        { id: "photo-upload-error" }
       );
 
       setPreviewImage(null);
@@ -782,7 +1151,6 @@ export function Profile() {
     }
   };
 
-  // Upload/update Ad Photo separately from the Profile Photo.
   const handleAdImageChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -805,12 +1173,12 @@ export function Profile() {
 
     try {
       setUploadingAdImage(true);
+
       const data = new FormData();
       data.append("adImage", file);
 
       const response = await API.put("/profile/ad-image", data, {
         headers: {
-     
           "Content-Type": "multipart/form-data",
         },
       });
@@ -820,16 +1188,23 @@ export function Profile() {
         setAdImagePreview(null);
         await fetchProfile(false);
       } else {
-        toast.error(response.data?.message || "Failed to update Ad Photo.");
+        toast.error(
+          response.data?.message || "Failed to update Ad Photo."
+        );
         setAdImagePreview(null);
       }
     } catch (error) {
       console.error("Ad Photo Upload Error:", error);
-      toast.error(error?.response?.data?.message || "Error uploading Ad Photo.");
+      toast.error(
+        error?.response?.data?.message || "Error uploading Ad Photo."
+      );
       setAdImagePreview(null);
     } finally {
       setUploadingAdImage(false);
-      if (adImageInputRef.current) adImageInputRef.current.value = "";
+
+      if (adImageInputRef.current) {
+        adImageInputRef.current.value = "";
+      }
     }
   };
 
@@ -860,17 +1235,11 @@ export function Profile() {
 
   return (
     <div className="w-full sm:px-6 lg:px-8 py-4">
-
-      {/* ================= PROFILE HEADER ================= */}
-
+      {/* PROFILE HEADER */}
       <div className="bg-slate-100 p-6 sm:p-8 mb-6">
-
         <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
-
-          {/* ================= PROFILE IMAGE ================= */}
-
+          {/* PROFILE IMAGE */}
           <div className="relative shrink-0">
-
             <div
               onClick={() => setShowImagePreview(true)}
               className="w-34 h-34 sm:w-28 sm:h-28 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border-2 border-slate-200 shadow-inner cursor-pointer"
@@ -882,8 +1251,6 @@ export function Profile() {
               />
             </div>
 
-            {/* HIDDEN FILE INPUT */}
-
             <input
               type="file"
               ref={fileInputRef}
@@ -891,13 +1258,10 @@ export function Profile() {
               accept="image/*"
               className="hidden"
             />
-
           </div>
 
-          {/* ================= USER & FIRM DETAILS ================= */}
-
+          {/* USER & FIRM DETAILS */}
           <div className="space-y-1.5 flex-1 min-w-0">
-
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight truncate">
               {profileData?.firmName ||
                 profileData?.name ||
@@ -909,43 +1273,70 @@ export function Profile() {
             </p>
 
             <div className="pt-1">
-
               <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-blue-100">
-
                 <Crown size={13} />
-
                 {profileData?.role || "Transporter"}
-
               </span>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
-      {/* ================= SEPARATE AD PHOTO ================= */}
-      
+      {/* MY REVIEWS & RATINGS DROPDOWN */}
+      {/* <details className="group mb-6 rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-5 py-4 transition hover:bg-white [&::-webkit-details-marker]:hidden">
+          <div className="flex items-center gap-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
+              <Star size={21} />
+            </div>
 
-      {/* ===================================================== */}
-      {/* WHATSAPP STYLE IMAGE POPUP */}
-      {/* ===================================================== */}
+            <div>
+              <h3 className="font-bold text-slate-900">
+                My Reviews &amp; Ratings
+              </h3>
+              <p className="mt-0.5 text-xs text-slate-500">
+                View customer feedback and your business rating
+              </p>
+            </div>
+          </div>
 
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+              Reviews
+            </span>
+
+            <span className="text-slate-500 transition-transform group-open:rotate-180">
+              ▼
+            </span>
+          </div>
+        </summary>
+
+        <div className="rounded-b-2xl border-t border-slate-200 bg-white px-5 py-5">
+          <p className="text-sm leading-6 text-slate-600">
+            Customer reviews and ratings will appear here when available.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => navigate("/dashboard/reviews")}
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+          >
+            View My Reviews
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </details> */}
+
+      {/* IMAGE PREVIEW */}
       {showImagePreview && (
         <div
           className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4"
           onClick={() => setShowImagePreview(false)}
         >
-
           <div
             className="relative w-full max-w-md bg-black rounded-2xl overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-
-            {/* ================= CLOSE BUTTON ================= */}
-
             <button
               type="button"
               onClick={() => setShowImagePreview(false)}
@@ -954,57 +1345,39 @@ export function Profile() {
               <X size={22} />
             </button>
 
-            {/* ================= BIG IMAGE ================= */}
-
             <div className="w-full aspect-square bg-black flex items-center justify-center">
-
               <img
                 src={profileImage}
                 alt="Profile Preview"
                 className="w-full h-full object-contain"
               />
-
             </div>
 
-            {/* ================= CHANGE BUTTON ================= */}
-
             <div className="bg-black p-4">
-
               <button
                 type="button"
                 disabled={uploadingPhoto}
                 onClick={() => fileInputRef.current?.click()}
                 className="w-full bg-white text-black py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-200 transition active:scale-[0.98]"
               >
-
                 {uploadingPhoto ? (
                   <>
-                    <Loader2
-                      size={18}
-                      className="animate-spin"
-                    />
-
+                    <Loader2 size={18} className="animate-spin" />
                     Changing...
                   </>
                 ) : (
                   <>
                     <Camera size={18} />
-
                     Change Profile Photo
                   </>
                 )}
-
               </button>
-
             </div>
-
           </div>
-
         </div>
       )}
 
-      {/* ================= ACCORDION MODULES ================= */}
-
+      {/* ACCORDION MODULES */}
       <OwnerDetails
         profileData={profileData}
         onUpdateSuccess={setProfileData}
@@ -1024,7 +1397,9 @@ export function Profile() {
         profileData={profileData}
         onUpdateSuccess={setProfileData}
       />
-
+    <div className="w-full min-w-0 block">
+  <MyReviewsRatings />
+</div>
     </div>
   );
 }

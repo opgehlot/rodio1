@@ -2357,7 +2357,7 @@ export function HeroCarousel({ setActiveTab }) {
 
               <button
                 onClick={handlePostLoad}
-                className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-600 text-white text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-600 text-white text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
               >
                 ➕ Add Load
               </button>
@@ -2450,12 +2450,12 @@ export function HeroCarousel({ setActiveTab }) {
               </button>
             </Link>
 
-            <button
-              onClick={() => handleScroll("search")}
-              className="w-full py-2.5 rounded-xlbg-orange-500  text-gray-900 hover:bg-gray-100 text-xs font-bold shadow-md text-center"
-            >
-              🚛 Search Transport
-            </button>
+         <button
+  onClick={() => handleScroll("search")}
+  className="w-full py-2.5 rounded-xl bg-orange-600 text-white hover:bg-orange-700 text-xs font-bold shadow-md transition-all duration-300 text-center"
+>
+  🚛 Search Transport
+</button>
 
             <button
               onClick={() => handleScroll("leads")}

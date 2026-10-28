@@ -96,11 +96,13 @@ const PrivacyPolicy = () => {
         </h2>
 
         <p>
-          Email: support@rodio.in
+          Email: Email
+
+support.rodiotradelink@gmail.com 
         </p>
 
         <p>
-          Address: [Your Business Address]
+          Address: [EA-60 Scheme 94 Ring Road Indore]
         </p>
 
       </div>

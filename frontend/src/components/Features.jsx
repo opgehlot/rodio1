@@ -426,9 +426,9 @@ export function Features() {
       <div className="relative mx-auto max-w-7xl px-6">
         {/* Heading */}
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <span className="inline-block rounded-full bg-blue-100 px-4 py-1 text-sm font-semibold text-blue-700">
+          {/* <span className="inline-block rounded-full bg-blue-100 px-4 py-1 text-sm font-semibold text-blue-700">
             Built for Indian Transport
-          </span>
+          </span> */}
           <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-gray-900 sm:text-5xl">
             Why Choose{" "}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">

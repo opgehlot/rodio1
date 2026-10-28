@@ -623,7 +623,6 @@ import {
   ChevronRight,
   User as UserIcon,
   Star,
-  Megaphone,
   RefreshCw,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
@@ -634,90 +633,9 @@ import toast from "react-hot-toast";
 import RodioVerified from "../assets/rodio-verified.png";
 import API from "../api/api";
 import LocationSearchInput from "../Dashboard/user/LocationSearchInput";
+import FeaturedAds from "../components/FeaturedAds";
 
 const PAGE_SIZE = 10;
-
-// LEFT ADS STRIP ke ads. Abhi khaali -> placeholders dikhte hain.
-// Admin panel se ads aane par { _id, image, link, title } ki list daalo.
-const ADMIN_ADS = [];
-
-// ==========================================
-// LEFT ADS STRIP (Directory jaisi)
-// ==========================================
-const AD_PLACEHOLDER_COUNT = 8;
-
-const AdsStrip = ({ ads = [] }) => {
-  const hasAds = ads.length > 0;
-  const shouldScroll = !hasAds || ads.length >= 3;
-
-  const slots = hasAds
-    ? ads
-    : Array.from({ length: AD_PLACEHOLDER_COUNT }, (_, i) => ({
-        _id: `placeholder-${i}`,
-        placeholder: true,
-      }));
-
-  const loopSlots = shouldScroll ? [...slots, ...slots] : slots;
-  const duration = Math.max(20, slots.length * 6);
-
-  return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-      <style>{`
-        @keyframes adsScrollUp {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(-50%); }
-        }
-        .ads-track-run { animation: adsScrollUp ${duration}s linear infinite; will-change: transform; }
-        .ads-viewport:hover .ads-track-run { animation-play-state: paused; }
-      `}</style>
-
-      <div className="flex shrink-0 items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-2.5 text-white">
-        <Megaphone size={16} />
-        <span className="text-sm font-bold">Featured Ads</span>
-      </div>
-
-      <div className="ads-viewport relative min-h-0 flex-1 overflow-hidden bg-gray-50/60">
-        <div
-          className={`flex flex-col px-3 ${
-            shouldScroll ? "ads-track-run" : "pb-3"
-          }`}
-        >
-          {loopSlots.map((ad, i) =>
-            ad.placeholder ? (
-              <div
-                key={`${ad._id}-${i}`}
-                className="mt-3 flex aspect-[3/4] w-full shrink-0 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-blue-200 bg-white text-center"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-500">
-                  <Megaphone size={18} />
-                </span>
-                <p className="text-xs font-bold text-blue-600">Ad Space</p>
-                <p className="text-[11px] text-gray-400">Your Ad Here</p>
-              </div>
-            ) : (
-              <a
-                key={`${ad._id}-${i}`}
-                href={ad.link || undefined}
-                target="_blank"
-                rel="noreferrer"
-                className="group relative mt-3 block aspect-[3/4] w-full shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
-              >
-                <img
-                  src={ad.image}
-                  alt={ad.title || "Ad"}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              </a>
-            )
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // ==========================================
 // HELPER
@@ -731,9 +649,6 @@ const getTransporterId = (vehicle) =>
 const TransportSearch = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // Dashboard ke andar sidebar jagah leta hai, isliye ads strip chhoti rakhi hai
-  const inDashboard = location.pathname.startsWith("/dashboard");
-
   const [fromLocation, setFromLocation] = useState(null);
   const [toLocation, setToLocation] = useState(null);
   const [vehicleType, setVehicleType] = useState("");
@@ -1587,23 +1502,19 @@ const TransportSearch = () => {
               </p>
             </div>
 
-            <div className="flex items-stretch gap-5">
-              {/* LEFT: ads strip (sirf lg+ screen par) */}
-              <aside
-                className={
-                  inDashboard
-                    ? "relative hidden w-[220px] shrink-0 lg:block xl:w-[240px]"
-                    : "relative hidden w-[500px] shrink-0 lg:block"
-                }
-              >
-                <div className="absolute inset-0">
-                  <AdsStrip ads={ADMIN_ADS} />
-                </div>
+            {/* Directory jaisa exact 40% Featured Ads + 60% Transport Cards layout */}
+            <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,40%)_minmax(0,60%)] lg:gap-5">
+              {/* LEFT: Context-based Featured Ads = 40% */}
+              <aside className="hidden min-w-0 lg:sticky lg:top-24 lg:block">
+                <FeaturedAds
+                  placement="transport-search"
+                  className="h-[650px] w-full min-w-0"
+                />
               </aside>
 
-              {/* RIGHT: cards */}
-              <div className="min-w-0 flex-1">
-                <div className="flex w-full flex-col gap-4 sm:gap-5 pb-6">
+              {/* RIGHT: Transport Cards = 60% */}
+              <div className="min-w-0 w-full">
+                <div className="flex w-full flex-col gap-4 pb-6 sm:gap-5">
                   {rows.map(renderRow)}
                 </div>
               </div>
