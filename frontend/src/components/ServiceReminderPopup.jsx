@@ -1,13 +1,7 @@
-
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  X,
-  BriefcaseBusiness,
-  ArrowRight,
-  Truck,
-} from "lucide-react";
+import { X, BriefcaseBusiness, ArrowRight, Truck } from "lucide-react";
 
 export function BusinessPromotionPopup() {
   const navigate = useNavigate();
@@ -15,140 +9,55 @@ export function BusinessPromotionPopup() {
 
   const [showPopup, setShowPopup] = useState(false);
   const [checkingSubscription, setCheckingSubscription] = useState(true);
-
   const timerRef = useRef(null);
 
-  // =====================================================
-  // CHECK ACTIVE SUBSCRIPTION FROM BACKEND
-  // =====================================================
-
+  // Check whether the user has an active subscription.
   const hasActiveSubscription = async () => {
     try {
       const token = localStorage.getItem("token");
-
-      // User login nahi hai
-      if (!token) {
-        return false;
-      }
+      if (!token) return false;
 
       const response = await axios.get(
         "https://rodio-tradelink.onrender.com/api/business/me",
         {
           headers: {
-             "x-api-key": "ashu@rodio" ,
+            "x-api-key": "ashu@rodio",
             Authorization: `Bearer ${token}`,
           },
         }
       );
 
       const business = response.data?.data;
-
-      /*
-       * Backend response:
-       *
-       * subscriptionStatus: "active"
-       * profileUnlocked: true
-       * isActive: true
-       */
-
-      const isActive =
-        String(business?.subscriptionStatus || "").toLowerCase() ===
-          "active" &&
+      return (
+        String(business?.subscriptionStatus || "").toLowerCase() === "active" &&
         business?.profileUnlocked === true &&
-        business?.isActive === true;
-
-      return isActive;
-    } catch (error) {
-      console.error(
-        "BUSINESS POPUP SUBSCRIPTION CHECK ERROR:",
-        error
+        business?.isActive === true
       );
-
+    } catch (error) {
+      console.error("BUSINESS POPUP SUBSCRIPTION CHECK ERROR:", error);
       return false;
     }
   };
 
-  // =====================================================
-  // CHECK PLAN SELECTION PAGE
-  // =====================================================
+  const isPlanSelectionPage = location.pathname === "/dashboard/planselection";
 
-  const isPlanSelectionPage =
-    location.pathname === "/dashboard/planselection";
-
-  // =====================================================
-  // START POPUP TIMER
-  // =====================================================
-
-  const startTimer = async () => {
-    clearTimeout(timerRef.current);
-
-    // Plan Selection page par popup nahi dikhana
-    if (location.pathname === "/dashboard/planselection") {
-      setShowPopup(false);
-      return;
-    }
-
-    // Backend se fresh subscription check
-    const active = await hasActiveSubscription();
-
-    if (active) {
-      setShowPopup(false);
-      return;
-    }
-
-    // Subscription check complete
-    setCheckingSubscription(false);
-
-    // 40 seconds ke baad popup
-    timerRef.current = setTimeout(async () => {
-      // Timer complete hone ke baad
-      // dobara backend subscription check
-      const latestActive = await hasActiveSubscription();
-
-      if (latestActive) {
-        setShowPopup(false);
-        return;
-      }
-
-      // Agar user Plan Selection par chala gaya
-      if (
-        window.location.pathname ===
-        "/dashboard/planselection"
-      ) {
-        return;
-      }
-
-      setShowPopup(true);
-    }, 40000);
-  };
-
-  // =====================================================
-  // START / RESTART TIMER WHEN PAGE CHANGES
-  // =====================================================
-
+  // Check subscription status and display the popup after 40 seconds if needed.
   useEffect(() => {
     let cancelled = false;
+    clearTimeout(timerRef.current);
 
     const initializePopup = async () => {
       setShowPopup(false);
       setCheckingSubscription(true);
 
-      clearTimeout(timerRef.current);
-
-      // Plan Selection page par timer nahi
       if (location.pathname === "/dashboard/planselection") {
         setCheckingSubscription(false);
         return;
       }
 
       const active = await hasActiveSubscription();
+      if (cancelled) return;
 
-      // Component unmount ho gaya ho
-      if (cancelled) {
-        return;
-      }
-
-      // Active subscription hai
       if (active) {
         setShowPopup(false);
         setCheckingSubscription(false);
@@ -156,24 +65,16 @@ export function BusinessPromotionPopup() {
       }
 
       setCheckingSubscription(false);
-
-      // Subscription active nahi hai
       timerRef.current = setTimeout(async () => {
         const latestActive = await hasActiveSubscription();
-
-        if (latestActive) {
+        if (cancelled || latestActive) {
           setShowPopup(false);
           return;
         }
 
-        if (
-          window.location.pathname ===
-          "/dashboard/planselection"
-        ) {
-          return;
+        if (window.location.pathname !== "/dashboard/planselection") {
+          setShowPopup(true);
         }
-
-        setShowPopup(true);
       }, 40000);
     };
 
@@ -185,252 +86,153 @@ export function BusinessPromotionPopup() {
     };
   }, [location.pathname]);
 
-  // =====================================================
-  // CLOSE POPUP
-  // =====================================================
-
+  // Restart the timer when the user closes the popup.
   const handleClose = () => {
     setShowPopup(false);
-
-    // Close ke baad timer dobara start
-    startTimer();
-  };
-
-  // =====================================================
-  // ADD YOUR BUSINESS
-  // =====================================================
-
-  const handleAddBusiness = () => {
-    setShowPopup(false);
-
     clearTimeout(timerRef.current);
 
-    // Login check
+    if (location.pathname === "/dashboard/planselection") return;
+
+    timerRef.current = setTimeout(async () => {
+      const active = await hasActiveSubscription();
+      if (!active && window.location.pathname !== "/dashboard/planselection") {
+        setShowPopup(true);
+      }
+    }, 40000);
+  };
+
+  // Send the user to registration or plan selection.
+  const handleAddBusiness = () => {
+    setShowPopup(false);
+    clearTimeout(timerRef.current);
+
     const token = localStorage.getItem("token");
-
-    // ================================================
-    // USER NOT LOGGED IN
-    // ================================================
-
     if (!token) {
-      // Login ke baad Plan Selection par bhejna
-      localStorage.setItem(
-        "redirectAfterLogin",
-        "/dashboard/planselection"
-      );
-
+      localStorage.setItem("redirectAfterLogin", "/dashboard/planselection");
       navigate("/register");
-
       return;
     }
-
-    // ================================================
-    // USER ALREADY LOGGED IN
-    // ================================================
 
     navigate("/dashboard/planselection");
   };
 
-  // =====================================================
-  // DON'T RENDER POPUP
-  // =====================================================
-
-  if (
-    !showPopup ||
-    checkingSubscription ||
-    isPlanSelectionPage
-  ) {
-    return null;
-  }
-
-  // =====================================================
-  // POPUP UI
-  // =====================================================
+  if (!showPopup || checkingSubscription || isPlanSelectionPage) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
-
-      {/* =================================================
-          BACKGROUND OVERLAY
-      ================================================= */}
-
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-[3px]"
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto overscroll-contain bg-black/50 px-3 py-4 sm:px-5 sm:py-6">
+      {/* Click outside the dialog to close it. */}
+      <button
+        type="button"
+        aria-label="Close business promotion popup"
+        className="absolute inset-0 h-full w-full cursor-default backdrop-blur-[2px]"
         onClick={handleClose}
       />
 
-      {/* =================================================
-          POPUP
-      ================================================= */}
-
-      <div className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl">
-
-        {/* =================================================
-            CLOSE BUTTON
-        ================================================= */}
-
+      {/* Responsive dialog: the content can scroll on short screens. */}
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="business-popup-title"
+        className="relative z-10 my-auto w-full max-w-md overflow-x-hidden overflow-y-auto rounded-2xl bg-white shadow-2xl max-h-[calc(100dvh-2rem)] sm:rounded-3xl"
+      >
         <button
           type="button"
           onClick={handleClose}
-          className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition hover:bg-gray-200 hover:text-gray-900"
+          className="absolute right-3 top-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-gray-700 shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:right-4 sm:top-4"
           aria-label="Close"
         >
-          <X size={18} />
+          <X size={24} strokeWidth={2.2} />
         </button>
 
-        {/* =================================================
-            TOP ICON AREA
-        ================================================= */}
+        {/* Header and icon */}
+        <div className="relative flex justify-center overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-700 px-5 pb-7 pt-8 sm:pb-8 sm:pt-10">
+          <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-white/10 sm:h-40 sm:w-40" />
+          <div className="pointer-events-none absolute -bottom-12 -right-8 h-36 w-36 rounded-full bg-white/10 sm:h-44 sm:w-44" />
 
-        <div className="relative flex justify-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 px-5 pb-6 pt-7">
-
-          {/* Decorative circles */}
-
-          <div className="absolute -left-10 -top-10 h-28 w-28 rounded-full bg-white/10" />
-
-          <div className="absolute -bottom-12 -right-8 h-32 w-32 rounded-full bg-white/10" />
-
-          {/* Main Icon */}
-
-          <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-xl">
-
-            <div className="relative">
-
-              <BriefcaseBusiness
-                size={40}
-                strokeWidth={1.8}
-                className="text-indigo-600"
-              />
-
-              {/* Truck Badge */}
-
-              <div className="absolute -bottom-2 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-white shadow-md">
-                <Truck size={13} />
-              </div>
-
+          <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-xl sm:h-24 sm:w-24 sm:rounded-3xl">
+            <BriefcaseBusiness
+              size={46}
+              strokeWidth={1.8}
+              className="text-indigo-700 sm:h-12 sm:w-12"
+            />
+            <div className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white shadow-md sm:h-9 sm:w-9">
+              <Truck size={17} strokeWidth={2.2} />
             </div>
-
           </div>
-
         </div>
 
-        {/* =================================================
-            CONTENT
-        ================================================= */}
-
-        <div className="px-5 pb-5 pt-4 text-center">
-
-          {/* Badge */}
-
-          <div className="mb-2 inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
+        {/* Main content */}
+        <div className="px-5 pb-6 pt-5 text-center sm:px-8 sm:pb-8 sm:pt-6">
+          <div className="mb-3 inline-flex items-center rounded-full bg-indigo-50 px-4 py-2 text-sm font-bold text-indigo-700 sm:text-base">
             Grow Your Business
           </div>
 
-          {/* Heading */}
-
-          <h2 className="mt-2 text-xl font-bold text-gray-900">
+          <h2
+            id="business-popup-title"
+            className="mt-1 text-2xl font-extrabold leading-tight text-gray-900 sm:text-3xl"
+          >
             Add Your Business
           </h2>
 
-          {/* Description */}
-
-          <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-gray-500">
-            Apna transport business Rodio par list karein aur
-            naye customers aur business opportunities se
-            connect karein.
+          <p className="mx-auto mt-3 max-w-sm text-base leading-7 text-gray-700 sm:text-lg sm:leading-8">
+            List your transport business on Rodio to reach more customers and discover new business opportunities.
           </p>
 
-          {/* =================================================
-              BENEFITS
-          ================================================= */}
-
-          <div className="mt-4 space-y-2.5 text-left">
-
-            {/* Benefit 1 */}
-
-            <div className="flex items-center gap-3">
-
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-indigo-600">
+          {/* Benefits */}
+          <div className="mt-5 space-y-3 text-left sm:mt-6 sm:space-y-4">
+            {/* <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-base font-extrabold text-indigo-700 sm:h-9 sm:w-9 sm:text-lg">
                 ✓
               </div>
-
-              <span className="text-xs text-gray-700">
-                Apna business profile create karein
+              <span className="min-w-0 flex-1 break-words text-base leading-7 text-gray-800 sm:text-lg">
+                Create your business profile
               </span>
+            </div> */}
 
-            </div>
-
-            {/* Benefit 2 */}
-
-            <div className="flex items-center gap-3">
-
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-indigo-600">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-base font-extrabold text-indigo-700 sm:h-9 sm:w-9 sm:text-lg">
                 ✓
               </div>
-
-              <span className="text-xs text-gray-700">
-                Naye customers tak pahunch banayein
+              <span className="min-w-0 flex-1 break-words text-base leading-7 text-gray-800 sm:text-lg">
+                Reach new customers and business partners
               </span>
-
             </div>
 
-            {/* Benefit 3 */}
-
-            <div className="flex items-center gap-3">
-
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-indigo-600">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-base font-extrabold text-indigo-700 sm:h-9 sm:w-9 sm:text-lg">
                 ✓
               </div>
-
-              <span className="text-xs text-gray-700">
-                Vehicles aur routes manage karein
+              <span className="min-w-0 flex-1 break-words text-base leading-7 text-gray-800 sm:text-lg">
+                Manage your vehicles and routes
               </span>
-
             </div>
-
           </div>
 
-          {/* =================================================
-              CTA BUTTON
-          ================================================= */}
-
+          {/* Primary action */}
           <button
             type="button"
             onClick={handleAddBusiness}
-            className="group mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+            className="group mt-6 flex min-h-14 w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 px-4 py-4 text-base font-bold text-white shadow-lg shadow-indigo-200 transition-colors duration-200 hover:from-blue-800 hover:to-indigo-800 focus:outline-none focus:ring-4 focus:ring-indigo-200 sm:mt-7 sm:min-h-16 sm:text-lg"
           >
-
-            <BriefcaseBusiness size={17} />
-
-            <span>
-              Add Your Business
-            </span>
-
+            <BriefcaseBusiness size={21} className="shrink-0" />
+            <span>Add Your Business</span>
             <ArrowRight
-              size={16}
-              className="transition-transform duration-300 group-hover:translate-x-1"
+              size={21}
+              className="shrink-0 transition-transform duration-200 group-hover:translate-x-1"
             />
-
           </button>
-
-          {/* =================================================
-              MAYBE LATER
-          ================================================= */}
 
           <button
             type="button"
             onClick={handleClose}
-            className="mt-3 text-xs font-medium text-gray-400 transition hover:text-gray-600"
+            className="mt-4 inline-flex min-h-11 items-center justify-center px-4 text-base font-semibold text-gray-600 underline-offset-4 transition hover:text-gray-900 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-lg"
           >
             Maybe Later
           </button>
-
         </div>
-
-      </div>
+      </section>
     </div>
   );
 }
 
 export default BusinessPromotionPopup;
-
