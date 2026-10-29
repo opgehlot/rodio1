@@ -3858,7 +3858,7 @@ export function PlanSelection() {
       perMonthText: "₹133/month",
       benefit: "41% benefit",
       features: [
-          "Priority Of transport leads",
+          " Unlimited  transport leads",
         "Unlimited Booking",
         "Priority Support 24/7",
         "Top Directory Listing",

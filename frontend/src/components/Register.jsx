@@ -743,10 +743,17 @@ export function Register() {
       {/* LEFT SIDE BANNER */}
       <div className="hidden lg:flex lg:w-1/2 bg-white p-16 flex-col justify-between items-center text-center border-r border-slate-100">
         <div className="my-auto py-12 max-w-lg space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-widest uppercase">
+           <div className="flex justify-center mb-6">
+      <img
+        src="/download.svg"
+        alt="RODIO Logo"
+        className="h-24 w-auto object-contain"
+      />
+    </div>
+          {/* <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-widest uppercase">
             <Sparkles size={14} />
             JOIN THE REVOLUTION
-          </div>
+          </div> */}
 
           <h2 className="text-5xl xl:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1]">
             Scale Your Logistics Business with{" "}

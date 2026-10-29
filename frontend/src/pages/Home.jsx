@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import HeroCarousel from "../components/HeroCarousel";
 import DaynamicHomeComponent from "../components/DaynamicHomeComponent";
@@ -12,38 +10,21 @@ import AdminHeroSlideManager from "../components/AdminHeroSlideManager";
 import MediaGallery from "../components/MediaGallery";
 import DownloadApp from "../components/Downlodapp";
 import PlanSelection from "../../payment/PlanSelection";
-// import PlanSelection from "../../payment/PlanSelection";
-
-// import AdminReferralPayouts from "../components/AdminReferralPayout";
-// import Indialogo from "../components/India";
-
-
 function Home() {
- const [activeTab, setActiveTab] = useState("leads");
-
-  return (
+  const [activeTab, setActiveTab] = useState("leads");
+ return (
     <div>
-      {/* Hero Section */}
       <HeroCarousel setActiveTab={setActiveTab} />
-
-      {/* Dynamic Component */}
       <div id="dynamic-home" className="scroll-mt-0">
         <DaynamicHomeComponent activeTab={activeTab} />
       </div>
-      <DownloadApp/>
-      <MediaGallery/>
-
-      {/* Other Sections */}
+      <DownloadApp />
+      <MediaGallery />
       <Features />
-      <PlanSelection/>
-      {/* <PlanSelection/> */}
-      <ReviewChatSection/>
-      
-    
-    
+      <PlanSelection />
+      <ReviewChatSection />
       <Overvision />
       <Feedback />
-      {/* <AdminReferralPayouts/> */}
       <QueryForm />
     </div>
   );

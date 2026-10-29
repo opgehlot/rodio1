@@ -29,6 +29,7 @@ import {
 import API from "../../api/api";
 import AddRating from "../AddRatting";
 import ReviewSection from "../ReviewSection";
+import RodioVerified from "../../assets/rodio-verified.png";
 
 // Agar tumhare paas Rodio ka logo image hai to uska path yahan daal do.
 // Example: const RODIO_LOGO_URL = "/logo.png";
@@ -94,9 +95,9 @@ const RodioBanner = () => (
           />
         ) : (
           <>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-700 shadow-lg sm:h-14 sm:w-14 sm:rounded-2xl">
+            {/* <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-700 shadow-lg sm:h-14 sm:w-14 sm:rounded-2xl">
               <FaTruck className="text-lg sm:text-2xl" />
-            </span>
+            </span> */}
             <span className="text-4xl font-black tracking-tight text-white drop-shadow sm:text-6xl">
               Rodio
             </span>
@@ -108,7 +109,7 @@ const RodioBanner = () => (
         India's Free Transport Directory
       </p>
 
-      <div className="hidden flex-wrap gap-2 sm:flex">
+      {/* <div className="hidden flex-wrap gap-2 sm:flex">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
           <FaRupeeSign className="text-[10px]" /> No Brokerage
         </span>
@@ -118,7 +119,7 @@ const RodioBanner = () => (
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
           <FaShieldAlt className="text-[10px]" /> Verified Partners
         </span>
-      </div>
+      </div> */}
     </div>
 
     {/* Road + moving truck */}
@@ -273,12 +274,14 @@ const TransporterProfile = () => {
               </div>
 
               {isVerified && (
-                <span
-                  title="Rodio Verified"
-                  className="absolute bottom-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg ring-2 ring-white sm:bottom-2 sm:right-2"
-                >
-                  <FaShieldAlt className="text-xs" />
-                </span>
+             <span className="absolute bottom-1 right-1 inline-flex items-center gap-1.5 rounded-full border-2 border-emerald-200 bg-white px-2 py-1 text-[11px] font-extrabold text-blue-800 shadow-lg sm:bottom-2 sm:right-2 sm:px-2.5 sm:py-1.5">
+  <img
+    src={RodioVerified}
+    alt="Rodio Verified"
+    className="h-5 w-5 shrink-0 object-contain"
+  />
+  {/* <span className="whitespace-nowrap">Rodio Verified</span> */}
+</span>
               )}
             </div>
 
@@ -307,12 +310,16 @@ const TransporterProfile = () => {
           {/* NAME + META */}
           <div className="space-y-4 px-2 pb-8 pt-4 sm:px-6">
             <div className="space-y-2">
-              {isVerified && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-700">
-                  <FaShieldAlt className="text-xs text-blue-600" />
-                  Rodio Verified
-                </span>
-              )}
+             {isVerified && (
+  <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-emerald-200 bg-white px-2.5 py-1.5 text-[11px] font-extrabold text-blue-800 shadow-lg sm:px-3 sm:py-2 sm:text-xs">
+    <img
+      src={RodioVerified}
+      alt="Rodio Verified"
+      className="h-5 w-5 shrink-0 object-contain"
+    />
+    <span className="whitespace-nowrap">Rodio Verified</span>
+  </span>
+)}
 
               <h1 className="break-words text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
                 {profile.firmName}

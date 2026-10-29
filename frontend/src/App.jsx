@@ -72,6 +72,7 @@ import MyReviews from "./pages/dashboardpage/MyReviews";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ServiceReminderPopup from "./components/ServiceReminderPopup";
 import NotFound from "./pages/NotFound";
+import AddYourAds from "./components/AddYourAds";
 
 // Dummy Pages
 
@@ -166,6 +167,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/addyouradds" element={<AddYourAds />} />
           <Route
             path="/daynamichomecomponent"
             element={<DaynamicHomeComponent />}

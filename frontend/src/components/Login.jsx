@@ -1158,23 +1158,35 @@ catch (error) {
 
       <div className="pt-[70px] w-full bg-white flex flex-col lg:flex-row">
         {/* LEFT SIDE */}
-        <div className="hidden lg:flex lg:w-1/2 bg-white p-16 flex-col justify-between items-center text-center border-r border-slate-100">
-          <div className="my-auto py-12 max-w-lg space-y-6">
-           
-            <h2 className="text-4xl xl:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
-              Continue Your Journey with{" "}
-              <span className="text-blue-600">RODIO</span>
-            </h2>
-            <p className="text-slate-500 text-base font-medium leading-relaxed">
-              The smart transport platform connecting transporters, brokers,
-              shippers, and businesses across India.
-            </p>
-          </div>
+       <div className="hidden lg:flex lg:w-1/2 bg-white p-16 flex-col justify-between items-center text-center border-r border-slate-100">
 
-          <div className="text-xs font-medium text-slate-400 uppercase tracking-widest">
-            © {new Date().getFullYear()} RODIO. ALL RIGHTS RESERVED.
-          </div>
-        </div>
+  <div className="my-auto py-12 max-w-lg space-y-6">
+
+    {/* RODIO LOGO */}
+    <div className="flex justify-center mb-6">
+      <img
+        src="/download.svg"
+        alt="RODIO Logo"
+        className="h-24 w-auto object-contain"
+      />
+    </div>
+
+    <h2 className="text-4xl xl:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+      Continue Your Journey with{" "}
+      <span className="text-blue-600">RODIO</span>
+    </h2>
+
+    <p className="text-slate-500 text-base font-medium leading-relaxed">
+      The smart transport platform connecting transporters, brokers,
+      shippers, and businesses across India.
+    </p>
+  </div>
+
+  <div className="text-xs font-medium text-slate-400 uppercase tracking-widest">
+    © {new Date().getFullYear()} RODIO. ALL RIGHTS RESERVED.
+  </div>
+
+</div>
 
         {/* RIGHT SIDE */}
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:py-16 lg:px-20 bg-white">

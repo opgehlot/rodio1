@@ -21,7 +21,7 @@ const DownloadApp = () => {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-base font-medium leading-7 text-slate-500 sm:text-lg sm:leading-8 md:text-xl lg:mx-0">
-          Find Transporters, Add Loads, Search Transport, Manage Bids, and connect with the right transporte network — all in one easy-to-use app.
+          Find Transporters, Add Loads, Search Transport, Manage Bids, and connect with the right transport network — all in one easy-to-use app.
           </p>
 
           {/* STORE BUTTONS */}

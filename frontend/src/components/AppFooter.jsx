@@ -351,7 +351,7 @@ export default function Footer() {
 
   const policyLinks = [
     { label: "Terms & Conditions", to: "/termscondition" },
-    { label: "Refund Policy", to: "/refundpolicy" },
+    // { label: "Refund Policy", to: "/refundpolicy" },
     { label: "Privacy Policy", to: "/privaceypolicy" },
   ];
 
@@ -546,7 +546,7 @@ export default function Footer() {
                 Address
               </span>
               <span className="mt-1 block text-base font-semibold leading-6 text-slate-900">
-                EA-60, Scheme 94, Ring Road Indore
+                EA-60, Scheme 94, Ring Road Indore,pincode- 452010
               </span>
             </span>
           </a>

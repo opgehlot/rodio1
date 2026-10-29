@@ -819,7 +819,7 @@ const MyDocumentss = () => {
               borderRadius: "20px",
             }}
           >
-            {uploadedDocs.length} Uploaded
+            {uploadedDocs.length}/5 Uploaded
           </span>
           <span style={{ fontSize: "14px", color: "#64748b" }}>{isOpen ? "▲" : "▼"}</span>
         </div>
@@ -921,9 +921,9 @@ const MyDocumentss = () => {
                 >
                   {/* Document Type Dropdown */}
                   <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: "700", color: "#475569", textTransform: "uppercase", marginBottom: "4px" }}>
+                     <label style={{ display: "block", fontSize: "11px", fontWeight: "700", color: "#475569", textTransform: "uppercase", marginBottom: "4px" }}>
                       Document Classification *
-                    </label>
+                     </label>
                     <select
                       value={documentType}
                       onChange={(e) => setDocumentType(e.target.value)}
@@ -1010,7 +1010,7 @@ const MyDocumentss = () => {
 
           {/* ================= UPLOADED DOCUMENTS TABLE ================= */}
           {docLoading ? (
-            <div style={{ textAlign: "center", padding: "30px", color: "#64748b", fontSize: "14px" }}>
+         <div style={{ textAlign: "center", padding: "30px", color: "#64748b", fontSize: "14px" }}>
               Loading uploaded credentials...
             </div>
           ) : uploadedDocs.length === 0 ? (
@@ -1024,7 +1024,7 @@ const MyDocumentss = () => {
                 color: "#64748b",
                 fontSize: "13px",
               }}
-            >
+            >  
               No documents recorded yet. Click "Upload Document" to register your credentials.
             </div>
           ) : (

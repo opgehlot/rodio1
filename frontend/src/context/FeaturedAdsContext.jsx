@@ -28,7 +28,7 @@ export function FeaturedAdsProvider({ children }) {
       setAds(Array.isArray(result) ? result : []);
     } catch (err) {
       console.error("Featured ads fetch error:", err);
-      setError("Featured ads load nahi ho paye.");
+      setError("added you adds.");
       setAds([]);
     } finally {
       setLoading(false);

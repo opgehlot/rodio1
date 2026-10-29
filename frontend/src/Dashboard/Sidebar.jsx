@@ -1229,9 +1229,13 @@ export default function Sidebar({ open, setOpen }) {
         <Link to="/" className="block shrink-0">
           <div className="group border-b border-orange-100 bg-orange-50 px-5 py-5 transition hover:bg-orange-100/70">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-500 text-white shadow-md transition-transform group-hover:scale-105">
-                <Truck size={26} />
-              </div>
+             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl  shadow-md transition-transform group-hover:scale-105">
+  <img
+    src="/download.svg"
+    alt="Rodio Logo"
+    className="h-8 w-8 object-contain"
+  />
+</div>
 
               <div className="min-w-0">
                 <h2 className="text-2xl font-extrabold leading-tight text-slate-900">

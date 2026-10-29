@@ -626,6 +626,10 @@ export default function Navbar() {
       name: t("navbar.services", "SERVICES"),
       path: "/services",
     },
+    {
+      name: t("navbar.addyouradds", "Add Advertise"),
+      path: "/addyouradds",
+    },
 
     ...(isLoggedIn
       ? [

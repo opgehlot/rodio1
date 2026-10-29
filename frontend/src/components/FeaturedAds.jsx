@@ -84,7 +84,7 @@ export default function FeaturedAds({
 
   return (
     <section
-      className={`flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm ${className}`}
+      className={`flex min-h-[2650px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm ${className}`}
       aria-label={title}
     >
       <div className="flex shrink-0 items-center gap-2 border-b border-slate-100 px-3 py-3 sm:px-4">
