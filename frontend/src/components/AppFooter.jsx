@@ -546,7 +546,7 @@ export default function Footer() {
                 Address
               </span>
               <span className="mt-1 block text-base font-semibold leading-6 text-slate-900">
-                EA-60, Scheme 94, Ring Road Indore,pincode- 452010
+                EA-60, Scheme 94, Ring Road Indore,452010
               </span>
             </span>
           </a>

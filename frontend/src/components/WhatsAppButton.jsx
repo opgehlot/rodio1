@@ -34,8 +34,8 @@ function WhatsAppButton() {
         -translate-y-1/2
         z-[99999]
         flex
-        h-[56px]
-        w-[56px]
+        h-[50px]
+        w-[40px]
         items-center
         justify-center
         rounded-full
@@ -46,7 +46,7 @@ function WhatsAppButton() {
         duration-300
         hover:shadow-[0_10px_40px_rgba(37,211,102,0.55)]
         sm:right-6
-        sm:h-[64px]
+        sm:h-[40px]
         sm:w-auto
         sm:px-4
       "
