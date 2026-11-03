@@ -224,6 +224,7 @@ import {
   X,
 } from "lucide-react";
 import { useFeaturedAds } from "../context/FeaturedAdsContext";
+import { createPortal } from "react-dom";
 
 export default function FeaturedAds({
   placement = "directory",
@@ -504,28 +505,30 @@ export default function FeaturedAds({
         </div>
       </section>
 
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <button
-            type="button"
-            onClick={() => setSelectedImage(null)}
-            aria-label="Close image"
-            className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/30"
-          >
-            <X size={24} />
-          </button>
+     {selectedImage &&
+  createPortal(
+    <div
+      className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/90 p-4"
+      onClick={() => setSelectedImage(null)}
+    >
+      <button
+        type="button"
+        onClick={() => setSelectedImage(null)}
+        aria-label="Close image"
+        className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/30"
+      >
+        <X size={24} />
+      </button>
 
-          <img
-            src={selectedImage}
-            alt="Featured advertisement"
-            onClick={(event) => event.stopPropagation()}
-            className="max-h-[90vh] max-w-[95vw] rounded-lg object-contain"
-          />
-        </div>
-      )}
+      <img
+        src={selectedImage}
+        alt="Featured advertisement"
+        onClick={(event) => event.stopPropagation()}
+        className="max-h-[90vh] max-w-[95vw] rounded-lg object-contain"
+      />
+    </div>,
+    document.body
+  )}
     </>
   );
 }
