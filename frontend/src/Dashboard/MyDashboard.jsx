@@ -15,6 +15,11 @@ import Insurancecompany from "./DashboardPage/Insurancecompany";
 import PackersAndMovers from "./DashboardPage/PackersAndMovers";
 import FinanceAgent from "./DashboardPage/FinanceAgent";
 import CarCarrier from "./DashboardPage/CarCarrier";
+import ShippingCompany from "./DashboardPage/ShippingCompany";
+import RefrigeratedVan from "./DashboardPage/RefrigeratedVan";
+import Tanker from "./DashboardPage/Tanker";
+import MotorBroker from "./DashboardPage/MotorBroker";
+
 
 export default function MyDashboard() {
   const role = localStorage.getItem("role");
@@ -91,6 +96,21 @@ if (role === "insurance_company") {
 }
 if (role === "car_carrier") {
   return <CarCarrier />;
+}
+if (role === "Shipping_co") {
+  return <ShippingCompany/>;
+}
+
+if (role === "Refvan") {
+  return <RefrigeratedVan />;
+}
+
+if (role === "Tanker") {
+  return <Tanker />;
+}
+
+if (role === "Motor_broker") {
+  return <MotorBroker />;
 }
 
   // Invalid role

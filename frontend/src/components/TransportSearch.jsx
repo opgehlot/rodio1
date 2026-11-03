@@ -1507,7 +1507,7 @@ const TransportSearch = () => {
               {/* LEFT: Context-based Featured Ads = 40% */}
               <aside className="hidden min-w-0 lg:sticky lg:top-24 lg:block">
                 <FeaturedAds
-                  placement="transport-search"
+                  placement="directory"
                   className="h-[650px] w-full min-w-0"
                 />
               </aside>

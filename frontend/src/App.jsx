@@ -73,6 +73,10 @@ import WhatsAppButton from "./components/WhatsAppButton";
 import ServiceReminderPopup from "./components/ServiceReminderPopup";
 import NotFound from "./pages/NotFound";
 import AddYourAds from "./components/AddYourAds";
+import RefrigeratedVan from "./Dashboard/DashboardPage/RefrigeratedVan";
+import ShippingCompany from "./Dashboard/DashboardPage/ShippingCompany";
+import Tanker from "./Dashboard/DashboardPage/Tanker";
+import MotorBroker from "./Dashboard/DashboardPage/MotorBroker";
 
 // Dummy Pages
 
@@ -144,7 +148,10 @@ function App() {
           {/* Payment */}
           <Route path="planselection" element={<PlanSelection />} />
           <Route path="receipt/:paymentId" element={<Receipt />} />
-
+        <Route path="moterbroker" element={<MotorBroker />} />
+          <Route path="tanker" element={<Tanker />} />
+          <Route path="shippingcompany" element={<ShippingCompany />} />
+          <Route path="refrigeratedvan" element={<RefrigeratedVan />} />
           <Route path="busServices" element={<BusServices />} />
           <Route path="chaAgent" element={<ChaAgent />} />
           <Route path="courier" element={<Courier />} />

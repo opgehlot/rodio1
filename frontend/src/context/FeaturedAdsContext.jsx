@@ -19,7 +19,7 @@ export function FeaturedAdsProvider({ children }) {
     setError("");
 
     try {
-      const response = await API.get("/ads", {
+      const response = await API.get("/featured-ads", {
         params: { active: true },
       });
 

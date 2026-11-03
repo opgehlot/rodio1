@@ -1872,7 +1872,7 @@ const Leads = () => {
           {/* LEFT: Featured Ads - 40% */}
           <aside className="hidden min-w-0 w-full lg:sticky lg:top-24 lg:block">
             <FeaturedAds
-              placement="leads"
+              placement="directory"
               className="h-[650px] w-full min-w-0"
             />
           </aside>

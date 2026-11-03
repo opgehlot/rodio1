@@ -3538,7 +3538,7 @@ className="group flex w-full flex-col overflow-hidden rounded-2xl border-4 borde
       {/* ==========================================
           SEARCH FILTERS BOX WITH SLIDING TOGGLE
       ========================================== */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border border-gray-100 p-4 sm:p-6 md:p-8 mb-8 sm:mb-10">
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border border-gray-100 p-2 sm:p-6 md:p-8 mb-8 sm:mb-10">
         {/* Header & Reset Button */}
         <div className="flex items-center justify-between gap-2 mb-5 sm:mb-6">
           <div className="flex items-center gap-2.5">

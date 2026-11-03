@@ -590,22 +590,22 @@ const roleOptions = [
     value: "candfagent",
     label: "C&F Agent",
   },
-//   {
-//   value: "Shipping_co",
-//   label: "Shipping Company",
-// },
-// {
-//   value: "Refvan",
-//   label: "refrigerated van",
-// },
-// {
-//   value: "Tanker",
-//   label: "Tanker",
-// },
-// {
-//   value: "Motor_Broker",
-//   label: "Motor Broker",
-// },
+{
+  value: "Shipping_co",
+  label: "Shipping Company",
+},
+{
+  value: "Refvan",
+  label: "Refrigerated Van",
+},
+{
+  value: "Tanker",
+  label: "Tanker",
+},
+{
+  value: "Motor_broker",
+  label: "Motor Broker",
+},
 ];
 
 export function Register() {
