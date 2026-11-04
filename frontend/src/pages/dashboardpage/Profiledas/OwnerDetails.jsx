@@ -914,32 +914,28 @@ const OwnerDetails = ({ profileData, onUpdateSuccess }) => {
                     className="w-full text-[12px] font-bold text-[#1d4ed8] bg-[#dbeafe] px-[8px] py-[6px] rounded-[4px] uppercase outline-none cursor-pointer border-none"
                   >
                     <option value="user">User</option>
-                    <option value="transporter">Transporter</option>
-                    <option value="fleet_owner">Fleet Owner</option>
-                    <option value="cha_agent">CHA Agent</option>
-                    <option value="courier">Courier</option>
-                    <option value="bus_service">Bus Service</option>
-                    <option value="travel_taxi">Travel / Taxi</option>
-                    <option value="truck_body_builder">
-                      Truck Body Builder
-                    </option>
-                    <option value="rto_agent">RTO Agent</option>
-                    <option value="finance_company">Finance Company</option>
-                    <option value="finance_agent">Finance Agent</option>
-                    <option value="packers_movers">Packers & Movers</option>
-                    <option value="insurance_company">Insurance Company</option>
-                    <option value="car_carrier">Car Carrier</option>
-                    <option value="miningvehicle_supplier">
-                      Mining Vehicle Supplier
-                    </option>
-                    <option value="partstypesbettry_supplier">
-                      Parts / Tyres / Battery Supplier
-                    </option>
-                    <option value="mechanic and service center">
-                      Mechanic & Service Center
-                    </option>
-                    <option value="biketexiauto">Bike / Taxi / Auto</option>
-                    <option value="candfagent">C&F Agent</option>
+<option value="transporter">Transporter</option>
+<option value="fleet_owner">Fleet Owner</option>
+<option value="cha_agent">CHA Agent</option>
+<option value="courier">Courier</option>
+<option value="bus_service">Bus Service</option>
+<option value="travel_taxi">Travel / Taxi</option>
+<option value="truck_body_builder">Truck Body Builder</option>
+<option value="rto_agent">RTO Agent</option>
+<option value="finance_company">Finance Company</option>
+<option value="finance_agent">Finance Agent</option>
+<option value="packers_movers">Packers & Movers</option>
+<option value="insurance_company">Insurance Company</option>
+<option value="car_carrier">Car Carrier</option>
+<option value="miningvehicle_supplier">Mining Vehicle Supplier</option>
+<option value="partstypesbettry_supplier">Parts / Tyres / Battery Supplier</option>
+<option value="mechanic and service center">Mechanic & Service Center</option>
+<option value="biketexiauto">Bike / Taxi / Auto</option>
+<option value="candfagent">C&F Agent</option>
+<option value="Shipping_co">Shipping Company</option>
+<option value="Refvan">Refrigerated Van</option>
+<option value="Tanker">Tanker</option>
+<option value="Motor_broker">Motor Broker</option>
                   </select>
                 </div>
 

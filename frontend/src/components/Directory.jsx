@@ -2668,7 +2668,7 @@ const PaginationBar = ({ currentPage, totalPages, onPageChange }) => {
           }`}
         >
           <ChevronLeft size={18} />
-          Prev
+          Prev   
         </button>
 
         {/* MOBILE */}
@@ -2944,7 +2944,7 @@ const Directory = () => {
             profileImage:
               details?.profile?.profileImage ||
               details?.profileImage ||
-              item.profile?.profileImage ||
+              item.profile?.profileImage || 
               item.profileImage ||
               "",
             adImage:
@@ -2973,37 +2973,41 @@ const Directory = () => {
     };
   }, [paginatedData, profileAssets]);
 
-  const transportCategories = useMemo(
-    () => [
-      { label: "All Categories", value: "" },
-      { label: "User / Manufacturer / Trader / Shipper / Other", value: "user" },
-      { label: "Transporter (Service Provider)", value: "transporter" },
-      { label: "Broker", value: "broker" },
-      { label: "Fleet Owner", value: "fleet_owner" },
-      { label: "Truck Owner", value: "truck_owner" },
-      { label: "Logistics Company", value: "logistics_company" },
-      { label: "Warehouse", value: "warehouse" },
-      { label: "CHA Agent (Custom House Agent)", value: "cha_agent" },
-      { label: "Courier / Cargo Carrier", value: "courier" },
-      { label: "Bus Service", value: "bus_service" },
-      { label: "Travel & Taxi Service", value: "travel_taxi" },
-      { label: "Bus / Truck Body Builder", value: "truck_body_builder" },
-      { label: "RTO Agent", value: "rto_agent" },
-      { label: "Finance Company", value: "finance_company" },
-      { label: "Finance Agent", value: "finance_agent" },
-      { label: "Packers & Movers", value: "packers_and_movers" },
-      { label: "Insurance Company", value: "insurance_company" },
-      { label: "Car Carrier", value: "car_carrier" },
-      { label: "Mining Vehicle Supplier", value: "miningvehicle_supplier" },
-      { label: "Parts & Battery Supplier", value: "partstypesbettry_supplier" },
-      { label: "Mechanic & Service Center", value: "mechanic and service center" },
-      { label: "Bike Taxi Auto", value: "biketexiauto" },
-      { label: "C&F Agent", value: "candfagent" },
-      { label: "Commission Agent", value: "commission_agent" },
-      { label: "Others", value: "others" },
-    ],
-    []
-  );
+ const transportCategories = useMemo(
+  () => [
+    { label: "All Categories", value: "" },
+    { label: "User / Manufacturer / Trader / Shipper / Other", value: "user" },
+    { label: "Transporter (Service Provider)", value: "transporter" },
+    { label: "Broker", value: "broker" },
+    { label: "Fleet Owner", value: "fleet_owner" },
+    { label: "Truck Owner", value: "truck_owner" },
+    { label: "Logistics Company", value: "logistics_company" },
+    { label: "Warehouse", value: "warehouse" },
+    { label: "CHA Agent (Custom House Agent)", value: "cha_agent" },
+    { label: "Courier / Cargo Carrier", value: "courier" },
+    { label: "Bus Service", value: "bus_service" },
+    { label: "Travel & Taxi Service", value: "travel_taxi" },
+    { label: "Bus / Truck Body Builder", value: "truck_body_builder" },
+    { label: "RTO Agent", value: "rto_agent" },
+    { label: "Finance Company", value: "finance_company" },
+    { label: "Finance Agent", value: "finance_agent" },
+    { label: "Packers & Movers", value: "packers_movers" },
+    { label: "Insurance Company", value: "insurance_company" },
+    { label: "Car Carrier", value: "car_carrier" },
+    { label: "Mining Vehicle Supplier", value: "miningvehicle_supplier" },
+    { label: "Parts & Battery Supplier", value: "partstypesbettry_supplier" },
+    { label: "Mechanic & Service Center", value: "mechanic and service center" },
+    { label: "Bike Taxi Auto", value: "biketexiauto" },
+    { label: "C&F Agent", value: "candfagent" },
+    { label: "Commission Agent", value: "commission_agent" },
+    { label: "Shipping Company", value: "Shipping_co" },
+    { label: "Refrigerated Van", value: "Refvan" },
+    { label: "Tanker", value: "Tanker" },
+    { label: "Motor Broker", value: "Motor_broker" },
+    { label: "Others", value: "others" },
+  ],
+  []
+);
 
   // SCROLL RESTORATION LOGIC
   useEffect(() => {
@@ -3455,18 +3459,13 @@ className="group flex w-full flex-col overflow-hidden rounded-2xl border-4 borde
             sm+: auto-fit (jagah ho to image left, card right) */}
         <div className="grid grid-cols-1 sm:[grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
           {/* AD IMAGE */}
-          <div className="relative h-[220px] w-full overflow-hidden bg-gray-50 sm:h-auto sm:min-h-[300px]">
-            <img
-              src={adImage}
-              alt={item.firmName || "Ad"}
-              className="absolute inset-0 h-full w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
-              onClick={() => openProfile(item, cardId)}
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-            />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" />
-          </div>
+        <div className="relative w-full aspect-[540/417] overflow-hidden bg-white">
+  <img
+    src={adImage}
+    alt="Advertisement"
+    className="h-full w-full object-contain"
+  />
+</div>
 
           {/* RIGHT: blue header + card data */}
           <div
