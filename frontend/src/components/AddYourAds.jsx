@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import API from "../api/api";
 import toast from "react-hot-toast";
+import addsImage from "../assets/ADDS.png";
 
 export function AddYourAds() {
   const [formData, setFormData] = useState({
@@ -188,11 +189,11 @@ export function AddYourAds() {
 
           {/* RIGHT SIDE: RODIO PNG IMAGE */}
 <div className="relative mx-auto flex w-full max-w-xl items-center justify-center">
-  <img
-    src="/src/assets/ADDS.png"
-    alt="Rodio Tradelink Business Directory"
-    className="h-auto w-full max-w-[620px] object-contain"
-  />
+ <img
+  src={addsImage}
+  alt="Rodio Tradelink Business Directory"
+  className="h-auto w-full max-w-[620px] object-contain"
+/>
 </div>
         </div>
       </section>
