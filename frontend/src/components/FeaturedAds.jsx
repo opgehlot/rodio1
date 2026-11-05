@@ -466,7 +466,7 @@ export default function FeaturedAds({
                     alt={ad.title || "Featured advertisement"}
                     loading={index < 2 ? "eager" : "lazy"}
                     onClick={() => setSelectedImage(image)}
-                    className="block max-h-80 w-full cursor-zoom-in object-contain"
+                   className="block h-[500px] w-full cursor-zoom-in object-contain"
                   />
                 ) : (
                   <div className="flex h-36 items-center justify-center bg-slate-50 text-sm text-slate-400">

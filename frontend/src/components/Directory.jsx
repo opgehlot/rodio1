@@ -3459,13 +3459,18 @@ className="group flex w-full flex-col overflow-hidden rounded-2xl border-4 borde
             sm+: auto-fit (jagah ho to image left, card right) */}
         <div className="grid grid-cols-1 sm:[grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
           {/* AD IMAGE */}
-        <div className="relative w-full aspect-[540/417] overflow-hidden bg-white">
-  <img
-    src={adImage}
-    alt="Advertisement"
-    className="h-full w-full object-contain"
-  />
-</div>
+          <div className="relative h-[220px] w-full overflow-hidden bg-gray-50 sm:h-auto sm:min-h-[300px]">
+            <img
+              src={adImage}
+              alt={item.firmName || "Ad"}
+              className="absolute inset-0 h-full w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
+              onClick={() => openProfile(item, cardId)}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" />
+          </div>
 
           {/* RIGHT: blue header + card data */}
           <div
